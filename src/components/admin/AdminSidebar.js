@@ -124,7 +124,7 @@ function AdminSidebar({ handleLogout }) {
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink className="nav-link" to="/exitManagement">
+                      <NavLink className="nav-link" to="/exitmangement">
                         <span style={{ display: "flex", alignItems: "center" }}>
                           <BsBullseye
                             style={{ fontSize: "xx-small", marginRight: "8px" }}
@@ -138,7 +138,7 @@ function AdminSidebar({ handleLogout }) {
               </li>
 
               <li className="nav-item">
-                <NavLink className="nav-link" to="/employeeInfo">
+                <NavLink className="nav-link" to="/employee">
                   <FaUsers className="me-2" />
                   Employee Info
                 </NavLink>
