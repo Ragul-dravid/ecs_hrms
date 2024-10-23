@@ -8,7 +8,7 @@ import api from "../../../../config/URL";
 import { Hourglass } from "react-loader-spinner";
 import DeleteModel from "../../../../components/admin/DeleteModel";
 
-const CompanyCompliance = () => {
+const HrPolicy = () => {
   const tableRef = useRef(null);
   // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
@@ -17,7 +17,7 @@ const CompanyCompliance = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("/company-compliance");
+        const response = await api.get("/hR-policy");
         setDatas(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -59,7 +59,7 @@ const CompanyCompliance = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("/company-compliance");
+      const response = await api.get("/hR-policy");
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -99,14 +99,12 @@ const CompanyCompliance = () => {
               <div className="row align-items-center justify-content-between ">
                 <div className="col">
                   <div className="d-flex align-items-center gap-4">
-                    <h1 className="h4 ls-tight headingColor ">
-                      Company Compliance
-                    </h1>
+                    <h1 className="h4 ls-tight headingColor ">Hr Policy</h1>
                   </div>
                 </div>
                 <div className="col-auto">
                   <div className="hstack gap-2 justify-content-end">
-                    <Link to="/companyCompliance/add">
+                    <Link to="/hrpolicy/add">
                       <button
                         type="submit"
                         className="btn btn-sm btn-button btn-primary"
@@ -133,17 +131,9 @@ const CompanyCompliance = () => {
                       S.NO
                     </th>
                     <th scope="col" className="text-center">
-                      Company ID
+                      Hr Policy
                     </th>
-                    <th scope="col" className="text-center">
-                      Company Name
-                    </th>
-                    <th scope="col" className="text-center">
-                      Designation Name
-                    </th>
-                    <th scope="col" className="text-center">
-                      Company Status
-                    </th>
+
                     <th scope="col" className="text-center">
                       ACTION
                     </th>
@@ -153,31 +143,16 @@ const CompanyCompliance = () => {
                   {datas.map((data, index) => (
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
-                      <td className="text-center">{data.cmpId}</td>
-                      <td className="text-center">{data.cmpName}</td>
-                      <td className="text-center">
-                        {data.compComplianceDesignationName}
-                      </td>
-                      <td className="text-center">
-                        {data.cmpStatus === "Approve" ? (
-                          <span className="badge-approved">Approved</span>
-                        ) : data.cmpStatus === "Pending" ? (
-                          <span className="badge-rejected">Rejected</span>
-                        ) : (
-                          <span className="badge-pending">Pending</span>
-                        )}
-                      </td>
+                      <td className="text-center">{data.hrPolicyList}</td>
                       <td className="text-center">
                         <div className="gap-2">
-                          <Link
-                            to={`/companyCompliance/view/${data.compComplianceId}`}
-                          >
+                          <Link to={`/hrpolicy/view/${data.hrPolicyId}`}>
                             <button className="btn btn-light btn-sm  shadow-none border-none">
                               View
                             </button>
                           </Link>
                           <Link
-                            to={`/companyCompliance/edit/${data.compComplianceId}`}
+                            to={`/hrpolicy/edit/${data.hrPolicyId}`}
                             className="px-2"
                           >
                             <button className="btn btn-light  btn-sm shadow-none border-none">
@@ -186,7 +161,7 @@ const CompanyCompliance = () => {
                           </Link>
                           <DeleteModel
                             onSuccess={refreshData}
-                            path={`/company-compliance/${data.cmpId}`}
+                            path={`/hR-policy/${data.cmpId}`}
                           />
                         </div>
                       </td>
@@ -203,4 +178,4 @@ const CompanyCompliance = () => {
   );
 };
 
-export default CompanyCompliance;
+export default HrPolicy;
