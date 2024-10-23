@@ -3,8 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import api from "../../../../config/URL";
 import toast from "react-hot-toast";
 import { Hourglass } from "react-loader-spinner";
+import ExitManagementAdd from "./ExitManagementAdd";
 
-const CompanyComplianceView = () => {
+const ExitManagementView = () => {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -13,7 +14,7 @@ const CompanyComplianceView = () => {
     const getData = async () => {
       setLoading(true); // Change this to true to show loader while fetching data
       try {
-        const response = await api.get(`/company-compliance/${id}`);
+        const response = await api.get(`/exit-management/${id}`);
         setData(response.data);
       } catch (e) {
         toast.error("Error fetching data: ", e?.response?.data?.message);
@@ -52,13 +53,13 @@ const CompanyComplianceView = () => {
                 <div className="col">
                   <div className="d-flex align-items-center gap-4">
                     <h1 className="h4 ls-tight headingColor">
-                      Company Compliance Details
+                      View Exit Management
                     </h1>
                   </div>
                 </div>
                 <div className="col-auto">
                   <div className="hstack gap-2 justify-content-start">
-                    <Link to="/companyCompliance">
+                    <Link to="/exitmangement">
                       <button type="submit" className="btn btn-sm btn-light">
                         <span>Back</span>
                       </button>
@@ -97,12 +98,12 @@ const CompanyComplianceView = () => {
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
                       <p className="text-sm">
-                        <b>Company Designation Name</b>
+                        <b>Employee Name</b>
                       </p>
                     </div>
                     <div className="col-6">
                       <p className="text-muted text-sm">
-                        : {data.compComplianceDesignationName || ""}
+                        : {data.exitMgmtEmpName || ""}
                       </p>
                     </div>
                   </div>
@@ -113,12 +114,12 @@ const CompanyComplianceView = () => {
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
                       <p className="text-sm">
-                        <b>Company Designation Category</b>
+                        <b>Reason For Relieving</b>
                       </p>
                     </div>
                     <div className="col-6">
                       <p className="text-muted text-sm">
-                        : {data.compComplianceDesignationCategory || ""}
+                        : {data.reasonForRelieving || ""}
                       </p>
                     </div>
                   </div>
@@ -129,12 +130,12 @@ const CompanyComplianceView = () => {
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
                       <p className="text-sm">
-                        <b>Leave Limit</b>
+                        <b>Date Of Relieving</b>
                       </p>
                     </div>
                     <div className="col-6">
                       <p className="text-muted text-sm">
-                        : {data.compComplianceLeaveLimit || ""}
+                        : {data.dateOfRelieving || ""}
                       </p>
                     </div>
                   </div>
@@ -145,12 +146,12 @@ const CompanyComplianceView = () => {
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
                       <p className="text-sm">
-                        <b>Salary Calculation Date</b>
+                        <b>Date Of Apply</b>
                       </p>
                     </div>
                     <div className="col-6">
                       <p className="text-muted text-sm">
-                        : {data.compComplianceSalaryCalculationDay || ""}
+                        : {data.exitMgmtDateOfApply || ""}
                       </p>
                     </div>
                   </div>
@@ -161,12 +162,12 @@ const CompanyComplianceView = () => {
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
                       <p className="text-sm">
-                        <b>Salary Date</b>
+                        <b>Notice Period</b>
                       </p>
                     </div>
                     <div className="col-6">
                       <p className="text-muted text-sm">
-                        : {data.compComplianceSalaryDay || ""}
+                        : {data.exitMgmtNoticePeriod || ""}
                       </p>
                     </div>
                   </div>
@@ -177,12 +178,40 @@ const CompanyComplianceView = () => {
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
                       <p className="text-sm">
-                        <b>Remark</b>
+                        <b>Relieving Approval Name</b>
                       </p>
                     </div>
                     <div className="col-6">
                       <p className="text-muted text-sm">
-                        : {data.compComplianceRemarks || ""}
+                        : {data.relievingApproverName || ""}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm">
+                        <b>Assets Returned</b>
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.assetsReturned || ""}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm">
+                        <b>Approval Status</b>
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data.relievingApproverStatus || ""}
                       </p>
                     </div>
                   </div>
@@ -196,4 +225,4 @@ const CompanyComplianceView = () => {
   );
 };
 
-export default CompanyComplianceView;
+export default ExitManagementView;

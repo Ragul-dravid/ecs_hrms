@@ -12,9 +12,7 @@ const CompanyRegistrationAdd = () => {
   const validationSchema = Yup.object({});
 
   const formik = useFormik({
-    initialValues: {
-      
-    },
+    initialValues: {},
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
