@@ -5917,14 +5917,14 @@ fieldset:disabled .btn {
 
 .btn-primary {
   color: #fff;
-  background-color: #0d6efd !important;
-  border-color: #0d6efd !important;
+  background-color: linear-gradient(135deg, #a070ff, #b987ff) !important;
+  border-color: #8a50fd !important;
 }
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #0d6efd !important;
-  border-color: #0d6efd;
+  background-color: linear-gradient(135deg, #a070ff, #b987ff) !important;
+  border-color: #8a50fd;
 }
 
 /* .btn-check:focus+.btn-primary,
@@ -10395,11 +10395,19 @@ fieldset:disabled .btn {
 }
 
 .navbar-light .navbar-nav .nav-link.active:hover {
+  background: linear-gradient(135deg, #a070ff, #b987ff) !important;
   color: white !important;
 }
+
 .navbar-light .navbar-nav .show>.nav-link,
 .navbar-light .navbar-nav .nav-link.active {
-  color: #0d6efd !important;
+  color: #8a50fd !important;
+}
+
+.navbar-light .navbar-nav .show>.nav-link,
+.navbar-light .navbar-nav .nav-link.active:hover {
+  background: linear-gradient(135deg, #a070ff, #b987ff) !important;
+  color: white !important;
 }
 
 .navbar-light .navbar-toggler {
@@ -10904,7 +10912,7 @@ fieldset:disabled .btn {
 }
 
 .navbar-vertical.navbar-light .navbar-nav>.nav-item>.nav-link:hover {
-  background-color: #0d6efd;
+  background-color: linear-gradient(135deg, #a070ff, #b987ff);
   color: #fff;
 }
 .navbar-vertical.navbar-light .navbar-nav .list-unstyled .nav-link {
@@ -10918,8 +10926,8 @@ fieldset:disabled .btn {
 }
 
 .navbar-vertical.navbar-light .navbar-nav .list-unstyled .nav-link:hover {
-  background-color: #0d6efd;
-  color: #fff;
+  background-color: #a070ff !important;
+  color: white;
 }
 
 .navbar-vertical.navbar-light .navbar-nav .list-unstyled .nav-link:hover::after {
@@ -10927,7 +10935,7 @@ fieldset:disabled .btn {
   position: absolute;
   right: 10px; 
   background-color: #fff;
-  color: #0d6efd; 
+  color: #a070ff; 
   width: 15px;
   height: 15px; 
   display: flex;
@@ -10941,7 +10949,7 @@ fieldset:disabled .btn {
 
 
 .navbar-vertical.navbar-light .navbar-nav>.nav-item>.nav-link.active:hover {
-  background-color: #0d6efd;
+  background-color: #a070ff !important;
   border-top-left-radius: 0;
   border-top-right-radius: 22px;
   border-bottom-left-radius: 0;
@@ -10950,7 +10958,7 @@ fieldset:disabled .btn {
 }
 
 .navbar-vertical.navbar-light .navbar-nav>.nav-item>.nav-link.active {
-  background-color: #0d6efd;
+  background-color: #a070ff !important;
   border-top-left-radius: 0;
   border-top-right-radius: 22px;
   border-bottom-left-radius: 0;
