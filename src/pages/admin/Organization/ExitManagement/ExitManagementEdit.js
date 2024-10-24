@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../../config/URL";
 import toast from "react-hot-toast";
+import ExitManagementAdd from "./ExitManagementAdd";
 
-const CompanyComplianceAdd = () => {
+const ExitManagementEdit = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
   const cmpId = sessionStorage.getItem("cmpId");
@@ -13,46 +15,42 @@ const CompanyComplianceAdd = () => {
 
   const validationSchema = Yup.object({
     // cmpName: Yup.string().required("*Company Name is required"),
-    compComplianceDesignationName: Yup.string().required(
-      "*Designation Name is required"
-    ),
-    compComplianceDesignationCategory: Yup.string().required(
-      "*Designation Category is required"
-    ),
-    compComplianceLeaveLimit: Yup.string().required("*Leave Limit is required"),
+    exitMgmtEmpName: Yup.string().required("*Employee Name is required"),
+    exitMgmtDateOfApply: Yup.string().required("*Date of Apply is required"),
+    reasonForRelieving: Yup.string().required("*Reason is required"),
     // compComplianceHRPolicyId: Yup.string().required("*Tax Code is required"),
     // compComplianceRemarks: Yup.string().required(
     //   "*Company Address is required"
     // ),
-    compComplianceSalaryCalculationDay: Yup.string().required(
-      "*Salary Calculation Date is required"
-    ),
-    compComplianceSalaryDay: Yup.string().required("*Salary Day is required"),
+    dateOfRelieving: Yup.string().required("*Date is required"),
+    exitMgmtNoticePeriod: Yup.string().required("*Notice Period is required"),
     // cmpRoleId: Yup.string().required("*Role is required"),
   });
 
+  // useFormik hook for form handling
   const formik = useFormik({
     initialValues: {
       cmpId: cmpId,
-      compComplianceId: "",
-      compComplianceCmpId: "",
-      compComplianceDesignationName: "",
-      compComplianceDesignationCategory: "",
-      compComplianceLeaveLimit: "",
-      compComplianceHRPolicyId: "",
-      compComplianceRemarks: "",
-      compComplianceSalaryDay: "",
-      compComplianceSalaryCalculationDay: "",
-      companyCompOwner: "",
+      exitMgmtCmpId: "",
+      exitMgmtEmpId: "",
+      exitMgmtEmpName: "",
+      exitMgmtDateOfApply: "",
+      exitMgmtNoticePeriod: "",
+      reasonForRelieving: "",
+      dateOfRelieving: "",
+      relievingApproverName: "",
+      relievingApproverStatus: "",
+      assetsReturned: "",
+      exitManagementOwner: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
       try {
-        const response = await api.post(`/company-compliance`, values);
-        if (response.status === 201) {
+        const response = await api.put(`/exit-management/${id}`, values);
+        if (response.status === 200) {
           toast.success(response.data.message);
-          navigate("/companyCompliance");
+          navigate("/exitmangement");
         } else {
           toast.error(response.data.message);
         }
@@ -63,6 +61,20 @@ const CompanyComplianceAdd = () => {
       }
     },
   });
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`/exit-management/${id}`);
+        formik.setValues(response.data); // Load the data into the form
+      } catch (e) {
+        toast.error("Error fetching data: ", e?.response?.data?.message);
+      }
+    };
+
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   return (
     <div className="container-fluid px-2 minHeight m-0">
@@ -76,13 +88,13 @@ const CompanyComplianceAdd = () => {
               <div className="col">
                 <div className="d-flex align-items-center gap-4">
                   <h1 className="h4 ls-tight headingColor">
-                    Add Company Compliance
+                    Edit Exit Management
                   </h1>
                 </div>
               </div>
               <div className="col-auto">
                 <div className="hstack gap-2 justify-content-end">
-                  <Link to="/companyCompliance">
+                  <Link to="/exitmangement">
                     <button type="button" className="btn btn-sm btn-light">
                       <span>Back</span>
                     </button>
@@ -116,7 +128,7 @@ const CompanyComplianceAdd = () => {
               {/* Company Name */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  Company Owner Name <span className="text-danger">*</span>
+                  Company Name <span className="text-danger">*</span>
                 </label>
                 <select
                   {...formik.getFieldProps("cmpId")}
@@ -145,135 +157,111 @@ const CompanyComplianceAdd = () => {
 
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  Designation Name <span className="text-danger">*</span>
+                  Employee Name <span className="text-danger">*</span>
                 </label>
                 <input
                   type="text"
-                  name="compComplianceDesignationName"
+                  name="exitMgmtEmpName"
                   className={`form-control form-control-sm ${
-                    formik.touched.compComplianceDesignationName &&
-                    formik.errors.compComplianceDesignationName
+                    formik.touched.exitMgmtEmpName &&
+                    formik.errors.exitMgmtEmpName
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("compComplianceDesignationName")}
+                  {...formik.getFieldProps("exitMgmtEmpName")}
                 />
-                {formik.touched.compComplianceDesignationName &&
-                  formik.errors.compComplianceDesignationName && (
+                {formik.touched.exitMgmtEmpName &&
+                  formik.errors.exitMgmtEmpName && (
                     <div className="invalid-feedback">
-                      {formik.errors.compComplianceDesignationName}
+                      {formik.errors.exitMgmtEmpName}
                     </div>
                   )}
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  Designation Category <span className="text-danger">*</span>
+                  Reason For Reliving<span className="text-danger">*</span>
                 </label>
                 <input
                   type="text"
-                  name="compComplianceDesignationCategory"
+                  name="reasonForRelieving"
                   className={`form-control form-control-sm ${
-                    formik.touched.compComplianceDesignationCategory &&
-                    formik.errors.compComplianceDesignationCategory
+                    formik.touched.reasonForRelieving &&
+                    formik.errors.reasonForRelieving
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("compComplianceDesignationCategory")}
+                  {...formik.getFieldProps("reasonForRelieving")}
                 />
-                {formik.touched.compComplianceDesignationCategory &&
-                  formik.errors.compComplianceDesignationCategory && (
+                {formik.touched.reasonForRelieving &&
+                  formik.errors.reasonForRelieving && (
                     <div className="invalid-feedback">
-                      {formik.errors.compComplianceDesignationCategory}
+                      {formik.errors.reasonForRelieving}
                     </div>
                   )}
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  Leave Limit <span className="text-danger">*</span>
+                  Date Of Apply<span className="text-danger">*</span>
                 </label>
                 <input
                   type="text"
-                  name="compComplianceLeaveLimit"
+                  name="exitMgmtDateOfApply"
                   className={`form-control form-control-sm ${
-                    formik.touched.compComplianceLeaveLimit &&
-                    formik.errors.compComplianceLeaveLimit
+                    formik.touched.exitMgmtDateOfApply &&
+                    formik.errors.exitMgmtDateOfApply
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("compComplianceLeaveLimit")}
+                  {...formik.getFieldProps("exitMgmtDateOfApply")}
                 />
-                {formik.touched.compComplianceLeaveLimit &&
-                  formik.errors.compComplianceLeaveLimit && (
+                {formik.touched.exitMgmtDateOfApply &&
+                  formik.errors.exitMgmtDateOfApply && (
                     <div className="invalid-feedback">
-                      {formik.errors.compComplianceLeaveLimit}
+                      {formik.errors.exitMgmtDateOfApply}
                     </div>
                   )}
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  Salary Calculation Date <span className="text-danger">*</span>
+                  Date Of Reliving<span className="text-danger">*</span>
                 </label>
                 <input
                   type="date"
-                  name="compComplianceSalaryCalculationDay"
+                  name="dateOfRelieving"
                   className={`form-control form-control-sm ${
-                    formik.touched.compComplianceSalaryCalculationDay &&
-                    formik.errors.compComplianceSalaryCalculationDay
+                    formik.touched.dateOfRelieving &&
+                    formik.errors.dateOfRelieving
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps(
-                    "compComplianceSalaryCalculationDay"
-                  )}
+                  {...formik.getFieldProps("dateOfRelieving")}
                 />
-                {formik.touched.compComplianceSalaryCalculationDay &&
-                  formik.errors.compComplianceSalaryCalculationDay && (
+                {formik.touched.dateOfRelieving &&
+                  formik.errors.dateOfRelieving && (
                     <div className="invalid-feedback">
-                      {formik.errors.compComplianceSalaryCalculationDay}
+                      {formik.errors.dateOfRelieving}
                     </div>
                   )}
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  Salary Date <span className="text-danger">*</span>
+                  Notice Period <span className="text-danger">*</span>
                 </label>
                 <input
-                  type="date"
-                  name="compComplianceSalaryDay"
-                  className={`form-control form-control-sm ${
-                    formik.touched.compComplianceSalaryDay &&
-                    formik.errors.compComplianceSalaryDay
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("compComplianceSalaryDay")}
-                />
-                {formik.touched.compComplianceSalaryDay &&
-                  formik.errors.compComplianceSalaryDay && (
-                    <div className="invalid-feedback">
-                      {formik.errors.compComplianceSalaryDay}
-                    </div>
-                  )}
-              </div>
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Remark <span className="text-danger">*</span>
-                </label>
-                <textarea
                   type="text"
-                  name="compComplianceRemarks"
+                  name="exitMgmtNoticePeriod"
                   className={`form-control form-control-sm ${
-                    formik.touched.compComplianceRemarks &&
-                    formik.errors.compComplianceRemarks
+                    formik.touched.exitMgmtNoticePeriod &&
+                    formik.errors.exitMgmtNoticePeriod
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("compComplianceRemarks")}
+                  {...formik.getFieldProps("exitMgmtNoticePeriod")}
                 />
-                {formik.touched.compComplianceRemarks &&
-                  formik.errors.compComplianceRemarks && (
+                {formik.touched.exitMgmtNoticePeriod &&
+                  formik.errors.exitMgmtNoticePeriod && (
                     <div className="invalid-feedback">
-                      {formik.errors.compComplianceRemarks}
+                      {formik.errors.exitMgmtNoticePeriod}
                     </div>
                   )}
               </div>
@@ -285,4 +273,4 @@ const CompanyComplianceAdd = () => {
   );
 };
 
-export default CompanyComplianceAdd;
+export default ExitManagementEdit;

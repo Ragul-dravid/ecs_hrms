@@ -4,11 +4,11 @@ import "datatables.net-responsive-dt";
 import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
-import api from "../../../../config/URL";
+import api from "../../../config/URL";
 import { Hourglass } from "react-loader-spinner";
-import DeleteModel from "../../../../components/admin/DeleteModel";
+import DeleteModel from "../../../components/admin/DeleteModel";
 
-const CompanyCompliance = () => {
+const Employee = () => {
   const tableRef = useRef(null);
   // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
@@ -17,7 +17,7 @@ const CompanyCompliance = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("/company-compliance");
+        const response = await api.get("emp-reg-details");
         setDatas(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -59,7 +59,7 @@ const CompanyCompliance = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("/company-compliance");
+      const response = await api.get("/company-reg");
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -100,13 +100,14 @@ const CompanyCompliance = () => {
                 <div className="col">
                   <div className="d-flex align-items-center gap-4">
                     <h1 className="h4 ls-tight headingColor ">
-                      Company Compliance
+                      Employee Info
                     </h1>
                   </div>
                 </div>
                 <div className="col-auto">
                   <div className="hstack gap-2 justify-content-end">
-                    <Link to="/companyCompliance/add">
+                    {/* {/* {/ {storedScreens?.levelCreate && ( /} */}
+                    <Link to="/employee/add">
                       <button
                         type="submit"
                         className="btn btn-sm btn-button btn-primary"
@@ -116,11 +117,13 @@ const CompanyCompliance = () => {
                         </span>
                       </button>
                     </Link>
+                    {/* {/ )} /} */}
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          {/* <hr className="removeHrMargin"></hr> */}
           <div
             className="card shadow border-0 my-2"
             style={{ borderRadius: "0" }}
@@ -133,16 +136,16 @@ const CompanyCompliance = () => {
                       S.NO
                     </th>
                     <th scope="col" className="text-center">
-                      Company ID
+                      EMPLOYEE ID
                     </th>
                     <th scope="col" className="text-center">
-                      Company Name
+                      EMPLOYEE Name
                     </th>
                     <th scope="col" className="text-center">
-                      Designation Name
+                      EMPLOYEE Email
                     </th>
                     <th scope="col" className="text-center">
-                      Company Status
+                      EMPLOYEE TYPE
                     </th>
                     <th scope="col" className="text-center">
                       ACTION
@@ -153,31 +156,19 @@ const CompanyCompliance = () => {
                   {datas.map((data, index) => (
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
-                      <td className="text-center">{data.cmpId}</td>
-                      <td className="text-center">{data.cmpName}</td>
-                      <td className="text-center">
-                        {data.compComplianceDesignationName}
-                      </td>
-                      <td className="text-center">
-                        {data.cmpStatus === "Approve" ? (
-                          <span className="badge-approved">Approved</span>
-                        ) : data.cmpStatus === "Pending" ? (
-                          <span className="badge-rejected">Rejected</span>
-                        ) : (
-                          <span className="badge-pending">Pending</span>
-                        )}
-                      </td>
+                      <td className="text-center">{data.employeeId}</td>
+                      <td className="text-center">{data.firstName + " " + data.lastName}</td>
+                      <td className="text-center">{data.email}</td>
+                      <td className="text-center">{data.empType}</td>
                       <td className="text-center">
                         <div className="gap-2">
-                          <Link
-                            to={`/companyCompliance/view/${data.compComplianceId}`}
-                          >
+                          <Link to={`/employee/view/${data.cmpId}`}>
                             <button className="btn btn-light btn-sm  shadow-none border-none">
                               View
                             </button>
                           </Link>
                           <Link
-                            to={`/companyCompliance/edit/${data.compComplianceId}`}
+                            to={`/employee/edit/${data.cmpId}`}
                             className="px-2"
                           >
                             <button className="btn btn-light  btn-sm shadow-none border-none">
@@ -186,7 +177,7 @@ const CompanyCompliance = () => {
                           </Link>
                           <DeleteModel
                             onSuccess={refreshData}
-                            path={`/company-compliance/${data.cmpId}`}
+                            path={`/company-reg/${data.cmpId}`}
                           />
                         </div>
                       </td>
@@ -203,4 +194,4 @@ const CompanyCompliance = () => {
   );
 };
 
-export default CompanyCompliance;
+export default Employee;
