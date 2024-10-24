@@ -5915,9 +5915,9 @@ fieldset:disabled .btn {
   opacity: 0.65;
 }
 
-.btn-primary {
+/* .btn-primary {
   color: #fff;
-  background-color: linear-gradient(135deg, #a070ff, #b987ff) !important;
+  background-color: #8a50fd !important;
   border-color: #8a50fd !important;
 }
 
@@ -5925,7 +5925,19 @@ fieldset:disabled .btn {
   color: #fff;
   background-color: linear-gradient(135deg, #a070ff, #b987ff) !important;
   border-color: #8a50fd;
+} */
+
+.btn-primary {
+  color: #fff;
+  background-image: linear-gradient(to right, #925cfe, #b987ff); /* Gradient from #8a50fd to #b368ff */
+  border: none; /* Remove border if you don't want the original border */
 }
+
+.btn-primary:hover {
+  background-image: linear-gradient(to right, #925cfe, #b987ff);
+  color: white;
+}
+
 
 /* .btn-check:focus+.btn-primary,
 .btn-primary:focus {
