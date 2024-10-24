@@ -3,15 +3,15 @@ import { useState } from "react";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import EmpPersonalInfoAdd from "./AddEmployee/EmpPersonalInfoAdd";
-import EmpQualificationDetailsAdd from "./AddEmployee/EmpQualificationDetailsAdd";
-import EmpExperienceAdd from "./AddEmployee/EmpExperienceAdd";
-import EmpPreviousCompanyAdd from "./AddEmployee/EmpPreviousCompanyAdd";
-import EmpEmergencyContactAdd from "./AddEmployee/EmpEmergencyContactAdd";
-import EmpBankAccountAdd from "./AddEmployee/EmpBankAccountAdd";
+import EmpPersonalInfoAdd from "./EditEmployee/EmpPersonalInfoAdd";
+import EmpQualificationDetailsAdd from "./EditEmployee/EmpQualificationDetailsAdd";
+import EmpExperienceAdd from "./EditEmployee/EmpExperienceAdd";
+import EmpPreviousCompanyAdd from "./EditEmployee/EmpPreviousCompanyAdd";
+import EmpEmergencyContactAdd from "./EditEmployee/EmpEmergencyContactAdd";
+import EmpBankAccountAdd from "./EditEmployee/EmpBankAccountAdd";
+import EmpContactDetailsAdd from "./EditEmployee/EmpContactDetailsAdd";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import EmpContactDetailsAdd from "./AddEmployee/EmpContactDetailsAdd";
 import { useParams } from "react-router-dom";
 
 const steps = [
@@ -114,19 +114,9 @@ function EmployeeAdd() {
           );
         })}
       </Stepper>
-      <div class="container-fluid py-3 card shadow border-0 mb-7 mt-5"
-        style={{ borderRadius: "0" }}>
+      <div class="container-fluid py-3 card shadow border-0 mb-7 mt-5">
         <React.Fragment>
           {activeStep === 0 && (
-            <EmpQualificationDetailsAdd
-              formData={formData}
-              ref={childRef}
-              setFormData={setFormData}
-              handleNext={handleNext}
-              setLoadIndicators={setLoadIndicator}
-            />
-          )}
-          {activeStep === 1 && (
             <EmpPersonalInfoAdd
               formData={formData}
               ref={childRef}
@@ -135,8 +125,17 @@ function EmployeeAdd() {
               setLoadIndicators={setLoadIndicator}
             />
           )}
-          {activeStep === 2 && (
+          {activeStep === 1 && (
             <EmpContactDetailsAdd
+              formData={formData}
+              ref={childRef}
+              setFormData={setFormData}
+              handleNext={handleNext}
+              setLoadIndicators={setLoadIndicator}
+            />
+          )}
+          {activeStep === 2 && (
+            <EmpQualificationDetailsAdd
               formData={formData}
               ref={childRef}
               setFormData={setFormData}
@@ -195,7 +194,7 @@ function EmployeeAdd() {
 
             <button
               type="submit"
-              className="btn btn-button btn-sm"
+              className="btn btn-sm btn-buttonm btn-primary"
               onClick={handleButtonClick}
               style={{ padding: "7px" }}
               disabled={loadIndicator}

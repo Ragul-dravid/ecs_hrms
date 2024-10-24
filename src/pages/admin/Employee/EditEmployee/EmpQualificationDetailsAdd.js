@@ -6,73 +6,67 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import api from "../../../../config/URL";
 
 const EmpQualificationDetailsAdd = forwardRef(
-  ({ values, setLoadIndicators, setData, handleNext }, ref) => {
+  ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const [rows, setRows] = useState([{}]);
     const [rows1, setRows1] = useState([{}]);
 
     const validationSchema = Yup.object().shape({
       empQualificationEntities: Yup.array().of(
         Yup.object().shape({
-          qualName: Yup.string().required("*Qualification name is required"),
-          qualType: Yup.string().required("*Qualification type is required"),
+          qualName: Yup.string().required(
+            "*Qualification name is required"
+          ),
+          qualType: Yup.string().required(
+            "*Qualification type is required"
+          ),
           qualFldOfStudy: Yup.string().required("*Field of study is required"),
           qualModeOfStudy: Yup.string().required("*Mode of study is required"),
           qualStartDate: Yup.string().required("*Start date is required"),
           qualEndDate: Yup.string().required("*End date is required"),
           qualInstitution: Yup.string().required("*Institution is required"),
-          empSkillDesc: Yup.string().required("*Skill description is required"),
-          empSkillTitle: Yup.string().required("*Employee Title is required"),
+          employeeSkill: Yup.string().required("*Employee skill is required"),
+          skillDescription: Yup.string().required("*Skill description is required"),
         })
       ),
     });
 
     const formik = useFormik({
       initialValues: {
-        qualification: [
+        empQualificationEntities: [
           {
-            qualId: "",
-            qualEmpId: "",
-            qualType: "",
-            qualName: "",
-            qualInstitution: "",
-            qualFldOfStudy: "",
-            qualModeOfStudy: "",
-            qualStartDate: "",
-            qualEndDate: "",
-            perDetailsId: "",
+            qualName: formData.qualName || "",
+            qualType: formData.qualType || "",
+            qualFldOfStudy: formData.qualFldOfStudy || "",
+            qualModeOfStudy: formData.qualModeOfStudy || "",
+            qualStartDate: formData.qualStartDate || "",
+            qualEndDate: formData.qualEndDate || "",
+            qualInstitution: formData.qualInstitution || "",
+            employeeSkill: formData.employeeSkill || "",
+            skillDescription: formData.skillDescription || "",
           },
         ],
-        skills: [
-          {
-            skillId: "",
-            skillEmpId: "",
-            empSkillTitle: "",
-            empSkillDesc: "",
-            skillsOwner: ""
-          }
-        ]
       },
-      validationSchema: validationSchema,
+      // validationSchema: validationSchema,
       onSubmit: async (values) => {
         // console.log("Body Values is ", values)
         setLoadIndicators(true);
-        values.qualEmpId = values.empId;
-        try {
-          const response = await api.post(
-            `/addEmpQualification`, values
-          );
-          if (response.status === 201) {
-            toast.success(response.data.message);
-            setData((prv) => ({ ...prv, ...values }));
+        values.qualEmpId = formData.empId;
+        // try {
+        //   const response = await api.post(
+        //     `/addEmpQualification`, values
+        //   );
+        //   if (response.status === 201) {
+        //     toast.success(response.data.message);
+        //     setFormData((prv) => ({ ...prv, ...values }));
             handleNext();
-          } else {
-            toast.error(response.data.message);
-          }
-        } catch (error) {
-          toast.error(error);
-        } finally {
+        //   } else {
+        //     toast.error(response.data.message);
+        //   }
+        // } catch (error) {
+        //   toast.error(error);
+        // } finally {
           setLoadIndicators(false);
-        }
+        // }
       },
     });
 

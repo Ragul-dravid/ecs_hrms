@@ -41,7 +41,7 @@ const EmpExperienceAdd = forwardRef(
           },
         ],
       },
-      validationSchema: validationSchema,
+      // validationSchema: validationSchema,
       onSubmit: async (values) => {
         setLoadIndicators(true);
         values.experienceEmpId = formData.empId;
@@ -56,20 +56,20 @@ const EmpExperienceAdd = forwardRef(
           experienceEmpId: formData.empId,
         }));
 
-        try {
-          const response = await api.post(`/createEmpExperiences`, payload);
-          if (response.status === 201) {
-            toast.success(response.data.message);
-            setFormData((prv) => ({ ...prv, ...values }));
+        // try {
+        //   const response = await api.post(`/createEmpExperiences`, payload);
+        //   if (response.status === 201) {
+        //     toast.success(response.data.message);
+        //     setFormData((prv) => ({ ...prv, ...values }));
             handleNext();
-          } else {
-            toast.error(response.data.message);
-          }
-        } catch (error) {
-          toast.error(error);
-        } finally {
+        //   } else {
+        //     toast.error(response.data.message);
+        //   }
+        // } catch (error) {
+        //   toast.error(error);
+        // } finally {
           setLoadIndicators(false);
-        }
+        // }
       },
     });
 
