@@ -3,7 +3,7 @@ import user from "../../assets/user.webp";
 import { Offcanvas } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { IoPersonAdd } from "react-icons/io5";
-
+import { MdOutlineLogout } from "react-icons/md";
 function AdminHeader({ handleLogout }) {
   const expand = "lg";
   const [show, setShow] = useState(false);
@@ -76,27 +76,38 @@ function AdminHeader({ handleLogout }) {
         </div>
       </header>
       <Offcanvas show={show} onHide={handleClose} placement="end">
-        <Offcanvas.Header closeButton className="d-flex align-items-center p-2">
-    
-        </Offcanvas.Header>
-        <Offcanvas.Body className="d-flex flex-column align-items-center p-2">
-          <img className="img-fluid my-2" src={user} alt="user" width={100} />
-          <p className="my-2">User Name : {userName}</p>
-          <p className="my-2">User Email : ECSCloud@gmail.com</p>
-          <p className="my-2">Role : {role}</p>
-
-          <button
-            onClick={handleLogOutClick}
-            className="btn btn-danger mb-3"
-            style={{ width: "100%" }}
-          >
-            Logout
-          </button>
-          <Link to="/changepass" style={{ width: "100%" }}>
-            <button className="btn btn-primary" style={{ width: "100%" }}>
-              Change Password
-            </button>
-          </Link>
+        <Offcanvas.Header
+          closeButton
+          className="d-flex align-items-center p-2"
+        ></Offcanvas.Header>
+        <Offcanvas.Body className="d-flex flex-column justify-content-between align-items-center">
+          <div className="row">
+            <div className="text-center">
+              <img
+                className="img-fluid mb-3"
+                src={user}
+                alt="user"
+                width={100}
+              />
+              <p>{userName}</p>
+              <p>ECSCloud@gmail.com</p>
+            </div>
+          </div>
+          <div className="row">
+            <div className="text-center">
+              <button
+                onClick={handleLogOutClick}
+                className="btn btn-light btn-sm me-1"
+              >
+                <MdOutlineLogout /> Logout
+              </button>
+              <Link to="/changepass">
+                <button className="btn btn-sm btn-light">
+                  Change Password
+                </button>
+              </Link>
+            </div>
+          </div>
         </Offcanvas.Body>
       </Offcanvas>
     </>

@@ -2,19 +2,18 @@ import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import deals from "../../assets/CRMLogo.png";
 import { FaChevronDown, FaChevronRight } from "react-icons/fa";
-import { AiOutlineBarChart } from "react-icons/ai";
+import { HiOutlineUserGroup } from "react-icons/hi2";
 import { FiSettings } from "react-icons/fi";
 import { RiFileList3Line } from "react-icons/ri";
 import { MdDashboard } from "react-icons/md";
 import { BiCheckCircle } from "react-icons/bi";
 import { BsBullseye } from "react-icons/bs";
 import { RiOrganizationChart } from "react-icons/ri";
-import { FaUsers } from "react-icons/fa6";
-import { GiNotebook } from "react-icons/gi";
-import { MdLibraryBooks } from "react-icons/md";
+import { RiContactsBook3Line } from "react-icons/ri";
+import { MdOutlineLibraryBooks } from "react-icons/md";
 import { BiRightIndent } from "react-icons/bi";
 import { LuFileEdit } from "react-icons/lu";
-import { MdHolidayVillage } from "react-icons/md";
+import { MdOutlineHolidayVillage } from "react-icons/md";
 
 function AdminSidebar({ handleLogout }) {
   const navigate = useNavigate();
@@ -139,14 +138,14 @@ function AdminSidebar({ handleLogout }) {
 
               <li className="nav-item">
                 <NavLink className="nav-link" to="/employee">
-                  <FaUsers className="me-2" />
+                  <HiOutlineUserGroup className="me-2" />
                   Employee Info
                 </NavLink>
               </li>
 
               <li className="nav-item">
                 <NavLink className="nav-link" to="/holidays">
-                  <MdHolidayVillage className="me-2" />
+                  <MdOutlineHolidayVillage className="me-2" />
                   Holidays
                 </NavLink>
               </li>
@@ -167,14 +166,14 @@ function AdminSidebar({ handleLogout }) {
 
               <li className="nav-item">
                 <NavLink className="nav-link" to="/attendance">
-                  <GiNotebook className="me-2" />
+                  <RiContactsBook3Line className="me-2" />
                   Attendance
                 </NavLink>
               </li>
 
               <li className="nav-item">
                 <NavLink className="nav-link" to="/deduction">
-                  <MdLibraryBooks className="me-2" />
+                  <MdOutlineLibraryBooks className="me-2" />
                   Deduction
                 </NavLink>
               </li>

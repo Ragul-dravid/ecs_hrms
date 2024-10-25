@@ -5915,22 +5915,11 @@ fieldset:disabled .btn {
   opacity: 0.65;
 }
 
-/* .btn-primary {
-  color: #fff;
-  background-color: #8a50fd !important;
-  border-color: #8a50fd !important;
-}
-
-.btn-primary:hover {
-  color: #fff;
-  background-color: linear-gradient(135deg, #a070ff, #b987ff) !important;
-  border-color: #8a50fd;
-} */
 
 .btn-primary {
   color: #fff;
-  background-image: linear-gradient(to right, #925cfe, #b987ff); /* Gradient from #8a50fd to #b368ff */
-  border: none; /* Remove border if you don't want the original border */
+  background-image: linear-gradient(to right, #925cfe, #b987ff); 
+  border: none; 
 }
 
 .btn-primary:hover {
@@ -71429,6 +71418,17 @@ a.text-current:hover {
   font-weight: bolder;
 }
 
+.offcanvas.show:not(.hiding), .offcanvas.showing {
+  transform: none;
+  width: 25%;
+}
+.css-3hpdci-MuiSvgIcon-root-MuiStepIcon-root.Mui-completed {
+  color: #a070ff !important;
+}
+.css-3hpdci-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
+  color: #a070ff !important;
+}
+
 @media (max-width: 992px) {
   .nav-logo {
     background: transparent;
@@ -71447,5 +71447,9 @@ a.text-current:hover {
     padding-left: 3px;
     padding-right: 3px;
    }
-}
 
+  .offcanvas.show:not(.hiding), .offcanvas.showing {
+    transform: none;
+    width: 100%;
+  }
+}
