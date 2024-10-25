@@ -43,6 +43,10 @@ import Holiday from "../pages/admin/Holiday/Holiday.js";
 import HolidayAdd from "../pages/admin/Holiday/HolidayAdd.js";
 import HolidayEdit from "../pages/admin/Holiday/HolidayEdit.js";
 import HolidayView from "../pages/admin/Holiday/HolidayView.js";
+import LeaveRequest from "../pages/admin/LeaveRequest/LeaveRequest.js";
+import LeaveRequestAdd from "../pages/admin/LeaveRequest/LeaveRequestAdd.js";
+import LeaveRequestEdit from "../pages/admin/LeaveRequest/LeaveRequestEdit.js";
+import LeaveRequestView from "../pages/admin/LeaveRequest/LeaveRequestView.js";
 
 function Admin({ handleLogout }) {
   return (
@@ -132,6 +136,20 @@ function Admin({ handleLogout }) {
                   <Route path="/holidays/add" element={<HolidayAdd />} />
                   <Route path="/holidays/edit/:id" element={<HolidayEdit />} />
                   <Route path="/holidays/view/:id" element={<HolidayView />} />
+
+                  <Route path="/leaverequest" element={<LeaveRequest />} />
+                  <Route
+                    path="/leaverequest/add"
+                    element={<LeaveRequestAdd />}
+                  />
+                  <Route
+                    path="/leaverequest/edit/:id"
+                    element={<LeaveRequestEdit />}
+                  />
+                  <Route
+                    path="/leaverequest/view/:id"
+                    element={<LeaveRequestView />}
+                  />
 
                   <Route path="/attendance" element={<Attendance />} />
                   <Route path="/attendance/add" element={<AttendanceAdd />} />

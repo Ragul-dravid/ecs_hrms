@@ -68,7 +68,6 @@ function AdminSidebar({ handleLogout }) {
             className="collapse navbar-collapse sidebar-bg"
             id="sidebarCollapse"
           >
-
             <NavLink to="/" className="text-center my-2">
               <button className="btn btn-dashbord shadow-none">
                 Dashboard <MdDashboard className="me-2 ms-4" />
@@ -160,7 +159,7 @@ function AdminSidebar({ handleLogout }) {
               <li className="nav-item">
                 <NavLink className="nav-link" to="/leaveRequest">
                   <LuFileEdit className="me-2" />
-                  Leave Request
+                  Leave
                 </NavLink>
               </li>
 
