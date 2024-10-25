@@ -11,9 +11,11 @@ import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import api from "../../../../config/URL";
 
 const EmpPersonalInfoAdd = forwardRef(
-  ({ values, setLoadIndicators, setData, handleNext }, ref) => {
+  ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const [selectedIdType, setSelectedIdType] = useState("nric");
     const [employeProfile, setEmployeeProfile] = useState("");
+    console.log("Employee Data", formData.empId)
+
     const validationSchema = Yup.object({
       firstName: Yup.string().required("*First name is required"),
       lastName: Yup.string().required("*Last name is required"),
@@ -27,61 +29,79 @@ const EmpPersonalInfoAdd = forwardRef(
         "*Primary email password is required"
       ),
       file: Yup.string().required("*File is required"),
-      // employeedesignation: Yup.string().required(
-      //   "*Employee designation is required"
-      // ),
-      // ...(selectedIdType === "nric" && {
-      //   NRICFin: Yup.string().required("*NRIC fin is required"),
-      //   NRICType: Yup.string().required("*Select a NRIC type"),
-      // }),
-      // ...(selectedIdType === "aadhar" && {
-      //   aadharNumber: Yup.string().required("*Aadhar number is required"),
-      // }),
     });
 
     const formik = useFormik({
       initialValues: {
-        firstName: values?.firstName || "",
-        lastName: values?.lastName || "",
-        empPriPhNumber: values?.empPriPhNumber || "",
-        empPriEmail: values?.empPriEmail || "",
-        empPriEmailPassword: values?.empPriEmailPassword || "",
-        nricfin: values?.nricfin || "",
-        nrictype: values?.nrictype || "",
-        empRegCmpId: values?.empRegCmpId || "1",
-        empRegDeptId: values?.empRegDeptId || "2",
-        file: values?.file || "",
-        aadharNumber: values?.aadharNumber || "gytrhh56696",
-        proof: values?.proof || "AADHAR",
+        firstName: formData.firstName || "",
+        lastName: formData.lastName || "",
+        empPriPhNumber: formData.empPriPhNumber || "",
+        empPriEmail: formData.empPriEmail || "",
+        empPriEmailPassword: formData.empPriEmailPassword || "",
+        nricfin: formData.nricfin || "",
+        nrictype: formData.nrictype || "",
+        empRegCmpId: formData.empRegCmpId || "1",
+        empRegDeptId: formData.empRegDeptId || "2",
+        file: formData.file || "",
+        aadharNumber: formData.aadharNumber || "gytrhh56696",
+        proof: formData.proof || "AADHAR",
       },
       validationSchema: validationSchema,
       onSubmit: async (values) => {
         setLoadIndicators(true);
-        console.log("values:", values);
-        try {
-          const response = await api.put(
-            `/updateEmployeeRegDetailsById/${values.empId}`,
-            values
-          );
-          if (response.status === 200) {
-            toast.success(response.data.message);
-            setData((prv) => ({ ...prv, ...values }));
-            handleNext();
-          } else {
-            toast.error(response.data.message);
-          }
-        } catch (error) {
-          toast.error(error);
-        } finally {
+        console.log("Form Data:", formData);
+        // console.log("Api Data:", data);
+        // try {
+        //   const formDatas = new FormData();
+        //   formDatas.append("id", formData.empId);
+        //   formDatas.append("firstName", values.firstName);
+        //   formDatas.append("lastName", values.lastName);
+        //   formDatas.append("empPriPhNumber", values.empPriPhNumber);
+        //   formDatas.append("empPriEmail", values.empPriEmail);
+        //   formDatas.append("empPriEmailPassword", values.empPriEmailPassword);
+        //   formDatas.append("NRICFin", values.nricfin);
+        //   formDatas.append("NRICType", values.nrictype);
+        //   // formDatas.append("aadharNumber", values.aadharNumber);
+        //   formDatas.append("empRegCmpId", 1);
+        //   formDatas.append("empRegDeptId", 2);
+        //   formDatas.append("file", values.file);
+        //   formDatas.append("aadharNumber", values.aadharNumber);
+        //   formDatas.append("proof", values.proof);
+        //   formDatas.append("empDesignation", values.proof);
+        //   formDatas.append("empDateOfJoin", "2024-08-02");
+        //   formDatas.append("empType ", values.proof);
+        //   formDatas.append("noticePeriod ", "30days");
+        //   formDatas.append("repManagerName ", "sakthivel");
+        //   // formDatas.append("employeedesignation", values.employeedesignation);
+        //   // formDatas.append("proof", values.proof);
+        //   // formDatas.append("employeeDateOfJoining", values.employeeDateOfJoining);
+        //   // formDatas.append("employeeType", values.employeeType);
+        //   // formDatas.append("noticePeriod", values.noticePeriod);
+        //   // formDatas.append("reportingManagerName", values.reportingManagerName);
+        //   // formDatas.append("reportingManagerID", values.reportingManagerID);
+        //   const response = await api.put(
+        //     `/updateEmployeeRegDetailsById/${formData.empId}`,
+        //     formDatas
+        //   );
+        //   if (response.status === 200) {
+        //     toast.success(response.data.message);
+        //     setFormData((prv) => ({ ...prv, ...values }));
+        handleNext();
+        //   } else {
+        //     toast.error(response.data.message);
+        //   }
+        // } catch (error) {
+        //   toast.error(error);
+        // } finally {
           setLoadIndicators(false);
-        }
+        // }
       },
     });
 
     useEffect(() => {
       const getData = async () => {
         try {
-          const response = await api.get(`emp-reg-details-by-companyId/${values.empId}`);
+          const response = await api.get(`emp-reg-details-by-companyId/${formData.empId}`);
           formik.setValues(response.data);
           console.log("Employee response", response.data)
           setEmployeeProfile(response.data.files);
@@ -117,7 +137,7 @@ const EmpPersonalInfoAdd = forwardRef(
                       First Name<span className="text-danger">*</span>
                     </lable>
                     <input
-                      className="form-control "
+                      className="form-control form-control-sm "
                       type="text"
                       name="firstName"
                       onChange={formik.handleChange}
@@ -139,7 +159,7 @@ const EmpPersonalInfoAdd = forwardRef(
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.lastName}
-                      className="form-control "
+                      className="form-control form-control-sm "
                       type="text"
                     />
                     {formik.touched.lastName && formik.errors.lastName && (
@@ -153,7 +173,7 @@ const EmpPersonalInfoAdd = forwardRef(
                       Primary Email ID<span className="text-danger">*</span>
                     </lable>
                     <input
-                      className="form-control  form-contorl-sm"
+                      className="form-control form-control-sm  form-contorl-sm"
                       name="empPriEmail"
                       type="email"
                       onChange={formik.handleChange}
@@ -176,10 +196,10 @@ const EmpPersonalInfoAdd = forwardRef(
                       <input
                         type={showPassword ? "text" : "password"}
                         onChange={(e) => setPassword(e.target.value)}
-                        className={`form-control  ${formik.touched.empPriEmailPassword &&
-                          formik.errors.empPriEmailPassword
-                          ? "is-invalid"
-                          : ""
+                        className={`form-control form-control-sm  ${formik.touched.empPriEmailPassword &&
+                            formik.errors.empPriEmailPassword
+                            ? "is-invalid"
+                            : ""
                           }`}
                         {...formik.getFieldProps("empPriEmailPassword")}
                         style={{
@@ -217,7 +237,7 @@ const EmpPersonalInfoAdd = forwardRef(
                       <span className="text-danger">*</span>
                     </lable>
                     <input
-                      className="form-control "
+                      className="form-control form-control-sm "
                       type="text"
                       name="empPriPhNumber"
                       onChange={formik.handleChange}
@@ -269,7 +289,7 @@ const EmpPersonalInfoAdd = forwardRef(
                           NRIC Fin<span className="text-danger">*</span>
                         </lable>
                         <input
-                          className="form-control"
+                          className="form-control form-control-sm"
                           name="nricfin"
                           type="text"
                           onChange={formik.handleChange}
@@ -319,7 +339,7 @@ const EmpPersonalInfoAdd = forwardRef(
                         Aadhar Number<span className="text-danger">*</span>
                       </lable>
                       <input
-                        className="form-control"
+                        className="form-control form-control-sm"
                         name="aadharNumber"
                         type="text"
                         onChange={formik.handleChange}
@@ -339,7 +359,7 @@ const EmpPersonalInfoAdd = forwardRef(
                     <input
                       type="file"
                       name="file"
-                      className="form-control"
+                      className="form-control form-control-sm"
                       onChange={(event) => {
                         formik.setFieldValue("file", event.target.files[0]);
                       }}

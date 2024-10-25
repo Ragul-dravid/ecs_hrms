@@ -28,9 +28,21 @@ import DepartmentAdd from "../pages/admin/Settings/Department/DepartmentAdd";
 import DepartmentEdit from "../pages/admin/Settings/Department/DepartmentEdit";
 import DepartmentView from "../pages/admin/Settings/Department/DepartmentView";
 import Employee from "../pages/admin/Employee/Employee";
-import EmployeeAdd from "../pages/admin/Employee/EmployeeAdd";
-import EmployeeEdit from "../pages/admin/Employee/EmployeeEdit";
+import EmployeeAdminAdd from "../pages/admin/Employee/EmpoyeeAdminAdd.js";
+import EmployeeAdd from "../pages/admin/Employee/EmployeeAdd.js";
 import EmployeeView from "../pages/admin/Employee/EmployeeView";
+import Deduction from "../pages/admin/Deduction/Deduction.js";
+import DeductionAdd from "../pages/admin/Deduction/DeductionAdd.js";
+import DeductionEdit from "../pages/admin/Deduction/DeductionEdit.js";
+import DeductionView from "../pages/admin/Deduction/DeductionView.js";
+import Attendance from "../pages/admin/Attendance/Attendance.js";
+import AttendanceAdd from "../pages/admin/Attendance/AttendanceAdd.js";
+import AttendanceEdit from "../pages/admin/Attendance/AttendanceEdit.js";
+import AttendanceView from "../pages/admin/Attendance/AttendanceView.js";
+import Holiday from "../pages/admin/Holiday/Holiday.js";
+import HolidayAdd from "../pages/admin/Holiday/HolidayAdd.js";
+import HolidayEdit from "../pages/admin/Holiday/HolidayEdit.js";
+import HolidayView from "../pages/admin/Holiday/HolidayView.js";
 
 function Admin({ handleLogout }) {
   return (
@@ -110,10 +122,38 @@ function Admin({ handleLogout }) {
                     path="/departments/view/:id"
                     element={<DepartmentView />}
                   />
+                  {/* {/ Employee /} */}
                   <Route path="/employee" element={<Employee />} />
-                  <Route path="/employee/add" element={<EmployeeAdd />} />
-                  <Route path="/employee/edit/:id" element={<EmployeeEdit />} />
+                  <Route path="/employee/add" element={<EmployeeAdminAdd />} />
+                  <Route path="/employee/edit/:id" element={<EmployeeAdd />} />
                   <Route path="/employee/view/:id" element={<EmployeeView />} />
+
+                  <Route path="/holidays" element={<Holiday />} />
+                  <Route path="/holidays/add" element={<HolidayAdd />} />
+                  <Route path="/holidays/edit/:id" element={<HolidayEdit />} />
+                  <Route path="/holidays/view/:id" element={<HolidayView />} />
+
+                  <Route path="/attendance" element={<Attendance />} />
+                  <Route path="/attendance/add" element={<AttendanceAdd />} />
+                  <Route
+                    path="/attendance/edit/:id"
+                    element={<AttendanceEdit />}
+                  />
+                  <Route
+                    path="/attendance/view/:id"
+                    element={<AttendanceView />}
+                  />
+
+                  <Route path="/deduction" element={<Deduction />} />
+                  <Route path="/deduction/add" element={<DeductionAdd />} />
+                  <Route
+                    path="/deduction/edit/:id"
+                    element={<DeductionEdit />}
+                  />
+                  <Route
+                    path="/deduction/view/:id"
+                    element={<DeductionView />}
+                  />
                 </Routes>
               </div>
             </main>
