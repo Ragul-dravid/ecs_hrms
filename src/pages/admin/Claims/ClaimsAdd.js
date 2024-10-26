@@ -4,60 +4,53 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../config/URL";
 import toast from "react-hot-toast";
-import LeaveRequest from "./LeaveRequest";
 
-const LeaveRequestAdd = () => {
+const ClaimsAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
   const cmpId = sessionStorage.getItem("cmpId");
   const [companyData, setCompanyData] = useState(null);
 
   const validationSchema = Yup.object({
-    pubHolidayName: Yup.string().required("*Holiday Name is required"),
-    pubHolidayType: Yup.string().required("*Holiday Type is required"),
-    pubHolidayCountryCode: Yup.string().required("*Country is required"),
-    endDate: Yup.string().required("*End Date is required"),
+    expenseDate: Yup.string().required("*Expense Date is required"),
+    expenseType: Yup.string().required("*Expense Type is required"),
+    expenseAmt: Yup.string().required("*Amount is required"),
+    expensesEmpId: Yup.string().required("*Employee Name is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      cmpId: cmpId,
-      leaveReqId: "",
-      leaveReqEmpId: "",
-      leaveReqStartDate: "",
-      //   pubHolidayDate: "",
-      leaveReqEndDate: "",
-      leaveReqType: "",
-      leaveReqRemarks: "",
-      leaveReqStatus: "",
-      totalLeaveReqDays: "",
-      pendingLeaveReqDays: "",
+      expenseDate: "",
+      expenseType: "",
+      expenseAmt: "",
+      files: "",
+      expensesEmpId: "",
+      cmpId: "",
+      expenseDetails: "",
+      deptId: "",
     },
-    validationSchema: validationSchema,
-    onSubmit: async (data) => {
+    // validationSchema: validationSchema,
+    onSubmit: async (values) => {
       setLoadIndicator(true);
       try {
-        const formDatas = new FormData();
-        // formDatas.append("userId", userId);
-        // formDatas.append("centerName", selectedCenterName);
-        // formDatas.append("employeeName", datas && datas.employeeName);
-        // formDatas.append("leaveTypeId", data.leaveTypeId);
-        // formDatas.append("noOfDays", data.noOfDays);
-        // formDatas.append("fromDate", data.fromDate);
-        // formDatas.append("toDate", data.toDate);
-        // formDatas.append("dayType", data.dayType);
-        // formDatas.append("leaveReason", data.leaveReason);
-        // formDatas.append("leaveStatus", "PENDING");
-        // formDatas.append("file", data.file);
-        // formDatas.append("createdBy", userName);
-        const response = await api.post("/leave-request", formDatas, {
+        const formData = new FormData();
+        formData.append("files", values.files);
+        formData.append("expenseType", values.expenseType);
+        formData.append("expenseAmt", values.expenseAmt);
+        formData.append("expenseDetails", values.expenseDetails);
+        formData.append("expenseDate", values.expenseDate);
+        formData.append("expensesEmpId", values.employeeId);
+        formData.append("cmpId", values.cmpId);
+        formData.append("deptId", " ");
+
+        const response = await api.post("/expenses", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
         if (response.status === 201) {
           toast.success(response.data.message);
-          navigate("/leaverequest");
+          navigate("/expense");
         } else {
           toast.error(response.data.message);
         }
@@ -80,12 +73,12 @@ const LeaveRequestAdd = () => {
             <div className="row align-items-center">
               <div className="col">
                 <div className="d-flex align-items-center gap-4">
-                  <h1 className="h4 ls-tight headingColor">Add Leave</h1>
+                  <h1 className="h4 ls-tight headingColor">Add Expense</h1>
                 </div>
               </div>
               <div className="col-auto">
                 <div className="hstack gap-2 justify-content-end">
-                  <Link to="/leaverequest">
+                  <Link to="/expense">
                     <button type="button" className="btn btn-sm btn-light">
                       <span>Back</span>
                     </button>
@@ -141,67 +134,63 @@ const LeaveRequestAdd = () => {
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  Leave Type <span className="text-danger">*</span>
+                  Expense Date <span className="text-danger">*</span>
                 </label>
                 <input
-                  type="text"
-                  name="leaveReqType"
+                  type="date"
+                  name="expenseDate"
                   className={`form-control form-control-sm ${
-                    formik.touched.leaveReqType && formik.errors.leaveReqType
+                    formik.touched.expenseDate && formik.errors.expenseDate
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("leaveReqType")}
+                  {...formik.getFieldProps("expenseDate")}
                 />
-                {formik.touched.leaveReqType && formik.errors.leaveReqType && (
+                {formik.touched.expenseDate && formik.errors.expenseDate && (
                   <div className="invalid-feedback">
-                    {formik.errors.leaveReqType}
+                    {formik.errors.expenseDate}
                   </div>
                 )}
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  From Date<span className="text-danger">*</span>
+                  Expense Type<span className="text-danger">*</span>
                 </label>
                 <input
-                  type="date"
-                  name="leaveReqStartDate"
+                  type="text"
+                  name="expenseType"
                   className={`form-control form-control-sm ${
-                    formik.touched.leaveReqStartDate &&
-                    formik.errors.leaveReqStartDate
+                    formik.touched.expenseType && formik.errors.expenseType
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("leaveReqStartDate")}
+                  {...formik.getFieldProps("expenseType")}
                 />
-                {formik.touched.leaveReqStartDate &&
-                  formik.errors.leaveReqStartDate && (
-                    <div className="invalid-feedback">
-                      {formik.errors.leaveReqStartDate}
-                    </div>
-                  )}
+                {formik.touched.expenseType && formik.errors.expenseType && (
+                  <div className="invalid-feedback">
+                    {formik.errors.expenseType}
+                  </div>
+                )}
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  To Date<span className="text-danger">*</span>
+                  Expense Amount<span className="text-danger">*</span>
                 </label>
                 <input
-                  type="date"
-                  name="leaveReqEndDate"
+                  type="text"
+                  name="expenseAmt"
                   className={`form-control form-control-sm ${
-                    formik.touched.leaveReqEndDate &&
-                    formik.errors.leaveReqEndDate
+                    formik.touched.expenseAmt && formik.errors.expenseAmt
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("leaveReqEndDate")}
+                  {...formik.getFieldProps("expenseAmt")}
                 />
-                {formik.touched.leaveReqEndDate &&
-                  formik.errors.leaveReqEndDate && (
-                    <div className="invalid-feedback">
-                      {formik.errors.leaveReqEndDate}
-                    </div>
-                  )}
+                {formik.touched.expenseAmt && formik.errors.expenseAmt && (
+                  <div className="invalid-feedback">
+                    {formik.errors.expenseAmt}
+                  </div>
+                )}
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
@@ -209,41 +198,17 @@ const LeaveRequestAdd = () => {
                 </label>
                 <input
                   type="file"
-                  name="endDate"
+                  name="files"
                   className={`form-control form-control-sm ${
-                    formik.touched.endDate && formik.errors.endDate
+                    formik.touched.files && formik.errors.files
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("endDate")}
+                  {...formik.getFieldProps("files")}
                 />
-                {formik.touched.endDate && formik.errors.endDate && (
-                  <div className="invalid-feedback">
-                    {formik.errors.endDate}
-                  </div>
+                {formik.touched.files && formik.errors.files && (
+                  <div className="invalid-feedback">{formik.errors.files}</div>
                 )}
-              </div>
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Leave Reason<span className="text-danger">*</span>
-                </label>
-                <textarea
-                  type="text"
-                  name="leaveReqRemarks"
-                  className={`form-control form-control-sm ${
-                    formik.touched.leaveReqRemarks &&
-                    formik.errors.leaveReqRemarks
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("leaveReqRemarks")}
-                />
-                {formik.touched.leaveReqRemarks &&
-                  formik.errors.leaveReqRemarks && (
-                    <div className="invalid-feedback">
-                      {formik.errors.leaveReqRemarks}
-                    </div>
-                  )}
               </div>
             </div>
           </div>
@@ -253,4 +218,4 @@ const LeaveRequestAdd = () => {
   );
 };
 
-export default LeaveRequestAdd;
+export default ClaimsAdd;

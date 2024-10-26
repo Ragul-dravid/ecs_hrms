@@ -149,12 +149,19 @@ function AdminSidebar({ handleLogout }) {
                 </NavLink>
               </li>
 
-              {/* <li className="nav-item">
-                <NavLink className="nav-link" to="/leaveAdmin">
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/expense">
                   <LuFileEdit className="me-2" />
-                  Leave Admin
+                  Expense
                 </NavLink>
-              </li> */}
+              </li>
+
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/claims">
+                  <LuFileEdit className="me-2" />
+                  Claims
+                </NavLink>
+              </li>
 
               <li className="nav-item">
                 <NavLink className="nav-link" to="/leaveRequest">

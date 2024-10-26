@@ -47,6 +47,12 @@ import LeaveRequest from "../pages/admin/LeaveRequest/LeaveRequest.js";
 import LeaveRequestAdd from "../pages/admin/LeaveRequest/LeaveRequestAdd.js";
 import LeaveRequestEdit from "../pages/admin/LeaveRequest/LeaveRequestEdit.js";
 import LeaveRequestView from "../pages/admin/LeaveRequest/LeaveRequestView.js";
+import Expense from "../pages/admin/Expense/Expense.js";
+import ExpenseAdd from "../pages/admin/Expense/ExpenseAdd.js";
+import ExpenseEdit from "../pages/admin/Expense/ExpenseEdit.js";
+import ExpenseView from "../pages/admin/Expense/ExpenseView.js";
+import Claims from "../pages/admin/Claims/Claims.js";
+import ClaimsAdd from "../pages/admin/Claims/ClaimsAdd.js";
 
 function Admin({ handleLogout }) {
   return (
@@ -136,6 +142,16 @@ function Admin({ handleLogout }) {
                   <Route path="/holidays/add" element={<HolidayAdd />} />
                   <Route path="/holidays/edit/:id" element={<HolidayEdit />} />
                   <Route path="/holidays/view/:id" element={<HolidayView />} />
+
+                  <Route path="/claims" element={<Claims />} />
+                  <Route path="/claims/add" element={<ClaimsAdd />} />
+                  <Route path="/holidays/edit/:id" element={<HolidayEdit />} />
+                  <Route path="/holidays/view/:id" element={<HolidayView />} />
+
+                  <Route path="/expense" element={<Expense />} />
+                  <Route path="/expense/add" element={<ExpenseAdd />} />
+                  <Route path="/expense/edit/:id" element={<ExpenseEdit />} />
+                  <Route path="/expense/view/:id" element={<ExpenseView />} />
 
                   <Route path="/leaverequest" element={<LeaveRequest />} />
                   <Route

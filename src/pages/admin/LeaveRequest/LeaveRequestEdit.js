@@ -36,28 +36,27 @@ const LeaveRequestEdit = () => {
       pendingLeaveReqDays: "",
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (data) => {
       setLoadIndicator(true);
-      //   const formDatas = new FormData();
-      //   formDatas.append("userId", userId);
-      //   formDatas.append("centerName", selectedCenterName);
-      //   formDatas.append("employeeName", datas && datas.employeeName);
-      //   formDatas.append("leaveTypeId", data.leaveTypeId);
-      //   formDatas.append("noOfDays", data.noOfDays);
-      //   formDatas.append("fromDate", data.fromDate);
-      //   formDatas.append("toDate", data.toDate);
-      //   formDatas.append("dayType", data.dayType);
-      //   formDatas.append("leaveReason", data.leaveReason);
-      //   formDatas.append("leaveStatus", "PENDING");
-      //   formDatas.append("file", data.file);
-      //   formDatas.append("createdBy", userName);
+      const formDatas = new FormData();
+      // formDatas.append("userId", userId);
+      // formDatas.append("centerName", selectedCenterName);
+      // formDatas.append("employeeName", datas && datas.employeeName);
+      // formDatas.append("leaveTypeId", data.leaveTypeId);
+      // formDatas.append("noOfDays", data.noOfDays);
+      // formDatas.append("fromDate", data.fromDate);
+      // formDatas.append("toDate", data.toDate);
+      // formDatas.append("dayType", data.dayType);
+      // formDatas.append("leaveReason", data.leaveReason);
+      // formDatas.append("leaveStatus", "PENDING");
+      // formDatas.append("file", data.file);
+      // formDatas.append("createdBy", userName);
       try {
-        const payload = {
-          pubHolidayName: values.pubHolidayName,
-          startDate: values.startDate,
-          endDate: values.endDate,
-        };
-        const response = await api.put(`/leave-request/${id}`, values);
+        const response = await api.put(`/leave-request/${id}`, formDatas, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
         if (response.status === 200) {
           toast.success(response.data.message);
           navigate("/leaverequest");
@@ -244,8 +243,8 @@ const LeaveRequestEdit = () => {
                 <label className="form-label">
                   Leave Reason<span className="text-danger">*</span>
                 </label>
-                <input
-                  type="file"
+                <textarea
+                  type="text"
                   name="leaveReqRemarks"
                   className={`form-control form-control-sm ${
                     formik.touched.leaveReqRemarks &&
