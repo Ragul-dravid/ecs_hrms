@@ -116,8 +116,6 @@ const LeaveRequestAdd = () => {
         >
           <div className="container mb-5">
             <div className="row py-4">
-              {/* Company Name */}
-
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Employee Name <span className="text-danger">*</span>

@@ -46,13 +46,13 @@ function Login({ handleLogin }) {
             response.data.employeeInfo[0].deptId
           );
           handleLogin();
-          navigate("/");
+          navigate("/dashboard");
         } else {
           toast.error(response.data.message);
         }
       } catch (e) {
         console.log("Error Login ", e?.response?.data?.message);
-        toast.error(e?.response?.data?.message);
+        // toast.error(e?.response?.data?.message);
       }
       // onLogin(values.email, values.password, values.companyId);
     },

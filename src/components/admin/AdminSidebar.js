@@ -68,7 +68,7 @@ function AdminSidebar({ handleLogout }) {
             className="collapse navbar-collapse sidebar-bg"
             id="sidebarCollapse"
           >
-            <NavLink to="/" className="text-center my-2">
+            <NavLink to="/dashboard" className="text-center my-2">
               <button className="btn btn-dashbord shadow-none">
                 Dashboard <MdDashboard className="me-2 ms-4" />
               </button>

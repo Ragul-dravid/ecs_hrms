@@ -65,7 +65,7 @@ function Admin({ handleLogout }) {
             <main className="pt-3 bg-surface-secondary">
               <div style={{ minHeight: "90vh" }}>
                 <Routes>
-                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
 
                   {/* Company Registration */}
                   <Route
