@@ -25,7 +25,7 @@ const ExpenseAdd = () => {
       expenseAmt: "",
       files: "",
       expensesEmpId: "",
-      cmpId: "",
+      cmpId: cmpId,
       expenseDetails: "",
       deptId: "",
     },
@@ -40,7 +40,7 @@ const ExpenseAdd = () => {
         formData.append("expenseDetails", values.expenseDetails);
         formData.append("expenseDate", values.expenseDate);
         formData.append("expensesEmpId", values.employeeId);
-        formData.append("cmpId", values.cmpId);
+        formData.append("cmpId", cmpId);
         formData.append("deptId", " ");
 
         const response = await api.post("/expenses", formData, {

@@ -150,20 +150,6 @@ function AdminSidebar({ handleLogout }) {
               </li>
 
               <li className="nav-item">
-                <NavLink className="nav-link" to="/expense">
-                  <LuFileEdit className="me-2" />
-                  Expense
-                </NavLink>
-              </li>
-
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/claims">
-                  <LuFileEdit className="me-2" />
-                  Claims
-                </NavLink>
-              </li>
-
-              <li className="nav-item">
                 <NavLink className="nav-link" to="/leaveRequest">
                   <LuFileEdit className="me-2" />
                   Leave
@@ -197,6 +183,20 @@ function AdminSidebar({ handleLogout }) {
                   Payslip
                 </NavLink>
               </li>
+
+              {/* <li className="nav-item">
+                <NavLink className="nav-link" to="/expense">
+                  <LuFileEdit className="me-2" />
+                  Expense
+                </NavLink>
+              </li>
+
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/claims">
+                  <LuFileEdit className="me-2" />
+                  Claims
+                </NavLink>
+              </li> */}
 
               <li className="nav-item">
                 <div

@@ -8,6 +8,7 @@ import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 // import fetchAllDepartmentNamesWithId from "../List/DepartmentNameList";
 
 function EmployeeAdminAdd() {
+  const cmpId = sessionStorage.getItem("cmpId");
   const [companyData, setCompanyData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
   const [selectedIdType, setSelectedIdType] = useState("");
@@ -34,6 +35,7 @@ function EmployeeAdminAdd() {
 
   const formik = useFormik({
     initialValues: {
+      cmpId: cmpId,
       firstName: "",
       lastName: "",
       empPriPhNumber: "",
@@ -80,7 +82,7 @@ function EmployeeAdminAdd() {
         formData.append("NRICFin", values.NRICFin);
         formData.append("NRICType", values.NRICType);
         formData.append("aadharNumber", values.aadharNumber);
-        formData.append("empRegCmpId", values.empRegCmpId);
+        formData.append("cmpId", cmpId);
         formData.append("empRegDeptId", values.empRegDeptId);
         formData.append("file", values.file);
 
