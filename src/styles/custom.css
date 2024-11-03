@@ -408,27 +408,29 @@ svg polygon {
 }
 
 /* Badges Custom Colors */
-.badge-approved{
-  background: #5c60f5 ;
-  color: white;
-  padding: 4px;
-  border-radius: 4px;
+.badge-approved {
+  background: #b5f5e0;
+  color: #20c997;
+  padding: 4px 10px;
+  border-radius: 20px;
   font-size: 12px;
   font-weight: 700;
 }
-.badge-pending{
-  background: #ff8c00;
-  color: white;
-  padding: 4px;
-  border-radius: 6px;
+
+.badge-pending {
+  background: #e0e7ff;
+  color: #5c60f5;
+  padding: 4px 10px;
+  border-radius: 20px;
   font-size: 12px;
   font-weight: 700;
 }
-.badge-rejected{
-  background: #ee3060;
-  color: white;
-  padding: 4px;
-  border-radius: 4px;
+
+.badge-rejected {
+  background: #ffccd5;
+  color: #ee3060;
+  padding: 4px 10px;
+  border-radius: 20px;
   font-size: 12px;
   font-weight: 700;
 }

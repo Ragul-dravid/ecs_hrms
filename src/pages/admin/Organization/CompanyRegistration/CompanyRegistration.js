@@ -107,7 +107,8 @@ const CompanyRegistration = () => {
                 <div className="col-auto">
                   <div className="hstack gap-2 justify-content-end">
                     {/* {/ {storedScreens?.levelCreate && ( /}
-                    <Link to="/currency/add">
+                    {/* {/ )} /} */}
+                    <Link to="/companyRegistration/add">
                       <button
                         type="submit"
                         className="btn btn-sm btn-button btn-primary"
@@ -117,7 +118,6 @@ const CompanyRegistration = () => {
                         </span>
                       </button>
                     </Link>
-                    {/* {/ )} /} */}
                   </div>
                 </div>
               </div>
