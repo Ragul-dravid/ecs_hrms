@@ -9,7 +9,6 @@ const CompanyRegistrationAdd = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = sessionStorage.getItem("cmpId");
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
@@ -22,8 +21,6 @@ const CompanyRegistrationAdd = () => {
     cmpCity: Yup.string().required("City is required"),
     cmpPincode: Yup.string().required("Pin Code is required"),
     cmpTaxCode: Yup.string().required("Tax Code is required"),
-    logoFile: Yup.mixed().required("Logo is required"),
-    profileImgFile: Yup.mixed().required("Profile Image is required"),
   });
 
   const formik = useFormik({
@@ -253,7 +250,7 @@ const CompanyRegistrationAdd = () => {
               {/* logoFile Field */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  Logo<span className="text-danger">*</span>
+                  Logo
                 </label>
                 <input
                   type="file"
@@ -270,7 +267,7 @@ const CompanyRegistrationAdd = () => {
               {/* Profile Image Field */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  Profile Image <span className="text-danger">*</span>
+                  Profile Image
                 </label>
                 <input
                   type="file"

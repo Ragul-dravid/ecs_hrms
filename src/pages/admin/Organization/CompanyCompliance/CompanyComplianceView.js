@@ -32,7 +32,7 @@ const CompanyComplianceView = () => {
             visible={true}
             height="50"
             width="50"
-            ariaLabel="hourglass-loading"
+            ariaLabel="Hourglass-loading"
             wrapperStyle={{}}
             wrapperClass=""
             colors={["#4066D5", "#151c4d"]}

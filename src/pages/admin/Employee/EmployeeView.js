@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import Invoice from "../../../assets/Logo.png";
 import api from "../../../config/URL";
 import { toast } from "react-toastify";
+import { PropagateLoader } from 'react-spinners';
 
 export default function ExpensesView() {
   const { id } = useParams();
@@ -29,7 +30,16 @@ export default function ExpensesView() {
     <section>
       {loading && (
         <div className="loader-container">
-          <div className="loader"></div>
+          <PropagateLoader
+            visible={true}
+            height="50"
+            width="50"
+            size={15}
+            ariaLabel="hourglass-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            colors={["#4066D5", "#151c4d"]}
+          />
         </div>
       )}
       {!loading && (
@@ -253,12 +263,12 @@ export default function ExpensesView() {
                       <p className="text-muted text-sm">
                         :{" "}
                         {data.empPersonalDetailsEntities &&
-                        data.empPersonalDetailsEntities.length > 0 &&
-                        data.empPersonalDetailsEntities[0].dob
+                          data.empPersonalDetailsEntities.length > 0 &&
+                          data.empPersonalDetailsEntities[0].dob
                           ? data.empPersonalDetailsEntities[0].dob.substring(
-                              0,
-                              10
-                            )
+                            0,
+                            10
+                          )
                           : "--"}
                       </p>
                     </div>
@@ -273,8 +283,8 @@ export default function ExpensesView() {
                       <p className="text-muted text-sm">
                         :{" "}
                         {data.empPersonalDetailsEntities &&
-                        data.empPersonalDetailsEntities.length > 0 &&
-                        data.empPersonalDetailsEntities[0].gender
+                          data.empPersonalDetailsEntities.length > 0 &&
+                          data.empPersonalDetailsEntities[0].gender
                           ? data.empPersonalDetailsEntities[0].gender
                           : "--"}
                       </p>
@@ -290,8 +300,8 @@ export default function ExpensesView() {
                       <p className="text-muted text-sm">
                         :{" "}
                         {data.empPersonalDetailsEntities &&
-                        data.empPersonalDetailsEntities.length > 0 &&
-                        data.empPersonalDetailsEntities[0].maritalStatus
+                          data.empPersonalDetailsEntities.length > 0 &&
+                          data.empPersonalDetailsEntities[0].maritalStatus
                           ? data.empPersonalDetailsEntities[0].maritalStatus
                           : "--"}
                       </p>
@@ -307,8 +317,8 @@ export default function ExpensesView() {
                       <p className="text-muted text-sm">
                         :{" "}
                         {data.empPersonalDetailsEntities &&
-                        data.empPersonalDetailsEntities.length > 0 &&
-                        data.empPersonalDetailsEntities[0].religion
+                          data.empPersonalDetailsEntities.length > 0 &&
+                          data.empPersonalDetailsEntities[0].religion
                           ? data.empPersonalDetailsEntities[0].religion
                           : "--"}
                       </p>
@@ -324,8 +334,8 @@ export default function ExpensesView() {
                       <p className="text-muted text-sm">
                         :{" "}
                         {data.empPersonalDetailsEntities &&
-                        data.empPersonalDetailsEntities.length > 0 &&
-                        data.empPersonalDetailsEntities[0].empAddr
+                          data.empPersonalDetailsEntities.length > 0 &&
+                          data.empPersonalDetailsEntities[0].empAddr
                           ? data.empPersonalDetailsEntities[0].empAddr
                           : "--"}
                       </p>
@@ -354,8 +364,8 @@ export default function ExpensesView() {
                         {" "}
                         :{" "}
                         {data.empPersonalDetailsEntities &&
-                        data.empPersonalDetailsEntities.length > 0 &&
-                        data.empPersonalDetailsEntities[0].city
+                          data.empPersonalDetailsEntities.length > 0 &&
+                          data.empPersonalDetailsEntities[0].city
                           ? data.empPersonalDetailsEntities[0].city
                           : "--"}
                       </p>
@@ -372,8 +382,8 @@ export default function ExpensesView() {
                         {" "}
                         :{" "}
                         {data.empPersonalDetailsEntities &&
-                        data.empPersonalDetailsEntities.length > 0 &&
-                        data.empPersonalDetailsEntities[0].pincode
+                          data.empPersonalDetailsEntities.length > 0 &&
+                          data.empPersonalDetailsEntities[0].pincode
                           ? data.empPersonalDetailsEntities[0].pincode
                           : "--"}
                       </p>
@@ -389,8 +399,8 @@ export default function ExpensesView() {
                       <p className="text-muted text-sm">
                         :{" "}
                         {data.empPersonalDetailsEntities &&
-                        data.empPersonalDetailsEntities.length > 0 &&
-                        data.empPersonalDetailsEntities[0].empSecEmail
+                          data.empPersonalDetailsEntities.length > 0 &&
+                          data.empPersonalDetailsEntities[0].empSecEmail
                           ? data.empPersonalDetailsEntities[0].empSecEmail
                           : "--"}
                       </p>
@@ -407,8 +417,8 @@ export default function ExpensesView() {
                         {" "}
                         :{" "}
                         {data.empPersonalDetailsEntities &&
-                        data.empPersonalDetailsEntities.length > 0 &&
-                        data.empPersonalDetailsEntities[0].empSecPhNumber
+                          data.empPersonalDetailsEntities.length > 0 &&
+                          data.empPersonalDetailsEntities[0].empSecPhNumber
                           ? data.empPersonalDetailsEntities[0].empSecPhNumber
                           : "--"}
                       </p>
@@ -607,8 +617,8 @@ export default function ExpensesView() {
                               <p className="text-muted text-sm">
                                 <b className="mx-2">:</b>
                                 {data.empQualificationEntities &&
-                                data.empQualificationEntities.length > 0 &&
-                                data.empQualificationEntities[0].qualName
+                                  data.empQualificationEntities.length > 0 &&
+                                  data.empQualificationEntities[0].qualName
                                   ? data.empQualificationEntities[0].qualName
                                   : "--"}
                               </p>
@@ -624,8 +634,8 @@ export default function ExpensesView() {
                               <p className="text-muted text-sm">
                                 <b className="mx-2">:</b>
                                 {data.empQualificationEntities &&
-                                data.empQualificationEntities.length > 0 &&
-                                data.empQualificationEntities[0].qualType
+                                  data.empQualificationEntities.length > 0 &&
+                                  data.empQualificationEntities[0].qualType
                                   ? data.empQualificationEntities[0].qualType
                                   : "--"}
                               </p>
@@ -641,10 +651,10 @@ export default function ExpensesView() {
                               <p className="text-muted text-sm">
                                 <b className="mx-2">:</b>
                                 {data.empQualificationEntities &&
-                                data.empQualificationEntities.length > 0 &&
-                                data.empQualificationEntities[0].qualFldOfStudy
+                                  data.empQualificationEntities.length > 0 &&
+                                  data.empQualificationEntities[0].qualFldOfStudy
                                   ? data.empQualificationEntities[0]
-                                      .qualFldOfStudy
+                                    .qualFldOfStudy
                                   : "--"}
                               </p>
                             </div>
@@ -659,10 +669,10 @@ export default function ExpensesView() {
                               <p className="text-muted text-sm">
                                 <b className="mx-2">:</b>
                                 {data.empQualificationEntities &&
-                                data.empQualificationEntities.length > 0 &&
-                                data.empQualificationEntities[0].qualModeOfStudy
+                                  data.empQualificationEntities.length > 0 &&
+                                  data.empQualificationEntities[0].qualModeOfStudy
                                   ? data.empQualificationEntities[0]
-                                      .qualModeOfStudy
+                                    .qualModeOfStudy
                                   : "--"}
                               </p>
                             </div>
@@ -677,10 +687,10 @@ export default function ExpensesView() {
                               <p className="text-muted text-sm">
                                 <b className="mx-2">:</b>
                                 {data.empQualificationEntities &&
-                                data.empQualificationEntities.length > 0 &&
-                                data.empQualificationEntities[0].qualStartDate
+                                  data.empQualificationEntities.length > 0 &&
+                                  data.empQualificationEntities[0].qualStartDate
                                   ? data.empQualificationEntities[0]
-                                      .qualStartDate
+                                    .qualStartDate
                                   : "--"}
                               </p>
                             </div>
@@ -708,8 +718,8 @@ export default function ExpensesView() {
                               <p className="text-muted text-sm">
                                 <b className="mx-2">:</b>
                                 {data.empQualificationEntities &&
-                                data.empQualificationEntities.length > 0 &&
-                                data.empQualificationEntities[0].qualEndDate
+                                  data.empQualificationEntities.length > 0 &&
+                                  data.empQualificationEntities[0].qualEndDate
                                   ? data.empQualificationEntities[0].qualEndDate
                                   : "--"}
                               </p>
@@ -725,10 +735,10 @@ export default function ExpensesView() {
                               <p className="text-muted text-sm">
                                 <b className="mx-2">:</b>
                                 {data.empQualificationEntities &&
-                                data.empQualificationEntities.length > 0 &&
-                                data.empQualificationEntities[0].qualInstitution
+                                  data.empQualificationEntities.length > 0 &&
+                                  data.empQualificationEntities[0].qualInstitution
                                   ? data.empQualificationEntities[0]
-                                      .qualInstitution
+                                    .qualInstitution
                                   : "--"}
                               </p>
                             </div>
@@ -743,10 +753,10 @@ export default function ExpensesView() {
                               <p className="text-muted text-sm">
                                 <b className="mx-2">:</b>
                                 {data.empQualificationEntities &&
-                                data.empQualificationEntities.length > 0 &&
-                                data.empQualificationEntities[0].employeeSkill
+                                  data.empQualificationEntities.length > 0 &&
+                                  data.empQualificationEntities[0].employeeSkill
                                   ? data.empQualificationEntities[0]
-                                      .employeeSkill
+                                    .employeeSkill
                                   : "--"}
                               </p>
                             </div>
@@ -761,11 +771,11 @@ export default function ExpensesView() {
                               <p className="text-muted text-sm">
                                 <b className="mx-2">:</b>
                                 {data.empQualificationEntities &&
-                                data.empQualificationEntities.length > 0 &&
-                                data.empQualificationEntities[0]
-                                  .skillDescription
+                                  data.empQualificationEntities.length > 0 &&
+                                  data.empQualificationEntities[0]
+                                    .skillDescription
                                   ? data.empQualificationEntities[0]
-                                      .skillDescription
+                                    .skillDescription
                                   : "--"}
                               </p>
                             </div>
@@ -815,8 +825,8 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empExperienceEntities &&
-                              data.empExperienceEntities.length > 0 &&
-                              data.empExperienceEntities[0].prevCmpName
+                                data.empExperienceEntities.length > 0 &&
+                                data.empExperienceEntities[0].prevCmpName
                                 ? data.empExperienceEntities[0].prevCmpName
                                 : "--"}
                             </p>
@@ -834,8 +844,8 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empExperienceEntities &&
-                              data.empExperienceEntities.length > 0 &&
-                              data.empExperienceEntities[0].prevCmpAddr
+                                data.empExperienceEntities.length > 0 &&
+                                data.empExperienceEntities[0].prevCmpAddr
                                 ? data.empExperienceEntities[0].prevCmpAddr
                                 : "--"}
                             </p>
@@ -851,8 +861,8 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empExperienceEntities &&
-                              data.empExperienceEntities.length > 0 &&
-                              data.empExperienceEntities[0].designation
+                                data.empExperienceEntities.length > 0 &&
+                                data.empExperienceEntities[0].designation
                                 ? data.empExperienceEntities[0].designation
                                 : "--"}
                             </p>
@@ -868,8 +878,8 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empExperienceEntities &&
-                              data.empExperienceEntities.length > 0 &&
-                              data.empExperienceEntities[0].experienceDesc
+                                data.empExperienceEntities.length > 0 &&
+                                data.empExperienceEntities[0].experienceDesc
                                 ? data.empExperienceEntities[0].experienceDesc
                                 : "--"}
                             </p>
@@ -885,10 +895,10 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empExperienceEntities &&
-                              data.empExperienceEntities.length > 0 &&
-                              data.empExperienceEntities[0].experienceStartDate
+                                data.empExperienceEntities.length > 0 &&
+                                data.empExperienceEntities[0].experienceStartDate
                                 ? data.empExperienceEntities[0]
-                                    .experienceStartDate
+                                  .experienceStartDate
                                 : "--"}
                             </p>
                           </div>
@@ -903,10 +913,10 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empExperienceEntities &&
-                              data.empExperienceEntities.length > 0 &&
-                              data.empExperienceEntities[0].experienceEndDate
+                                data.empExperienceEntities.length > 0 &&
+                                data.empExperienceEntities[0].experienceEndDate
                                 ? data.empExperienceEntities[0]
-                                    .experienceEndDate
+                                  .experienceEndDate
                                 : "--"}
                             </p>
                           </div>
@@ -942,11 +952,11 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empPrevCompanyRefEntities &&
-                              data.empPrevCompanyRefEntities.length > 0 &&
-                              data.empPrevCompanyRefEntities[0]
-                                .prevCompReferralName
+                                data.empPrevCompanyRefEntities.length > 0 &&
+                                data.empPrevCompanyRefEntities[0]
+                                  .prevCompReferralName
                                 ? data.empPrevCompanyRefEntities[0]
-                                    .prevCompReferralName
+                                  .prevCompReferralName
                                 : "--"}
                             </p>
                           </div>
@@ -963,11 +973,11 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empPrevCompanyRefEntities &&
-                              data.empPrevCompanyRefEntities.length > 0 &&
-                              data.empPrevCompanyRefEntities[0]
-                                .prevCompReferralJobTitle
+                                data.empPrevCompanyRefEntities.length > 0 &&
+                                data.empPrevCompanyRefEntities[0]
+                                  .prevCompReferralJobTitle
                                 ? data.empPrevCompanyRefEntities[0]
-                                    .prevCompReferralJobTitle
+                                  .prevCompReferralJobTitle
                                 : "--"}
                             </p>
                           </div>
@@ -984,11 +994,11 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empPrevCompanyRefEntities &&
-                              data.empPrevCompanyRefEntities.length > 0 &&
-                              data.empPrevCompanyRefEntities[0]
-                                .prevCompRefCmpAddr
+                                data.empPrevCompanyRefEntities.length > 0 &&
+                                data.empPrevCompanyRefEntities[0]
+                                  .prevCompRefCmpAddr
                                 ? data.empPrevCompanyRefEntities[0]
-                                    .prevCompRefCmpAddr
+                                  .prevCompRefCmpAddr
                                 : "--"}
                             </p>
                           </div>
@@ -1005,11 +1015,11 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empPrevCompanyRefEntities &&
-                              data.empPrevCompanyRefEntities.length > 0 &&
-                              data.empPrevCompanyRefEntities[0]
-                                .prevCompRefcmpName
+                                data.empPrevCompanyRefEntities.length > 0 &&
+                                data.empPrevCompanyRefEntities[0]
+                                  .prevCompRefcmpName
                                 ? data.empPrevCompanyRefEntities[0]
-                                    .prevCompRefcmpName
+                                  .prevCompRefcmpName
                                 : "--"}
                             </p>
                           </div>
@@ -1026,11 +1036,11 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empPrevCompanyRefEntities &&
-                              data.empPrevCompanyRefEntities.length > 0 &&
-                              data.empPrevCompanyRefEntities[0]
-                                .prevCompReferralContactNum
+                                data.empPrevCompanyRefEntities.length > 0 &&
+                                data.empPrevCompanyRefEntities[0]
+                                  .prevCompReferralContactNum
                                 ? data.empPrevCompanyRefEntities[0]
-                                    .prevCompReferralContactNum
+                                  .prevCompReferralContactNum
                                 : "--"}
                             </p>
                           </div>
@@ -1064,11 +1074,11 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empEmergencyContactModels &&
-                              data.empEmergencyContactModels.length > 0 &&
-                              data.empEmergencyContactModels[0]
-                                .emergencyContactName
+                                data.empEmergencyContactModels.length > 0 &&
+                                data.empEmergencyContactModels[0]
+                                  .emergencyContactName
                                 ? data.empEmergencyContactModels[0]
-                                    .emergencyContactName
+                                  .emergencyContactName
                                 : "--"}
                             </p>
                           </div>
@@ -1083,11 +1093,11 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empEmergencyContactModels &&
-                              data.empEmergencyContactModels.length > 0 &&
-                              data.empEmergencyContactModels[0]
-                                .emergencyContactNo
+                                data.empEmergencyContactModels.length > 0 &&
+                                data.empEmergencyContactModels[0]
+                                  .emergencyContactNo
                                 ? data.empEmergencyContactModels[0]
-                                    .emergencyContactNo
+                                  .emergencyContactNo
                                 : "--"}
                             </p>
                           </div>
@@ -1104,11 +1114,11 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empEmergencyContactModels &&
-                              data.empEmergencyContactModels.length > 0 &&
-                              data.empEmergencyContactModels[0]
-                                .emergencyContactAddress
+                                data.empEmergencyContactModels.length > 0 &&
+                                data.empEmergencyContactModels[0]
+                                  .emergencyContactAddress
                                 ? data.empEmergencyContactModels[0]
-                                    .emergencyContactAddress
+                                  .emergencyContactAddress
                                 : "--"}
                             </p>
                           </div>
@@ -1125,11 +1135,11 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empEmergencyContactModels &&
-                              data.empEmergencyContactModels.length > 0 &&
-                              data.empEmergencyContactModels[0]
-                                .relationshipOfEmployee
+                                data.empEmergencyContactModels.length > 0 &&
+                                data.empEmergencyContactModels[0]
+                                  .relationshipOfEmployee
                                 ? data.empEmergencyContactModels[0]
-                                    .relationshipOfEmployee
+                                  .relationshipOfEmployee
                                 : "--"}
                             </p>
                           </div>
@@ -1163,8 +1173,8 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empBankAccDetailsEntities &&
-                              data.empBankAccDetailsEntities.length > 0 &&
-                              data.empBankAccDetailsEntities[0].bankName
+                                data.empBankAccDetailsEntities.length > 0 &&
+                                data.empBankAccDetailsEntities[0].bankName
                                 ? data.empBankAccDetailsEntities[0].bankName
                                 : "--"}
                             </p>
@@ -1180,8 +1190,8 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empBankAccDetailsEntities &&
-                              data.empBankAccDetailsEntities.length > 0 &&
-                              data.empBankAccDetailsEntities[0].brName
+                                data.empBankAccDetailsEntities.length > 0 &&
+                                data.empBankAccDetailsEntities[0].brName
                                 ? data.empBankAccDetailsEntities[0].brName
                                 : "--"}
                             </p>
@@ -1197,8 +1207,8 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empBankAccDetailsEntities &&
-                              data.empBankAccDetailsEntities.length > 0 &&
-                              data.empBankAccDetailsEntities[0].ifsccode
+                                data.empBankAccDetailsEntities.length > 0 &&
+                                data.empBankAccDetailsEntities[0].ifsccode
                                 ? data.empBankAccDetailsEntities[0].ifsccode
                                 : "--"}
                             </p>
@@ -1214,8 +1224,8 @@ export default function ExpensesView() {
                             <p className="text-muted text-sm">
                               :{" "}
                               {data.empBankAccDetailsEntities &&
-                              data.empBankAccDetailsEntities.length > 0 &&
-                              data.empBankAccDetailsEntities[0].accNumber
+                                data.empBankAccDetailsEntities.length > 0 &&
+                                data.empBankAccDetailsEntities[0].accNumber
                                 ? data.empBankAccDetailsEntities[0].accNumber
                                 : "--"}
                             </p>

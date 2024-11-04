@@ -5,7 +5,7 @@ import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import api from "../../../../config/URL";
-import { Hourglass } from "react-loader-spinner";
+import { PropagateLoader } from 'react-spinners';
 import DeleteModel from "../../../../components/admin/DeleteModel";
 
 const HrPolicy = () => {
@@ -79,10 +79,11 @@ const HrPolicy = () => {
     <div>
       {loading ? (
         <div className="loader-container">
-          <Hourglass
+          <PropagateLoader
             visible={true}
             height="50"
             width="50"
+            size={15}
             ariaLabel="hourglass-loading"
             wrapperStyle={{}}
             wrapperClass=""

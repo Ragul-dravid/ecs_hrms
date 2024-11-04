@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../../../config/URL";
 import toast from "react-hot-toast";
-import { Hourglass } from "react-loader-spinner";
+import { PropagateLoader } from 'react-spinners';
 import LeaveRequest from "./LeaveRequest";
 
 const LeaveRequestView = () => {
@@ -29,10 +29,11 @@ const LeaveRequestView = () => {
     <div>
       {loading ? (
         <div className="loader-container">
-          <Hourglass
+          <PropagateLoader
             visible={true}
             height="50"
             width="50"
+            size={15}
             ariaLabel="hourglass-loading"
             wrapperStyle={{}}
             wrapperClass=""

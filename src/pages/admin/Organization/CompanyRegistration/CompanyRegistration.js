@@ -5,7 +5,7 @@ import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import api from "../../../../config/URL";
-import { Hourglass } from "react-loader-spinner";
+import { PropagateLoader } from 'react-spinners';
 import DeleteModel from "../../../../components/admin/DeleteModel";
 
 const CompanyRegistration = () => {
@@ -79,10 +79,11 @@ const CompanyRegistration = () => {
     <div>
       {loading ? (
         <div className="loader-container">
-          <Hourglass
+          <PropagateLoader
             visible={true}
             height="50"
             width="50"
+            size={15}
             ariaLabel="hourglass-loading"
             wrapperStyle={{}}
             wrapperClass=""
@@ -91,10 +92,8 @@ const CompanyRegistration = () => {
         </div>
       ) : (
         <div className="container-fluid px-2 minHeight">
-          <div
-            className="card shadow border-0 mb-2 top-header"
-            style={{ borderRadius: "0" }}
-          >
+          <div className="card shadow border-0 mb-2 top-header"
+            style={{ borderRadius: "0" }}>
             <div className="container-fluid py-4">
               <div className="row align-items-center justify-content-between ">
                 <div className="col">
@@ -124,10 +123,8 @@ const CompanyRegistration = () => {
             </div>
           </div>
           {/* <hr className="removeHrMargin"></hr> */}
-          <div
-            className="card shadow border-0 my-2"
-            style={{ borderRadius: "0" }}
-          >
+          <div className="card shadow border-0 my-2"
+            style={{ borderRadius: "0" }}>
             <div className="table-responsive p-2 minHeight">
               <table ref={tableRef} className="display table ">
                 <thead className="thead-light">
@@ -162,7 +159,7 @@ const CompanyRegistration = () => {
                       <td className="text-center">
                         {data.cmpStatus === "Approve" ? (
                           <span className="badge-approved">Approved</span>
-                        ) : data.cmpStatus === "Pending" ? (
+                        ) : data.cmpStatus === "Rejected" ? (
                           <span className="badge-rejected">Rejected</span>
                         ) : (
                           <span className="badge-pending">Pending</span>
