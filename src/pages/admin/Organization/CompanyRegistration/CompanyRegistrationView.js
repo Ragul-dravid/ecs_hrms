@@ -14,6 +14,7 @@ const CompanyRegistrationView = () => {
   const handleClose = () => setShowModal(false);
   const [cmpStatus, setcmpStatus] = useState("");
   const [loadIndicator, setLoadIndicator] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState("");
 
   const getData = async () => {
     setLoading(true);
@@ -31,38 +32,21 @@ const CompanyRegistrationView = () => {
     getData();
   }, [id]);
 
-  const handleActivate = async () => {
+  const handleStatusChange = async (status) => {
     setLoadIndicator(true);
     try {
-      const response = await api.post(`approve?companyId=${id}`);
+      const response = await api.put(`status/${id}?cmpId=${id}&newStatus=${status}`);
       if (response.status === 200) {
-        getData();
-        toast.success("Product Activated Successfully!");
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      toast.error("An error occurred while activating the product.");
-      console.error("Activation Error:", error);
-    } finally {
-      setLoadIndicator(false);
-    }
-  };
-
-  const handleDeActive = async () => {
-    setLoadIndicator(true);
-    try {
-      const response = await api.post(`reject?companyId=${id}`);
-      if (response.status === 200) {
-        getData();
-        toast.success("Product DeActivated Successfully!");
+        setSelectedStatus(status); // Update the status locally
+        getData(); // Refresh data after status change
+        toast.success(`Product ${status} Successfully!`);
         handleClose();
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
-      toast.error("An error occurred while activating the product.");
-      console.error("DeActivation Error:", error);
+      toast.error(`An error occurred while updating the product status.`);
+      console.error("Status Change Error:", error);
     } finally {
       setLoadIndicator(false);
     }
@@ -109,7 +93,7 @@ const CompanyRegistrationView = () => {
                       </button>
                     </Link>
 
-                    {(!cmpStatus || cmpStatus === "") ? (
+                    {/* {(!cmpStatus || cmpStatus === "") ? (
                       <button
                         type="button"
                         onClick={handleActivate}
@@ -131,6 +115,37 @@ const CompanyRegistrationView = () => {
                       >
                         Rejected
                       </button>
+                    )} */}
+                     {selectedStatus === "Approve" ? (
+                      <button
+                        type="button"
+                        onClick={() => handleStatusChange("Rejected")}
+                        className="btn btn-danger btn-sm me-2"
+                        disabled={loadIndicator}
+                      >
+                        {loadIndicator && (
+                          <span
+                            className="spinner-border spinner-border-sm me-2"
+                            aria-hidden="true"
+                          ></span>
+                        )}
+                        Reject
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => handleStatusChange("Approve")}
+                        className="btn btn-success btn-sm me-2"
+                        disabled={loadIndicator}
+                      >
+                        {loadIndicator && (
+                          <span
+                            className="spinner-border spinner-border-sm me-2"
+                            aria-hidden="true"
+                          ></span>
+                        )}
+                        Approve
+                      </button>
                     )}
                   </div>
                 </div>
@@ -146,7 +161,7 @@ const CompanyRegistrationView = () => {
             <div className="container">
 
               <div className="d-flex justify-content-center">
-                <p className="my-2 d-flex">
+                {/* <p className="my-2 d-flex"> */}
                   {data?.profileImg ? (
                     <img
                       src={data.profileImg}
@@ -158,7 +173,7 @@ const CompanyRegistrationView = () => {
                   ) : (
                     <></>
                   )}
-                </p>
+                {/* </p> */}
               </div>
               <div className="row mt-2 p-3">
 
@@ -295,7 +310,7 @@ const CompanyRegistrationView = () => {
         </div>
       )}
 
-      <Modal
+      {/* <Modal
         show={showModal}
         backdrop="static"
         keyboard={false}
@@ -324,7 +339,7 @@ const CompanyRegistrationView = () => {
             Deactivate
           </button>
         </Modal.Footer>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };
