@@ -58,13 +58,14 @@ const CompanyRegistrationView = () => {
         <div className="loader-container">
           <PropagateLoader
             visible={true}
+            color="#a070ff"
             height="50"
             width="50"
-            size={15}
+            size={10}
             ariaLabel="hourglass-loading"
             wrapperStyle={{}}
             wrapperClass=""
-            colors={["#4066D5", "#151c4d"]}
+
           />
         </div>
       ) : (
@@ -116,7 +117,7 @@ const CompanyRegistrationView = () => {
                         Rejected
                       </button>
                     )} */}
-                     {selectedStatus === "Approve" ? (
+                    {selectedStatus === "Approve" ? (
                       <button
                         type="button"
                         onClick={() => handleStatusChange("Rejected")}
@@ -162,17 +163,17 @@ const CompanyRegistrationView = () => {
 
               <div className="d-flex justify-content-center">
                 {/* <p className="my-2 d-flex"> */}
-                  {data?.profileImg ? (
-                    <img
-                      src={data.profileImg}
-                      style={{ borderRadius: 70 }}
-                      width="100"
-                      height="100"
-                      alt="profile"
-                    />
-                  ) : (
-                    <></>
-                  )}
+                {data?.profileImg ? (
+                  <img
+                    src={data.profileImg}
+                    style={{ borderRadius: 70 }}
+                    width="100"
+                    height="100"
+                    alt="profile"
+                  />
+                ) : (
+                  <></>
+                )}
                 {/* </p> */}
               </div>
               <div className="row mt-2 p-3">

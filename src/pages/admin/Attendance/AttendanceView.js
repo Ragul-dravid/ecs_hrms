@@ -31,9 +31,10 @@ const AttendanceView = () => {
         <div className="loader-container">
           <PropagateLoader
             visible={true}
+            color="#a070ff"
             height="50"
             width="50"
-            size={15}
+            size={10}
             ariaLabel="hourglass-loading"
             wrapperStyle={{}}
             wrapperClass=""
