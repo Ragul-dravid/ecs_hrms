@@ -166,7 +166,6 @@ function Admin({ handleLogout }) {
                     path="/leaverequest/view/:id"
                     element={<LeaveRequestView />}
                   />
-
                   <Route path="/attendance" element={<Attendance />} />
                   <Route path="/attendance/add" element={<AttendanceAdd />} />
                   <Route
