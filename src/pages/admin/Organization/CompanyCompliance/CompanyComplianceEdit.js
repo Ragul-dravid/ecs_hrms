@@ -10,7 +10,7 @@ const CompanyComplianceEdit = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
   const cmpId = sessionStorage.getItem("cmpId");
-  const [companyData, setCompanyData] = useState(null);
+  const userName = sessionStorage.getItem("userName");
 
   const validationSchema = Yup.object({
     compComplianceDesignationName: Yup.string().required(
@@ -20,23 +20,16 @@ const CompanyComplianceEdit = () => {
       "*Designation Category is required"
     ),
     compComplianceLeaveLimit: Yup.string().required("*Leave Limit is required"),
-    // compComplianceHRPolicyId: Yup.string().required("*Tax Code is required"),
-    // compComplianceRemarks: Yup.string().required(
-    //   "*Company Address is required"
-    // ),
     compComplianceSalaryCalculationDay: Yup.string().required(
       "*Salary Calculation Date is required"
     ),
     compComplianceSalaryDay: Yup.string().required("*Salary Day is required"),
-    // cmpRoleId: Yup.string().required("*Role is required"),
   });
-
-  // useFormik hook for form handling
+  
   const formik = useFormik({
     initialValues: {
-      cmpId: cmpId,
-      compComplianceId: "",
-      compComplianceCmpId: "",
+      compComplianceCmpId: cmpId,
+      companyCompOwner: userName,
       compComplianceDesignationName: "",
       compComplianceDesignationCategory: "",
       compComplianceLeaveLimit: "",
@@ -44,7 +37,7 @@ const CompanyComplianceEdit = () => {
       compComplianceRemarks: "",
       compComplianceSalaryDay: "",
       compComplianceSalaryCalculationDay: "",
-      companyCompOwner: "",
+      
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -69,7 +62,12 @@ const CompanyComplianceEdit = () => {
     const getData = async () => {
       try {
         const response = await api.get(`/company-compliance/${id}`);
-        formik.setValues(response.data); // Load the data into the form
+        const formattedResponseData = {
+          ...response.data,
+          compComplianceSalaryDay: response.data.compComplianceSalaryDay.substring(0, 10),
+          compComplianceSalaryCalculationDay: response.data.compComplianceSalaryCalculationDay.substring(0, 10),
+        };
+        formik.setValues(formattedResponseData);
       } catch (e) {
         toast.error("Error fetching data: ", e?.response?.data?.message);
       }
@@ -113,7 +111,7 @@ const CompanyComplianceEdit = () => {
                         aria-hidden="true"
                       ></span>
                     ) : (
-                      <span>Save</span>
+                      <span>Update</span>
                     )}
                   </button>
                 </div>
@@ -128,28 +126,22 @@ const CompanyComplianceEdit = () => {
         >
           <div className="container mb-5">
             <div className="row py-4">
-              {/* Company Name */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Company Owner Name <span className="text-danger">*</span>
                 </label>
-                <select
-                  {...formik.getFieldProps("cmpId")}
-                  className={`form-select form-select-sm  ${
-                    formik.touched.cmpId && formik.errors.cmpId
+                <input
+                  type="text"
+                  name="companyCompOwner"
+                  className={`form-control form-control-sm ${
+                    formik.touched.companyCompOwner &&
+                    formik.errors.companyCompOwner
                       ? "is-invalid"
                       : ""
                   }`}
-                  aria-label="Default select example"
-                >
-                  <option selected></option>
-                  {companyData &&
-                    companyData.map((cmpId) => (
-                      <option key={cmpId.id} value={cmpId.cmpId}>
-                        {cmpId.cmpName}
-                      </option>
-                    ))}
-                </select>
+                  {...formik.getFieldProps("companyCompOwner")}
+                  readOnly
+                />
                 {formik.touched.companyCompOwner &&
                   formik.errors.companyCompOwner && (
                     <div className="invalid-feedback">

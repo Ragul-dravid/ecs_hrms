@@ -5,19 +5,22 @@ import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import api from "../../../../config/URL";
-import { PropagateLoader } from 'react-spinners';
+import { PropagateLoader } from "react-spinners";
 import DeleteModel from "../../../../components/admin/DeleteModel";
+import { HiOutlineEye } from "react-icons/hi";
+import { BiEditAlt } from "react-icons/bi";
 
 const CompanyCompliance = () => {
   const tableRef = useRef(null);
   // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const cmpId = sessionStorage.getItem("cmpId");
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("/company-compliance");
+        const response = await api.get(`company-compliance-with-id/${cmpId}`);
         setDatas(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -59,7 +62,7 @@ const CompanyCompliance = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("/company-compliance");
+      const response = await api.get(`company-compliance-with-id/${cmpId}`);
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -134,16 +137,16 @@ const CompanyCompliance = () => {
                       S.NO
                     </th>
                     <th scope="col" className="text-center">
-                      Company ID
-                    </th>
-                    <th scope="col" className="text-center">
-                      Company Name
-                    </th>
-                    <th scope="col" className="text-center">
                       Designation Name
                     </th>
                     <th scope="col" className="text-center">
-                      Company Status
+                      Designation Category
+                    </th>
+                    <th scope="col" className="text-center">
+                      Salary Calculation Day
+                    </th>
+                    <th scope="col" className="text-center">
+                      Salary Day
                     </th>
                     <th scope="col" className="text-center">
                       ACTION
@@ -154,35 +157,36 @@ const CompanyCompliance = () => {
                   {datas.map((data, index) => (
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
-                      <td className="text-center">{data.cmpId}</td>
-                      <td className="text-center">{data.cmpName}</td>
                       <td className="text-center">
                         {data.compComplianceDesignationName}
                       </td>
                       <td className="text-center">
-                        {data.cmpStatus === "Approve" ? (
-                          <span className="badge-approved">Approved</span>
-                        ) : data.cmpStatus === "Pending" ? (
-                          <span className="badge-rejected">Rejected</span>
-                        ) : (
-                          <span className="badge-pending">Pending</span>
+                        {data.compComplianceDesignationCategory}
+                      </td>
+                      <td className="text-center">
+                        {data.compComplianceSalaryCalculationDay.substring(
+                          0,
+                          10
                         )}
+                      </td>
+                      <td className="text-center">
+                        {data.compComplianceSalaryDay.substring(0, 10)}
                       </td>
                       <td className="text-center">
                         <div className="gap-2">
                           <Link
                             to={`/companyCompliance/view/${data.compComplianceId}`}
                           >
-                            <button className="btn btn-light btn-sm  shadow-none border-none">
-                              View
+                            <button className="btn p-1 btn-sm  shadow-none border-none">
+                              <HiOutlineEye />
                             </button>
                           </Link>
                           <Link
                             to={`/companyCompliance/edit/${data.compComplianceId}`}
                             className="px-2"
                           >
-                            <button className="btn btn-light  btn-sm shadow-none border-none">
-                              Edit
+                            <button className="btn p-1  btn-sm shadow-none border-none">
+                              <BiEditAlt />
                             </button>
                           </Link>
                           <DeleteModel

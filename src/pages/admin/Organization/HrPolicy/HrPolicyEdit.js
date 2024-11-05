@@ -4,14 +4,39 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../../config/URL";
 import toast from "react-hot-toast";
-import HrPolicy from "./HrPolicy";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // Import styles for ReactQuill
 
+// Additional imports for custom image handling if needed
+import Quill from 'quill';
+
+// Define custom toolbar modules
+const modules = {
+  toolbar: [
+    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+    [{ 'size': [] }],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [{ 'color': [] }, { 'background': [] }],   // Text color and background color
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    ['link', 'image', 'video'],                // Link, image, and video options
+    ['clean'],                                 // Remove formatting button
+  ],
+  clipboard: {
+    matchVisual: false,
+  }
+};
+
+// Define formats to enable the editor to accept these types
+const formats = [
+  'header', 'font', 'size', 'bold', 'italic', 'underline', 'strike', 'blockquote',
+  'color', 'background', 'list', 'bullet', 'align', 'link', 'image', 'video'
+];
 const HrPolicyEdit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
   const cmpId = sessionStorage.getItem("cmpId");
-  const [companyData, setCompanyData] = useState(null);
 
   const validationSchema = Yup.object({
     hrPolicyList: Yup.string().required("*Policy Name is required"),
@@ -20,17 +45,25 @@ const HrPolicyEdit = () => {
 
   const formik = useFormik({
     initialValues: {
+      hrPolicyId :id,
       hrPolicyList: "",
       hrPolicyDescr: "",
+      hrPolicyCmpId: cmpId,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
       try {
-        const response = await api.put(`/hR-policy/${id}`, values);
-        if (response.status === 200) {
+        // Update API payload to include HTML from ReactQuill
+        const payload = {
+          ...values,
+          hrPolicyDescr: values.hrPolicyDescr, // Contains HTML from ReactQuill
+        };
+
+        const response = await api.put(`/hR-policy/${id}`, payload);
+        if (response.status === 201) {
           toast.success(response.data.message);
-          navigate("/companyRegistration");
+          navigate("/hrpolicy");
         } else {
           toast.error(response.data.message);
         }
@@ -56,6 +89,11 @@ const HrPolicyEdit = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
+  // Handle `ReactQuill` value change
+  const handleDescriptionChange = (value) => {
+    formik.setFieldValue("hrPolicyDescr", value);
+  };
+
   return (
     <div className="container-fluid px-2 minHeight m-0">
       <form onSubmit={formik.handleSubmit}>
@@ -67,7 +105,7 @@ const HrPolicyEdit = () => {
             <div className="row align-items-center">
               <div className="col">
                 <div className="d-flex align-items-center gap-4">
-                  <h1 className="h4 ls-tight headingColor">Edit Hr Policy</h1>
+                  <h1 className="h4 ls-tight headingColor">Edit HR Policy</h1>
                 </div>
               </div>
               <div className="col-auto">
@@ -88,7 +126,7 @@ const HrPolicyEdit = () => {
                         aria-hidden="true"
                       ></span>
                     ) : (
-                      <span>Save</span>
+                      <span>Update</span>
                     )}
                   </button>
                 </div>
@@ -103,8 +141,6 @@ const HrPolicyEdit = () => {
         >
           <div className="container mb-5">
             <div className="row py-4">
-              {/* Company Name */}
-
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Policy Name <span className="text-danger">*</span>
@@ -125,20 +161,20 @@ const HrPolicyEdit = () => {
                   </div>
                 )}
               </div>
-
-              <div className="col-md-6 col-12 mb-3">
+              <div className="col-md-12 col-12 mb-3">
                 <label className="form-label">
                   Policy Description <span className="text-danger">*</span>
                 </label>
-                <textarea
-                  type="text"
-                  name="hrPolicyDescr"
-                  className={`form-control form-control-sm ${
+                <ReactQuill
+                  value={formik.values.hrPolicyDescr}
+                  onChange={handleDescriptionChange}
+                  modules={modules}      // Add custom toolbar modules
+                  formats={formats}      // Define formats allowed
+                  className={`${
                     formik.touched.hrPolicyDescr && formik.errors.hrPolicyDescr
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("hrPolicyDescr")}
                 />
                 {formik.touched.hrPolicyDescr &&
                   formik.errors.hrPolicyDescr && (

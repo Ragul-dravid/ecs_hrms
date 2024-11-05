@@ -3,17 +3,19 @@ import "datatables.net-dt";
 import "datatables.net-responsive-dt";
 import $ from "jquery";
 import { Link } from "react-router-dom";
-import { FaPlus } from "react-icons/fa";
+import { FaEye, FaPlus } from "react-icons/fa";
 import api from "../../../../config/URL";
 import { PropagateLoader } from 'react-spinners';
 import DeleteModel from "../../../../components/admin/DeleteModel";
+import { BiEditAlt } from "react-icons/bi";
+import { HiOutlineEye } from "react-icons/hi";
 
 const CompanyRegistration = () => {
   const tableRef = useRef(null);
   // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const cmpId = sessionStorage.getItem("cmpId");
   useEffect(() => {
     const getData = async () => {
       try {
@@ -168,16 +170,16 @@ const CompanyRegistration = () => {
                       <td className="text-center">
                         <div className="gap-2">
                           <Link to={`/companyRegistration/view/${data.cmpId}`}>
-                            <button className="btn btn-light btn-sm  shadow-none border-none">
-                              View
+                            <button className="btn btn-sm p-1  shadow-none border-none">
+                            <HiOutlineEye />
                             </button>
                           </Link>
                           <Link
                             to={`/companyRegistration/edit/${data.cmpId}`}
                             className="px-2"
                           >
-                            <button className="btn btn-light  btn-sm shadow-none border-none">
-                              Edit
+                            <button className="btn  btn-sm p-1 shadow-none border-none">
+                            <BiEditAlt />
                             </button>
                           </Link>
                           <DeleteModel
