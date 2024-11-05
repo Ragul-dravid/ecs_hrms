@@ -18,8 +18,8 @@ const DepartmentAdd = () => {
   const formik = useFormik({
     initialValues: {
       cmpId: cmpId,
-      deptName:"",
-      deptDesc:""
+      deptName: "",
+      deptDesc: ""
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -42,14 +42,14 @@ const DepartmentAdd = () => {
   });
 
   return (
-     <div className="container-fluid px-2 minHeight m-0">
+    <div className="container-fluid px-2 minHeight m-0">
       <form onSubmit={formik.handleSubmit}>
         <div className="card shadow border-0 mb-2 top-header" style={{ borderRadius: "0" }}>
           <div className="container-fluid py-4">
             <div className="row align-items-center">
               <div className="col">
                 <div className="d-flex align-items-center gap-4">
-                  <h1 className="h4 ls-tight headingColor">Edit Company Registration</h1>
+                  <h1 className="h4 ls-tight headingColor">Add Department</h1>
                 </div>
               </div>
               <div className="col-auto">
