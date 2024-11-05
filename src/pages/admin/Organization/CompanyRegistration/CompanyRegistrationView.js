@@ -12,20 +12,17 @@ const CompanyRegistrationView = () => {
   const [showModal, setShowModal] = useState(false);
   const handleOpenModal = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
-  const [cmpStatus, setcmpStatus] = useState("");
   const [loadIndicator, setLoadIndicator] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("");
 
   const getData = async () => {
-    setLoading(true);
     try {
       const response = await api.get(`/company-reg/${id}`);
       setData(response.data);
-      setcmpStatus(response.data.Approve);
+      setSelectedStatus(response.data.cmpStatus);
     } catch (error) {
       toast.error("Error Fetching Data ", error);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -37,18 +34,35 @@ const CompanyRegistrationView = () => {
     try {
       const response = await api.put(`status/${id}?cmpId=${id}&newStatus=${status}`);
       if (response.status === 200) {
-        setSelectedStatus(status); // Update the status locally
-        getData(); // Refresh data after status change
-        toast.success(`Product ${status} Successfully!`);
+        getData();
+        handleClose();
+        toast.success(`Company Register Approve`);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      // toast.error(error);
+      console.error("Status Change Error:", error);
+    } finally {
+      setLoadIndicator(false);
+    }
+  };
+  const handleStatusChange2 = async (status) => {
+    setLoading(true);
+    try {
+      const response = await api.put(`status/${id}?cmpId=${id}&newStatus=${status}`);
+      if (response.status === 200) {
+        getData();
+        toast.success(`Company Register Rejected`);
         handleClose();
       } else {
         toast.error(response.data.message);
       }
     } catch (error) {
-      toast.error(`An error occurred while updating the product status.`);
+      // toast.error(error);
       console.error("Status Change Error:", error);
     } finally {
-      setLoadIndicator(false);
+      setLoading(false);
     }
   };
 
@@ -58,24 +72,21 @@ const CompanyRegistrationView = () => {
         <div className="loader-container">
           <PropagateLoader
             visible={true}
+            color="#a070ff"
             height="50"
             width="50"
-            size={15}
+            size={10}
             ariaLabel="hourglass-loading"
             wrapperStyle={{}}
             wrapperClass=""
-            colors={["#4066D5", "#151c4d"]}
+
           />
         </div>
       ) : (
-        <div
-          className="container-fluid px-2 minHeight"
-          style={{ borderRadius: "0" }}
-        >
-          <div
-            className="card shadow border-0 mb-2 top-header"
-            style={{ borderRadius: "0" }}
-          >
+        <div className="container-fluid px-2 minHeight"
+          style={{ borderRadius: "0" }}>
+          <div className="card shadow border-0 mb-2 top-header"
+            style={{ borderRadius: "0" }}>
             <div className="container-fluid py-4">
               <div className="row align-items-center">
                 <div className="col">
@@ -92,35 +103,12 @@ const CompanyRegistrationView = () => {
                         <span>Back</span>
                       </button>
                     </Link>
-
-                    {/* {(!cmpStatus || cmpStatus === "") ? (
+                    {selectedStatus === "Approve" ? (
                       <button
                         type="button"
-                        onClick={handleActivate}
-                        className="btn btn-success btn-sm me-2"
-                        disabled={loadIndicator}
-                      >
-                        {loadIndicator && (
-                          <span
-                            className="spinner-border spinner-border-sm me-2"
-                            aria-hidden="true"
-                          ></span>
-                        )}
-                        Approve
-                      </button>
-                    ) : (
-                      <button
+                        // onClick={() => handleStatusChange("Rejected")}
                         onClick={handleOpenModal}
                         className="btn btn-danger btn-sm me-2"
-                      >
-                        Rejected
-                      </button>
-                    )} */}
-                     {selectedStatus === "Approve" ? (
-                      <button
-                        type="button"
-                        onClick={() => handleStatusChange("Rejected")}
-                        className="btn btn-danger btn-sm me-2"
                         disabled={loadIndicator}
                       >
                         {loadIndicator && (
@@ -129,7 +117,7 @@ const CompanyRegistrationView = () => {
                             aria-hidden="true"
                           ></span>
                         )}
-                        Reject
+                        Rejected
                       </button>
                     ) : (
                       <button
@@ -154,26 +142,29 @@ const CompanyRegistrationView = () => {
           </div>
 
           {/* Card for displaying company details */}
-          <div
-            className="card shadow border-0 mb-2 minHeight"
-            style={{ borderRadius: "0" }}
-          >
+          <div className="card shadow border-0 mb-2 minHeight"
+            style={{ borderRadius: "0" }}>
             <div className="container">
 
               <div className="d-flex justify-content-center">
-                {/* <p className="my-2 d-flex"> */}
+                <p className="my-2 d-flex">
                   {data?.profileImg ? (
                     <img
                       src={data.profileImg}
-                      style={{ borderRadius: 70 }}
-                      width="100"
-                      height="100"
+                      style={{
+                        borderRadius: 70,
+                        width: "100px",
+                        height: "100px",
+                        maxWidth: "800px",
+                        maxHeight: "800px",
+                        objectFit: "cover",
+                      }}
                       alt="profile"
                     />
                   ) : (
                     <></>
                   )}
-                {/* </p> */}
+                </p>
               </div>
               <div className="row mt-2 p-3">
 
@@ -310,24 +301,25 @@ const CompanyRegistrationView = () => {
         </div>
       )}
 
-      {/* <Modal
+      <Modal
         show={showModal}
         backdrop="static"
         keyboard={false}
         onHide={handleClose}
+        size="sm"
       >
         <Modal.Header closeButton>
           <Modal.Title>Rjected Company</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure you want to Rejected this Company?</Modal.Body>
+        <Modal.Body>Rejected this Company?</Modal.Body>
         <Modal.Footer>
-          <button className="btn btn-sm btn-button" onClick={handleClose}>
+          <button className="btn btn-sm btn-light" onClick={handleClose}>
             Close
           </button>
           <button
             className="btn-sm btn-danger"
             type="submit"
-            onClick={handleDeActive}
+            onClick={() => handleStatusChange2("Rejected")}
             disabled={loading}
           >
             {loading && (
@@ -336,10 +328,10 @@ const CompanyRegistrationView = () => {
                 aria-hidden="true"
               ></span>
             )}
-            Deactivate
+            Rejected
           </button>
         </Modal.Footer>
-      </Modal> */}
+      </Modal>
     </div>
   );
 };

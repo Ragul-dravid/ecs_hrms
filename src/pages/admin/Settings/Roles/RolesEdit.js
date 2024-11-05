@@ -45,7 +45,7 @@ const RolesEdit = () => {
         const response = await api.put(`/company-reg/${id}`, values);
         if (response.status === 200) {
           toast.success(response.data.message);
-          navigate("/companyRegistration");
+          navigate("/roles");
         } else {
           toast.error(response.data.message);
         }
@@ -79,12 +79,12 @@ const RolesEdit = () => {
             <div className="row align-items-center">
               <div className="col">
                 <div className="d-flex align-items-center gap-4">
-                  <h1 className="h4 ls-tight headingColor">Edit Company Registration</h1>
+                  <h1 className="h4 ls-tight headingColor">Edit Roles</h1>
                 </div>
               </div>
               <div className="col-auto">
                 <div className="hstack gap-2 justify-content-end">
-                  <Link to="/companyRegistration">
+                  <Link to="/roles">
                     <button type="button" className="btn btn-sm btn-light">
                       <span>Back</span>
                     </button>

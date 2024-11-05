@@ -81,9 +81,10 @@ const Department = () => {
         <div className="loader-container">
           <PropagateLoader
             visible={true}
+            color="#a070ff"
             height="50"
             width="50"
-            size={15}
+            size={10}
             ariaLabel="hourglass-loading"
             wrapperStyle={{}}
             wrapperClass=""
@@ -152,13 +153,13 @@ const Department = () => {
                       {/* <td className="text-center">{data.deptDesc}</td> */}
                       <td className="text-center">
                         <div className="gap-2">
-                          <Link to={`/companyRegistration/view/${data.deptId}`}>
+                          <Link to={`/departments/view/${data.deptId}`}>
                             <button className="btn btn-light btn-sm  shadow-none border-none">
                               View
                             </button>
                           </Link>
                           <Link
-                            to={`/companyRegistration/edit/${data.deptId}`}
+                            to={`/departments/edit/${data.deptId}`}
                             className="px-2"
                           >
                             <button className="btn btn-light  btn-sm shadow-none border-none">

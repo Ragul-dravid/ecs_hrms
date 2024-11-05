@@ -57,13 +57,13 @@ const RolesAdd = () => {
               <div className="col">
                 <div className="d-flex align-items-center gap-4">
                   <h1 className="h4 ls-tight headingColor">
-                    Edit Company Registration
+                    Add Roles
                   </h1>
                 </div>
               </div>
               <div className="col-auto">
                 <div className="hstack gap-2 justify-content-end">
-                  <Link to="/companyRegistration">
+                  <Link to="/roles">
                     <button type="button" className="btn btn-sm btn-light">
                       <span>Back</span>
                     </button>
@@ -102,11 +102,10 @@ const RolesAdd = () => {
                 <input
                   type="text"
                   name="companyCompOwner"
-                  className={`form-control form-control-sm ${
-                    formik.touched.companyCompOwner && formik.errors.companyCompOwner
-                      ? "is-invalid"
-                      : ""
-                  }`}
+                  className={`form-control form-control-sm ${formik.touched.companyCompOwner && formik.errors.companyCompOwner
+                    ? "is-invalid"
+                    : ""
+                    }`}
                   {...formik.getFieldProps("companyCompOwner")}
                 />
                 {formik.touched.companyCompOwner && formik.errors.companyCompOwner && (

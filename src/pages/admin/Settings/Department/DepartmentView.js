@@ -30,9 +30,10 @@ const DepartmentView = () => {
         <div className="loader-container">
           <PropagateLoader
             visible={true}
+            color="#a070ff"
             height="50"
             width="50"
-            size={15}
+            size={10}
             ariaLabel="hourglass-loading"
             wrapperStyle={{}}
             wrapperClass=""
@@ -53,13 +54,13 @@ const DepartmentView = () => {
                 <div className="col">
                   <div className="d-flex align-items-center gap-4">
                     <h1 className="h4 ls-tight headingColor">
-                      Company Registration Details
+                      View Department
                     </h1>
                   </div>
                 </div>
                 <div className="col-auto">
                   <div className="hstack gap-2 justify-content-start">
-                    <Link to="/companyRegistration">
+                    <Link to="/departments">
                       <button type="submit" className="btn btn-sm btn-light">
                         <span>Back</span>
                       </button>
