@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { FaRegTrashAlt } from "react-icons/fa";
 import api from "../../../../config/URL";
 
-const EmpQualificationDetailsAdd = forwardRef(
+const EmpQualificationDetailsEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const [rows, setRows] = useState([{}]);
     const [rows1, setRows1] = useState([{}]);
@@ -447,4 +447,4 @@ const EmpQualificationDetailsAdd = forwardRef(
   }
 );
 
-export default EmpQualificationDetailsAdd;
+export default EmpQualificationDetailsEdit;

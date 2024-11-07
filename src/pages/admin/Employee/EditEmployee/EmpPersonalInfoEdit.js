@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import api from "../../../../config/URL";
 
-const EmpPersonalInfoAdd = forwardRef(
+const EmpPersonalInfoEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const [selectedIdType, setSelectedIdType] = useState("nric");
     const [employeProfile, setEmployeeProfile] = useState("");
@@ -382,4 +382,4 @@ const EmpPersonalInfoAdd = forwardRef(
   }
 );
 
-export default EmpPersonalInfoAdd;
+export default EmpPersonalInfoEdit;

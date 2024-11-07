@@ -3,14 +3,12 @@ import "datatables.net-dt";
 import "datatables.net-responsive-dt";
 import $ from "jquery";
 import { Link } from "react-router-dom";
-import { FaEye, FaPlus } from "react-icons/fa";
-import api from "../../../../config/URL";
+import { FaPlus } from "react-icons/fa";
+import api from "../../../config/URL";
 import { PropagateLoader } from 'react-spinners';
-import DeleteModel from "../../../../components/admin/DeleteModel";
-import { BiEditAlt } from "react-icons/bi";
-import { HiOutlineEye } from "react-icons/hi";
+import DeleteModel from "../../../components/admin/DeleteModel";
 
-const CompanyRegistration = () => {
+const Payroll = () => {
   const tableRef = useRef(null);
   // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
@@ -19,7 +17,7 @@ const CompanyRegistration = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("/company-reg");
+        const response = await api.get("/public-holidays");
         setDatas(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -61,7 +59,7 @@ const CompanyRegistration = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("/company-reg");
+      const response = await api.get("/public-holidays");
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -95,27 +93,25 @@ const CompanyRegistration = () => {
         </div>
       ) : (
         <div className="container-fluid px-2 minHeight">
-          <div className="card shadow border-0 mb-2 top-header"
-            style={{ borderRadius: "0" }}>
+          <div
+            className="card shadow border-0 mb-2 top-header"
+            style={{ borderRadius: "0" }}
+          >
             <div className="container-fluid py-4">
               <div className="row align-items-center justify-content-between ">
                 <div className="col">
                   <div className="d-flex align-items-center gap-4">
-                    <h1 className="h4 ls-tight headingColor ">
-                      Company Registration
-                    </h1>
+                    <h1 className="h4 ls-tight headingColor ">Holiday</h1>
                   </div>
                 </div>
                 <div className="col-auto">
                   <div className="hstack gap-2 justify-content-end">
-                    {/* {/ {storedScreens?.levelCreate && ( /}
-                    {/* {/ )} /} */}
-                    <Link to="/companyRegistration/add">
+                    <Link to="/holidays/add">
                       <button
                         type="submit"
                         className="btn btn-sm btn-button btn-primary"
                       >
-                        <span cla>
+                        <span>
                           Add <FaPlus className="pb-1" />
                         </span>
                       </button>
@@ -125,9 +121,10 @@ const CompanyRegistration = () => {
               </div>
             </div>
           </div>
-          {/* <hr className="removeHrMargin"></hr> */}
-          <div className="card shadow border-0 my-2"
-            style={{ borderRadius: "0" }}>
+          <div
+            className="card shadow border-0 my-2"
+            style={{ borderRadius: "0" }}
+          >
             <div className="table-responsive p-2 minHeight">
               <table ref={tableRef} className="display table ">
                 <thead className="thead-light">
@@ -136,17 +133,18 @@ const CompanyRegistration = () => {
                       S.NO
                     </th>
                     <th scope="col" className="text-center">
-                      Company ID
+                      Holiday Name
                     </th>
                     <th scope="col" className="text-center">
-                      Company Name
+                      Start Date
                     </th>
+                    {/* <th scope="col" className="text-center">
+                      Mode Of Working
+                    </th> */}
                     <th scope="col" className="text-center">
-                      Company Email
+                      End Date
                     </th>
-                    <th scope="col" className="text-center">
-                      Company Status
-                    </th>
+
                     <th scope="col" className="text-center">
                       ACTION
                     </th>
@@ -156,36 +154,36 @@ const CompanyRegistration = () => {
                   {datas.map((data, index) => (
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
-                      <td className="text-center">{data.cmpUniqId}</td>
-                      <td className="text-center">{data.cmpName}</td>
-                      <td className="text-center">{data.cmpEmail}</td>
+                      <td className="text-center">{data.pubHolidayName}</td>
                       <td className="text-center">
-                        {data.cmpStatus === "Approve" ? (
-                          <span className="badge-approved">Approved</span>
-                        ) : data.cmpStatus === "Rejected" ? (
-                          <span className="badge-rejected">Rejected</span>
-                        ) : (
-                          <span className="badge-pending">Pending</span>
-                        )}
+                        {" "}
+                        {new Date(data.startDate).toLocaleDateString()}
                       </td>
+                      {/* <td className="text-center">
+                        {data.attendanceModeOfWorking}
+                      </td> */}
+                      <td className="text-center">
+                        {new Date(data.endDate).toLocaleDateString()}
+                      </td>
+
                       <td className="text-center">
                         <div className="gap-2">
-                          <Link to={`/companyRegistration/view/${data.cmpId}`}>
-                            <button className="btn btn-sm p-1 shadow-none border-none">
-                              <HiOutlineEye />
+                          <Link to={`/holidays/view/${data.pubHolidayId}`}>
+                            <button className="btn btn-light btn-sm  shadow-none border-none">
+                              View
                             </button>
                           </Link>
                           <Link
-                            to={`/companyRegistration/edit/${data.cmpId}`}
+                            to={`/holidays/edit/${data.pubHolidayId}`}
                             className="px-2"
                           >
-                            <button className="btn btn-sm p-1 shadow-none border-none">
-                              <BiEditAlt />
+                            <button className="btn btn-light  btn-sm shadow-none border-none">
+                              Edit
                             </button>
                           </Link>
                           <DeleteModel
                             onSuccess={refreshData}
-                            path={`/company-reg/${data.cmpId}`}
+                            path={`/public-holidays/${data.pubHolidayId}`}
                           />
                         </div>
                       </td>
@@ -202,4 +200,4 @@ const CompanyRegistration = () => {
   );
 };
 
-export default CompanyRegistration;
+export default Payroll;

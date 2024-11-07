@@ -29,7 +29,7 @@ import DepartmentEdit from "../pages/admin/Settings/Department/DepartmentEdit";
 import DepartmentView from "../pages/admin/Settings/Department/DepartmentView";
 import Employee from "../pages/admin/Employee/Employee";
 import EmployeeAdminAdd from "../pages/admin/Employee/EmpoyeeAdminAdd.js";
-import EmployeeAdd from "../pages/admin/Employee/EmployeeAdd.js";
+import EmployeeEdit from "../pages/admin/Employee/EmployeeEdit.js";
 import EmployeeView from "../pages/admin/Employee/EmployeeView";
 import Deduction from "../pages/admin/Deduction/Deduction.js";
 import DeductionAdd from "../pages/admin/Deduction/DeductionAdd.js";
@@ -53,6 +53,7 @@ import ExpenseEdit from "../pages/admin/Expense/ExpenseEdit.js";
 import ExpenseView from "../pages/admin/Expense/ExpenseView.js";
 import Claims from "../pages/admin/Claims/Claims.js";
 import ClaimsAdd from "../pages/admin/Claims/ClaimsAdd.js";
+
 
 function Admin({ handleLogout }) {
   return (
@@ -135,7 +136,7 @@ function Admin({ handleLogout }) {
                   {/* {/ Employee /} */}
                   <Route path="/employee" element={<Employee />} />
                   <Route path="/employee/add" element={<EmployeeAdminAdd />} />
-                  <Route path="/employee/edit/:id" element={<EmployeeAdd />} />
+                  <Route path="/employee/edit/:id" element={<EmployeeEdit />} />
                   <Route path="/employee/view/:id" element={<EmployeeView />} />
 
                   <Route path="/holidays" element={<Holiday />} />

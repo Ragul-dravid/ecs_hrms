@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import api from "../../../../config/URL";
 
-const EmpContactDetailsAdd = forwardRef(
+const EmpContactDetailsEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const validationSchema = Yup.object().shape({
       dob: Yup.string().required("*Date of birth is required"),
@@ -364,4 +364,4 @@ const EmpContactDetailsAdd = forwardRef(
   }
 );
 
-export default EmpContactDetailsAdd;
+export default EmpContactDetailsEdit;

@@ -7,17 +7,20 @@ import { FaPlus } from "react-icons/fa";
 import api from "../../../config/URL";
 import { PropagateLoader } from 'react-spinners';
 import DeleteModel from "../../../components/admin/DeleteModel";
+import { HiOutlineEye } from "react-icons/hi";
+import { BiEditAlt } from "react-icons/bi";
 
 const Employee = () => {
   const tableRef = useRef(null);
   // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const cmpId = sessionStorage.getItem("cmpId");
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("emp-reg-details");
+        const response = await api.get(`emp-reg-details-by-companyId/${cmpId}`);
         setDatas(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -59,7 +62,7 @@ const Employee = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("/company-reg");
+      const response = await api.get(`emp-reg-details-by-companyId/${cmpId}`);
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -147,9 +150,6 @@ const Employee = () => {
                       EMPLOYEE Email
                     </th>
                     <th scope="col" className="text-center">
-                      EMPLOYEE TYPE
-                    </th>
-                    <th scope="col" className="text-center">
                       ACTION
                     </th>
                   </tr>
@@ -161,20 +161,19 @@ const Employee = () => {
                       <td className="text-center">{data.employeeId}</td>
                       <td className="text-center">{data.firstName + " " + data.lastName}</td>
                       <td className="text-center">{data.email}</td>
-                      <td className="text-center">{data.empType}</td>
                       <td className="text-center">
                         <div className="gap-2">
                           <Link to={`/employee/view/${data.id}`}>
-                            <button className="btn btn-light btn-sm  shadow-none border-none">
-                              View
+                            <button className="btn p-1  shadow-none border-none">
+                            <HiOutlineEye />
                             </button>
                           </Link>
                           <Link
                             to={`/employee/edit/${data.id}`}
                             className="px-2"
                           >
-                            <button className="btn btn-light  btn-sm shadow-none border-none">
-                              Edit
+                            <button className="btn p-1 shadow-none border-none">
+                            <BiEditAlt />
                             </button>
                           </Link>
                           <DeleteModel
