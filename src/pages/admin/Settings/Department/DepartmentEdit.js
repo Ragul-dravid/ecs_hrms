@@ -19,9 +19,9 @@ const DepartmentEdit = () => {
   // useFormik hook for form handling
   const formik = useFormik({
     initialValues: {
-      cmpId: cmpId,
-      deptName:"",
-      deptDesc:""
+      deptCmpId: cmpId,
+      deptName: "",
+      deptDesc: ""
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -76,7 +76,7 @@ const DepartmentEdit = () => {
                     {loading ? (
                       <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
                     ) : (
-                      <span>Save</span>
+                      <span>Update</span>
                     )}
                   </button>
                 </div>

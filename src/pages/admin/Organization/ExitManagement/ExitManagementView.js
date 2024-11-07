@@ -16,6 +16,11 @@ const ExitManagementView = () => {
       try {
         const response = await api.get(`/exit-management/${id}`);
         setData(response.data);
+        setData({
+          ...response.data,
+          exitMgmtDateOfApply: response.data.exitMgmtDateOfApply?.substring(0, 10),
+          dateOfRelieving: response.data.dateOfRelieving?.substring(0, 10)
+        });
       } catch (e) {
         toast.error("Error fetching data: ", e?.response?.data?.message);
       } finally {
@@ -79,23 +84,6 @@ const ExitManagementView = () => {
           >
             <div className="container">
               <div className="row mt-2 p-3">
-                {/* Company Name */}
-                <div className="col-md-6 col-12">
-                  <div className="row mb-3">
-                    <div className="col-6 d-flex justify-content-start align-items-center">
-                      <p className="text-sm">
-                        <b>Company Name</b>
-                      </p>
-                    </div>
-                    <div className="col-6">
-                      <p className="text-muted text-sm">
-                        : {data.cmpName || ""}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Company Email */}
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
@@ -111,7 +99,6 @@ const ExitManagementView = () => {
                   </div>
                 </div>
 
-                {/* Phone Number */}
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
@@ -127,7 +114,6 @@ const ExitManagementView = () => {
                   </div>
                 </div>
 
-                {/* Registration Number */}
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
@@ -143,7 +129,6 @@ const ExitManagementView = () => {
                   </div>
                 </div>
 
-                {/* Tax Code */}
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
@@ -159,7 +144,6 @@ const ExitManagementView = () => {
                   </div>
                 </div>
 
-                {/* Company Address */}
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
@@ -175,7 +159,6 @@ const ExitManagementView = () => {
                   </div>
                 </div>
 
-                {/* City */}
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">

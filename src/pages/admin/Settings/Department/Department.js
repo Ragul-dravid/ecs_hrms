@@ -7,17 +7,20 @@ import { FaPlus } from "react-icons/fa";
 import api from "../../../../config/URL";
 import { PropagateLoader } from 'react-spinners';
 import DeleteModel from "../../../../components/admin/DeleteModel";
+import { BiEditAlt } from "react-icons/bi";
+import { HiOutlineEye } from "react-icons/hi";
 
 const Department = () => {
   const tableRef = useRef(null);
   // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const cmpId = sessionStorage.getItem("cmpId");
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("/department");
+        const response = await api.get(`/department-by-company/${cmpId}`);
         setDatas(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -154,16 +157,16 @@ const Department = () => {
                       <td className="text-center">
                         <div className="gap-2">
                           <Link to={`/departments/view/${data.deptId}`}>
-                            <button className="btn btn-light btn-sm  shadow-none border-none">
-                              View
+                            <button className="btn btn-sm p-1 shadow-none border-none">
+                              <HiOutlineEye />
                             </button>
                           </Link>
                           <Link
                             to={`/departments/edit/${data.deptId}`}
                             className="px-2"
                           >
-                            <button className="btn btn-light  btn-sm shadow-none border-none">
-                              Edit
+                            <button className="btn btn-sm p-1 shadow-none border-none">
+                              <BiEditAlt />
                             </button>
                           </Link>
                           <DeleteModel
@@ -184,5 +187,4 @@ const Department = () => {
     </div>
   );
 };
-
 export default Department;

@@ -7,17 +7,21 @@ import { FaPlus } from "react-icons/fa";
 import api from "../../../../config/URL";
 import { PropagateLoader } from 'react-spinners';
 import DeleteModel from "../../../../components/admin/DeleteModel";
+import { BiEditAlt } from "react-icons/bi";
+import { HiOutlineEye } from "react-icons/hi";
 
 const ExitManagement = () => {
   const tableRef = useRef(null);
   // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const cmpId = sessionStorage.getItem("cmpId");
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("/exit-management");
+        const response = await api.get(`/exitManagement-empName/${cmpId}`);
+
         setDatas(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -59,7 +63,7 @@ const ExitManagement = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("/exit-management");
+      const response = await api.get(`/exitManagement-empName/${cmpId}`);
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -170,16 +174,16 @@ const ExitManagement = () => {
                       <td className="text-center">
                         <div className="gap-2">
                           <Link to={`/exitmangement/view/${data.exitMgmtId}`}>
-                            <button className="btn btn-light btn-sm  shadow-none border-none">
-                              View
+                            <button className="btn btn-sm p-1 shadow-none border-none">
+                              <HiOutlineEye />
                             </button>
                           </Link>
                           <Link
                             to={`/exitmangement/edit/${data.exitMgmtId}`}
                             className="px-2"
                           >
-                            <button className="btn btn-light  btn-sm shadow-none border-none">
-                              Edit
+                            <button className="btn btn-sm p-1 shadow-none border-none">
+                              <BiEditAlt />
                             </button>
                           </Link>
                           <DeleteModel

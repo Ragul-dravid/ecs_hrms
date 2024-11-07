@@ -15,6 +15,11 @@ const HolidayView = () => {
       try {
         const response = await api.get(`/public-holidays/${id}`);
         setData(response.data);
+        setData({
+          ...response.data,
+          startDate: response.data.startDate?.substring(0, 10),
+          endDate: response.data.endDate?.substring(0, 10)
+        });
       } catch (e) {
         toast.error("Error fetching data: ", e?.response?.data?.message);
       } finally {

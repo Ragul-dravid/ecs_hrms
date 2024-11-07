@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Invoice from "../../../assets/Logo.png";
 import api from "../../../config/URL";
+import profileImg from "../../../assets/image.png";
 import { toast } from "react-toastify";
 import { PropagateLoader } from 'react-spinners';
 
@@ -51,7 +52,7 @@ function EmployeeView() {
               <div className="row align-items-center">
                 <div className="col">
                   <div className="d-flex align-items-center gap-4">
-                    <h1 className="h4 ls-tight headingColor">View Employee</h1>
+                    <h1 className="h4 ls-tight headingColor">View Employee Details</h1>
                   </div>
                 </div>
                 <div className="col-auto">
@@ -61,17 +62,50 @@ function EmployeeView() {
                         <span>Back</span>
                       </button>
                     </Link>
-                    <Link to="/employee/add">
-                      <button type="button" className="btn btn-sm btn-primary">
-                        <span>Update</span>
-                      </button>
-                    </Link>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="card shadow border-0 my-2" style={{ borderRadius: "0" }}>
+
+            <div className="d-flex justify-content-start px-5 bg-light mt-5"
+              style={{
+                maxHeight: "40vh"
+              }}
+            >
+              <p className="my-2 d-flex">
+                {data?.profileImg ? (
+                  <img
+                    src={data.profileImg}
+                    style={{
+                      borderRadius: 100,
+                      width: "100px",
+                      height: "100px",
+                      // maxWidth: "800px",
+                      // maxHeight: "800px",
+                      // objectFit: "cover",
+                    }}
+                    alt="profile"
+                  />
+                ) : (
+                  <>
+                    <img
+                      src={profileImg}
+                      style={{
+                        marginBottom: "-8rem",
+                        borderRadius: 100,
+                        width: "200px",
+                        height: "200px",
+                        // maxWidth: "800px",
+                        // maxHeight: "800px",
+                        // objectFit: "cover",
+                      }}
+                      alt="profile"
+                    />
+                  </>
+                )}
+              </p>
+            </div>
+
             <div className="container mb-5">
               <div className="container mt-3">
                 <h4>Contact Details</h4>

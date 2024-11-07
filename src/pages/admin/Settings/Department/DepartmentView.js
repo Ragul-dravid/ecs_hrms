@@ -13,7 +13,7 @@ const DepartmentView = () => {
     const getData = async () => {
       setLoading(true); // Change this to true to show loader while fetching data
       try {
-        const response = await api.get(`/company-reg/${id}`);
+        const response = await api.get(`/department/${id}`);
         setData(response.data);
       } catch (e) {
         toast.error("Error fetching data: ", e?.response?.data?.message);

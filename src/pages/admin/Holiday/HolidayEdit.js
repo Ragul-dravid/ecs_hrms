@@ -22,25 +22,19 @@ const HolidayEdit = () => {
   // useFormik hook for form handling
   const formik = useFormik({
     initialValues: {
-      cmpId: cmpId,
+      pubHolidayCmpId: cmpId,
+      publicHolidayOwner: "Sivasankari",
       pubHolidayId: "",
       pubHolidayCountryCode: "",
       pubHolidayName: "",
-      //   pubHolidayDate: "",
       pubHolidayType: "",
       startDate: "",
       endDate: "",
-      //   publicHolidayOwner: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
       try {
-        const payload = {
-          pubHolidayName: values.pubHolidayName,
-          startDate: values.startDate,
-          endDate: values.endDate,
-        };
         const response = await api.put(`/public-holidays/${id}`, values);
         if (response.status === 200) {
           toast.success(response.data.message);
@@ -60,7 +54,12 @@ const HolidayEdit = () => {
     const getData = async () => {
       try {
         const response = await api.get(`/public-holidays/${id}`);
-        formik.setValues(response.data); // Load the data into the form
+        formik.setValues(response.data);
+        formik.setValues({
+          ...response.data,
+          startDate: response.data.startDate?.substring(0, 10),
+          endDate: response.data.endDate?.substring(0, 10)
+        });
       } catch (e) {
         toast.error("Error fetching data: ", e?.response?.data?.message);
       }
@@ -102,7 +101,7 @@ const HolidayEdit = () => {
                         aria-hidden="true"
                       ></span>
                     ) : (
-                      <span>Save</span>
+                      <span>Update</span>
                     )}
                   </button>
                 </div>
@@ -126,12 +125,11 @@ const HolidayEdit = () => {
                 <input
                   type="text"
                   name="pubHolidayName"
-                  className={`form-control form-control-sm ${
-                    formik.touched.pubHolidayName &&
+                  className={`form-control form-control-sm ${formik.touched.pubHolidayName &&
                     formik.errors.pubHolidayName
-                      ? "is-invalid"
-                      : ""
-                  }`}
+                    ? "is-invalid"
+                    : ""
+                    }`}
                   {...formik.getFieldProps("pubHolidayName")}
                 />
                 {formik.touched.pubHolidayName &&
@@ -148,12 +146,11 @@ const HolidayEdit = () => {
                 <input
                   type="text"
                   name="pubHolidayType"
-                  className={`form-control form-control-sm ${
-                    formik.touched.pubHolidayType &&
+                  className={`form-control form-control-sm ${formik.touched.pubHolidayType &&
                     formik.errors.pubHolidayType
-                      ? "is-invalid"
-                      : ""
-                  }`}
+                    ? "is-invalid"
+                    : ""
+                    }`}
                   {...formik.getFieldProps("pubHolidayType")}
                 />
                 {formik.touched.pubHolidayType &&
@@ -170,12 +167,11 @@ const HolidayEdit = () => {
                 <input
                   type="text"
                   name="pubHolidayCountryCode"
-                  className={`form-control form-control-sm ${
-                    formik.touched.pubHolidayCountryCode &&
+                  className={`form-control form-control-sm ${formik.touched.pubHolidayCountryCode &&
                     formik.errors.pubHolidayCountryCode
-                      ? "is-invalid"
-                      : ""
-                  }`}
+                    ? "is-invalid"
+                    : ""
+                    }`}
                   {...formik.getFieldProps("pubHolidayCountryCode")}
                 />
                 {formik.touched.pubHolidayCountryCode &&
@@ -192,11 +188,10 @@ const HolidayEdit = () => {
                 <input
                   type="date"
                   name="startDate"
-                  className={`form-control form-control-sm ${
-                    formik.touched.startDate && formik.errors.startDate
-                      ? "is-invalid"
-                      : ""
-                  }`}
+                  className={`form-control form-control-sm ${formik.touched.startDate && formik.errors.startDate
+                    ? "is-invalid"
+                    : ""
+                    }`}
                   {...formik.getFieldProps("startDate")}
                 />
                 {formik.touched.startDate && formik.errors.startDate && (
@@ -212,11 +207,10 @@ const HolidayEdit = () => {
                 <input
                   type="date"
                   name="endDate"
-                  className={`form-control form-control-sm ${
-                    formik.touched.endDate && formik.errors.endDate
-                      ? "is-invalid"
-                      : ""
-                  }`}
+                  className={`form-control form-control-sm ${formik.touched.endDate && formik.errors.endDate
+                    ? "is-invalid"
+                    : ""
+                    }`}
                   {...formik.getFieldProps("endDate")}
                 />
                 {formik.touched.endDate && formik.errors.endDate && (

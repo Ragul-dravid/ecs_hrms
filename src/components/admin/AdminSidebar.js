@@ -17,6 +17,7 @@ import { MdOutlineHolidayVillage } from "react-icons/md";
 
 function AdminSidebar({ handleLogout }) {
   const navigate = useNavigate();
+  const cmpId = sessionStorage.getItem("cmpId");
 
   const handleLogOutClick = () => {
     handleLogout();
@@ -92,14 +93,19 @@ function AdminSidebar({ handleLogout }) {
                 {activeSubmenu === "Organization" && (
                   <ul className="list-unstyled p-0">
                     <li>
-                      <NavLink className="nav-link" to="/companyRegistration">
-                        <span style={{ display: "flex", alignItems: "center" }}>
-                          <BsBullseye
-                            style={{ fontSize: "xx-small", marginRight: "8px" }}
-                          />
-                          Company Registration
-                        </span>
-                      </NavLink>
+                      {cmpId === "96" ? (
+                        <NavLink className="nav-link" to="/companyRegistration">
+                          <span style={{ display: "flex", alignItems: "center" }}>
+                            <BsBullseye
+                              style={{ fontSize: "xx-small", marginRight: "8px" }}
+                            />
+                            Company Registration
+                          </span>
+                        </NavLink>
+                      ) : (
+                        <></>
+                      )
+                      }
                     </li>
                     <li>
                       <NavLink className="nav-link" to="/companyCompliance">

@@ -17,7 +17,7 @@ const DepartmentAdd = () => {
 
   const formik = useFormik({
     initialValues: {
-      cmpId: cmpId,
+      deptCmpId: cmpId,
       deptName: "",
       deptDesc: ""
     },

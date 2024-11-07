@@ -156,7 +156,7 @@ const CompanyRegistration = () => {
                   {datas.map((data, index) => (
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
-                      <td className="text-center">{data.cmpId}</td>
+                      <td className="text-center">{data.cmpUniqId}</td>
                       <td className="text-center">{data.cmpName}</td>
                       <td className="text-center">{data.cmpEmail}</td>
                       <td className="text-center">
@@ -171,16 +171,16 @@ const CompanyRegistration = () => {
                       <td className="text-center">
                         <div className="gap-2">
                           <Link to={`/companyRegistration/view/${data.cmpId}`}>
-                            <button className="btn btn-sm p-1  shadow-none border-none">
-                            <HiOutlineEye />
+                            <button className="btn btn-sm p-1 shadow-none border-none">
+                              <HiOutlineEye />
                             </button>
                           </Link>
                           <Link
                             to={`/companyRegistration/edit/${data.cmpId}`}
                             className="px-2"
                           >
-                            <button className="btn  btn-sm p-1 shadow-none border-none">
-                            <BiEditAlt />
+                            <button className="btn btn-sm p-1 shadow-none border-none">
+                              <BiEditAlt />
                             </button>
                           </Link>
                           <DeleteModel
