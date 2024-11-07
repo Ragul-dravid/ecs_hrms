@@ -19,7 +19,7 @@ const validationSchema = Yup.object().shape({
   )
 });
 
-const EmpPreviousCompanyAdd = forwardRef(
+const EmpPreviousCompanyEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const [rows, setRows] = useState([{}]);
 
@@ -67,7 +67,7 @@ const EmpPreviousCompanyAdd = forwardRef(
     });
 
     useImperativeHandle(ref, () => ({
-      previousCompanyAdd: formik.handleSubmit,
+      previousCompany: formik.handleSubmit,
     }));
 
     return (
@@ -263,4 +263,4 @@ const EmpPreviousCompanyAdd = forwardRef(
   }
 );
 
-export default EmpPreviousCompanyAdd;
+export default EmpPreviousCompanyEdit;

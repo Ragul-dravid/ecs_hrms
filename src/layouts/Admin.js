@@ -53,6 +53,10 @@ import ExpenseEdit from "../pages/admin/Expense/ExpenseEdit.js";
 import ExpenseView from "../pages/admin/Expense/ExpenseView.js";
 import Claims from "../pages/admin/Claims/Claims.js";
 import ClaimsAdd from "../pages/admin/Claims/ClaimsAdd.js";
+import Payroll from "../pages/admin/Payroll/Payroll.js";
+import PayrollAdd from "../pages/admin/Payroll/PayrollAdd.js";
+import PayrollEdit from "../pages/admin/Payroll/PayrollEdit.js";
+import PayrollView from "../pages/admin/Payroll/PayrollView.js";
 
 
 function Admin({ handleLogout }) {
@@ -139,21 +143,25 @@ function Admin({ handleLogout }) {
                   <Route path="/employee/edit/:id" element={<EmployeeEdit />} />
                   <Route path="/employee/view/:id" element={<EmployeeView />} />
 
+                  {/* Holiday */}
                   <Route path="/holidays" element={<Holiday />} />
                   <Route path="/holidays/add" element={<HolidayAdd />} />
                   <Route path="/holidays/edit/:id" element={<HolidayEdit />} />
                   <Route path="/holidays/view/:id" element={<HolidayView />} />
 
+                  {/* Claims */}
                   <Route path="/claims" element={<Claims />} />
                   <Route path="/claims/add" element={<ClaimsAdd />} />
                   <Route path="/holidays/edit/:id" element={<HolidayEdit />} />
                   <Route path="/holidays/view/:id" element={<HolidayView />} />
 
+                  {/* Expense */}
                   <Route path="/expense" element={<Expense />} />
                   <Route path="/expense/add" element={<ExpenseAdd />} />
                   <Route path="/expense/edit/:id" element={<ExpenseEdit />} />
                   <Route path="/expense/view/:id" element={<ExpenseView />} />
 
+                  {/* LeaveRequest */}
                   <Route path="/leaverequest" element={<LeaveRequest />} />
                   <Route
                     path="/leaverequest/add"
@@ -167,6 +175,8 @@ function Admin({ handleLogout }) {
                     path="/leaverequest/view/:id"
                     element={<LeaveRequestView />}
                   />
+
+                  {/* Attendance */}
                   <Route path="/attendance" element={<Attendance />} />
                   <Route path="/attendance/add" element={<AttendanceAdd />} />
                   <Route
@@ -178,6 +188,7 @@ function Admin({ handleLogout }) {
                     element={<AttendanceView />}
                   />
 
+                  { /* Deduction */}
                   <Route path="/deduction" element={<Deduction />} />
                   <Route path="/deduction/add" element={<DeductionAdd />} />
                   <Route
@@ -188,6 +199,13 @@ function Admin({ handleLogout }) {
                     path="/deduction/view/:id"
                     element={<DeductionView />}
                   />
+
+                   {/* Holiday */}
+                  <Route path="/payroll" element={<Payroll />} />
+                  <Route path="/payroll/add" element={<PayrollAdd />} />
+                  <Route path="/payroll/edit/:id" element={<PayrollEdit />} />
+                  <Route path="/payroll/view/:id" element={<PayrollView />} />
+                  
                 </Routes>
               </div>
             </main>

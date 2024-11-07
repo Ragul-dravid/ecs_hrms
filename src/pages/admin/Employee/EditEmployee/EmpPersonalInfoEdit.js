@@ -115,7 +115,7 @@ const EmpPersonalInfoEdit = forwardRef(
     }, []);
 
     useImperativeHandle(ref, () => ({
-      personalInfoAdd: formik.handleSubmit,
+      personalInfo: formik.handleSubmit,
     }));
 
     const [password, setPassword] = useState("");

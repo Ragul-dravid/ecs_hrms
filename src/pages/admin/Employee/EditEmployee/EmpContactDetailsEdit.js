@@ -62,7 +62,7 @@ const EmpContactDetailsEdit = forwardRef(
     });
 
     useImperativeHandle(ref, () => ({
-      contactDetailsAdd: formik.handleSubmit,
+      contactDetails: formik.handleSubmit,
     }));
 
     const [password, setPassword] = useState("");

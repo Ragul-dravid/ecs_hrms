@@ -71,7 +71,7 @@ const EmpQualificationDetailsEdit = forwardRef(
     });
 
     useImperativeHandle(ref, () => ({
-      qualificationDetailsAdd: formik.handleSubmit,
+      qualificationDetails: formik.handleSubmit,
     }));
 
     return (

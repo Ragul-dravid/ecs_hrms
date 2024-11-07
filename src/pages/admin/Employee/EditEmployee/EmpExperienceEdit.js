@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { FaRegTrashAlt } from "react-icons/fa";
 import api from "../../../../config/URL";
 
-const EmpExperienceAdd = forwardRef(
+const EmpExperienceEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const [rows, setRows] = useState([{}]);
 
@@ -74,7 +74,7 @@ const EmpExperienceAdd = forwardRef(
     });
 
     useImperativeHandle(ref, () => ({
-      experienceAdd: formik.handleSubmit,
+      experience: formik.handleSubmit,
     }));
 
     return (
@@ -278,4 +278,4 @@ const EmpExperienceAdd = forwardRef(
   }
 );
 
-export default EmpExperienceAdd;
+export default EmpExperienceEdit;

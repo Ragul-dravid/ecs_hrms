@@ -4,18 +4,16 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 
-import EmpQualificationDetailsAdd from "./EditEmployee/EmpQualificationDetailsEdit";
-import EmpExperienceAdd from "./EditEmployee/EmpExperienceAdd";
-import EmpPreviousCompanyAdd from "./EditEmployee/EmpPreviousCompanyAdd";
-import EmpEmergencyContactAdd from "./EditEmployee/EmpEmergencyContactAdd";
-import EmpBankAccountAdd from "./EditEmployee/EmpBankAccountAdd";
-
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
-import { useParams } from "react-router-dom";
 import EmpPersonalInfoEdit from "./EditEmployee/EmpPersonalInfoEdit";
 import EmpContactDetailsEdit from "./EditEmployee/EmpContactDetailsEdit";
 import EmpQualificationDetailsEdit from "./EditEmployee/EmpQualificationDetailsEdit";
+import EmpExperienceEdit from "./EditEmployee/EmpExperienceEdit";
+import EmpPreviousCompanyEdit from "./EditEmployee/EmpPreviousCompanyEdit";
+import EmpEmergencyContactEdit from "./EditEmployee/EmpEmergencyContactEdit";
+import EmpBankAccountEdit from "./EditEmployee/EmpBankAccountEdit";
+import { useParams } from "react-router-dom";
 
 const steps = [
   { tooltip: "Personal Information" },
@@ -61,32 +59,32 @@ function EmployeeEdit() {
     switch (activeStep.toString()) {
       case "0":
         if (childRef.current) {
-          childRef.current.personalInfoAdd();
+          childRef.current.personalInfo();
         }
         break;
       case "1":
         if (childRef.current) {
-          childRef.current.contactDetailsAdd();
+          childRef.current.contactDetails();
         }
         break;
       case "2":
         if (childRef.current) {
-          childRef.current.qualificationDetailsAdd();
+          childRef.current.qualificationDetails();
         }
         break;
       case "3":
         if (childRef.current) {
-          childRef.current.experienceAdd();
+          childRef.current.experience();
         }
         break;
       case "4":
         if (childRef.current) {
-          childRef.current.previousCompanyAdd();
+          childRef.current.previousCompany();
         }
         break;
       case "5":
         if (childRef.current) {
-          childRef.current.emergencyContactAdd();
+          childRef.current.emergencyContact();
         }
         break;
       case "6":
@@ -147,7 +145,7 @@ function EmployeeEdit() {
             />
           )}
           {activeStep === 3 && (
-            <EmpExperienceAdd
+            <EmpExperienceEdit
               formData={formData}
               ref={childRef}
               setFormData={setFormData}
@@ -156,7 +154,7 @@ function EmployeeEdit() {
             />
           )}
           {activeStep === 4 && (
-            <EmpPreviousCompanyAdd
+            <EmpPreviousCompanyEdit
               formData={formData}
               ref={childRef}
               setFormData={setFormData}
@@ -165,7 +163,7 @@ function EmployeeEdit() {
             />
           )}
           {activeStep === 5 && (
-            <EmpEmergencyContactAdd
+            <EmpEmergencyContactEdit
               formData={formData}
               ref={childRef}
               setFormData={setFormData}
@@ -174,7 +172,7 @@ function EmployeeEdit() {
             />
           )}
           {activeStep === 6 && (
-            <EmpBankAccountAdd
+            <EmpBankAccountEdit
               formData={formData}
               ref={childRef}
               setFormData={setFormData}

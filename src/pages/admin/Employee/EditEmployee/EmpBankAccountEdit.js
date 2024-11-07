@@ -17,7 +17,7 @@ const validationSchema = Yup.object().shape({
   accNumber: Yup.string().required("*Account number is required"),
 });
 
-const EmpBankAccountAdd = forwardRef(
+const EmpBankAccountEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const navigate = useNavigate();
     const [centerData, setCenterData] = useState(null);
@@ -170,4 +170,4 @@ const EmpBankAccountAdd = forwardRef(
     );
   }
 );
-export default EmpBankAccountAdd;
+export default EmpBankAccountEdit;

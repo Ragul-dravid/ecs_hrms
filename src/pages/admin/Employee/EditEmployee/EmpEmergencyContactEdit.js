@@ -28,7 +28,7 @@ const validationSchema = Yup.object().shape({
   )
 });
 
-const EmpEmergencyContactAdd = forwardRef(
+const EmpEmergencyContactEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const [rows, setRows] = useState([{}]);
 
@@ -74,7 +74,7 @@ const EmpEmergencyContactAdd = forwardRef(
     });
 
     useImperativeHandle(ref, () => ({
-      emergencyContactAdd: formik.handleSubmit,
+      emergencyContact: formik.handleSubmit,
     }));
 
     return (
@@ -239,4 +239,4 @@ const EmpEmergencyContactAdd = forwardRef(
   }
 );
 
-export default EmpEmergencyContactAdd;
+export default EmpEmergencyContactEdit;
