@@ -15,7 +15,7 @@ const CompanyRegistration = () => {
   // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const cmpId = sessionStorage.getItem("cmpId");
+
   useEffect(() => {
     const getData = async () => {
       try {

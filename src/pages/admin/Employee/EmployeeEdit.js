@@ -3,16 +3,19 @@ import { useState } from "react";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import EmpPersonalInfoAdd from "./EditEmployee/EmpPersonalInfoAdd";
-import EmpQualificationDetailsAdd from "./EditEmployee/EmpQualificationDetailsAdd";
+
+import EmpQualificationDetailsAdd from "./EditEmployee/EmpQualificationDetailsEdit";
 import EmpExperienceAdd from "./EditEmployee/EmpExperienceAdd";
 import EmpPreviousCompanyAdd from "./EditEmployee/EmpPreviousCompanyAdd";
 import EmpEmergencyContactAdd from "./EditEmployee/EmpEmergencyContactAdd";
 import EmpBankAccountAdd from "./EditEmployee/EmpBankAccountAdd";
-import EmpContactDetailsAdd from "./EditEmployee/EmpContactDetailsAdd";
+
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import { useParams } from "react-router-dom";
+import EmpPersonalInfoEdit from "./EditEmployee/EmpPersonalInfoEdit";
+import EmpContactDetailsEdit from "./EditEmployee/EmpContactDetailsEdit";
+import EmpQualificationDetailsEdit from "./EditEmployee/EmpQualificationDetailsEdit";
 
 const steps = [
   { tooltip: "Personal Information" },
@@ -24,7 +27,7 @@ const steps = [
   { tooltip: "Bank Account" },
 ];
 
-function EmployeeAdd() {
+function EmployeeEdit() {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
   // const id = sessionStorage.getItem('employeeId')
@@ -117,7 +120,7 @@ function EmployeeAdd() {
       <div class="container-fluid py-3 card shadow border-0 mb-7 mt-5">
         <React.Fragment>
           {activeStep === 0 && (
-            <EmpPersonalInfoAdd
+            <EmpPersonalInfoEdit
               formData={formData}
               ref={childRef}
               setFormData={setFormData}
@@ -126,7 +129,7 @@ function EmployeeAdd() {
             />
           )}
           {activeStep === 1 && (
-            <EmpContactDetailsAdd
+            <EmpContactDetailsEdit
               formData={formData}
               ref={childRef}
               setFormData={setFormData}
@@ -135,7 +138,7 @@ function EmployeeAdd() {
             />
           )}
           {activeStep === 2 && (
-            <EmpQualificationDetailsAdd
+            <EmpQualificationDetailsEdit
               formData={formData}
               ref={childRef}
               setFormData={setFormData}
@@ -214,4 +217,4 @@ function EmployeeAdd() {
   );
 }
 
-export default EmployeeAdd;
+export default EmployeeEdit;

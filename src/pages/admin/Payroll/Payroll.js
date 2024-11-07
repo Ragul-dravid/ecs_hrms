@@ -7,20 +7,17 @@ import { FaPlus } from "react-icons/fa";
 import api from "../../../config/URL";
 import { PropagateLoader } from 'react-spinners';
 import DeleteModel from "../../../components/admin/DeleteModel";
-import { HiOutlineEye } from "react-icons/hi";
-import { BiEditAlt } from "react-icons/bi";
 
-const Employee = () => {
+const Payroll = () => {
   const tableRef = useRef(null);
   // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const cmpId = sessionStorage.getItem("cmpId");
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`emp-reg-details-by-companyId/${cmpId}`);
+        const response = await api.get("/public-holidays");
         setDatas(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -62,7 +59,7 @@ const Employee = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get(`emp-reg-details-by-companyId/${cmpId}`);
+      const response = await api.get("/public-holidays");
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -104,31 +101,26 @@ const Employee = () => {
               <div className="row align-items-center justify-content-between ">
                 <div className="col">
                   <div className="d-flex align-items-center gap-4">
-                    <h1 className="h4 ls-tight headingColor ">
-                      Employee Info
-                    </h1>
+                    <h1 className="h4 ls-tight headingColor ">Holiday</h1>
                   </div>
                 </div>
                 <div className="col-auto">
                   <div className="hstack gap-2 justify-content-end">
-                    {/* {/* {/ {storedScreens?.levelCreate && ( /} */}
-                    <Link to="/employee/add">
+                    <Link to="/holidays/add">
                       <button
                         type="submit"
                         className="btn btn-sm btn-button btn-primary"
                       >
-                        <span cla>
+                        <span>
                           Add <FaPlus className="pb-1" />
                         </span>
                       </button>
                     </Link>
-                    {/* {/ )} /} */}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          {/* <hr className="removeHrMargin"></hr> */}
           <div
             className="card shadow border-0 my-2"
             style={{ borderRadius: "0" }}
@@ -141,14 +133,18 @@ const Employee = () => {
                       S.NO
                     </th>
                     <th scope="col" className="text-center">
-                      EMPLOYEE ID
+                      Holiday Name
                     </th>
                     <th scope="col" className="text-center">
-                      EMPLOYEE Name
+                      Start Date
                     </th>
+                    {/* <th scope="col" className="text-center">
+                      Mode Of Working
+                    </th> */}
                     <th scope="col" className="text-center">
-                      EMPLOYEE Email
+                      End Date
                     </th>
+
                     <th scope="col" className="text-center">
                       ACTION
                     </th>
@@ -158,27 +154,36 @@ const Employee = () => {
                   {datas.map((data, index) => (
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
-                      <td className="text-center">{data.employeeId}</td>
-                      <td className="text-center">{data.firstName + " " + data.lastName}</td>
-                      <td className="text-center">{data.email}</td>
+                      <td className="text-center">{data.pubHolidayName}</td>
+                      <td className="text-center">
+                        {" "}
+                        {new Date(data.startDate).toLocaleDateString()}
+                      </td>
+                      {/* <td className="text-center">
+                        {data.attendanceModeOfWorking}
+                      </td> */}
+                      <td className="text-center">
+                        {new Date(data.endDate).toLocaleDateString()}
+                      </td>
+
                       <td className="text-center">
                         <div className="gap-2">
-                          <Link to={`/employee/view/${data.id}`}>
-                            <button className="btn p-1  shadow-none border-none">
-                            <HiOutlineEye />
+                          <Link to={`/holidays/view/${data.pubHolidayId}`}>
+                            <button className="btn btn-light btn-sm  shadow-none border-none">
+                              View
                             </button>
                           </Link>
                           <Link
-                            to={`/employee/edit/${data.id}`}
+                            to={`/holidays/edit/${data.pubHolidayId}`}
                             className="px-2"
                           >
-                            <button className="btn p-1 shadow-none border-none">
-                            <BiEditAlt />
+                            <button className="btn btn-light  btn-sm shadow-none border-none">
+                              Edit
                             </button>
                           </Link>
                           <DeleteModel
                             onSuccess={refreshData}
-                            path={`/company-reg/${data.id}`}
+                            path={`/public-holidays/${data.pubHolidayId}`}
                           />
                         </div>
                       </td>
@@ -195,4 +200,4 @@ const Employee = () => {
   );
 };
 
-export default Employee;
+export default Payroll;

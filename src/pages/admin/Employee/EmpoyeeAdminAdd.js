@@ -17,7 +17,7 @@ function EmployeeAdminAdd() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [loadIndicator, setLoadIndicators] = useState(false);
   const navigate = useNavigate();
-  const roleName = sessionStorage.getItem("role")
+  const roleName = sessionStorage.getItem("role");
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("*First name is required"),
@@ -28,14 +28,12 @@ function EmployeeAdminAdd() {
     email: Yup.string()
       .email("*Enter valid email")
       .required("*Primary email id is required"),
-    password: Yup.string().required(
-      "*Primary email password is required"
-    ),
+    password: Yup.string().required("*Primary email password is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      cmpId: cmpId,
+      empRegCmpId: cmpId,
       firstName: "",
       lastName: "",
       empPriPhNumber: "",
@@ -44,7 +42,6 @@ function EmployeeAdminAdd() {
       NRICFin: "",
       NRICType: "",
       aadharNumber: "",
-      empRegCmpId: "",
       empRegDeptId: "",
       empDesignation: "",
       proof: "",
@@ -52,17 +49,17 @@ function EmployeeAdminAdd() {
       empType: "",
       noticePeriod: "",
       repManagerName: "",
-      reportingManagerID: "",
       file: "",
+      roleName: "",
     },
     validate: (values) => {
       const errors = {};
       if (values.file) {
         // Check if the file is one of the allowed types
         const file = values.file;
-        const validTypes = ['image/jpeg', 'image/png'];
+        const validTypes = ["image/jpeg", "image/png"];
         if (!validTypes.includes(file.type)) {
-          errors.file = 'Only JPG and PNG files are accepted';
+          errors.file = "Only JPG and PNG files are accepted";
         }
       }
       return errors;
@@ -72,8 +69,7 @@ function EmployeeAdminAdd() {
       setLoadIndicators(true);
       try {
         const formData = new FormData();
-
-        // Add each data field manually to the FormData object
+        formData.append("empRegCmpId", cmpId);
         formData.append("firstName", values.firstName);
         formData.append("lastName", values.lastName);
         formData.append("empPriPhNumber", values.empPriPhNumber);
@@ -82,18 +78,15 @@ function EmployeeAdminAdd() {
         formData.append("NRICFin", values.NRICFin);
         formData.append("NRICType", values.NRICType);
         formData.append("aadharNumber", values.aadharNumber);
-        formData.append("cmpId", cmpId);
         formData.append("empRegDeptId", values.empRegDeptId);
         formData.append("file", values.file);
-
         formData.append("proof", selectedIdType);
         formData.append("empDesignation", values.empDesignation);
         formData.append("empDateOfJoin", values.empDateOfJoin);
         formData.append("empType", values.empType);
         formData.append("noticePeriod", values.noticePeriod);
-        formData.append("repManagerName", values.repManagerName);
-        formData.append("roleName", roleName);
-        // formData.append("reportingManagerID", values.reportingManagerID);
+        formData.append("repManagerName", "Ragul");
+        formData.append("roleName", values.roleName);
 
         const response = await api.post("/emp-reg-details", formData);
         if (response.status === 201) {
@@ -141,12 +134,15 @@ function EmployeeAdminAdd() {
       <form onSubmit={formik.handleSubmit}>
         <div
           className="card shadow border-0 mb-2 top-header"
-          style={{ borderRadius: "0" }}>
+          style={{ borderRadius: "0" }}
+        >
           <div className="container-fluid py-4">
             <div className="row align-items-center">
               <div className="col">
                 <div className="d-flex align-items-center gap-4">
-                  <h1 className="h4 ls-tight headingColor">Add Register</h1>
+                  <h1 className="h4 ls-tight headingColor">
+                    Add Employee Register
+                  </h1>
                 </div>
               </div>
               <div className="col-auto">
@@ -179,7 +175,8 @@ function EmployeeAdminAdd() {
 
         <div
           className="card shadow border-0 mb-2 top-header"
-          style={{ borderRadius: "0" }}>
+          style={{ borderRadius: "0" }}
+        >
           <div className="row mt-3 me-2">
             <div className="col-12 text-end"></div>
           </div>
@@ -193,11 +190,11 @@ function EmployeeAdminAdd() {
                   <input
                     type="text"
                     name="firstName"
-                    className={`form-control form-control-sm  ${formik.touched.firstName && formik.errors.firstName
-                      ? "is-invalid"
-                      : ""
-                      }`}
-
+                    className={`form-control form-control-sm  ${
+                      formik.touched.firstName && formik.errors.firstName
+                        ? "is-invalid"
+                        : ""
+                    }`}
                     {...formik.getFieldProps("firstName")}
                   />
                   {formik.touched.firstName && formik.errors.firstName && (
@@ -215,11 +212,11 @@ function EmployeeAdminAdd() {
                   <input
                     type="text"
                     name="lastName"
-                    className={`form-control form-control-sm  ${formik.touched.lastName && formik.errors.lastName
-                      ? "is-invalid"
-                      : ""
-                      }`}
-
+                    className={`form-control form-control-sm  ${
+                      formik.touched.lastName && formik.errors.lastName
+                        ? "is-invalid"
+                        : ""
+                    }`}
                     {...formik.getFieldProps("lastName")}
                   />
                   {formik.touched.lastName && formik.errors.lastName && (
@@ -237,11 +234,11 @@ function EmployeeAdminAdd() {
                   <input
                     type="email"
                     name="email"
-                    className={`form-control form-control-sm ${formik.touched.email && formik.errors.email
-                      ? "is-invalid"
-                      : ""
-                      }`}
-
+                    className={`form-control form-control-sm ${
+                      formik.touched.email && formik.errors.email
+                        ? "is-invalid"
+                        : ""
+                    }`}
                     {...formik.getFieldProps("email")}
                   />
                   {formik.touched.email && formik.errors.email && (
@@ -254,16 +251,18 @@ function EmployeeAdminAdd() {
               <div className="col-md-6 col-12 mb-3">
                 <div className="mb-2">
                   <label className="form-label">
-                    Primary Email Password <span className="text-danger">*</span>
+                    Primary Email Password{" "}
+                    <span className="text-danger">*</span>
                   </label>
                   <div className={`input-group mb-3`}>
                     <input
                       name="password"
                       type={showPassword ? "text" : "password"}
-                      className={`form-control form-control-sm ${formik.touched.password && formik.errors.password
-                        ? "is-invalid"
-                        : ""
-                        }`}
+                      className={`form-control form-control-sm ${
+                        formik.touched.password && formik.errors.password
+                          ? "is-invalid"
+                          : ""
+                      }`}
                       {...formik.getFieldProps("password")}
                       style={{
                         borderRight: "none",
@@ -287,7 +286,9 @@ function EmployeeAdminAdd() {
                     </span>
                   </div>
                   {formik.touched.password && formik.errors.password && (
-                    <div className="invalid-feedback">{formik.errors.password}</div>
+                    <div className="invalid-feedback">
+                      {formik.errors.password}
+                    </div>
                   )}
                 </div>
               </div>
@@ -300,12 +301,12 @@ function EmployeeAdminAdd() {
                   <input
                     type="text"
                     name="empPriPhNumber"
-                    className={`form-control form-control-sm  ${formik.touched.empPriPhNumber &&
+                    className={`form-control form-control-sm  ${
+                      formik.touched.empPriPhNumber &&
                       formik.errors.empPriPhNumber
-                      ? "is-invalid"
-                      : ""
-                      }`}
-
+                        ? "is-invalid"
+                        : ""
+                    }`}
                     {...formik.getFieldProps("empPriPhNumber")}
                   />
                   {formik.touched.empPriPhNumber &&
@@ -323,11 +324,11 @@ function EmployeeAdminAdd() {
                 <div className="input-group mb-3">
                   <select
                     {...formik.getFieldProps("empRegDeptId")}
-                    className={`form-select form-select-sm  ${formik.touched.empRegDeptId && formik.errors.empRegDeptId
-                      ? "is-invalid"
-                      : ""
-                      }`}
-
+                    className={`form-select form-select-sm  ${
+                      formik.touched.empRegDeptId && formik.errors.empRegDeptId
+                        ? "is-invalid"
+                        : ""
+                    }`}
                   >
                     <option selected></option>
                     {departmentData &&
@@ -337,11 +338,12 @@ function EmployeeAdminAdd() {
                         </option>
                       ))}
                   </select>
-                  {formik.touched.empRegDeptId && formik.errors.empRegDeptId && (
-                    <div className="invalid-feedback">
-                      {formik.errors.empRegDeptId}
-                    </div>
-                  )}
+                  {formik.touched.empRegDeptId &&
+                    formik.errors.empRegDeptId && (
+                      <div className="invalid-feedback">
+                        {formik.errors.empRegDeptId}
+                      </div>
+                    )}
                 </div>
               </div>
               <div className="col-md-6 col-12 mb-3 ">
@@ -352,12 +354,12 @@ function EmployeeAdminAdd() {
                   <input
                     type="text"
                     name="empDesignation"
-                    className={`form-control form-control-sm  ${formik.touched.empDesignation &&
+                    className={`form-control form-control-sm  ${
+                      formik.touched.empDesignation &&
                       formik.errors.empDesignation
-                      ? "is-invalid"
-                      : ""
-                      }`}
-
+                        ? "is-invalid"
+                        : ""
+                    }`}
                     {...formik.getFieldProps("empDesignation")}
                   />
                   {formik.touched.empDesignation &&
@@ -373,21 +375,22 @@ function EmployeeAdminAdd() {
                 <input
                   type="file"
                   name="file"
-                  className={`form-control form-control-sm ${formik.touched.file && formik.errors.file ? 'is-invalid' : ''
-                    }`}
+                  className={`form-control form-control-sm ${
+                    formik.touched.file && formik.errors.file
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   accept=".jpg, .jpeg, .png" // Restrict file types
                   onChange={(event) => {
                     const file = event.target.files[0];
                     if (file) {
-                      formik.setFieldValue('file', file);
+                      formik.setFieldValue("file", file);
                     }
                   }}
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.file && formik.errors.file && (
-                  <div className="invalid-feedback">
-                    {formik.errors.file}
-                  </div>
+                  <div className="invalid-feedback">{formik.errors.file}</div>
                 )}
               </div>
               <div>
@@ -434,10 +437,11 @@ function EmployeeAdminAdd() {
                         <input
                           type="text"
                           name="NRICFin"
-                          className={`form-control form-control-sm  ${formik.touched.NRICFin && formik.errors.NRICFin
-                            ? "is-invalid"
-                            : ""
-                            }`}
+                          className={`form-control form-control-sm  ${
+                            formik.touched.NRICFin && formik.errors.NRICFin
+                              ? "is-invalid"
+                              : ""
+                          }`}
                           aria-label="Username"
                           aria-describedby="basic-addon1"
                           {...formik.getFieldProps("NRICFin")}
@@ -459,10 +463,11 @@ function EmployeeAdminAdd() {
                         </label>
                         <select
                           name="NRICType"
-                          className={`form-select form-select-sm ${formik.touched.NRICType && formik.errors.NRICType
-                            ? "is-invalid"
-                            : ""
-                            }`}
+                          className={`form-select form-select-sm ${
+                            formik.touched.NRICType && formik.errors.NRICType
+                              ? "is-invalid"
+                              : ""
+                          }`}
                           {...formik.getFieldProps("NRICType")}
                         >
                           <option selected></option>
@@ -470,7 +475,9 @@ function EmployeeAdminAdd() {
                             Singapore Citizen
                           </option>
                           <option value="Singapore PR">Singapore PR</option>
-                          <option value="Employment Pass">Employment Pass</option>
+                          <option value="Employment Pass">
+                            Employment Pass
+                          </option>
                           <option value="Dependant Pass">Dependant Pass</option>
                           <option value="S-Pass">S-Pass</option>
                           <option value="Work Permit">Work Permit</option>
@@ -496,12 +503,12 @@ function EmployeeAdminAdd() {
                       <input
                         type="text"
                         name="aadharNumber"
-                        className={`form-control form-control-sm ${formik.touched.aadharNumber &&
+                        className={`form-control form-control-sm ${
+                          formik.touched.aadharNumber &&
                           formik.errors.aadharNumber
-                          ? "is-invalid"
-                          : ""
-                          }`}
-
+                            ? "is-invalid"
+                            : ""
+                        }`}
                         {...formik.getFieldProps("aadharNumber")}
                       />
                       {formik.touched.aadharNumber &&
@@ -514,7 +521,6 @@ function EmployeeAdminAdd() {
                   </div>
                 )}
               </div>
-
               <div className="col-md-6 col-12 mb-3 ">
                 <div className="mb-2">
                   <label for="exampleFormControlInput1" className="form-label">
@@ -524,11 +530,12 @@ function EmployeeAdminAdd() {
                   <input
                     type="date"
                     name="empDateOfJoin"
-                    className={`form-control form-control-sm ${formik.touched.empDateOfJoin && formik.errors.empDateOfJoin
-                      ? "is-invalid"
-                      : ""
-                      }`}
-
+                    className={`form-control form-control-sm ${
+                      formik.touched.empDateOfJoin &&
+                      formik.errors.empDateOfJoin
+                        ? "is-invalid"
+                        : ""
+                    }`}
                     {...formik.getFieldProps("empDateOfJoin")}
                   />
                   {formik.touched.empDateOfJoin &&
@@ -539,27 +546,30 @@ function EmployeeAdminAdd() {
                     )}
                 </div>
               </div>
-
-              <div className="col-md-6 col-12 mb-4">
-                <label className="">Employee Type</label>
-                <span className="text-danger">*</span>
-                <select
-                  {...formik.getFieldProps("empType")}
-                  name="empType"
-                  className={`form-select form-select-sm ${formik.touched.empType && formik.errors.empType
-                    ? "is-invalid"
-                    : ""
+              <div className="col-md-6 col-12 mb-2">
+                <label className="form-label">
+                  Employee Type <span className="text-danger">*</span>
+                </label>
+                <div className="input-group mb-3">
+                  <select
+                    {...formik.getFieldProps("empType")}
+                    className={`form-select form-select-sm  ${
+                      formik.touched.empType && formik.errors.empType
+                        ? "is-invalid"
+                        : ""
                     }`}
-
-                >
-                  <option selected></option>
-                  <option value="Full Time">Full Time</option>
-                  <option value="Part Time">Part Time</option>
-                  <option value="Hourly Basis">Hourly Basis</option>
-                </select>
-                {formik.touched.empType && formik.errors.empType && (
-                  <div className="invalid-feedback">{formik.errors.empType}</div>
-                )}
+                  >
+                    <option selected></option>
+                    <option value="Full Time">Full Time</option>
+                    <option value="Part Time">Part Time</option>
+                    <option value="Hourly Basis">Hourly Basis</option>
+                  </select>
+                  {formik.touched.empType && formik.errors.empType && (
+                    <div className="invalid-feedback">
+                      {formik.errors.empType}
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="col-md-6 col-12 mb-3 ">
                 <div className="mb-2">
@@ -568,11 +578,11 @@ function EmployeeAdminAdd() {
                   </label>
                   <select
                     type="text"
-                    className={`form-select form-select-sm ${formik.touched.noticePeriod &&
-                      formik.errors.noticePeriod
-                      ? "is-invalid"
-                      : ""
-                      }`}
+                    className={`form-select form-select-sm ${
+                      formik.touched.noticePeriod && formik.errors.noticePeriod
+                        ? "is-invalid"
+                        : ""
+                    }`}
                     {...formik.getFieldProps("noticePeriod")}
                   >
                     <option selected></option>
@@ -580,33 +590,40 @@ function EmployeeAdminAdd() {
                     <option value="60 days">60 days</option>
                     <option value="90 days">90 days</option>
                   </select>
-                  {formik.touched.noticePeriod && formik.errors.noticePeriod && (
-                    <div className="invalid-feedback">
-                      {formik.errors.noticePeriod}
-                    </div>
-                  )}
+                  {formik.touched.noticePeriod &&
+                    formik.errors.noticePeriod && (
+                      <div className="invalid-feedback">
+                        {formik.errors.noticePeriod}
+                      </div>
+                    )}
                 </div>
               </div>
-              <div className="col-md-6 col-12 mb-3 ">
-                <div className="mb-2">
-                  <label for="exampleFormControlInput1" className="form-label">
-                    Reporting Manager Name<span className="text-danger">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="repManagerName"
-                    className={`form-control form-control-sm ${formik.touched.repManagerName &&
-                      formik.errors.repManagerName
-                      ? "is-invalid"
-                      : ""
-                      }`}
-
-                    {...formik.getFieldProps("repManagerName")}
-                  />
-                  {formik.touched.repManagerName &&
-                    formik.errors.repManagerName && (
+              <div className="col-md-6 col-12 mb-2">
+                <label className="form-label">
+                  Role <span className="text-danger">*</span>
+                </label>
+                <div className="input-group mb-3">
+                  <select
+                    {...formik.getFieldProps("roleName")}
+                    className={`form-select form-select-sm  ${
+                      formik.touched.roleName && formik.errors.roleName
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                  >
+                    <option selected></option>
+                    <option value="Employee">Employee</option>
+                    {departmentData &&
+                      departmentData.map((deptId) => (
+                        <option key={deptId.deptId} value={deptId.deptId}>
+                          {deptId.deptName}
+                        </option>
+                      ))}
+                  </select>
+                  {formik.touched.roleName &&
+                    formik.errors.roleName && (
                       <div className="invalid-feedback">
-                        {formik.errors.repManagerName}
+                        {formik.errors.roleName}
                       </div>
                     )}
                 </div>
