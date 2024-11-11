@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Row, Col } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../config/URL";
 import toast from "react-hot-toast";
+import CRMLogo from "../../assets/CRMLogo.png";
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -23,33 +24,37 @@ function Login({ handleLogin }) {
     initialValues: {
       email: "",
       password: "",
-      // companyId: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log("Values is ", values);
       try {
         const response = await api.post(`app-login`, values);
         if (response.status === 200) {
           toast.success(response.data.message);
-          // console.log("Login Triger" ,response);         
           sessionStorage.setItem("roleId", response.data.roleId);
           sessionStorage.setItem("role", response.data.role);
           sessionStorage.setItem("token", response.data.accessToken);
           sessionStorage.setItem("userName", response.data.role);
-          sessionStorage.setItem("loginUserId", response.data.userId);
-          sessionStorage.setItem("cmpId", response.data.companyId);
+          sessionStorage.setItem("loginUserId", response.data.loginUserId);
+          sessionStorage.setItem("empId", response.data.employeeInfo[0].id);
+          sessionStorage.setItem(
+            "empName",
+            response.data.employeeInfo[0].empName
+          );
+          sessionStorage.setItem("cmpId", response.data.employeeInfo[0].cmpId);
+          sessionStorage.setItem(
+            "deptId",
+            response.data.employeeInfo[0].deptId
+          );
           handleLogin();
-          navigate("/dashboard");
-
+          navigate("/");
         } else {
           toast.error(response.data.message);
         }
       } catch (e) {
         console.log("Error Login ", e?.response?.data?.message);
-        // toast.error(e?.response?.data?.message);
+        toast.error(e?.response?.data?.message);
       }
-      // onLogin(values.email, values.password, values.companyId);
     },
   });
 
@@ -59,116 +64,159 @@ function Login({ handleLogin }) {
 
   return (
     <div
-      className="container-fluid d-flex justify-content-center align-items-center vh-100"
-      style={{ backgroundColor: "#f2f2f2" }}
+      className="container-fluid h-100"
+      style={{ backgroundColor: "#f2f2f2" }} // Background color for the entire page
     >
-      <div
-        className="card shadow-lg p-3 mb-5 rounded"
-        style={{ width: "100%", maxWidth: "400px" }}
-      >
-        <div className="d-flex justify-content-around ">
-          <h3
-            className={`cursor-pointer py-2`}
+      <Row className="h-100">
+        <Col
+          md={6}
+          className="d-flex justify-content-center align-items-center p-4"
+          style={{ backgroundColor: "#fff" }} // Left column background color
+        >
+          <div className="d-flex align-items-center text-white text-center">
+            <img
+              src={CRMLogo}
+              alt="Description"
+              className="img-fluid mb-4"
+              style={{ maxHeight: "300px", backgroundColor: "transparent" }}
+            />
+            <div className="ms-4 text-start">
+              <h2>HRMS</h2>
+              <p>Empower Your Workforce with Seamless HR Management</p>
+            </div>
+          </div>
+        </Col>
+
+        <Col
+          md={6}
+          className="d-flex flex-column justify-content-center align-items-center p-4 btn-primary"
+        >
+          {/* Logo and HRMS Text */}
+          <div className="text-center mt-4 mb-4">
+            <img
+              src={CRMLogo}
+              alt="Description"
+              className="img-fluid mb-2"
+              style={{ maxHeight: "60px", backgroundColor: "transparent" }}
+            />
+            <h2 className="ms-3">HRMS</h2>
+          </div>
+
+          {/* Card with login form */}
+          <div
+            className="card shadow-lg p-4 mb-5 rounded"
             style={{
-              borderBottom: "2px solid #181c2e",
-              paddingBottom: "5px",
               width: "100%",
-              textAlign: "center",
-              color: "#181c2e",
+              maxWidth: "400px",
+              backgroundColor: "#ffffff", // Card background color (white)
+              border: "none", // Remove default card border
             }}
           >
-            Login
-          </h3>
-        </div>
-        <Form onSubmit={formik.handleSubmit}>
-          <Form.Group controlId="formEmail" className="mb-3 pt-4">
-            <Form.Label>Email Address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              {...formik.getFieldProps("email")}
-              isInvalid={formik.touched.email && formik.errors.email}
-            />
-            {formik.touched.email && formik.errors.email ? (
-              <Form.Control.Feedback type="invalid">
-                {formik.errors.email}
-              </Form.Control.Feedback>
-            ) : null}
-          </Form.Group>
-
-          <div className="d-flex justify-content-between align-items-center py-2">
-            <Form.Label>Password</Form.Label>
-            <Link
-              to="/forgot"
-              className="ml-auto"
-              style={{
-                fontSize: "0.9em",
-                textDecoration: "none",
-                color: "#181c2e",
-              }}
+            {/* Login Form */}
+            <h3
+              className="text-center mb-3"
+              style={{ fontSize: "1.5rem", color: "#181c2e" }}
             >
-              Forgot Password?
-            </Link>
-          </div>
-          <Form.Group controlId="formPassword" className="mb-3">
-            <div style={{ position: "relative" }}>
-              <Form.Control
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter password"
-                {...formik.getFieldProps("password")}
-                isInvalid={formik.touched.password && formik.errors.password}
-              />
-              {formik.values.password && (
-                <span
-                  onClick={togglePasswordVisibility}
+              Login
+            </h3>
+            <Form onSubmit={formik.handleSubmit}>
+              <Form.Group controlId="formEmail" className="mb-3">
+                <Form.Label>Email Address</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  {...formik.getFieldProps("email")}
+                  isInvalid={formik.touched.email && formik.errors.email}
+                />
+                {formik.touched.email && formik.errors.email ? (
+                  <Form.Control.Feedback type="invalid">
+                    {formik.errors.email}
+                  </Form.Control.Feedback>
+                ) : null}
+              </Form.Group>
+
+              <div className="d-flex justify-content-between align-items-center py-1">
+                <Form.Label>Password</Form.Label>
+                <Link
+                  to="/forgot"
+                  className="ml-auto"
                   style={{
-                    position: "absolute",
-                    right: "10px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    cursor: "pointer",
+                    fontSize: "0.9em",
+                    textDecoration: "none",
+                    color: "#181c2e",
                   }}
                 >
-                  {showPassword ? <FaEye /> : <FaEyeSlash />}
-                </span>
-              )}
-              {formik.touched.password && formik.errors.password ? (
-                <Form.Control.Feedback type="invalid">
-                  {formik.errors.password}
-                </Form.Control.Feedback>
-              ) : null}
-            </div>
-          </Form.Group>
+                  Forgot Password?
+                </Link>
+              </div>
+              <Form.Group controlId="formPassword" className="mb-3">
+                <div style={{ position: "relative" }}>
+                  <Form.Control
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter password"
+                    {...formik.getFieldProps("password")}
+                    isInvalid={
+                      formik.touched.password && formik.errors.password
+                    }
+                  />
+                  {formik.values.password && (
+                    <span
+                      onClick={togglePasswordVisibility}
+                      style={{
+                        position: "absolute",
+                        right: "10px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        cursor: "pointer",
+                        color: "#181c2e",
+                      }}
+                    >
+                      {showPassword ? <FaEye /> : <FaEyeSlash />}
+                    </span>
+                  )}
+                  {formik.touched.password && formik.errors.password ? (
+                    <Form.Control.Feedback type="invalid">
+                      {formik.errors.password}
+                    </Form.Control.Feedback>
+                  ) : null}
+                </div>
+              </Form.Group>
 
-          <Button type="submit" className="w-100 mt-4" disabled={loadIndicator}>
-            {loadIndicator && (
-              <span
-                className="spinner-border spinner-border-sm me-2"
-                aria-hidden="true"
-              ></span>
-            )}
-            Login
-          </Button>
-
-          <div className="text-center mt-4">
-            <p className="mb-3">or</p>
-            <Link to="/register">
               <Button
-                variant="light"
-                className="w-100 border shadow-none"
-                style={{
-                  position: "relative",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
+                type="submit"
+                className="w-100 mt-3"
+                disabled={loadIndicator}
               >
-                Register
+                {loadIndicator && (
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    aria-hidden="true"
+                  ></span>
+                )}
+                Login
               </Button>
-            </Link>
+
+              <div className="text-center mt-3">
+                <p className="mb-2">or</p>
+                <Link to="/register">
+                  <Button
+                    variant="light"
+                    className="w-100 border shadow-none"
+                    style={{
+                      position: "relative",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    Register
+                  </Button>
+                </Link>
+              </div>
+            </Form>
           </div>
-        </Form>
-      </div>
+        </Col>
+      </Row>
     </div>
   );
 }
