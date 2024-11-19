@@ -106,7 +106,7 @@ const Roles = () => {
                 </div>
                 <div className="col-auto">
                   <div className="hstack gap-2 justify-content-end">
-                    <Link to="/companyCompliance/add">
+                    <Link to="/roles/add">
                       <button
                         type="submit"
                         className="btn btn-sm btn-button btn-primary"

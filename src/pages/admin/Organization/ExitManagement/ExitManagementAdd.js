@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../../config/URL";
 import toast from "react-hot-toast";
 import ExitManagement from "./ExitManagement";
+import employeeListByCompId from "../../List_Apis/EmployeeListByCmpId";
 
 const ExitManagementAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
   const cmpId = sessionStorage.getItem("cmpId");
-  const [companyData, setCompanyData] = useState(null);
+  const [empData, setEmpData] = useState(null);
 
   const validationSchema = Yup.object({
     // exitMgmtEmpName: Yup.string().required("*Employee Name is required"),
@@ -52,6 +53,19 @@ const ExitManagementAdd = () => {
       }
     },
   });
+
+  const fetchTeacher = async () => {
+    try {
+      const employee = await employeeListByCompId(cmpId);
+      setEmpData(employee);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchTeacher();
+  },[]);
 
   return (
     <div className="container-fluid px-2 minHeight m-0">
@@ -102,7 +116,7 @@ const ExitManagementAdd = () => {
         >
           <div className="container mb-5">
             <div className="row py-4">
-              {/* Company Name */}
+    
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Employee Name <span className="text-danger">*</span>
@@ -116,8 +130,8 @@ const ExitManagementAdd = () => {
                   aria-label="Default select example"
                 >
                   <option selected></option>
-                  {companyData &&
-                    companyData.map((exitMgmtEmpId) => (
+                  {empData &&
+                    empData.map((exitMgmtEmpId) => (
                       <option key={exitMgmtEmpId.id} value={exitMgmtEmpId.exitMgmtEmpId}>
                         {exitMgmtEmpId.exitMgmtEmpName}
                       </option>

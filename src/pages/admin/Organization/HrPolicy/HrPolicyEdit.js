@@ -7,9 +7,6 @@ import toast from "react-hot-toast";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import styles for ReactQuill
 
-// Additional imports for custom image handling if needed
-import Quill from 'quill';
-
 // Define custom toolbar modules
 const modules = {
   toolbar: [
@@ -61,7 +58,7 @@ const HrPolicyEdit = () => {
         };
 
         const response = await api.put(`/hR-policy/${id}`, payload);
-        if (response.status === 201) {
+        if (response.status === 200) {
           toast.success(response.data.message);
           navigate("/hrpolicy");
         } else {

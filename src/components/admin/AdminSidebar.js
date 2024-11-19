@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import deals from "../../assets/CRMLogo.png";
+import CPMLOG from "../../assets/CRMLogo.png";
 import { FaChevronDown, FaChevronRight } from "react-icons/fa";
 import { HiOutlineUserGroup } from "react-icons/hi2";
 import { FiSettings } from "react-icons/fi";
@@ -14,10 +14,15 @@ import { MdOutlineLibraryBooks } from "react-icons/md";
 import { BiRightIndent } from "react-icons/bi";
 import { LuFileEdit } from "react-icons/lu";
 import { MdOutlineHolidayVillage } from "react-icons/md";
+import api from "../../config/URL";
+import toast from "react-hot-toast";
 
 function AdminSidebar({ handleLogout }) {
   const navigate = useNavigate();
-  const cmpId = sessionStorage.getItem("cmpId");
+  const role = sessionStorage.getItem("role");
+  const cmpName = sessionStorage.getItem("cmpName");
+  const cpmId = sessionStorage.getItem("cmpId");
+  const [data, setData] = useState([]);
 
   const handleLogOutClick = () => {
     handleLogout();
@@ -29,6 +34,20 @@ function AdminSidebar({ handleLogout }) {
   const toggleSubmenu = (menuName) => {
     setActiveSubmenu((prev) => (prev === menuName ? null : menuName));
   };
+
+  const getData = async () => {
+    try {
+      const response = await api.get(`/company-reg/${cpmId}`);
+      setData(response.data);
+    } catch (error) {
+      toast.error("Error Fetching Data ", error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, [cpmId]);
+
 
   return (
     <>
@@ -49,12 +68,12 @@ function AdminSidebar({ handleLogout }) {
             <span className="navbar-toggler-icon"></span>
           </button>
           <NavLink
-            className="nav-logo py-lg-2 px-lg-6 m-0 d-flex align-items-center justify-content-start gap-3 shadow-lg"
+            className="nav-logo py-lg-2 px-lg-6 m-0 d-flex align-items-center justify-content-start gap-3"
             to="/"
           >
             <img
-              src={deals}
-              alt="deals"
+              src={data.logo || CPMLOG}
+              alt="logo"
               className="img-fluid sidebar-logo rounded-circle"
               style={{
                 background: "#fff",
@@ -63,7 +82,20 @@ function AdminSidebar({ handleLogout }) {
                 height: "50px",
               }}
             />
-            <p className="hrms-text">HRMS</p>
+            <div className="d-flex flex-column">
+              <p
+                className="text-dark mb-0"
+                style={{ fontSize: "13px", fontWeight: "bolder" }}
+              >
+                {cmpName}
+              </p>
+              <p
+                className="hrms-text"
+                style={{ fontSize: "11px", margin: "0", color: "#6c757d" }}
+              >
+                HRMS
+              </p>
+            </div>
           </NavLink>
           <div
             className="collapse navbar-collapse sidebar-bg"
@@ -93,19 +125,23 @@ function AdminSidebar({ handleLogout }) {
                 {activeSubmenu === "Organization" && (
                   <ul className="list-unstyled p-0">
                     <li>
-                      {cmpId === "96" ? (
+                      {role === "SUPER_ADMIN" ? (
                         <NavLink className="nav-link" to="/companyRegistration">
-                          <span style={{ display: "flex", alignItems: "center" }}>
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
                             <BsBullseye
-                              style={{ fontSize: "xx-small", marginRight: "8px" }}
+                              style={{
+                                fontSize: "xx-small",
+                                marginRight: "8px",
+                              }}
                             />
                             Company Registration
                           </span>
                         </NavLink>
                       ) : (
                         <></>
-                      )
-                      }
+                      )}
                     </li>
                     <li>
                       <NavLink className="nav-link" to="/companyCompliance">

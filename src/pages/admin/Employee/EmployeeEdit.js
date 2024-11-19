@@ -104,7 +104,7 @@ function EmployeeEdit() {
         {steps.map((step, i) => {
           const stepProps = {};
           return (
-            <Step key={i} {...stepProps}>
+            <Step key={i} {...stepProps} onClick={() => setActiveStep(i)}>
               <OverlayTrigger
                 placement="top"
                 overlay={<Tooltip id={`tooltip-${i}`}>{step.tooltip}</Tooltip>}

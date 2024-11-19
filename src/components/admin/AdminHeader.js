@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import user from "../../assets/user.webp";
 import { Offcanvas } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { IoPersonAdd } from "react-icons/io5";
 import { MdOutlineLogout } from "react-icons/md";
+import api from "../../config/URL";
+import toast from "react-hot-toast";
+import { PiBuildingsThin } from "react-icons/pi";
+
 function AdminHeader({ handleLogout }) {
   const expand = "lg";
   const [show, setShow] = useState(false);
+  const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const userName = sessionStorage.getItem("userName");
+  const cmpName = sessionStorage.getItem("cmpName");
+  const cpmId = sessionStorage.getItem("cmpId");
+  const email = sessionStorage.getItem("email");
   const role = sessionStorage.getItem("role");
 
   const handleClose = () => {
@@ -25,6 +33,19 @@ function AdminHeader({ handleLogout }) {
     handleLogout();
     // navigate("/");
   };
+
+  const getData = async () => {
+    try {
+      const response = await api.get(`/company-reg/${cpmId}`);
+      setData(response.data);
+    } catch (error) {
+      toast.error("Error Fetching Data ", error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, [cpmId]);
 
   return (
     <>
@@ -64,9 +85,15 @@ function AdminHeader({ handleLogout }) {
                   &nbsp;&nbsp;&nbsp;
                   <span style={{ fontSize: "24px" }} onClick={handleShow}>
                     <img
-                      src={user}
-                      className="img-fluid header-user"
-                      alt="img"
+                      className="img-fluid"
+                      src={data.profileImg || user}
+                      alt="user"
+                      style={{
+                        borderRadius: "50%", // Makes the image circular
+                        objectFit: "cover", // Ensures the image fills the container without distortion
+                        width: "40px", // Equal width and height for a perfect circle
+                        height: "40px",
+                      }}
                     />
                   </span>
                 </div>
@@ -85,12 +112,22 @@ function AdminHeader({ handleLogout }) {
             <div className="text-center">
               <img
                 className="img-fluid mb-3"
-                src={user}
+                src={data.profileImg || user}
                 alt="user"
-                width={100}
+                style={{
+                  borderRadius: "50%", // Makes the image circular
+                  objectFit: "cover", // Ensures the image fills the container without distortion
+                  width: "100px", // Equal width and height for a perfect circle
+                  height: "100px",
+                }}
               />
-              <p>{userName}</p>
-              <p>ECSCloud@gmail.com</p>
+              <p className="mt-2">{userName}</p>
+              <p className="mt-2">{email}</p>
+              <Link to={`/companyRegistration/edit/${cpmId}`}>
+                <p className="my-2">
+                  <PiBuildingsThin /> &nbsp; {cmpName}
+                </p>
+              </Link>
             </div>
           </div>
           <div className="row">

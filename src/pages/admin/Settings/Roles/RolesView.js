@@ -4,7 +4,7 @@ import api from "../../../../config/URL";
 import toast from "react-hot-toast";
 import { Hourglass } from "react-loader-spinner";
 
-const CompanyComplianceView = () => {
+const RolesView = () => {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -194,4 +194,4 @@ const CompanyComplianceView = () => {
   );
 };
 
-export default CompanyComplianceView;
+export default RolesView;

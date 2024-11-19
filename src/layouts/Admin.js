@@ -57,6 +57,11 @@ import Payroll from "../pages/admin/Payroll/Payroll.js";
 import PayrollAdd from "../pages/admin/Payroll/PayrollAdd.js";
 import PayrollEdit from "../pages/admin/Payroll/PayrollEdit.js";
 import PayrollView from "../pages/admin/Payroll/PayrollView.js";
+import Payslip from "../pages/admin/Payroll/Payslip.js";
+import Roles from "../pages/admin/Settings/Roles/Roles.js";
+import RolesAdd from "../pages/admin/Settings/Roles/RolesAdd.js";
+import RolesEdit from "../pages/admin/Settings/Roles/RolesEdit.js";
+import RolesView from "../pages/admin/Settings/Roles/RolesView.js";
 
 
 function Admin({ handleLogout }) {
@@ -90,7 +95,7 @@ function Admin({ handleLogout }) {
                     element={<CompanyRegistrationView />}
                   />
 
-                  {/* Company Registration */}
+                  {/* Company Compliance */}
                   <Route
                     path="/companyCompliance"
                     element={<CompanyCompliance />}
@@ -108,11 +113,13 @@ function Admin({ handleLogout }) {
                     element={<CompanyComplianceView />}
                   />
 
+                  {/* HR policy */}
                   <Route path="/hrpolicy" element={<HrPolicy />} />
                   <Route path="/hrpolicy/add" element={<HrPolicyAdd />} />
                   <Route path="/hrpolicy/edit/:id" element={<HrPolicyEdit />} />
                   <Route path="/hrpolicy/view/:id" element={<HrPolicyView />} />
 
+                  {/* Exit Mangement */}
                   <Route path="/exitmangement" element={<ExitManagement />} />
                   <Route
                     path="/exitmangement/add"
@@ -126,6 +133,7 @@ function Admin({ handleLogout }) {
                     path="/exitmangement/view/:id"
                     element={<ExitManagementView />}
                   />
+
                   {/* {/ Departments /} */}
                   <Route path="/departments" element={<Department />} />
                   <Route path="/departments/add" element={<DepartmentAdd />} />
@@ -137,6 +145,7 @@ function Admin({ handleLogout }) {
                     path="/departments/view/:id"
                     element={<DepartmentView />}
                   />
+
                   {/* {/ Employee /} */}
                   <Route path="/employee" element={<Employee />} />
                   <Route path="/employee/add" element={<EmployeeAdminAdd />} />
@@ -200,12 +209,21 @@ function Admin({ handleLogout }) {
                     element={<DeductionView />}
                   />
 
-                   {/* Holiday */}
+                  {/* Payroll */}
                   <Route path="/payroll" element={<Payroll />} />
                   <Route path="/payroll/add" element={<PayrollAdd />} />
                   <Route path="/payroll/edit/:id" element={<PayrollEdit />} />
                   <Route path="/payroll/view/:id" element={<PayrollView />} />
                   
+                  {/* Payslip */}
+                  <Route path="/payslip" element={<Payslip />} />
+
+                  {/* Payroll */}
+                  <Route path="/roles" element={<Roles />} />
+                  <Route path="/roles/add" element={<RolesAdd />} />
+                  <Route path="/roles/edit/:id" element={<RolesEdit />} />
+                  <Route path="/roles/view/:id" element={<RolesView />} />
+
                 </Routes>
               </div>
             </main>

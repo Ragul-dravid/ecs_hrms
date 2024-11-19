@@ -178,7 +178,7 @@ const Employee = () => {
                           </Link>
                           <DeleteModel
                             onSuccess={refreshData}
-                            path={`/company-reg/${data.id}`}
+                            path={`/employee/${data.id}`}
                           />
                         </div>
                       </td>
