@@ -8,8 +8,8 @@ import toast from "react-hot-toast";
 const HolidayAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = sessionStorage.getItem("cmpId");
-  const userName = sessionStorage.getItem("userName");
+  const cmpId = localStorage.getItem("cmpId");
+  const userName = localStorage.getItem("userName");
   const [companyData, setCompanyData] = useState(null);
 
   const validationSchema = Yup.object({
@@ -29,6 +29,7 @@ const HolidayAdd = () => {
       pubHolidayType: "",
       startDate: "",
       endDate: "",
+      description: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -42,7 +43,7 @@ const HolidayAdd = () => {
         const response = await api.post(`/public-holidays`, values);
         if (response.status === 201) {
           toast.success(response.data.message);
-          navigate("/deduction");
+          navigate("/holidays");
         } else {
           toast.error(response.data.message);
         }
@@ -203,6 +204,27 @@ const HolidayAdd = () => {
                     {formik.errors.endDate}
                   </div>
                 )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Description<span className="text-danger">*</span>
+                </label>
+                <textarea
+                  type="text"
+                  name="description"
+                  className={`form-control form-control-sm ${formik.touched.description &&
+                    formik.errors.description
+                    ? "is-invalid"
+                    : ""
+                    }`}
+                  {...formik.getFieldProps("description")}
+                />
+                {formik.touched.description &&
+                  formik.errors.description && (
+                    <div className="invalid-feedback">
+                      {formik.errors.description}
+                    </div>
+                  )}
               </div>
             </div>
           </div>
