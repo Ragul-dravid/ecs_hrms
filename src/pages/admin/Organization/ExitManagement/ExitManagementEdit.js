@@ -10,7 +10,7 @@ const ExitManagementEdit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = sessionStorage.getItem("cmpId");
+  const cmpId = localStorage.getItem("cmpId");
   const [companyData, setCompanyData] = useState(null);
 
   const validationSchema = Yup.object({

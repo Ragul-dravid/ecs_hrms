@@ -32,15 +32,15 @@ function Login({ handleLogin }) {
         if (response.status === 200 || response.status === 201) {
           toast.success(response.data.message);
           // console.log("Login Triger" ,response);
-          sessionStorage.setItem("cmpName", response.data.cmpName);
-          sessionStorage.setItem("cmpId", response.data.companyId);
-          sessionStorage.setItem("email", response.data.email);
-          sessionStorage.setItem("token", response.data.accessToken);
-          sessionStorage.setItem("logo", response.data.logo);
-          sessionStorage.setItem("role", response.data.role);
-          sessionStorage.setItem("roleId", response.data.roleId);
-          sessionStorage.setItem("userId", response.data.userId);
-          sessionStorage.setItem("userName", response.data.userName);
+          localStorage.setItem("cmpName", response.data.cmpName);
+          localStorage.setItem("cmpId", response.data.companyId);
+          localStorage.setItem("email", response.data.email);
+          localStorage.setItem("token", response.data.accessToken);
+          localStorage.setItem("logo", response.data.logo);
+          localStorage.setItem("role", response.data.role);
+          localStorage.setItem("roleId", response.data.roleId);
+          localStorage.setItem("userId", response.data.userId);
+          localStorage.setItem("userName", response.data.userName);
           handleLogin();
           navigate("/dashboard");
 

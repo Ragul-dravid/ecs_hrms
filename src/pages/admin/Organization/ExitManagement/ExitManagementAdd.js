@@ -10,7 +10,7 @@ import employeeListByCompId from "../../List_Apis/EmployeeListByCmpId";
 const ExitManagementAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = sessionStorage.getItem("cmpId");
+  const cmpId = localStorage.getItem("cmpId");
   const [empData, setEmpData] = useState(null);
 
   const validationSchema = Yup.object({

@@ -9,11 +9,11 @@ const DepartmentEdit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = sessionStorage.getItem("cmpId");
+  const cmpId = localStorage.getItem("cmpId");
 
   const validationSchema = Yup.object({
     deptName: Yup.string().required("*Department Name is required"),
-    deptDesc: Yup.string().required("*Department Description is required"),
+    deptDesc: Yup.string().notRequired("*Department Description is required"),
   });
 
   // useFormik hook for form handling

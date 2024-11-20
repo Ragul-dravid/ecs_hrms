@@ -8,11 +8,11 @@ import toast from "react-hot-toast";
 const DepartmentAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = sessionStorage.getItem("cmpId");
+  const cmpId = localStorage.getItem("cmpId");
 
   const validationSchema = Yup.object({
     deptName: Yup.string().required("*Department Name is required"),
-    deptDesc: Yup.string().required("*Department Description is required"),
+    deptDesc: Yup.string().notRequired("*Department Description is required"),
   });
 
   const formik = useFormik({

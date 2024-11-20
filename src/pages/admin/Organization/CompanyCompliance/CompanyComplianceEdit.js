@@ -9,8 +9,8 @@ const CompanyComplianceEdit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = sessionStorage.getItem("cmpId");
-  const userName = sessionStorage.getItem("userName");
+  const cmpId = localStorage.getItem("cmpId");
+  const userName = localStorage.getItem("userName");
 
   const validationSchema = Yup.object({
     compComplianceDesignationName: Yup.string().required(

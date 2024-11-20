@@ -20,15 +20,15 @@ const steps = [
   { tooltip: "Contact Details" },
   { tooltip: "Qualification Details" },
   { tooltip: "Experience" },
-  { tooltip: "Previous Company" },
-  { tooltip: "Emergency Contact" },
+  // { tooltip: "Previous Company" },
+  // { tooltip: "Emergency Contact" },
   { tooltip: "Bank Account" },
 ];
 
 function EmployeeEdit() {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
-  // const id = sessionStorage.getItem('employeeId')
+  // const id = localStorage.getItem('employeeId')
   // const id = useParams()
   const [formData, setFormData] = useState({ empId: 66 });
   const childRef = React.useRef();
@@ -77,17 +77,17 @@ function EmployeeEdit() {
           childRef.current.experience();
         }
         break;
+      // case "4":
+      //   if (childRef.current) {
+      //     childRef.current.previousCompany();
+      //   }
+      //   break;
+      // case "5":
+      //   if (childRef.current) {
+      //     childRef.current.emergencyContact();
+      //   }
+      //   break;
       case "4":
-        if (childRef.current) {
-          childRef.current.previousCompany();
-        }
-        break;
-      case "5":
-        if (childRef.current) {
-          childRef.current.emergencyContact();
-        }
-        break;
-      case "6":
         if (childRef.current) {
           childRef.current.bankAccountAdd();
         }
@@ -153,7 +153,7 @@ function EmployeeEdit() {
               setLoadIndicators={setLoadIndicator}
             />
           )}
-          {activeStep === 4 && (
+          {/* {activeStep === 4 && (
             <EmpPreviousCompanyEdit
               formData={formData}
               ref={childRef}
@@ -170,8 +170,8 @@ function EmployeeEdit() {
               handleNext={handleNext}
               setLoadIndicators={setLoadIndicator}
             />
-          )}
-          {activeStep === 6 && (
+          )} */}
+          {activeStep === 4 && (
             <EmpBankAccountEdit
               formData={formData}
               ref={childRef}

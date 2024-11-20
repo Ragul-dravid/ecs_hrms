@@ -8,7 +8,8 @@ const CompanyComplianceView = () => {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
-  const userName = sessionStorage.getItem("userName");
+  const userName = localStorage.getItem("userName");
+  const cmpName = localStorage.getItem("cmpName");
 
   useEffect(() => {
     const getData = async () => {
@@ -78,6 +79,20 @@ const CompanyComplianceView = () => {
             <div className="container">
               <div className="row mt-2 p-3">
   
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm">
+                        <b>Company Name</b>
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {cmpName || ""}
+                      </p>
+                    </div>
+                  </div>
+                </div>
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">

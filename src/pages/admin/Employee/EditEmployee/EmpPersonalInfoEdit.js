@@ -12,91 +12,130 @@ import api from "../../../../config/URL";
 
 const EmpPersonalInfoEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
-    const [selectedIdType, setSelectedIdType] = useState("nric");
     const [employeProfile, setEmployeeProfile] = useState("");
-    console.log("Employee Data", formData.empId)
-
+    const cmpId = localStorage.getItem("cmpId");
+    const [companyData, setCompanyData] = useState(null);
+    const [departmentData, setDepartmentData] = useState(null);
+    const [selectedIdType, setSelectedIdType] = useState("");
+    const [currentDate, setCurrentDate] = useState("");
+    const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = React.useState(false);
+    const roleName = localStorage.getItem("role");
+  
     const validationSchema = Yup.object({
       firstName: Yup.string().required("*First name is required"),
       lastName: Yup.string().required("*Last name is required"),
       empPriPhNumber: Yup.number()
         .required("*Primary phone number is required")
         .typeError("*Must be a number"),
-      empPriEmail: Yup.string()
+      email: Yup.string()
         .email("*Enter valid email")
         .required("*Primary email id is required"),
-      empPriEmailPassword: Yup.string().required(
-        "*Primary email password is required"
-      ),
-      file: Yup.string().required("*File is required"),
+      password: Yup.string().required("*Primary email password is required"),
     });
-
+  
     const formik = useFormik({
       initialValues: {
-        firstName: formData.firstName || "",
-        lastName: formData.lastName || "",
-        empPriPhNumber: formData.empPriPhNumber || "",
-        empPriEmail: formData.empPriEmail || "",
-        empPriEmailPassword: formData.empPriEmailPassword || "",
-        nricfin: formData.nricfin || "",
-        nrictype: formData.nrictype || "",
-        empRegCmpId: formData.empRegCmpId || "1",
-        empRegDeptId: formData.empRegDeptId || "2",
-        file: formData.file || "",
-        aadharNumber: formData.aadharNumber || "gytrhh56696",
-        proof: formData.proof || "AADHAR",
+        empRegCmpId: cmpId,
+        firstName: "",
+        lastName: "",
+        empPriPhNumber: "",
+        email: "",
+        password: "",
+        NRICFin: "",
+        NRICType: "",
+        aadharNumber: "",
+        empRegDeptId: "",
+        empDesignation: "",
+        proof: "",
+        empDateOfJoin: "",
+        empType: "",
+        noticePeriod: "",
+        repManagerName: "",
+        file: "",
+        roleName: "",
+        citizenship: "",
+        nationality: "",
+      },
+      validate: (values) => {
+        const errors = {};
+        if (values.file) {
+          // Check if the file is one of the allowed types
+          const file = values.file;
+          const validTypes = ["image/jpeg", "image/png"];
+          if (!validTypes.includes(file.type)) {
+            errors.file = "Only JPG and PNG files are accepted";
+          }
+        }
+        return errors;
       },
       validationSchema: validationSchema,
       onSubmit: async (values) => {
+        console.log("object",values)
         setLoadIndicators(true);
-        console.log("Form Data:", formData);
-        // console.log("Api Data:", data);
+        handleNext()
+        setLoadIndicators(false);
         // try {
-        //   const formDatas = new FormData();
-        //   formDatas.append("id", formData.empId);
-        //   formDatas.append("firstName", values.firstName);
-        //   formDatas.append("lastName", values.lastName);
-        //   formDatas.append("empPriPhNumber", values.empPriPhNumber);
-        //   formDatas.append("empPriEmail", values.empPriEmail);
-        //   formDatas.append("empPriEmailPassword", values.empPriEmailPassword);
-        //   formDatas.append("NRICFin", values.nricfin);
-        //   formDatas.append("NRICType", values.nrictype);
-        //   // formDatas.append("aadharNumber", values.aadharNumber);
-        //   formDatas.append("empRegCmpId", 1);
-        //   formDatas.append("empRegDeptId", 2);
-        //   formDatas.append("file", values.file);
-        //   formDatas.append("aadharNumber", values.aadharNumber);
-        //   formDatas.append("proof", values.proof);
-        //   formDatas.append("empDesignation", values.proof);
-        //   formDatas.append("empDateOfJoin", "2024-08-02");
-        //   formDatas.append("empType ", values.proof);
-        //   formDatas.append("noticePeriod ", "30days");
-        //   formDatas.append("repManagerName ", "sakthivel");
-        //   // formDatas.append("employeedesignation", values.employeedesignation);
-        //   // formDatas.append("proof", values.proof);
-        //   // formDatas.append("employeeDateOfJoining", values.employeeDateOfJoining);
-        //   // formDatas.append("employeeType", values.employeeType);
-        //   // formDatas.append("noticePeriod", values.noticePeriod);
-        //   // formDatas.append("reportingManagerName", values.reportingManagerName);
-        //   // formDatas.append("reportingManagerID", values.reportingManagerID);
-        //   const response = await api.put(
-        //     `/updateEmployeeRegDetailsById/${formData.empId}`,
-        //     formDatas
-        //   );
-        //   if (response.status === 200) {
+        //   const formData = new FormData();
+        //   formData.append("empRegCmpId", cmpId);
+        //   formData.append("firstName", values.firstName);
+        //   formData.append("lastName", values.lastName);
+        //   formData.append("empPriPhNumber", values.empPriPhNumber);
+        //   formData.append("email", values.email);
+        //   formData.append("password", values.password);
+        //   formData.append("NRICFin", values.NRICFin);
+        //   formData.append("NRICType", values.NRICType);
+        //   formData.append("aadharNumber", values.aadharNumber);
+        //   formData.append("empRegDeptId", values.empRegDeptId);
+        //   formData.append("file", values.file);
+        //   formData.append("proof", selectedIdType);
+        //   formData.append("empDesignation", values.empDesignation);
+        //   formData.append("empDateOfJoin", values.empDateOfJoin);
+        //   formData.append("empType", values.empType);
+        //   formData.append("noticePeriod", values.noticePeriod);
+        //   formData.append("repManagerName", "Ragul");
+        //   formData.append("roleName", values.roleName);
+  
+        //   const response = await api.put("", formData);
+        //   if (response.status === 201) {
         //     toast.success(response.data.message);
-        //     setFormData((prv) => ({ ...prv, ...values }));
-        handleNext();
+        //     navigate("/employee");
         //   } else {
         //     toast.error(response.data.message);
         //   }
         // } catch (error) {
         //   toast.error(error);
         // } finally {
-          setLoadIndicators(false);
+        //   setLoadIndicators(false);
         // }
       },
     });
+  
+    // const fetchData = async () => {
+    //   try {
+    //     const departmentData = await fetchAllDepartmentNamesWithId()
+    //     setDepartmentData(departmentData);
+    //   } catch (error) {
+    //     toast.error(error);
+    //   }
+    // };
+  
+    // useEffect(() => {
+    //   fetchData();
+    // }, []);
+  
+    useEffect(() => {
+      const today = new Date().toISOString().split("T")[0];
+      setCurrentDate(today);
+    }, []);
+  
+    const handleIdTypeChange = (event) => {
+      setSelectedIdType(event.target.value);
+    };
+  
+    const togglePasswordVisibility = () => {
+      setShowPassword(!showPassword);
+    };
 
     useEffect(() => {
       const getData = async () => {
@@ -118,200 +157,301 @@ const EmpPersonalInfoEdit = forwardRef(
       personalInfo: formik.handleSubmit,
     }));
 
-    const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = React.useState(false);
-    const togglePasswordVisibility = () => {
-      setShowPassword(!showPassword);
-    };
-
     return (
-      <div className="container-fluid">
-        <form onSubmit={formik.handleSubmit}>
-          <div className=" border-0 mb-5">
-            <div className="mb-3">
-              <p class="headColor">Personal Information</p>
-              <div className="container">
-                <div className="row mt-3">
-                  <div className="col-md-6 col-12 mb-3">
-                    <lable className="form-lable">
-                      First Name<span className="text-danger">*</span>
-                    </lable>
+      <div className="container-fluid px-2  minHeight m-0">
+      <form onSubmit={formik.handleSubmit}>
+          <div className="row mt-3 me-2">
+            <div className="col-12 text-end"></div>
+          </div>
+          <div className="container mb-5">
+            <div className="row py-4">
+              <div className="col-md-6 col-12 mb-3">
+                <div className="mb-2">
+                  <label className="form-label">
+                    First Name <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    className={`form-control form-control-sm  ${
+                      formik.touched.firstName && formik.errors.firstName
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("firstName")}
+                  />
+                  {formik.touched.firstName && formik.errors.firstName && (
+                    <div className="invalid-feedback">
+                      {formik.errors.firstName}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="col-md-6 col-12 mb-3 ">
+                <div className="mb-2">
+                  <label className="form-label">
+                    Last Name <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    className={`form-control form-control-sm  ${
+                      formik.touched.lastName && formik.errors.lastName
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("lastName")}
+                  />
+                  {formik.touched.lastName && formik.errors.lastName && (
+                    <div className="invalid-feedback">
+                      {formik.errors.lastName}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="col-md-6 col-12 mb-3 ">
+                <div className="mb-2">
+                  <label className="form-label">
+                    Primary Email ID <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    className={`form-control form-control-sm ${
+                      formik.touched.email && formik.errors.email
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("email")}
+                  />
+                  {formik.touched.email && formik.errors.email && (
+                    <div className="invalid-feedback">
+                      {formik.errors.email}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <div className="mb-2">
+                  <label className="form-label">
+                    Primary Email Password{" "}
+                    <span className="text-danger">*</span>
+                  </label>
+                  <div className={`input-group mb-3`}>
                     <input
-                      className="form-control form-control-sm "
-                      type="text"
-                      name="firstName"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.firstName}
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      className={`form-control form-control-sm ${
+                        formik.touched.password && formik.errors.password
+                          ? "is-invalid"
+                          : ""
+                      }`}
+                      {...formik.getFieldProps("password")}
+                      style={{
+                        borderRight: "none",
+                        borderTopRightRadius: "0px",
+                        borderBottomRightRadius: "0px",
+                      }}
                     />
-                    {formik.touched.firstName && formik.errors.firstName && (
-                      <div className="text-danger">
-                        <small>{formik.errors.firstName}</small>
+                    <span
+                      className="input-group-text bg-white"
+                      id="basic-addon1"
+                      onClick={togglePasswordVisibility}
+                      style={{
+                        cursor: "pointer",
+                        borderRadius: "5px",
+                        borderLeft: "none",
+                        borderTopLeftRadius: "0px",
+                        borderBottomLeftRadius: "0px",
+                      }}
+                    >
+                      {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
+                    </span>
+                  </div>
+                  {formik.touched.password && formik.errors.password && (
+                    <div className="invalid-feedback">
+                      {formik.errors.password}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="col-md-6 col-12 mb-3 ">
+                <div className="mb-2">
+                  <label className="form-label">
+                    Primary Phone Number <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="empPriPhNumber"
+                    className={`form-control form-control-sm  ${
+                      formik.touched.empPriPhNumber &&
+                      formik.errors.empPriPhNumber
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("empPriPhNumber")}
+                  />
+                  {formik.touched.empPriPhNumber &&
+                    formik.errors.empPriPhNumber && (
+                      <div className="invalid-feedback">
+                        {formik.errors.empPriPhNumber}
                       </div>
                     )}
-                  </div>
-                  <div className="col-md-6 col-12 mb-3">
-                    <lable className="form-lable">
-                      Last Name<span className="text-danger">*</span>
-                    </lable>
-                    <input
-                      name="lastName"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.lastName}
-                      className="form-control form-control-sm "
-                      type="text"
-                    />
-                    {formik.touched.lastName && formik.errors.lastName && (
-                      <div className="text-danger">
-                        <small>{formik.errors.lastName}</small>
+                </div>
+              </div>
+              <div className="col-md-6 col-12 mb-2">
+                <label className="form-label">
+                  Department Name <span className="text-danger">*</span>
+                </label>
+                <div className="input-group mb-3">
+                  <select
+                    {...formik.getFieldProps("empRegDeptId")}
+                    className={`form-select form-select-sm  ${
+                      formik.touched.empRegDeptId && formik.errors.empRegDeptId
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                  >
+                    <option selected></option>
+                    {departmentData &&
+                      departmentData.map((deptId) => (
+                        <option key={deptId.deptId} value={deptId.deptId}>
+                          {deptId.deptName}
+                        </option>
+                      ))}
+                  </select>
+                  {formik.touched.empRegDeptId &&
+                    formik.errors.empRegDeptId && (
+                      <div className="invalid-feedback">
+                        {formik.errors.empRegDeptId}
                       </div>
                     )}
-                  </div>
-                  <div className="col-md-6 col-12 mb-3">
-                    <lable className="form-lable">
-                      Primary Email ID<span className="text-danger">*</span>
-                    </lable>
+                </div>
+              </div>
+              <div className="col-md-6 col-12 mb-3 ">
+                <div className="mb-2">
+                  <label className="form-label">
+                    Employee Designation <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="empDesignation"
+                    className={`form-control form-control-sm  ${
+                      formik.touched.empDesignation &&
+                      formik.errors.empDesignation
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("empDesignation")}
+                  />
+                  {formik.touched.empDesignation &&
+                    formik.errors.empDesignation && (
+                      <div className="invalid-feedback">
+                        {formik.errors.empDesignation}
+                      </div>
+                    )}
+                </div>
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">Photo</label>
+                <input
+                  type="file"
+                  name="file"
+                  className={`form-control form-control-sm ${
+                    formik.touched.file && formik.errors.file
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  accept=".jpg, .jpeg, .png" // Restrict file types
+                  onChange={(event) => {
+                    const file = event.target.files[0];
+                    if (file) {
+                      formik.setFieldValue("file", file);
+                    }
+                  }}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.file && formik.errors.file && (
+                  <div className="invalid-feedback">{formik.errors.file}</div>
+                )}
+              </div>
+              <div>
+                <div className="mb-3">
+                  <div className="form-check form-check-inline mb-2">
                     <input
-                      className="form-control form-control-sm  form-contorl-sm"
-                      name="empPriEmail"
-                      type="email"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.empPriEmail}
+                      className="form-check-input"
+                      type="radio"
+                      name="idType"
+                      id="nricRadio"
+                      value="NRIC"
+                      checked={selectedIdType === "NRIC"}
+                      onChange={handleIdTypeChange}
                     />
-                    {formik.touched.empPriEmail &&
-                      formik.errors.empPriEmail && (
-                        <div className="error text-danger ">
-                          <small>{formik.errors.empPriEmail}</small>
-                        </div>
-                      )}
+                    <label className="form-check-label" htmlFor="nricRadio">
+                      NRIC
+                    </label>
                   </div>
-                  <div className="col-md-6 col-12 mb-3">
-                    <lable className="form-lable">
-                      Primary Email Password
-                      <span className="text-danger">*</span>
-                    </lable>
-                    <div className={`input-group mb-3`}>
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className={`form-control form-control-sm  ${formik.touched.empPriEmailPassword &&
-                            formik.errors.empPriEmailPassword
-                            ? "is-invalid"
-                            : ""
-                          }`}
-                        {...formik.getFieldProps("empPriEmailPassword")}
-                        style={{
-                          borderRight: "none",
-                          borderTopRightRadius: "0px",
-                          borderBottomRightRadius: "0px",
-                        }}
-                        name="empPriEmailPassword"
-                      />
-                      <span
-                        className={`input-group-text bg-white`}
-                        id="basic-addon1"
-                        onClick={togglePasswordVisibility}
-                        style={{
-                          cursor: "pointer",
-                          borderRadius: "5px",
-                          borderLeft: "none",
-                          borderTopLeftRadius: "0px",
-                          borderBottomLeftRadius: "0px",
-                        }}
-                      >
-                        {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
-                      </span>
-                      {formik.touched.empPriEmailPassword &&
-                        formik.errors.empPriEmailPassword && (
-                          <div className="invalid-feedback">
-                            {formik.errors.empPriEmailPassword}
-                          </div>
-                        )}
-                    </div>
-                  </div>
-                  <div className="col-md-6 col-12 mb-3">
-                    <lable className="form-lable">
-                      Primary Phone Number
-                      <span className="text-danger">*</span>
-                    </lable>
+                  <div className="form-check form-check-inline mb-2">
                     <input
-                      className="form-control form-control-sm "
-                      type="text"
-                      name="empPriPhNumber"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.empPriPhNumber}
+                      className="form-check-input"
+                      type="radio"
+                      name="idType"
+                      id="aadharRadio"
+                      value="AADHAR"
+                      checked={selectedIdType === "AADHAR"}
+                      onChange={handleIdTypeChange}
                     />
-                    {formik.touched.empPriPhNumber &&
-                      formik.errors.empPriPhNumber && (
-                        <div className="text-danger">
-                          <small>{formik.errors.empPriPhNumber}</small>
-                        </div>
-                      )}
+                    <label className="form-check-label" htmlFor="aadharRadio">
+                      Aadhar
+                    </label>
                   </div>
-                  <div className="col-md-6 col-12 mb-3"></div>
-                  <div className="mb-3">
-                    <div className="form-check form-check-inline">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="proof"
-                        id="nricRadio"
-                        value="nric"
-                        checked={selectedIdType === "nric"}
-                        onChange={() => setSelectedIdType("nric")}
-                      />
-                      <lable className="form-check-lable" htmlFor="nricRadio">
-                        NRIC
-                      </lable>
-                    </div>
-                    <div className="form-check form-check-inline">
-                      <input
-                        className="form-check-input"
-                        type="radio"
-                        name="proof"
-                        id="aadharRadio"
-                        value="aadhar"
-                        checked={selectedIdType === "aadhar"}
-                        onChange={() => setSelectedIdType("aadhar")}
-                      />
-                      <lable className="form-check-lable" htmlFor="aadharRadio">
-                        Aadhar
-                      </lable>
-                    </div>
-                  </div>
-                  {selectedIdType === "nric" && (
-                    <>
-                      <div className="col-md-6 col-12 mb-3">
-                        <lable className="form-lable">
+                </div>
+                {selectedIdType === "NRIC" && (
+                  <div className="row">
+                    <div className="col-md-6 col-12 mb-3 ">
+                      <div className="mb-2">
+                        <label
+                          for="exampleFormControlInput1"
+                          className="form-label"
+                        >
                           NRIC Fin<span className="text-danger">*</span>
-                        </lable>
+                        </label>
                         <input
-                          className="form-control form-control-sm"
-                          name="nricfin"
                           type="text"
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.nricfin}
+                          name="NRICFin"
+                          className={`form-control form-control-sm  ${
+                            formik.touched.NRICFin && formik.errors.NRICFin
+                              ? "is-invalid"
+                              : ""
+                          }`}
+                          aria-label="Username"
+                          aria-describedby="basic-addon1"
+                          {...formik.getFieldProps("NRICFin")}
                         />
-                        {formik.touched.nricfin && formik.errors.nricfin && (
-                          <div className="error text-danger">
-                            <small>{formik.errors.nricfin}</small>
+                        {formik.touched.NRICFin && formik.errors.NRICFin && (
+                          <div className="invalid-feedback">
+                            {formik.errors.NRICFin}
                           </div>
                         )}
                       </div>
-                      <div className="col-md-6 col-12 mb-3">
-                        <lable className="form-lable">
+                    </div>
+                    <div className="col-md-6 col-12 mb-3 ">
+                      <div className="mb-2">
+                        <label
+                          for="exampleFormControlInput1"
+                          className="form-label"
+                        >
                           NRIC Type<span className="text-danger">*</span>
-                        </lable>
+                        </label>
                         <select
-                          className="form-select"
-                          name="nrictype"
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          value={formik.values.nrictype}
+                          name="NRICType"
+                          className={`form-select form-select-sm ${
+                            formik.touched.NRICType && formik.errors.NRICType
+                              ? "is-invalid"
+                              : ""
+                          }`}
+                          {...formik.getFieldProps("NRICType")}
                         >
                           <option selected></option>
                           <option value="Singapore Citizen">
@@ -325,59 +465,199 @@ const EmpPersonalInfoEdit = forwardRef(
                           <option value="S-Pass">S-Pass</option>
                           <option value="Work Permit">Work Permit</option>
                         </select>
-                        {formik.touched.nrictype && formik.errors.nrictype && (
-                          <div className="error text-danger">
-                            <small>{formik.errors.nrictype}</small>
+                        {formik.touched.NRICType && formik.errors.NRICType && (
+                          <div className="invalid-feedback">
+                            {formik.errors.NRICType}
                           </div>
                         )}
                       </div>
-                    </>
-                  )}
-                  {selectedIdType === "aadhar" && (
-                    <div className="col-md-6 col-12 mb-3">
-                      <lable className="form-lable">
+                    </div>
+                  </div>
+                )}
+                {selectedIdType === "AADHAR" && (
+                  <div className="col-md-6 col-12 mb-3 ">
+                    <div className="mb-2">
+                      <label
+                        for="exampleFormControlInput1"
+                        className="form-label"
+                      >
                         Aadhar Number<span className="text-danger">*</span>
-                      </lable>
+                      </label>
                       <input
-                        className="form-control form-control-sm"
-                        name="aadharNumber"
                         type="text"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        value={formik.values.aadharNumber}
+                        name="aadharNumber"
+                        className={`form-control form-control-sm ${
+                          formik.touched.aadharNumber &&
+                          formik.errors.aadharNumber
+                            ? "is-invalid"
+                            : ""
+                        }`}
+                        {...formik.getFieldProps("aadharNumber")}
                       />
                       {formik.touched.aadharNumber &&
                         formik.errors.aadharNumber && (
-                          <div className="error text-danger">
-                            <small>{formik.errors.aadharNumber}</small>
+                          <div className="invalid-feedback">
+                            {formik.errors.aadharNumber}
                           </div>
                         )}
                     </div>
-                  )}
-                  <div className="col-md-6 col-12 mb-3">
-                    <lable>Photo<span className="text-danger">*</span></lable>
-                    <input
-                      type="file"
-                      name="file"
-                      className="form-control form-control-sm"
-                      onChange={(event) => {
-                        formik.setFieldValue("file", event.target.files[0]);
-                      }}
-                      onBlur={formik.handleBlur}
-                    />
-                    {/* <img src={employeProfile} alt="emp_photo" className="img-fluid mt-3" style={{ width: "200px", height: "150px" }}></img> */}
-                    {formik.touched.file && formik.errors.file && (
-                      <div className="error text-danger ">
-                        <small>{formik.errors.file}</small>
+                  </div>
+                )}
+              </div>
+              <div className="col-md-6 col-12 mb-3 ">
+                <div className="mb-2">
+                  <label for="exampleFormControlInput1" className="form-label">
+                    Employee Date of Joining
+                    <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    name="empDateOfJoin"
+                    className={`form-control form-control-sm ${
+                      formik.touched.empDateOfJoin &&
+                      formik.errors.empDateOfJoin
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("empDateOfJoin")}
+                  />
+                  {formik.touched.empDateOfJoin &&
+                    formik.errors.empDateOfJoin && (
+                      <div className="invalid-feedback">
+                        {formik.errors.empDateOfJoin}
                       </div>
                     )}
-                  </div>
+                </div>
+              </div>
+              <div className="col-md-6 col-12 mb-2">
+                <label className="form-label">
+                  Employee Type <span className="text-danger">*</span>
+                </label>
+                <div className="input-group mb-3">
+                  <select
+                    {...formik.getFieldProps("empType")}
+                    className={`form-select form-select-sm  ${
+                      formik.touched.empType && formik.errors.empType
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                  >
+                    <option selected></option>
+                    <option value="Full Time">Full Time</option>
+                    <option value="Part Time">Part Time</option>
+                    <option value="Hourly Basis">Hourly Basis</option>
+                  </select>
+                  {formik.touched.empType && formik.errors.empType && (
+                    <div className="invalid-feedback">
+                      {formik.errors.empType}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="col-md-6 col-12 mb-3 ">
+                <div className="mb-2">
+                  <label for="exampleFormControlInput1" className="form-label">
+                    Notice Period<span className="text-danger">*</span>
+                  </label>
+                  <select
+                    type="text"
+                    className={`form-select form-select-sm ${
+                      formik.touched.noticePeriod && formik.errors.noticePeriod
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("noticePeriod")}
+                  >
+                    <option selected></option>
+                    <option value="30 days">30 days</option>
+                    <option value="60 days">60 days</option>
+                    <option value="90 days">90 days</option>
+                  </select>
+                  {formik.touched.noticePeriod &&
+                    formik.errors.noticePeriod && (
+                      <div className="invalid-feedback">
+                        {formik.errors.noticePeriod}
+                      </div>
+                    )}
+                </div>
+              </div>
+              <div className="col-md-6 col-12 mb-2">
+                <label className="form-label">
+                  Role <span className="text-danger">*</span>
+                </label>
+                <div className="input-group mb-3">
+                  <select
+                    {...formik.getFieldProps("roleName")}
+                    className={`form-select form-select-sm  ${
+                      formik.touched.roleName && formik.errors.roleName
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                  >
+                    <option selected></option>
+                    <option value="Employee">Employee</option>
+                    {departmentData &&
+                      departmentData.map((deptId) => (
+                        <option key={deptId.deptId} value={deptId.deptId}>
+                          {deptId.deptName}
+                        </option>
+                      ))}
+                  </select>
+                  {formik.touched.roleName &&
+                    formik.errors.roleName && (
+                      <div className="invalid-feedback">
+                        {formik.errors.roleName}
+                      </div>
+                    )}
+                </div>
+              </div>
+              <div className="col-md-6 col-12 mb-2">
+                <label className="form-label">
+                  Citizenship <span className="text-danger">*</span>
+                </label>
+                <div className="input-group mb-3">
+                  <input
+                    {...formik.getFieldProps("citizenship")}
+                    className={`form-select form-select-sm  ${
+                      formik.touched.citizenship && formik.errors.citizenship
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                  />
+                  {formik.touched.citizenship &&
+                    formik.errors.citizenship && (
+                      <div className="invalid-feedback">
+                        {formik.errors.citizenship}
+                      </div>
+                    )}
+                </div>
+              </div>
+              <div className="col-md-6 col-12 mb-2">
+                <label className="form-label">
+                Nationality <span className="text-danger">*</span>
+                </label>
+                <div className="input-group mb-3">
+                  <input
+                    {...formik.getFieldProps("nationality")}
+                    className={`form-select form-select-sm  ${
+                      formik.touched.nationality && formik.errors.nationality
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                  />
+                  {formik.touched.nationality &&
+                    formik.errors.nationality && (
+                      <div className="invalid-feedback">
+                        {formik.errors.nationality}
+                      </div>
+                    )}
                 </div>
               </div>
             </div>
           </div>
-        </form>
-      </div>
+
+      </form>
+    </div>
     );
   }
 );

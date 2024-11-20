@@ -45,21 +45,23 @@ const EmpBankAccountEdit = forwardRef(
       onSubmit: async (values) => {
         setLoadIndicators(true);
         values.bankAccDetailsEmpId = formData.empId;
+        navigate("/employee")
+        setLoadIndicators(false)
         // console.log("Body Values is ", values);
-        try {
-          const response = await api.post(`/addEmpBankAccDetails`, values);
-          if (response.status === 201) {
-            toast.success(response.data.message);
-            setFormData((prv) => ({ ...prv, ...values }));
-            navigate("/employee/view")
-          } else {
-            toast.error(response.data.message);
-          }
-        } catch (error) {
-          toast.error(error);
-        } finally {
-          setLoadIndicators(false);
-        }
+        // try {
+        //   const response = await api.post(`/addEmpBankAccDetails`, values);
+        //   if (response.status === 201) {
+        //     toast.success(response.data.message);
+        //     setFormData((prv) => ({ ...prv, ...values }));
+        //     navigate("/employee/view")
+        //   } else {
+        //     toast.error(response.data.message);
+        //   }
+        // } catch (error) {
+        //   toast.error(error);
+        // } finally {
+        //   setLoadIndicators(false);
+        // }
       },
     });
 

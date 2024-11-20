@@ -13,11 +13,11 @@ function AdminHeader({ handleLogout }) {
   const [show, setShow] = useState(false);
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const userName = sessionStorage.getItem("userName");
-  const cmpName = sessionStorage.getItem("cmpName");
-  const cpmId = sessionStorage.getItem("cmpId");
-  const email = sessionStorage.getItem("email");
-  const role = sessionStorage.getItem("role");
+  const userName = localStorage.getItem("userName");
+  const cmpName = localStorage.getItem("cmpName");
+  const cpmId = localStorage.getItem("cmpId");
+  const email = localStorage.getItem("email");
+  const role = localStorage.getItem("role");
 
   const handleClose = () => {
     setShow(false);

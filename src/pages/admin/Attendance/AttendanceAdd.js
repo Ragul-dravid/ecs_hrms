@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -9,21 +9,27 @@ import Attendance from "./Attendance";
 const AttendanceAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = sessionStorage.getItem("cmpId");
+  const cmpId = localStorage.getItem("cmpId");
   const [companyData, setCompanyData] = useState(null);
+  const [empData, setEmpData] = useState(null);
 
   const validationSchema = Yup.object({
     attendanceStatus: Yup.string().required("*Attendance Status is required"),
     attendanceRemarks: Yup.string().required("*Attendance Remarks is required"),
+    attendanceModeOfWorking: Yup.string().test(
+      "check-mode-of-working",
+      "*Mode of working is required",
+      function (value) {
+        const { attendanceStatus } = this.parent;
+        return attendanceStatus === "Present" ? !!value : true;
+      }
+    ),
   });
 
   const formik = useFormik({
     initialValues: {
       cmpId: cmpId,
-      attendanceId: "",
-
       dailyAttendanceEmpId: "",
-
       attendanceDate: "",
       attendanceCheckInTime: "",
       attendanceCheckOutTime: "",
@@ -39,68 +45,9 @@ const AttendanceAdd = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+      console.log("object", values);
+      
       setLoadIndicator(true);
-      let payload = {
-        attendanceDate: values.attendanceDate,
-        attendanceStatus: values.attendanceStatus,
-        attendanceCheckInTime: values.attendanceCheckInTime,
-        attendanceCheckOutTime: values.attendanceCheckOutTime,
-        attendanceCheckInMode: values.attendanceCheckInMode,
-        attendanceCheckOutMode: values.attendanceCheckOutMode,
-        attendanceOtStarttime: values.attendanceOtStarttime,
-        attendanceOtEndtime: values.attendanceOtEndtime,
-        attendanceRemarks: values.attendanceRemarks,
-      };
-
-      if (values.attendanceModeOfWorking !== "") {
-        payload = {
-          ...payload,
-          attendanceModeOfWorking: values.attendanceModeOfWorking,
-        };
-      }
-
-      if (values.attendanceCheckInTime !== "") {
-        payload = {
-          ...payload,
-          attendanceCheckInTime: values.attendanceCheckInTime,
-        };
-      }
-
-      if (values.attendanceCheckOutTime !== "") {
-        payload = {
-          ...payload,
-          attendanceCheckOutTime: values.attendanceCheckOutTime,
-        };
-      }
-
-      if (values.attendanceCheckInMode !== "") {
-        payload = {
-          ...payload,
-          attendanceCheckInMode: values.attendanceCheckInMode,
-        };
-      }
-
-      if (values.attendanceCheckOutMode !== "") {
-        payload = {
-          ...payload,
-          attendanceCheckOutMode: values.attendanceCheckOutMode,
-        };
-      }
-
-      if (values.attendanceOtStarttime !== "") {
-        payload = {
-          ...payload,
-          attendanceOtStarttime: values.attendanceOtStarttime,
-        };
-      }
-
-      if (values.attendanceOtEndtime !== "") {
-        payload = {
-          ...payload,
-          attendanceOtEndtime: values.attendanceOtEndtime,
-        };
-      }
-
       try {
         const response = await api.post(`/daily-attendance`, values);
         if (response.status === 201) {
@@ -116,6 +63,31 @@ const AttendanceAdd = () => {
       }
     },
   });
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`/emp-reg-details-with-id`);
+        setEmpData(response.data);
+      } catch (e) {
+        toast.error("Error fetching data: ", e?.response?.data?.message);
+      }
+    };
+
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const handleStatuschange = (event) => {
+    const status = event.target.value;
+    formik.setFieldValue("attendanceStatus", status);
+    if (status === "Absent") {
+      formik.setFieldValue("attendanceModeOfWorking", "");
+      formik.setFieldValue("attendanceCheckInTime", "");
+      formik.setFieldValue("attendanceCheckOutTime", "");
+      formik.setFieldValue("attendanceOtStarttime", "");
+      formik.setFieldValue("attendanceOtEndtime", "");
+    }
+  };
 
   return (
     <div className="container-fluid px-2 minHeight m-0">
@@ -171,24 +143,33 @@ const AttendanceAdd = () => {
                   Employee Name
                   <span className="text-danger">*</span>
                 </label>
-                <input
-                  type="text"
-                  name="attendanceDate"
-                  className={`form-control form-control-sm ${
-                    formik.touched.attendanceDate &&
-                    formik.errors.attendanceDate
+                <select
+                  name="dailyAttendanceEmpId"
+                  className={`form-select form-select-sm ${
+                    formik.touched.dailyAttendanceEmpId &&
+                    formik.errors.dailyAttendanceEmpId
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("attendanceDate")}
-                />
-                {formik.touched.attendanceDate &&
-                  formik.errors.attendanceDate && (
+                  {...formik.getFieldProps("dailyAttendanceEmpId")}
+                >
+                  {/* Add a default option */}
+                  <option value="" selected></option>
+                  {empData &&
+                    empData.map((emp) => (
+                      <option key={emp.id} value={emp.id}>
+                        {`${emp.firstName} ${emp.lastName}`}
+                      </option>
+                    ))}
+                </select>
+                {formik.touched.dailyAttendanceEmpId &&
+                  formik.errors.dailyAttendanceEmpId && (
                     <div className="invalid-feedback">
-                      {formik.errors.attendanceDate}
+                      {formik.errors.dailyAttendanceEmpId}
                     </div>
                   )}
               </div>
+
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Attendance Date <span className="text-danger">*</span>
@@ -223,6 +204,7 @@ const AttendanceAdd = () => {
                       : ""
                   }`}
                   {...formik.getFieldProps("attendanceStatus")}
+                  onChange={handleStatuschange}
                 >
                   <option value="" />
                   <option value="Present" label="Present" />
@@ -271,17 +253,17 @@ const AttendanceAdd = () => {
                       type="time"
                       // onFocus={(e) => e.target.showPicker()}
                       className={`form-control form-control-sm ${
-                        formik.touched.attendanceCheckInMode &&
-                        formik.errors.attendanceCheckInMode
+                        formik.touched.attendanceCheckInTime &&
+                        formik.errors.attendanceCheckInTime
                           ? "is-invalid"
                           : ""
                       }`}
-                      {...formik.getFieldProps("attendanceCheckInMode")}
+                      {...formik.getFieldProps("attendanceCheckInTime")}
                     />
-                    {formik.touched.attendanceCheckInMode &&
-                      formik.errors.attendanceCheckInMode && (
+                    {formik.touched.attendanceCheckInTime &&
+                      formik.errors.attendanceCheckInTime && (
                         <div className="invalid-feedback">
-                          {formik.errors.attendanceCheckInMode}
+                          {formik.errors.attendanceCheckInTime}
                         </div>
                       )}
                   </div>
@@ -293,17 +275,17 @@ const AttendanceAdd = () => {
                       type="time"
                       // onFocus={(e) => e.target.showPicker()}
                       className={`form-control form-control-sm${
-                        formik.touched.attendanceCheckOutMode &&
-                        formik.errors.attendanceCheckOutMode
+                        formik.touched.attendanceCheckOutTime &&
+                        formik.errors.attendanceCheckOutTime
                           ? "is-invalid"
                           : ""
                       }`}
-                      {...formik.getFieldProps("attendanceCheckOutMode")}
+                      {...formik.getFieldProps("attendanceCheckOutTime")}
                     />
-                    {formik.touched.attendanceCheckOutMode &&
-                      formik.errors.attendanceCheckOutMode && (
+                    {formik.touched.attendanceCheckOutTime &&
+                      formik.errors.attendanceCheckOutTime && (
                         <div className="invalid-feedback">
-                          {formik.errors.attendanceCheckOutMode}
+                          {formik.errors.attendanceCheckOutTime}
                         </div>
                       )}
                   </div>

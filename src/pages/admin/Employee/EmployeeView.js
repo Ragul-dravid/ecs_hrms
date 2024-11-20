@@ -10,8 +10,8 @@ function EmployeeView() {
   const { id } = useParams();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const cmpId = sessionStorage.getItem('cmpId');
-  const empId = sessionStorage.getItem('empId');
+  const cmpId = localStorage.getItem('cmpId');
+  const empId = localStorage.getItem('empId');
 
   useEffect(() => {
     const getData = async () => {

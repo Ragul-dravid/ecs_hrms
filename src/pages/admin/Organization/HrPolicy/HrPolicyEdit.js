@@ -33,7 +33,7 @@ const HrPolicyEdit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = sessionStorage.getItem("cmpId");
+  const cmpId = localStorage.getItem("cmpId");
 
   const validationSchema = Yup.object({
     hrPolicyList: Yup.string().required("*Policy Name is required"),
@@ -140,7 +140,7 @@ const HrPolicyEdit = () => {
             <div className="row py-4">
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  Policy Name <span className="text-danger">*</span>
+                  Policy Title <span className="text-danger">*</span>
                 </label>
                 <input
                   type="text"

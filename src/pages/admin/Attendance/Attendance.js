@@ -5,12 +5,14 @@ import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import api from "../../../config/URL";
-import { PropagateLoader } from 'react-spinners';
+import { PropagateLoader } from "react-spinners";
 import DeleteModel from "../../../components/admin/DeleteModel";
+import { BiEditAlt } from "react-icons/bi";
+import { HiOutlineEye } from "react-icons/hi";
 
 const Attendance = () => {
   const tableRef = useRef(null);
-  // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
+  // const storedScreens = JSON.parse(localStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -156,7 +158,9 @@ const Attendance = () => {
                   {datas.map((data, index) => (
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
-                      <td className="text-center">{data.deductionName}</td>
+                      <td className="text-center">
+                        {data.dailyAttendanceEmpId}
+                      </td>
                       <td className="text-center">{data.deductionName}</td>
                       {/* <td className="text-center">
                         {data.attendanceModeOfWorking}
@@ -166,25 +170,21 @@ const Attendance = () => {
                         {new Date(data.attendanceDate).toLocaleDateString()}
                       </td>
                       <td className="text-center">
-                        {data.attendanceStatus === "Present" ? (
-                          <span className="badge badges-Green">Present</span>
-                        ) : (
-                          <span className="badge badges-Red">Absent</span>
-                        )}
+                        {data.attendanceStatus}
                       </td>
                       <td className="text-center">
                         <div className="gap-2">
                           <Link to={`/attendance/view/${data.attendanceId}`}>
-                            <button className="btn btn-light btn-sm  shadow-none border-none">
-                              View
+                            <button className="btn btn-sm  shadow-none border-none">
+                              <HiOutlineEye />
                             </button>
                           </Link>
                           <Link
                             to={`/attendance/edit/${data.attendanceId}`}
                             className="px-2"
                           >
-                            <button className="btn btn-light  btn-sm shadow-none border-none">
-                              Edit
+                            <button className="btn btn-sm shadow-none border-none">
+                              <BiEditAlt />
                             </button>
                           </Link>
                           <DeleteModel

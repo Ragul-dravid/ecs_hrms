@@ -1,7 +1,7 @@
 import toast from "react-hot-toast";
 import api from "../../../config/URL";
 
-const cpmId = sessionStorage.getItem("cmpId");
+const cpmId = localStorage.getItem("cmpId");
 const employeeListByCompId = async () => {
   try {
     const response = await api.get(`emp-reg-details-by-companyId/${cpmId}`);

@@ -62,6 +62,7 @@ import Roles from "../pages/admin/Settings/Roles/Roles.js";
 import RolesAdd from "../pages/admin/Settings/Roles/RolesAdd.js";
 import RolesEdit from "../pages/admin/Settings/Roles/RolesEdit.js";
 import RolesView from "../pages/admin/Settings/Roles/RolesView.js";
+import ScrollToTop from "../pages/ScrollToTop.js";
 
 
 function Admin({ handleLogout }) {
@@ -70,10 +71,11 @@ function Admin({ handleLogout }) {
       <BrowserRouter>
         <div className="d-flex flex-column flex-lg-row bg-surface-secondary">
           <AdminSidebar handleLogout={handleLogout} />
-          <div className="flex-grow-1 h-screen overflow-y-auto">
+          <div className="flex-grow-1 h-screen overflow-y-auto scrollable-container">
             <AdminHeader handleLogout={handleLogout} />
             <main className="pt-3 bg-surface-secondary">
               <div style={{ minHeight: "90vh" }}>
+                <ScrollToTop />
                 <Routes>
                   <Route path="/dashboard" element={<Dashboard />} />
 

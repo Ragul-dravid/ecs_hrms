@@ -4,9 +4,11 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import api from "../../../../config/URL";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const EmpContactDetailsEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
+    const [rows, setRows] = useState([{}]);
     const validationSchema = Yup.object().shape({
       dob: Yup.string().required("*Date of birth is required"),
       gender: Yup.string().required("*Select a gender"),
@@ -17,13 +19,22 @@ const EmpContactDetailsEdit = forwardRef(
       pincode: Yup.number()
         .required("*Pincode is required")
         .typeError("*Must be a number"),
-      empSecEmail: Yup.string().required("*Secondary email id is required "),
-      empSecEmailPassword: Yup.string().required(
-        "*Secondary email password is required "
-      ),
       empSecPhNumber: Yup.number()
         .required("*Secondary phone number is required ")
         .typeError("*Must be a number"),
+      empEmergencyContact: Yup.array().of(
+        Yup.object().shape({
+          emergencyContactName: Yup.string().required(
+            "*Emergency contact name is required"
+          ),
+          emergencyContactNo: Yup.number()
+            .required("*Emergency contact no is required")
+            .typeError("*Must be a number"),
+          emergencyContactAddress: Yup.string().required(
+            "*Emergency contact address is required"
+          )
+        })
+      ),
     });
 
     const formik = useFormik({
@@ -35,21 +46,33 @@ const EmpContactDetailsEdit = forwardRef(
         address: formData.address,
         city: formData.city,
         pincode: formData.pincode,
-        empSecEmail: formData.empSecEmail,
-        empSecEmailPassword: formData.empSecEmailPassword,
+        emergencyContactName: formData.emergencyContactName || "",
+        emergencyContactNo: formData.emergencyContactNo || "",
+        emergencyContactAddress: formData.emergencyContactAddress || "",
+        relationshipOfEmployee: formData.relationshipOfEmployee || "",
+        // empSecEmail: formData.empSecEmail,
+        // empSecEmailPassword: formData.empSecEmailPassword,
         empSecPhNumber: formData.empSecPhNumber,
+        empEmergencyContact: [
+          {
+            emergencyContactName: formData.emergencyContactName || "",
+            emergencyContactNo: formData.emergencyContactNo || "",
+            emergencyContactAddress: formData.emergencyContactAddress || "",
+            relationshipOfEmployee: formData.relationshipOfEmployee || "",
+          },
+        ],
       },
-      // validationSchema: validationSchema,
+      validationSchema: validationSchema,
       onSubmit: async (values) => {
         setLoadIndicators(true);
-        values.perDetailsEmpId = formData.empId;
+        // values.perDetailsEmpId = formData.empId;
         // console.log("Body Values is ", values);
         // try {
         //   const response = await api.post(`/addEmpPersonalDetails`, values);
         //   if (response.status === 201) {
         //     toast.success(response.data.message);
         //     setFormData((prv) => ({ ...prv, ...values }));
-            handleNext();
+        handleNext();
         //   } else {
         //     toast.error(response.data.message);
         //   }
@@ -64,12 +87,6 @@ const EmpContactDetailsEdit = forwardRef(
     useImperativeHandle(ref, () => ({
       contactDetails: formik.handleSubmit,
     }));
-
-    const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = React.useState(false);
-    const togglePasswordVisibility = () => {
-      setShowPassword(!showPassword);
-    };
 
     return (
       <div className="container-fluid">
@@ -96,6 +113,26 @@ const EmpContactDetailsEdit = forwardRef(
                         <small>{formik.errors.dob}</small>
                       </div>
                     )}
+                  </div>
+                  <div className="col-md-6 col-12 mb-3">
+                    <lable className="form-lable">
+                      Secondary Phone Number
+                      <span className="text-danger">*</span>
+                    </lable>
+                    <input
+                      className="form-control form-control-sm "
+                      type="text"
+                      name="empSecPhNumber"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.empSecPhNumber}
+                    />
+                    {formik.touched.empSecPhNumber &&
+                      formik.errors.empSecPhNumber && (
+                        <div className="text-danger">
+                          <small>{formik.errors.empSecPhNumber}</small>
+                        </div>
+                      )}
                   </div>
                   <div className="col-md-6 col-12">
                     <div className="mb-3">
@@ -196,44 +233,6 @@ const EmpContactDetailsEdit = forwardRef(
                   </div>
                   <div className="col-md-6 col-12 mb-3">
                     <lable className="form-lable">
-                      Religion
-                      <span className="text-danger">*</span>
-                    </lable>
-                    <input
-                      className="form-control form-control-sm "
-                      type="text"
-                      name="religion"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.religion}
-                    />
-                    {formik.touched.religion && formik.errors.religion && (
-                      <div className="text-danger">
-                        <small>{formik.errors.religion}</small>
-                      </div>
-                    )}
-                  </div>
-                  <div className="col-md-6 col-12 mb-3">
-                    <lable className="form-lable">
-                      Address
-                      <span className="text-danger">*</span>
-                    </lable>
-                    <textarea
-                      rows="5"
-                      className="form-control form-control-sm "
-                      name="address"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.address}
-                    ></textarea>
-                    {formik.touched.address && formik.errors.address && (
-                      <div className="text-danger">
-                        <small>{formik.errors.address}</small>
-                      </div>
-                    )}
-                  </div>
-                  <div className="col-md-6 col-12 mb-3">
-                    <lable className="form-lable">
                       City
                       <span className="text-danger">*</span>
                     </lable>
@@ -248,6 +247,25 @@ const EmpContactDetailsEdit = forwardRef(
                     {formik.touched.city && formik.errors.city && (
                       <div className="text-danger">
                         <small>{formik.errors.city}</small>
+                      </div>
+                    )}
+                  </div>
+                  <div className="col-md-6 col-12 mb-3">
+                    <lable className="form-lable">
+                      Religion
+                      <span className="text-danger">*</span>
+                    </lable>
+                    <input
+                      className="form-control form-control-sm "
+                      type="text"
+                      name="religion"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.religion}
+                    />
+                    {formik.touched.religion && formik.errors.religion && (
+                      <div className="text-danger">
+                        <small>{formik.errors.religion}</small>
                       </div>
                     )}
                   </div>
@@ -272,92 +290,180 @@ const EmpContactDetailsEdit = forwardRef(
                   </div>
                   <div className="col-md-6 col-12 mb-3">
                     <lable className="form-lable">
-                      Secondary Email ID
+                      Address
                       <span className="text-danger">*</span>
                     </lable>
-                    <input
+                    <textarea
+                      rows="5"
                       className="form-control form-control-sm "
-                      type="email"
-                      name="empSecEmail"
+                      name="address"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      value={formik.values.empSecEmail}
-                    />
-                    {formik.touched.empSecEmail &&
-                      formik.errors.empSecEmail && (
-                        <div className="text-danger">
-                          <small>{formik.errors.empSecEmail}</small>
-                        </div>
-                      )}
-                  </div>
-                  <div className="col-md-6 col-12 mb-3">
-                    <lable className="form-lable">
-                      Secondary Email Password
-                      <span className="text-danger">*</span>
-                    </lable>
-                    <div className={`input-group mb-3`}>
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className={`form-control form-control-sm  ${formik.touched.empSecEmailPassword &&
-                            formik.errors.empSecEmailPassword
-                            ? "is-invalid"
-                            : ""
-                          }`}
-                        {...formik.getFieldProps("empSecEmailPassword")}
-                        style={{
-                          borderRight: "none",
-                          borderTopRightRadius: "0px",
-                          borderBottomRightRadius: "0px",
-                        }}
-                        name="empSecEmailPassword"
-                      />
-                      <span
-                        className={`input-group-text bg-white`}
-                        id="basic-addon1"
-                        onClick={togglePasswordVisibility}
-                        style={{
-                          cursor: "pointer",
-                          borderRadius: "5px",
-                          borderLeft: "none",
-                          borderTopLeftRadius: "0px",
-                          borderBottomLeftRadius: "0px",
-                        }}
-                      >
-                        {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
-                      </span>
-                      {formik.touched.empSecEmailPassword &&
-                        formik.errors.empSecEmailPassword && (
-                          <div className="invalid-feedback">
-                            {formik.errors.empSecEmailPassword}
-                          </div>
-                        )}
-                    </div>
-                  </div>
-                  <div className="col-md-6 col-12 mb-3">
-                    <lable className="form-lable">
-                      Secondary Phone Number
-                      <span className="text-danger">*</span>
-                    </lable>
-                    <input
-                      className="form-control form-control-sm "
-                      type="text"
-                      name="empSecPhNumber"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.empSecPhNumber}
-                    />
-                    {formik.touched.empSecPhNumber &&
-                      formik.errors.empSecPhNumber && (
-                        <div className="text-danger">
-                          <small>{formik.errors.empSecPhNumber}</small>
-                        </div>
-                      )}
+                      value={formik.values.address}
+                    ></textarea>
+                    {formik.touched.address && formik.errors.address && (
+                      <div className="text-danger">
+                        <small>{formik.errors.address}</small>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          {rows.map((row, index) => (
+            <div key={index}>
+              <p class="headColor mt-3">Emergency Contact</p>
+              <div className="container">
+                <div className="row mt-3">
+                  <div className="col-md-6 col-12 mb-3">
+                    <lable className="form-label">
+                      Emergency Contact Name
+                      <span className="text-danger">*</span>
+                    </lable>
+                    <input
+                      className="form-control "
+                      type="text"
+                      name={`empEmergencyContact[${index}].emergencyContactName`}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={
+                        formik.values.empEmergencyContact[index]
+                          ?.emergencyContactName || ""
+                      }
+                    />
+                    {formik.touched.empEmergencyContact?.[index]
+                      ?.emergencyContactName &&
+                      formik.errors.empEmergencyContact?.[index]
+                        ?.emergencyContactName && (
+                        <div className="text-danger">
+                          <small>
+                            {
+                              formik.errors.empEmergencyContact[index]
+                                .emergencyContactName
+                            }
+                          </small>
+                        </div>
+                      )}
+                  </div>
+                  <div className="col-md-6 col-12 mb-3">
+                    <lable className="form-label">
+                      Emergency Contact No
+                      <span className="text-danger">*</span>
+                    </lable>
+
+                    <input
+                      className="form-control "
+                      type="text"
+                      name={`empEmergencyContact[${index}].emergencyContactNo`}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={
+                        formik.values.empEmergencyContact[index]
+                          ?.emergencyContactNo || ""
+                      }
+                    />
+                    {formik.touched.empEmergencyContact?.[index]
+                      ?.emergencyContactNo &&
+                      formik.errors.empEmergencyContact?.[index]
+                        ?.emergencyContactNo && (
+                        <div className="text-danger">
+                          <small>
+                            {
+                              formik.errors.empEmergencyContact[index]
+                                .emergencyContactNo
+                            }
+                          </small>
+                        </div>
+                      )}
+                  </div>
+                  <div className="col-md-6 col-12 mb-3">
+                    <lable className="form-label">
+                      Emergency Contact Address
+                      <span className="text-danger">*</span>
+                    </lable>
+                    <textarea
+                      rows="5"
+                      className="form-control "
+                      name={`empEmergencyContact[${index}].emergencyContactAddress`}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={
+                        formik.values.empEmergencyContact[index]
+                          ?.emergencyContactAddress || ""
+                      }
+                    />
+                    {formik.touched.empEmergencyContact?.[index]
+                      ?.emergencyContactAddress &&
+                      formik.errors.empEmergencyContact?.[index]
+                        ?.emergencyContactAddress && (
+                        <div className="text-danger">
+                          <small>
+                            {
+                              formik.errors.empEmergencyContact[index]
+                                .emergencyContactAddress
+                            }
+                          </small>
+                        </div>
+                      )}
+                  </div>
+                  <div className="col-md-6 col-12 mb-4 align-items-center d-flex justify-content-center">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setRows((prev) => [...prev, {}]);
+                      }}
+                      className="btn btn-sm btn-primary"
+                    >
+                      Add More
+                    </button>{" "}
+                    &nbsp;&nbsp;
+                    {rows.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => setRows((prev) => prev.slice(0, -1))}
+                        className="btn btn-button btn-danger btn-sm"
+                      >
+                        <FaRegTrashAlt />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* <div className="col-md-6 col-12 mb-3">
+                    <lable className="form-label">
+                      Relationship to Employee
+                      <span className="text-danger">*</span>
+                    </lable>
+
+                    <input
+                      className="form-control "
+                      type="text"
+                      name={`empEmergencyContact[${index}].relationshipOfEmployee`}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={
+                        formik.values.empEmergencyContact[index]
+                          ?.relationshipOfEmployee || ""
+                      }
+                    />
+                    {formik.touched.empEmergencyContact?.[index]
+                      ?.relationshipOfEmployee &&
+                      formik.errors.empEmergencyContact?.[index]
+                        ?.relationshipOfEmployee && (
+                        <div className="text-danger">
+                          <small>
+                            {
+                              formik.errors.empEmergencyContact[index]
+                                .relationshipOfEmployee
+                            }
+                          </small>
+                        </div>
+                      )}
+                  </div> */}
+                </div>
+              </div>
+            </div>
+          ))}
         </form>
       </div>
     );

@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 const RolesAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = sessionStorage.getItem("cmpId");
+  const cmpId = localStorage.getItem("cmpId");
 
   const validationSchema = Yup.object({});
 

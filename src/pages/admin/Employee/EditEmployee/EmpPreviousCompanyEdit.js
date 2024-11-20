@@ -13,8 +13,8 @@ const validationSchema = Yup.object().shape({
       prevCompReferralContactNum: Yup.number().required(
         "*Referral contact number is required"
       ).typeError("*Must be a number"),
-      prevCompRefCmpAddr: Yup.string().required("*Company address is required"),
       prevCompReferralName: Yup.string().required("*Referral name is required"),
+      prevCompRefCmpAddr: Yup.string().required("*Company address is required"),
     })
   )
 });

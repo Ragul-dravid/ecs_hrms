@@ -8,12 +8,12 @@ function App() {
   const [isClientLogin, setIsClientLogin] = useState(false);
 
   const handleLogin = () => {
-    sessionStorage.setItem("isAuthenticated", true);
+    localStorage.setItem("isAuthenticated", true);
     setIsAuthenticated(true);
   };
 
   const handleClientLogin = () => {
-    sessionStorage.setItem("isClientLogin", true);
+    localStorage.setItem("isClientLogin", true);
     setIsClientLogin(true);
   };
 
@@ -22,8 +22,8 @@ function App() {
       toast.success("Logout Successfully");
       setIsAuthenticated(false);
       setIsClientLogin(false);
-      sessionStorage.removeItem("isAuthenticated");
-      sessionStorage.removeItem("isClientLogin");
+      localStorage.removeItem("isAuthenticated");
+      localStorage.removeItem("isClientLogin");
     } catch (error) {
       toast.error("Logout Unsuccessfull");
     }
@@ -31,8 +31,8 @@ function App() {
 
   useEffect(() => {
     const isAuthenticatedFromStorage =
-      sessionStorage.getItem("isAuthenticated");
-    const isClientLoginFromStorage = sessionStorage.getItem("isClientLogin");
+      localStorage.getItem("isAuthenticated");
+    const isClientLoginFromStorage = localStorage.getItem("isClientLogin");
     if (isAuthenticatedFromStorage === "true") {
       setIsAuthenticated(true);
     } else if (isClientLoginFromStorage === "true") {
