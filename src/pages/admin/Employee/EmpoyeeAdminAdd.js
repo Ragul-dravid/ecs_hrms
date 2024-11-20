@@ -8,7 +8,7 @@ import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 // import fetchAllDepartmentNamesWithId from "../List/DepartmentNameList";
 
 function EmployeeAdminAdd() {
-  const cmpId = sessionStorage.getItem("cmpId");
+  const cmpId = localStorage.getItem("cmpId");
   const [companyData, setCompanyData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
   const [selectedIdType, setSelectedIdType] = useState("");
@@ -17,7 +17,7 @@ function EmployeeAdminAdd() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [loadIndicator, setLoadIndicators] = useState(false);
   const navigate = useNavigate();
-  const roleName = sessionStorage.getItem("role");
+  const roleName = localStorage.getItem("role");
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("*First name is required"),
@@ -40,6 +40,8 @@ function EmployeeAdminAdd() {
       email: "",
       password: "",
       NRICFin: "",
+      nationality: "",
+      citizenship: "",
       NRICType: "",
       aadharNumber: "",
       empRegDeptId: "",
@@ -75,6 +77,8 @@ function EmployeeAdminAdd() {
         formData.append("empPriPhNumber", values.empPriPhNumber);
         formData.append("email", values.email);
         formData.append("password", values.password);
+        formData.append("nationality", values.nationality);
+        formData.append("nationality", values.nationality);
         formData.append("NRICFin", values.NRICFin);
         formData.append("NRICType", values.NRICType);
         formData.append("aadharNumber", values.aadharNumber);
@@ -190,11 +194,10 @@ function EmployeeAdminAdd() {
                   <input
                     type="text"
                     name="firstName"
-                    className={`form-control form-control-sm  ${
-                      formik.touched.firstName && formik.errors.firstName
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                    className={`form-control form-control-sm  ${formik.touched.firstName && formik.errors.firstName
+                      ? "is-invalid"
+                      : ""
+                      }`}
                     {...formik.getFieldProps("firstName")}
                   />
                   {formik.touched.firstName && formik.errors.firstName && (
@@ -212,11 +215,10 @@ function EmployeeAdminAdd() {
                   <input
                     type="text"
                     name="lastName"
-                    className={`form-control form-control-sm  ${
-                      formik.touched.lastName && formik.errors.lastName
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                    className={`form-control form-control-sm  ${formik.touched.lastName && formik.errors.lastName
+                      ? "is-invalid"
+                      : ""
+                      }`}
                     {...formik.getFieldProps("lastName")}
                   />
                   {formik.touched.lastName && formik.errors.lastName && (
@@ -234,11 +236,10 @@ function EmployeeAdminAdd() {
                   <input
                     type="email"
                     name="email"
-                    className={`form-control form-control-sm ${
-                      formik.touched.email && formik.errors.email
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                    className={`form-control form-control-sm ${formik.touched.email && formik.errors.email
+                      ? "is-invalid"
+                      : ""
+                      }`}
                     {...formik.getFieldProps("email")}
                   />
                   {formik.touched.email && formik.errors.email && (
@@ -258,11 +259,10 @@ function EmployeeAdminAdd() {
                     <input
                       name="password"
                       type={showPassword ? "text" : "password"}
-                      className={`form-control form-control-sm ${
-                        formik.touched.password && formik.errors.password
-                          ? "is-invalid"
-                          : ""
-                      }`}
+                      className={`form-control form-control-sm ${formik.touched.password && formik.errors.password
+                        ? "is-invalid"
+                        : ""
+                        }`}
                       {...formik.getFieldProps("password")}
                       style={{
                         borderRight: "none",
@@ -301,12 +301,11 @@ function EmployeeAdminAdd() {
                   <input
                     type="text"
                     name="empPriPhNumber"
-                    className={`form-control form-control-sm  ${
-                      formik.touched.empPriPhNumber &&
+                    className={`form-control form-control-sm  ${formik.touched.empPriPhNumber &&
                       formik.errors.empPriPhNumber
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                      }`}
                     {...formik.getFieldProps("empPriPhNumber")}
                   />
                   {formik.touched.empPriPhNumber &&
@@ -324,11 +323,10 @@ function EmployeeAdminAdd() {
                 <div className="input-group mb-3">
                   <select
                     {...formik.getFieldProps("empRegDeptId")}
-                    className={`form-select form-select-sm  ${
-                      formik.touched.empRegDeptId && formik.errors.empRegDeptId
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                    className={`form-select form-select-sm  ${formik.touched.empRegDeptId && formik.errors.empRegDeptId
+                      ? "is-invalid"
+                      : ""
+                      }`}
                   >
                     <option selected></option>
                     {departmentData &&
@@ -354,12 +352,11 @@ function EmployeeAdminAdd() {
                   <input
                     type="text"
                     name="empDesignation"
-                    className={`form-control form-control-sm  ${
-                      formik.touched.empDesignation &&
+                    className={`form-control form-control-sm  ${formik.touched.empDesignation &&
                       formik.errors.empDesignation
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                      }`}
                     {...formik.getFieldProps("empDesignation")}
                   />
                   {formik.touched.empDesignation &&
@@ -374,12 +371,11 @@ function EmployeeAdminAdd() {
                 <label className="form-label">Photo</label>
                 <input
                   type="file"
-                  name="file"
-                  className={`form-control form-control-sm ${
-                    formik.touched.file && formik.errors.file
-                      ? "is-invalid"
-                      : ""
-                  }`}
+                  name="harish"
+                  className={`form-control form-control-sm ${formik.touched.file && formik.errors.file
+                    ? "is-invalid"
+                    : ""
+                    }`}
                   accept=".jpg, .jpeg, .png" // Restrict file types
                   onChange={(event) => {
                     const file = event.target.files[0];
@@ -391,6 +387,40 @@ function EmployeeAdminAdd() {
                 />
                 {formik.touched.file && formik.errors.file && (
                   <div className="invalid-feedback">{formik.errors.file}</div>
+                )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">Nationality <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="nationality"
+                  className={`form-control form-control-sm  ${formik.touched.nationality &&
+                    formik.errors.nationality
+                    ? "is-invalid"
+                    : ""
+                    }`}
+                  {...formik.getFieldProps("nationality")}
+                />
+                {formik.touched.nationality && formik.errors.nationality && (
+                  <div className="invalid-feedback">{formik.errors.nationality}</div>
+                )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">Citizenship <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="citizenship"
+                  className={`form-control form-control-sm  ${formik.touched.citizenship &&
+                    formik.errors.citizenship
+                    ? "is-invalid"
+                    : ""
+                    }`}
+                  {...formik.getFieldProps("citizenship")}
+                />
+                {formik.touched.citizenship && formik.errors.citizenship && (
+                  <div className="invalid-feedback">{formik.errors.citizenship}</div>
                 )}
               </div>
               <div>
@@ -437,11 +467,10 @@ function EmployeeAdminAdd() {
                         <input
                           type="text"
                           name="NRICFin"
-                          className={`form-control form-control-sm  ${
-                            formik.touched.NRICFin && formik.errors.NRICFin
-                              ? "is-invalid"
-                              : ""
-                          }`}
+                          className={`form-control form-control-sm  ${formik.touched.NRICFin && formik.errors.NRICFin
+                            ? "is-invalid"
+                            : ""
+                            }`}
                           aria-label="Username"
                           aria-describedby="basic-addon1"
                           {...formik.getFieldProps("NRICFin")}
@@ -463,11 +492,10 @@ function EmployeeAdminAdd() {
                         </label>
                         <select
                           name="NRICType"
-                          className={`form-select form-select-sm ${
-                            formik.touched.NRICType && formik.errors.NRICType
-                              ? "is-invalid"
-                              : ""
-                          }`}
+                          className={`form-select form-select-sm ${formik.touched.NRICType && formik.errors.NRICType
+                            ? "is-invalid"
+                            : ""
+                            }`}
                           {...formik.getFieldProps("NRICType")}
                         >
                           <option selected></option>
@@ -503,12 +531,11 @@ function EmployeeAdminAdd() {
                       <input
                         type="text"
                         name="aadharNumber"
-                        className={`form-control form-control-sm ${
-                          formik.touched.aadharNumber &&
+                        className={`form-control form-control-sm ${formik.touched.aadharNumber &&
                           formik.errors.aadharNumber
-                            ? "is-invalid"
-                            : ""
-                        }`}
+                          ? "is-invalid"
+                          : ""
+                          }`}
                         {...formik.getFieldProps("aadharNumber")}
                       />
                       {formik.touched.aadharNumber &&
@@ -530,12 +557,11 @@ function EmployeeAdminAdd() {
                   <input
                     type="date"
                     name="empDateOfJoin"
-                    className={`form-control form-control-sm ${
-                      formik.touched.empDateOfJoin &&
+                    className={`form-control form-control-sm ${formik.touched.empDateOfJoin &&
                       formik.errors.empDateOfJoin
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                      }`}
                     {...formik.getFieldProps("empDateOfJoin")}
                   />
                   {formik.touched.empDateOfJoin &&
@@ -553,11 +579,10 @@ function EmployeeAdminAdd() {
                 <div className="input-group mb-3">
                   <select
                     {...formik.getFieldProps("empType")}
-                    className={`form-select form-select-sm  ${
-                      formik.touched.empType && formik.errors.empType
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                    className={`form-select form-select-sm  ${formik.touched.empType && formik.errors.empType
+                      ? "is-invalid"
+                      : ""
+                      }`}
                   >
                     <option selected></option>
                     <option value="Full Time">Full Time</option>
@@ -578,11 +603,10 @@ function EmployeeAdminAdd() {
                   </label>
                   <select
                     type="text"
-                    className={`form-select form-select-sm ${
-                      formik.touched.noticePeriod && formik.errors.noticePeriod
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                    className={`form-select form-select-sm ${formik.touched.noticePeriod && formik.errors.noticePeriod
+                      ? "is-invalid"
+                      : ""
+                      }`}
                     {...formik.getFieldProps("noticePeriod")}
                   >
                     <option selected></option>
@@ -605,11 +629,10 @@ function EmployeeAdminAdd() {
                 <div className="input-group mb-3">
                   <select
                     {...formik.getFieldProps("roleName")}
-                    className={`form-select form-select-sm  ${
-                      formik.touched.roleName && formik.errors.roleName
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                    className={`form-select form-select-sm  ${formik.touched.roleName && formik.errors.roleName
+                      ? "is-invalid"
+                      : ""
+                      }`}
                   >
                     <option selected></option>
                     <option value="Employee">Employee</option>

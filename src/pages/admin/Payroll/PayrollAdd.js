@@ -15,7 +15,7 @@ function PayrollAdd() {
   const [loadIndicator, setLoadIndicator] = useState(false);
   const [bonus, setBonus] = useState(0);
   const navigate = useNavigate();
-  const cmpId = sessionStorage.getItem("cmpId");
+  const cmpId = localStorage.getItem("cmpId");
 
   const validationSchema = Yup.object().shape({
     centerId: Yup.string().required("*Centre name is required"),
@@ -152,6 +152,7 @@ function PayrollAdd() {
       }
 
       try {
+        setLoadIndicator(true);
         if (empRole === "freelancer") {
           const response = await api.post("/createFreelancerPayroll", payload, {
             headers: {
