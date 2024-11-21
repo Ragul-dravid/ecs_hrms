@@ -155,7 +155,7 @@ const Employee = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {datas.map((data, index) => (
+                {Array.isArray(datas) && datas?.map((data, index) => (
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
                       <td className="text-center">{data.employeeId}</td>

@@ -53,6 +53,7 @@ function EmployeeAdminAdd() {
       repManagerName: "",
       file: "",
       roleName: "",
+      age : "",
     },
     validate: (values) => {
       const errors = {};
@@ -77,8 +78,6 @@ function EmployeeAdminAdd() {
         formData.append("empPriPhNumber", values.empPriPhNumber);
         formData.append("email", values.email);
         formData.append("password", values.password);
-        formData.append("nationality", values.nationality);
-        formData.append("nationality", values.nationality);
         formData.append("NRICFin", values.NRICFin);
         formData.append("NRICType", values.NRICType);
         formData.append("aadharNumber", values.aadharNumber);
@@ -89,8 +88,10 @@ function EmployeeAdminAdd() {
         formData.append("empDateOfJoin", values.empDateOfJoin);
         formData.append("empType", values.empType);
         formData.append("noticePeriod", values.noticePeriod);
-        formData.append("repManagerName", "Ragul");
+        formData.append("citizenship", values.citizenship);
+        formData.append("nationality", values.nationality);
         formData.append("roleName", values.roleName);
+        formData.append("age", 25);
 
         const response = await api.post("/emp-reg-details", formData);
         if (response.status === 201) {
