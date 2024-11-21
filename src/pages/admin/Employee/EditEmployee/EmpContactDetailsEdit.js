@@ -1,14 +1,11 @@
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { toast } from "react-toastify";
-import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
-import api from "../../../../config/URL";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { CiCirclePlus } from "react-icons/ci";
 
 const EmpContactDetailsEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
-    const [rows, setRows] = useState([{}]);
     const validationSchema = Yup.object().shape({
       dob: Yup.string().required("*Date of birth is required"),
       gender: Yup.string().required("*Select a gender"),
@@ -25,14 +22,14 @@ const EmpContactDetailsEdit = forwardRef(
       empEmergencyContact: Yup.array().of(
         Yup.object().shape({
           emergencyContactName: Yup.string().required(
-            "*Emergency contact name is required"
+            "*contact name is required"
           ),
           emergencyContactNo: Yup.number()
-            .required("*Emergency contact no is required")
+            .required("*contact number is required")
             .typeError("*Must be a number"),
           emergencyContactAddress: Yup.string().required(
-            "*Emergency contact address is required"
-          )
+            "*contact address is required"
+          ),
         })
       ),
     });
@@ -58,12 +55,12 @@ const EmpContactDetailsEdit = forwardRef(
             emergencyContactName: formData.emergencyContactName || "",
             emergencyContactNo: formData.emergencyContactNo || "",
             emergencyContactAddress: formData.emergencyContactAddress || "",
-            relationshipOfEmployee: formData.relationshipOfEmployee || "",
           },
         ],
       },
       validationSchema: validationSchema,
       onSubmit: async (values) => {
+        console.log("object",values)
         setLoadIndicators(true);
         // values.perDetailsEmpId = formData.empId;
         // console.log("Body Values is ", values);
@@ -83,6 +80,24 @@ const EmpContactDetailsEdit = forwardRef(
         // }
       },
     });
+    const addRow = () => {
+      const newContact = {
+        emergencyContactName: "",
+        emergencyContactNo: "",
+        emergencyContactAddress: "",
+        relationshipOfEmployee: "",
+      };
+      const updatedContacts = [
+        ...formik.values.empEmergencyContact,
+        newContact,
+      ];
+      formik.setFieldValue("empEmergencyContact", updatedContacts);
+    };
+    const removeRow = (index) => {
+      const updatedEntities = [...formik.values.empEmergencyContact];
+      updatedEntities.splice(index, 1);
+      formik.setFieldValue("empEmergencyContact", updatedEntities);
+    };
 
     useImperativeHandle(ref, () => ({
       contactDetails: formik.handleSubmit,
@@ -311,157 +326,117 @@ const EmpContactDetailsEdit = forwardRef(
               </div>
             </div>
           </div>
-          {rows.map((row, index) => (
+          <div className="d-flex justify-content-between align-items-center">
+            <p className="headColor mt-3">Emergency Contact</p>
+            <button
+              type="button"
+              onClick={addRow}
+              className="btn btn-sm text-primary shadow-none pt-3 border-none"
+            >
+              <CiCirclePlus size={30} />
+            </button>
+          </div>
+          {formik.values.empEmergencyContact.map((row, index) => (
             <div key={index}>
-              <p class="headColor mt-3">Emergency Contact</p>
-              <div className="container">
-                <div className="row mt-3">
-                  <div className="col-md-6 col-12 mb-3">
-                    <lable className="form-label">
-                      Emergency Contact Name
-                      <span className="text-danger">*</span>
-                    </lable>
-                    <input
-                      className="form-control "
-                      type="text"
-                      name={`empEmergencyContact[${index}].emergencyContactName`}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={
-                        formik.values.empEmergencyContact[index]
-                          ?.emergencyContactName || ""
-                      }
-                    />
-                    {formik.touched.empEmergencyContact?.[index]
-                      ?.emergencyContactName &&
-                      formik.errors.empEmergencyContact?.[index]
-                        ?.emergencyContactName && (
-                        <div className="text-danger">
-                          <small>
-                            {
-                              formik.errors.empEmergencyContact[index]
-                                .emergencyContactName
-                            }
-                          </small>
-                        </div>
-                      )}
+                <div className="row mt-5 align-items-center">
+                  <div className="col-md-11 col-12">
+                    <div className="row">
+                      <div className="col-md-4 col-12 mb-3">
+                        <input
+                          className="form-control custom-input"
+                          type="text"
+                          placeholder="Contact Name"
+                          name={`empEmergencyContact[${index}].emergencyContactName`}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={
+                            formik.values.empEmergencyContact[index]
+                              ?.emergencyContactName || ""
+                          }
+                        />
+                        {formik.touched.empEmergencyContact?.[index]
+                          ?.emergencyContactName &&
+                          formik.errors.empEmergencyContact?.[index]
+                            ?.emergencyContactName && (
+                            <div className="text-danger mt-1">
+                              <small>
+                                {
+                                  formik.errors.empEmergencyContact[index]
+                                    .emergencyContactName
+                                }
+                              </small>
+                            </div>
+                          )}
+                      </div>
+                      <div className="col-md-4 col-12 mb-3">
+                        <input
+                          className="form-control custom-input"
+                          type="text"
+                          placeholder="Contact Number"
+                          name={`empEmergencyContact[${index}].emergencyContactNo`}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={
+                            formik.values.empEmergencyContact[index]
+                              ?.emergencyContactNo || ""
+                          }
+                        />
+                        {formik.touched.empEmergencyContact?.[index]
+                          ?.emergencyContactNo &&
+                          formik.errors.empEmergencyContact?.[index]
+                            ?.emergencyContactNo && (
+                            <div className="text-danger mt-1">
+                              <small>
+                                {
+                                  formik.errors.empEmergencyContact[index]
+                                    .emergencyContactNo
+                                }
+                              </small>
+                            </div>
+                          )}
+                      </div>
+                      <div className="col-md-4 col-12 mb-3">
+                        <input
+                          className="form-control custom-input"
+                          type="text"
+                          placeholder="Contact Address"
+                          name={`empEmergencyContact[${index}].emergencyContactAddress`}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={
+                            formik.values.empEmergencyContact[index]
+                              ?.emergencyContactAddress || ""
+                          }
+                        />
+                        {formik.touched.empEmergencyContact?.[index]
+                          ?.emergencyContactAddress &&
+                          formik.errors.empEmergencyContact?.[index]
+                            ?.emergencyContactAddress && (
+                            <div className="text-danger mt-1">
+                              <small>
+                                {
+                                  formik.errors.empEmergencyContact[index]
+                                    .emergencyContactAddress
+                                }
+                              </small>
+                            </div>
+                          )}
+                      </div>
+                    </div>
                   </div>
-                  <div className="col-md-6 col-12 mb-3">
-                    <lable className="form-label">
-                      Emergency Contact No
-                      <span className="text-danger">*</span>
-                    </lable>
-
-                    <input
-                      className="form-control "
-                      type="text"
-                      name={`empEmergencyContact[${index}].emergencyContactNo`}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={
-                        formik.values.empEmergencyContact[index]
-                          ?.emergencyContactNo || ""
-                      }
-                    />
-                    {formik.touched.empEmergencyContact?.[index]
-                      ?.emergencyContactNo &&
-                      formik.errors.empEmergencyContact?.[index]
-                        ?.emergencyContactNo && (
-                        <div className="text-danger">
-                          <small>
-                            {
-                              formik.errors.empEmergencyContact[index]
-                                .emergencyContactNo
-                            }
-                          </small>
-                        </div>
-                      )}
-                  </div>
-                  <div className="col-md-6 col-12 mb-3">
-                    <lable className="form-label">
-                      Emergency Contact Address
-                      <span className="text-danger">*</span>
-                    </lable>
-                    <textarea
-                      rows="5"
-                      className="form-control "
-                      name={`empEmergencyContact[${index}].emergencyContactAddress`}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={
-                        formik.values.empEmergencyContact[index]
-                          ?.emergencyContactAddress || ""
-                      }
-                    />
-                    {formik.touched.empEmergencyContact?.[index]
-                      ?.emergencyContactAddress &&
-                      formik.errors.empEmergencyContact?.[index]
-                        ?.emergencyContactAddress && (
-                        <div className="text-danger">
-                          <small>
-                            {
-                              formik.errors.empEmergencyContact[index]
-                                .emergencyContactAddress
-                            }
-                          </small>
-                        </div>
-                      )}
-                  </div>
-                  <div className="col-md-6 col-12 mb-4 align-items-center d-flex justify-content-center">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setRows((prev) => [...prev, {}]);
-                      }}
-                      className="btn btn-sm btn-primary"
-                    >
-                      Add More
-                    </button>{" "}
-                    &nbsp;&nbsp;
-                    {rows.length > 1 && (
+                  <div className="col-md-1 col-12 text-start">
+                    {formik.values.empEmergencyContact.length > 1 && (
                       <button
                         type="button"
-                        onClick={() => setRows((prev) => prev.slice(0, -1))}
-                        className="btn btn-button btn-danger btn-sm"
+                        className="btn btn-sm text-danger border-none shadow-none"
+                        onClick={() => removeRow(index)}
                       >
                         <FaRegTrashAlt />
                       </button>
                     )}
                   </div>
-
-                  {/* <div className="col-md-6 col-12 mb-3">
-                    <lable className="form-label">
-                      Relationship to Employee
-                      <span className="text-danger">*</span>
-                    </lable>
-
-                    <input
-                      className="form-control "
-                      type="text"
-                      name={`empEmergencyContact[${index}].relationshipOfEmployee`}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={
-                        formik.values.empEmergencyContact[index]
-                          ?.relationshipOfEmployee || ""
-                      }
-                    />
-                    {formik.touched.empEmergencyContact?.[index]
-                      ?.relationshipOfEmployee &&
-                      formik.errors.empEmergencyContact?.[index]
-                        ?.relationshipOfEmployee && (
-                        <div className="text-danger">
-                          <small>
-                            {
-                              formik.errors.empEmergencyContact[index]
-                                .relationshipOfEmployee
-                            }
-                          </small>
-                        </div>
-                      )}
-                  </div> */}
                 </div>
-              </div>
+
             </div>
           ))}
         </form>

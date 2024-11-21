@@ -64,20 +64,20 @@ import RolesEdit from "../pages/admin/Settings/Roles/RolesEdit.js";
 import RolesView from "../pages/admin/Settings/Roles/RolesView.js";
 import ScrollToTop from "../pages/ScrollToTop.js";
 
-
 function Admin({ handleLogout }) {
   return (
     <div>
       <BrowserRouter>
         <div className="d-flex flex-column flex-lg-row bg-surface-secondary">
           <AdminSidebar handleLogout={handleLogout} />
-          <div className="flex-grow-1 h-screen overflow-y-auto scrollable-container">
+          <div className="flex-grow-1 max-h-screen overflow-y-auto scrollable-container">
             <AdminHeader handleLogout={handleLogout} />
             <main className="pt-3 bg-surface-secondary">
               <div style={{ minHeight: "90vh" }}>
                 <ScrollToTop />
                 <Routes>
                   <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="*" element={<Dashboard />} />
 
                   {/* Company Registration */}
                   <Route
@@ -199,7 +199,7 @@ function Admin({ handleLogout }) {
                     element={<AttendanceView />}
                   />
 
-                  { /* Deduction */}
+                  {/* Deduction */}
                   <Route path="/deduction" element={<Deduction />} />
                   <Route path="/deduction/add" element={<DeductionAdd />} />
                   <Route
@@ -216,7 +216,7 @@ function Admin({ handleLogout }) {
                   <Route path="/payroll/add" element={<PayrollAdd />} />
                   <Route path="/payroll/edit/:id" element={<PayrollEdit />} />
                   <Route path="/payroll/view/:id" element={<PayrollView />} />
-                  
+
                   {/* Payslip */}
                   <Route path="/payslip" element={<Payslip />} />
 
@@ -225,7 +225,6 @@ function Admin({ handleLogout }) {
                   <Route path="/roles/add" element={<RolesAdd />} />
                   <Route path="/roles/edit/:id" element={<RolesEdit />} />
                   <Route path="/roles/view/:id" element={<RolesView />} />
-
                 </Routes>
               </div>
             </main>
