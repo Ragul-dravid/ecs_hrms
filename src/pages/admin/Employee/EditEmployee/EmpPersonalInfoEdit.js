@@ -161,7 +161,7 @@ const EmpPersonalInfoEdit = forwardRef(
       <div className="container-fluid px-2  minHeight m-0">
       <form onSubmit={formik.handleSubmit}>
           <div className="row mt-3 me-2">
-            <div className="col-12 text-end"></div>
+          <p className="headColor">Personal Information</p>
           </div>
           <div className="container mb-5">
             <div className="row py-4">
