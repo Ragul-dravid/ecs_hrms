@@ -7,6 +7,8 @@ import { FaPlus } from "react-icons/fa";
 import api from "../../../config/URL";
 import { PropagateLoader } from 'react-spinners';
 import DeleteModel from "../../../components/admin/DeleteModel";
+import { BiEditAlt } from "react-icons/bi";
+import { HiOutlineEye } from "react-icons/hi2";
 
 const LeaveRequest = () => {
   const tableRef = useRef(null);
@@ -168,16 +170,16 @@ const LeaveRequest = () => {
                       <td className="text-center">
                         <div className="gap-2">
                           <Link to={`/leaverequest/view/${data.leaveReqId}`}>
-                            <button className="btn btn-light btn-sm  shadow-none border-none">
-                              View
+                          <button className="btn p-1  shadow-none border-none">
+                            <HiOutlineEye />
                             </button>
                           </Link>
                           <Link
                             to={`/leaverequest/edit/${data.leaveReqId}`}
                             className="px-2"
                           >
-                            <button className="btn btn-light  btn-sm shadow-none border-none">
-                              Edit
+                             <button className="btn p-1 shadow-none border-none">
+                            <BiEditAlt />
                             </button>
                           </Link>
                           <DeleteModel
