@@ -5,9 +5,9 @@ import * as Yup from "yup";
 import Modal from "react-bootstrap/Modal";
 import toast from "react-hot-toast";
 import api from "../../../../config/URL";
-import { CiCirclePlus } from "react-icons/ci";
+import { FaPlus } from "react-icons/fa";
 
-function DepartmentAdd({ addDepartment }) {
+function DepartmentCAdd({onSuccess}) {
   const [show, setShow] = useState(false);
   const [loadIndicator, setLoadIndicator] = useState(false);
   const [isModified, setIsModified] = useState(false);
@@ -15,7 +15,7 @@ function DepartmentAdd({ addDepartment }) {
 
   const handleClose = () => {
     setShow(false);
-    formik.resetForm();
+    formik.resetForm(); 
   };
   const handleShow = () => {
     setShow(true);
@@ -44,18 +44,17 @@ function DepartmentAdd({ addDepartment }) {
           },
         });
         if (response.status === 201) {
-          const newDepartment = {
-            deptId: response.data.id,
-            deptName: values.deptName,
-          };
-          addDepartment(newDepartment);
+          onSuccess();
           handleClose();
           toast.success(response.data.message);
         } else {
           toast.error(response.data.message || "An unexpected error occurred.");
         }
       } catch (error) {
-        const errorMessage = error.response?.data?.message || error.message || "An unexpected error occurred.";
+        const errorMessage =
+          error.response?.data?.message ||
+          error.message ||
+          "An unexpected error occurred.";
         console.error("API Error:", error);
         toast.error(errorMessage);
       } finally {
@@ -78,11 +77,13 @@ function DepartmentAdd({ addDepartment }) {
     <>
       <div className="mb-3 d-flex justify-content-end">
         <button
-          type="button"
-          className="btn p-0 bg-transparent border-0 shadow-none"
+          type="submit"
+          className="btn btn-sm btn-button btn-primary"
           onClick={handleShow}
         >
-          <CiCirclePlus size={20} style={{ cursor: "pointer" }} />
+          <span cla>
+            Add <FaPlus className="pb-1" />
+          </span>
         </button>
       </div>
       <Modal
@@ -127,9 +128,7 @@ function DepartmentAdd({ addDepartment }) {
                   )}
                 </div>
                 <div className="col-md-12 col-12 mb-2">
-                  <label className="form-label">
-                    Description
-                  </label>
+                  <label className="form-label">Description</label>
                   <textarea
                     rows={3}
                     type="text"
@@ -149,11 +148,14 @@ function DepartmentAdd({ addDepartment }) {
               </div>
             </div>
             <Modal.Footer className="p-2">
-              <button type="button" className="btn btn-sm btn-light m-0" onClick={handleClose}>
+              <button
+                type="button"
+                className="btn btn-sm btn-light m-0"
+                onClick={handleClose}
+              >
                 Cancel
               </button>
-              &nbsp;
-              &nbsp;  
+              &nbsp; &nbsp;
               <button
                 type="submit"
                 className="btn btn-sm btn-buttonm btn-primary m-0"
@@ -175,4 +177,4 @@ function DepartmentAdd({ addDepartment }) {
   );
 }
 
-export default DepartmentAdd;
+export default DepartmentCAdd;
