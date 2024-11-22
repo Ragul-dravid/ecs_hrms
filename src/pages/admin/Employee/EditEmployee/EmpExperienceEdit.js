@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { FaRegTrashAlt } from "react-icons/fa";
 import api from "../../../../config/URL";
+import { CiCirclePlus } from "react-icons/ci";
 
 const EmpExperienceEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
@@ -50,7 +51,7 @@ const EmpExperienceEdit = forwardRef(
           },
         ],
       },
-      // validationSchema: validationSchema,
+      validationSchema: validationSchema,
       onSubmit: async (values) => {
         setLoadIndicators(true);
         values.experienceEmpId = formData.empId;
@@ -81,6 +82,27 @@ const EmpExperienceEdit = forwardRef(
         // }
       },
     });
+    const addExp = () => {
+      const updatedEntities = [
+        ...formik.values.empExperience,
+        {
+          prevCmpName: "",
+          prevCmpAddr: "",
+          designation: "",
+          experienceDesc: "",
+          experienceStartDate: "",
+          experienceEndDate: "",
+          prevCompReferralName: "",
+          prevCompReferralContactNum: "",
+        },
+      ];
+      formik.setFieldValue("empExperience", updatedEntities);
+    };
+    const removeExp = (index) => {
+      const updatedEntities = [...formik.values.empExperience];
+      updatedEntities.splice(index, 1);
+      formik.setFieldValue("empExperience", updatedEntities);
+    };
 
     useImperativeHandle(ref, () => ({
       experience: formik.handleSubmit,
@@ -89,7 +111,7 @@ const EmpExperienceEdit = forwardRef(
     return (
       <div className="container-fluid">
         <form onSubmit={formik.handleSubmit}>
-          {rows.map((row, index) => (
+          {formik.values.empExperience.map((row, index) => (
             <div key={index}>
               <p class="headColor mt-3">Experience</p>
               <div className="container">
@@ -97,11 +119,16 @@ const EmpExperienceEdit = forwardRef(
                   <div className=" col-md-6 col-12 text-start my-3">
                     <lable className="form-label">
                       Previous Company Name
-                      <span className="text-danger">*</span>
+                      <span
+                        className="text-danger"
+                        style={{ fontSize: ".875em" }}
+                      >
+                        *
+                      </span>
                     </lable>
                     <br />
                     <input
-                      className="form-control"
+                      className="form-control form-control-sm"
                       type="text"
                       name={`empExperience[${index}].prevCmpName`}
                       onChange={formik.handleChange}
@@ -112,7 +139,10 @@ const EmpExperienceEdit = forwardRef(
                     />
                     {formik.touched.empExperience?.[index]?.prevCmpName &&
                       formik.errors.empExperience?.[index]?.prevCmpName && (
-                        <div className="text-danger">
+                        <div
+                          className="text-danger"
+                          style={{ fontSize: ".875em" }}
+                        >
                           <small>
                             {formik.errors.empExperience[index].prevCmpName}
                           </small>
@@ -122,11 +152,16 @@ const EmpExperienceEdit = forwardRef(
                   <div className=" col-md-6 col-12 text-start my-3">
                     <lable className="form-label">
                       Designation
-                      <span className="text-danger">*</span>
+                      <span
+                        className="text-danger"
+                        style={{ fontSize: ".875em" }}
+                      >
+                        *
+                      </span>
                     </lable>
                     <br />
                     <input
-                      className="form-control "
+                      className="form-control form-control-sm "
                       type="text"
                       name={`empExperience[${index}].designation`}
                       onChange={formik.handleChange}
@@ -137,7 +172,10 @@ const EmpExperienceEdit = forwardRef(
                     />
                     {formik.touched.empExperience?.[index]?.designation &&
                       formik.errors.empExperience?.[index]?.designation && (
-                        <div className="text-danger">
+                        <div
+                          className="text-danger"
+                          style={{ fontSize: ".875em" }}
+                        >
                           <small>
                             {formik.errors.empExperience[index].designation}
                           </small>
@@ -147,11 +185,16 @@ const EmpExperienceEdit = forwardRef(
                   <div className="col-md-6 col-12 text-start my-3">
                     <lable className="form-label">
                       Start Date
-                      <span className="text-danger">*</span>
+                      <span
+                        className="text-danger"
+                        style={{ fontSize: ".875em" }}
+                      >
+                        *
+                      </span>
                     </lable>
                     <br />
                     <input
-                      className="form-control "
+                      className="form-control form-control-sm "
                       type="date"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -165,7 +208,10 @@ const EmpExperienceEdit = forwardRef(
                       ?.experienceStartDate &&
                       formik.errors.empExperience?.[index]
                         ?.experienceStartDate && (
-                        <div className="text-danger">
+                        <div
+                          className="text-danger"
+                          style={{ fontSize: ".875em" }}
+                        >
                           <small>
                             {
                               formik.errors.empExperience[index]
@@ -178,11 +224,16 @@ const EmpExperienceEdit = forwardRef(
                   <div className="col-md-6 col-12 text-start my-3">
                     <lable className="form-label">
                       End Date
-                      <span className="text-danger">*</span>
+                      <span
+                        className="text-danger"
+                        style={{ fontSize: ".875em" }}
+                      >
+                        *
+                      </span>
                     </lable>
                     <br />
                     <input
-                      className="form-control "
+                      className="form-control form-control-sm "
                       type="date"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -195,7 +246,10 @@ const EmpExperienceEdit = forwardRef(
                     {formik.touched.empExperience?.[index]?.experienceEndDate &&
                       formik.errors.empExperience?.[index]
                         ?.experienceEndDate && (
-                        <div className="text-danger">
+                        <div
+                          className="text-danger"
+                          style={{ fontSize: ".875em" }}
+                        >
                           <small>
                             {
                               formik.errors.empExperience[index]
@@ -208,12 +262,17 @@ const EmpExperienceEdit = forwardRef(
                   <div className="col-md-6 col-12 mb-3">
                     <lable htmlFor="" className="form-label">
                       Referral Name
-                      <span className="text-danger">*</span>
+                      <span
+                        className="text-danger"
+                        style={{ fontSize: ".875em" }}
+                      >
+                        *
+                      </span>
                     </lable>
 
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control form-control-sm"
                       name={`empExperience[${index}].prevCompReferralName`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -226,7 +285,10 @@ const EmpExperienceEdit = forwardRef(
                       ?.prevCompReferralName &&
                       formik.errors.empExperience?.[index]
                         ?.prevCompReferralName && (
-                        <div className="text-danger">
+                        <div
+                          className="text-danger"
+                          style={{ fontSize: ".875em" }}
+                        >
                           <small>
                             {
                               formik.errors.empExperience[index]
@@ -239,11 +301,16 @@ const EmpExperienceEdit = forwardRef(
                   <div className="col-md-6 col-12 mb-3">
                     <lable htmlFor="" className="form-label">
                       Referral Contact No
-                      <span className="text-danger">*</span>
+                      <span
+                        className="text-danger"
+                        style={{ fontSize: ".875em" }}
+                      >
+                        *
+                      </span>
                     </lable>
 
                     <input
-                      className="form-control  form-contorl-sm"
+                      className="form-control form-control-sm  form-contorl-sm"
                       name={`empExperience[${index}].prevCompReferralContactNum`}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -256,7 +323,10 @@ const EmpExperienceEdit = forwardRef(
                       ?.prevCompReferralContactNum &&
                       formik.errors.empExperience?.[index]
                         ?.prevCompReferralContactNum && (
-                        <div className="text-danger">
+                        <div
+                          className="text-danger"
+                          style={{ fontSize: ".875em" }}
+                        >
                           <small>
                             {
                               formik.errors.empExperience[index]
@@ -269,11 +339,16 @@ const EmpExperienceEdit = forwardRef(
                   <div className=" col-md-6 col-12 text-start my-3">
                     <lable className="form-label">
                       Previous Company Address
-                      <span className="text-danger">*</span>
+                      <span
+                        className="text-danger"
+                        style={{ fontSize: ".875em" }}
+                      >
+                        *
+                      </span>
                     </lable>
                     <textarea
                       rows="5"
-                      className="form-control "
+                      className="form-control form-control-sm "
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       name={`empExperience[${index}].prevCmpAddr`}
@@ -283,7 +358,10 @@ const EmpExperienceEdit = forwardRef(
                     ></textarea>
                     {formik.touched.empExperience?.[index]?.prevCmpAddr &&
                       formik.errors.empExperience?.[index]?.prevCmpAddr && (
-                        <div className="text-danger">
+                        <div
+                          className="text-danger"
+                          style={{ fontSize: ".875em" }}
+                        >
                           <small>
                             {formik.errors.empExperience[index].prevCmpAddr}
                           </small>
@@ -294,11 +372,16 @@ const EmpExperienceEdit = forwardRef(
                   <div className="col-md-6 col-12 text-start my-3">
                     <lable className="form-label">
                       Experience Description
-                      <span className="text-danger">*</span>
+                      <span
+                        className="text-danger"
+                        style={{ fontSize: ".875em" }}
+                      >
+                        *
+                      </span>
                     </lable>
                     <br />
                     <input
-                      className="form-control "
+                      className="form-control form-control-sm "
                       type="text"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -309,40 +392,44 @@ const EmpExperienceEdit = forwardRef(
                     />
                     {formik.touched.empExperience?.[index]?.experienceDesc &&
                       formik.errors.empExperience?.[index]?.experienceDesc && (
-                        <div className="text-danger">
+                        <div
+                          className="text-danger"
+                          style={{ fontSize: ".875em" }}
+                        >
                           <small>
                             {formik.errors.empExperience[index].experienceDesc}
                           </small>
                         </div>
                       )}
                   </div>
+               
                 </div>
               </div>
+          
             </div>
+            
           ))}
-          <div className="row">
-            <div className="col-12 mb-4">
-              <button
-                type="button"
-                onClick={() => {
-                  setRows((prev) => [...prev, {}]); // Add a new row for each parent
-                }}
-                className="btn btn-button btn-sm btn-primary"
-              >
-                Add More
-              </button>{" "}
-              &nbsp;&nbsp;
-              {rows.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => setRows((prev) => prev.slice(0, -1))}
-                  className="btn btn-danger btn-sm"
-                >
-                  <FaRegTrashAlt />
-                </button>
-              )}
-            </div>
-          </div>
+              <div className="row">
+                    <div className="col-12 mb-4">
+                      <button
+                        type="button"
+                        onClick={addExp}
+                        className="btn btn-sm border-none shadow-none"
+                      >
+                        <CiCirclePlus size={40} />
+                      </button>{" "}
+                      &nbsp;&nbsp;
+                      {formik.values.empExperience.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={removeExp}
+                          className="btn btn-sm text-danger border-none shadow-none"
+                        >
+                          <FaRegTrashAlt />
+                        </button>
+                      )}
+                    </div>
+                  </div>
         </form>
       </div>
     );

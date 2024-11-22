@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -9,22 +9,23 @@ const DeductionAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
   const cmpId = localStorage.getItem("cmpId");
-  const [companyData, setCompanyData] = useState(null);
+  const [empData, setEmpData] = useState(null);
 
   const validationSchema = Yup.object({
     deductionName: Yup.string().required("*Deduction Name is required"),
     deductionAmt: Yup.string().required("*Deduction Amount is required"),
-    totalDeductionAmt: Yup.string().required(
-      "*Total Deduction Amount is required"
-    ),
+    deductionEmpId: Yup.string().required("*Employee Name is required"),
+    // totalDeductionAmt: Yup.string().required(
+    //   "*Total Deduction Amount is required"
+    // ),
     deductionMonth: Yup.string().required("*Deduction Month is required"),
   });
 
   const formik = useFormik({
     initialValues: {
       cmpId: cmpId,
-      deductionId: "",
       deductionName: "",
+      deductionEmpId: "",
       deductionAmt: "",
       totalDeductionAmt: "",
       deductionMonth: "",
@@ -47,6 +48,18 @@ const DeductionAdd = () => {
       }
     },
   });
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`/emp-reg-details-with-id`);
+        setEmpData(response.data);
+      } catch (e) {
+        toast.error("Error fetching data: ", e?.response?.data?.message);
+      }
+    };
+
+    getData();
+  }, []);
 
   return (
     <div className="container-fluid px-2 minHeight m-0">
@@ -101,20 +114,100 @@ const DeductionAdd = () => {
                 <label className="form-label">
                   Deduction Name <span className="text-danger">*</span>
                 </label>
-                <input
+                <select
                   type="text"
                   name="deductionName"
-                  className={`form-control form-control-sm ${
+                  className={`form-select form-select-sm ${
                     formik.touched.deductionName && formik.errors.deductionName
                       ? "is-invalid"
                       : ""
                   }`}
                   {...formik.getFieldProps("deductionName")}
-                />
+                >
+                  <option selected />
+                  <option value="CPF">CPF</option>
+                  <option value="LOP">LOP</option>
+                  <option value="LOAN INTEREST">LOAN INTEREST</option>
+                </select>
                 {formik.touched.deductionName &&
                   formik.errors.deductionName && (
                     <div className="invalid-feedback">
                       {formik.errors.deductionName}
+                    </div>
+                  )}
+              </div>
+
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Employee<span className="text-danger">*</span>
+                </label>
+                <select
+                  type="text"
+                  name="deductionEmpId"
+                  className={`form-select form-select-sm ${
+                    formik.touched.deductionEmpId &&
+                    formik.errors.deductionEmpId
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("deductionEmpId")}
+                >
+                  <option selected />
+                  {empData &&
+                    empData.map((emp) => (
+                      <option key={emp.id} value={emp.id}>
+                        {`${emp.firstName} ${emp.lastName}`}
+                      </option>
+                    ))}
+                </select>
+                {formik.touched.deductionEmpId &&
+                  formik.errors.deductionEmpId && (
+                    <div className="invalid-feedback">
+                      {formik.errors.deductionEmpId}
+                    </div>
+                  )}
+              </div>
+              {/* <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Total Deduction Amount<span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="totalDeductionAmt"
+                  className={`form-control form-control-sm ${
+                    formik.touched.totalDeductionAmt &&
+                    formik.errors.totalDeductionAmt
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("totalDeductionAmt")}
+                />
+                {formik.touched.totalDeductionAmt &&
+                  formik.errors.totalDeductionAmt && (
+                    <div className="invalid-feedback">
+                      {formik.errors.totalDeductionAmt}
+                    </div>
+                  )}
+              </div> */}
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Deduction Month<span className="text-danger">*</span>
+                </label>
+                <input
+                  type="month"
+                  name="deductionMonth"
+                  className={`form-control form-control-sm ${
+                    formik.touched.deductionMonth &&
+                    formik.errors.deductionMonth
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("deductionMonth")}
+                />
+                {formik.touched.deductionMonth &&
+                  formik.errors.deductionMonth && (
+                    <div className="invalid-feedback">
+                      {formik.errors.deductionMonth}
                     </div>
                   )}
               </div>
@@ -137,50 +230,6 @@ const DeductionAdd = () => {
                     {formik.errors.deductionAmt}
                   </div>
                 )}
-              </div>
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Total Deduction Amount<span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="totalDeductionAmt"
-                  className={`form-control form-control-sm ${
-                    formik.touched.totalDeductionAmt &&
-                    formik.errors.totalDeductionAmt
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("totalDeductionAmt")}
-                />
-                {formik.touched.totalDeductionAmt &&
-                  formik.errors.totalDeductionAmt && (
-                    <div className="invalid-feedback">
-                      {formik.errors.totalDeductionAmt}
-                    </div>
-                  )}
-              </div>
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Deduction Month<span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="deductionMonth"
-                  className={`form-control form-control-sm ${
-                    formik.touched.deductionMonth &&
-                    formik.errors.deductionMonth
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("deductionMonth")}
-                />
-                {formik.touched.deductionMonth &&
-                  formik.errors.deductionMonth && (
-                    <div className="invalid-feedback">
-                      {formik.errors.deductionMonth}
-                    </div>
-                  )}
               </div>
             </div>
           </div>

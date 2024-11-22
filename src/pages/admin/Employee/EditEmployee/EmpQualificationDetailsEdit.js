@@ -124,15 +124,15 @@ const EmpQualificationDetailsEdit = forwardRef(
         <div className="container">
           {formik.values.empQualificationEntities.map((entity, entityIndex) => (
             <div className="border-0 mb-5" key={entityIndex}>
-              <h5>Qualification Details</h5>
+              <p className="headColor">Qualification Details</p>
               <div className="row my-5">
                 <div className="col-md-6 mb-3">
                   <label>
-                    Qualification Name <span className="text-danger">*</span>
+                    Qualification Name <span className="text-danger"  style={{ fontSize: ".875em" }}>*</span>
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control form-control-sm"
                     name={`empQualificationEntities[${entityIndex}].qualName`}
                     value={entity.qualName}
                     onChange={formik.handleChange}
@@ -142,7 +142,7 @@ const EmpQualificationDetailsEdit = forwardRef(
                     ?.qualName &&
                     formik.errors.empQualificationEntities?.[entityIndex]
                       ?.qualName && (
-                      <div className="text-danger">
+                      <div className="text-danger"  style={{ fontSize: ".875em" }}>
                         {
                           formik.errors.empQualificationEntities[entityIndex]
                             .qualName
@@ -152,11 +152,11 @@ const EmpQualificationDetailsEdit = forwardRef(
                 </div>
                 <div className="col-md-6 mb-3">
                   <label>
-                    Institution <span className="text-danger">*</span>
+                    Institution <span className="text-danger"  style={{ fontSize: ".875em" }}>*</span>
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control form-control-sm"
                     name={`empQualificationEntities[${entityIndex}].qualInstitution`}
                     value={entity.qualInstitution}
                     onChange={formik.handleChange}
@@ -166,7 +166,7 @@ const EmpQualificationDetailsEdit = forwardRef(
                     ?.qualInstitution &&
                     formik.errors.empQualificationEntities?.[entityIndex]
                       ?.qualInstitution && (
-                      <div className="text-danger">
+                      <div className="text-danger"  style={{ fontSize: ".875em" }}>
                         {
                           formik.errors.empQualificationEntities[entityIndex]
                             .qualInstitution
@@ -176,11 +176,11 @@ const EmpQualificationDetailsEdit = forwardRef(
                 </div>
                 <div className="col-md-6 mb-3">
                   <label>
-                    Qualification Type <span className="text-danger">*</span>
+                    Qualification Type <span className="text-danger"  style={{ fontSize: ".875em" }}>*</span>
                   </label>
                   <select
                     type="text"
-                    className="form-select"
+                    className="form-select form-select-sm"
                     name={`empQualificationEntities[${entityIndex}].qualType`}
                     value={entity.qualType}
                     onChange={formik.handleChange}
@@ -196,7 +196,7 @@ const EmpQualificationDetailsEdit = forwardRef(
                     ?.qualType &&
                     formik.errors.empQualificationEntities?.[entityIndex]
                       ?.qualType && (
-                      <div className="text-danger">
+                      <div className="text-danger"  style={{ fontSize: ".875em" }}>
                         {
                           formik.errors.empQualificationEntities[entityIndex]
                             .qualType
@@ -206,11 +206,11 @@ const EmpQualificationDetailsEdit = forwardRef(
                 </div>
                 <div className="col-md-6 mb-3">
                   <label>
-                    Mode of Study <span className="text-danger">*</span>
+                    Mode of Study <span className="text-danger"  style={{ fontSize: ".875em" }}>*</span>
                   </label>
                   <select
                     type="text"
-                    className="form-select"
+                    className="form-select form-select-sm"
                     name={`empQualificationEntities[${entityIndex}].qualModeOfStudy`}
                     value={entity.qualModeOfStudy}
                     onChange={formik.handleChange}
@@ -231,7 +231,7 @@ const EmpQualificationDetailsEdit = forwardRef(
                     ?.qualModeOfStudy &&
                     formik.errors.empQualificationEntities?.[entityIndex]
                       ?.qualModeOfStudy && (
-                      <div className="text-danger">
+                      <div className="text-danger"  style={{ fontSize: ".875em" }}>
                         {
                           formik.errors.empQualificationEntities[entityIndex]
                             .qualModeOfStudy
@@ -241,11 +241,11 @@ const EmpQualificationDetailsEdit = forwardRef(
                 </div>
                 <div className="col-md-6 mb-3">
                   <label>
-                    Qualification Date <span className="text-danger">*</span>
+                    Qualification Date <span className="text-danger"  style={{ fontSize: ".875em" }}>*</span>
                   </label>
                   <input
                     type="date"
-                    className="form-control"
+                    className="form-control form-control-sm"
                     name={`empQualificationEntities[${entityIndex}].qualificationDate`}
                     value={entity.qualificationDate}
                     onChange={formik.handleChange}
@@ -255,7 +255,7 @@ const EmpQualificationDetailsEdit = forwardRef(
                     ?.qualificationDate &&
                     formik.errors.empQualificationEntities?.[entityIndex]
                       ?.qualificationDate && (
-                      <div className="text-danger">
+                      <div className="text-danger"  style={{ fontSize: ".875em" }}>
                         {
                           formik.errors.empQualificationEntities[entityIndex]
                             .qualificationDate
@@ -265,11 +265,11 @@ const EmpQualificationDetailsEdit = forwardRef(
                 </div>
                 <div className="col-md-6 mb-3">
                   <label>
-                    Certificate <span className="text-danger">*</span>
+                    Certificate <span className="text-danger"  style={{ fontSize: ".875em" }}>*</span>
                   </label>
                   <input
                     type="file"
-                    className="form-control"
+                    className="form-control form-control-sm"
                     name={`empQualificationEntities[${entityIndex}].certificate`}
                     value={entity.certificate}
                     onChange={formik.handleChange}
@@ -279,7 +279,7 @@ const EmpQualificationDetailsEdit = forwardRef(
                     ?.certificate &&
                     formik.errors.empQualificationEntities?.[entityIndex]
                       ?.certificate && (
-                      <div className="text-danger">
+                      <div className="text-danger"  style={{ fontSize: ".875em" }}>
                         {
                           formik.errors.empQualificationEntities[entityIndex]
                             .certificate
@@ -298,13 +298,13 @@ const EmpQualificationDetailsEdit = forwardRef(
                   </button>
                 </div>
                 {entity.empQualificationSkils.map((skill, skillIndex) => (
-                  <div className="row mt-3 " key={skillIndex}>
+                  <div className="row my-5 " key={skillIndex}>
                     <div className="col-md-11 col-12">
                       <div className="row">
                         <div className="col-md-6 col-12">
                           <input
                             type="text"
-                             className="form-control custom-input"
+                             className="form-control form-control-sm custom-input"
                              placeholder="Employee Skill"
                             name={`empQualificationEntities[${entityIndex}].empQualificationSkils[${skillIndex}].employeeSkill`}
                             value={skill.employeeSkill}
@@ -319,7 +319,7 @@ const EmpQualificationDetailsEdit = forwardRef(
                               entityIndex
                             ]?.empQualificationSkils?.[skillIndex]
                               ?.employeeSkill && (
-                              <div className="text-danger">
+                              <div className="text-danger"  style={{ fontSize: ".875em" }}>
                                 {
                                   formik.errors.empQualificationEntities[
                                     entityIndex
@@ -333,7 +333,7 @@ const EmpQualificationDetailsEdit = forwardRef(
                         <div className="col-md-6 col-12">
                           <input
                             type="text"
-                            className="form-control custom-input"
+                            className="form-control form-control-sm custom-input"
                             placeholder="Skill Description"
                             name={`empQualificationEntities[${entityIndex}].empQualificationSkils[${skillIndex}].skillDescription`}
                             value={skill.skillDescription}
@@ -348,7 +348,7 @@ const EmpQualificationDetailsEdit = forwardRef(
                               entityIndex
                             ]?.empQualificationSkils?.[skillIndex]
                               ?.skillDescription && (
-                              <div className="text-danger">
+                              <div className="text-danger"  style={{ fontSize: ".875em" }}>
                                 {
                                   formik.errors.empQualificationEntities[
                                     entityIndex

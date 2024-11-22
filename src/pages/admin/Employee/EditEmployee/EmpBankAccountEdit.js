@@ -15,6 +15,10 @@ const validationSchema = Yup.object().shape({
   brName: Yup.string().required("*Branch name is required"),
   IFSCCode: Yup.string().required("*IFSC code is required"),
   accNumber: Yup.string().required("*Account number is required"),
+  bankAddress: Yup.string().required("*Bank Address is required"),
+  accountType: Yup.string().required("*Account Type is required"),
+  bankPhoneNumber: Yup.string().required("*Bank Phone Number is required"),
+  accountHolderName: Yup.string().required("*Account Holder Name is required"),
 });
 
 const EmpBankAccountEdit = forwardRef(
@@ -31,7 +35,7 @@ const EmpBankAccountEdit = forwardRef(
 
     useEffect(() => {
       fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const formik = useFormik({
@@ -40,13 +44,17 @@ const EmpBankAccountEdit = forwardRef(
         brName: formData.brName || "",
         IFSCCode: formData.IFSCCode || "",
         accNumber: formData.accNumber || "",
+        accountHolderName: formData.accountHolderName || "",
+        bankAddress: formData.bankAddress || "",
+        bankPhoneNumber: formData.bankPhoneNumber || "",
+        accountType: formData.accountType || "",
       },
       validationSchema: validationSchema,
       onSubmit: async (values) => {
         setLoadIndicators(true);
         values.bankAccDetailsEmpId = formData.empId;
-        navigate("/employee")
-        setLoadIndicators(false)
+        navigate("/employee");
+        setLoadIndicators(false);
         // console.log("Body Values is ", values);
         // try {
         //   const response = await api.post(`/addEmpBankAccDetails`, values);
@@ -85,7 +93,7 @@ const EmpBankAccountEdit = forwardRef(
                       </lable>
                       <br />
                       <input
-                        className="form-control "
+                        className="form-control form-control-sm "
                         type="text"
                         name="bankName"
                         onChange={formik.handleChange}
@@ -93,7 +101,10 @@ const EmpBankAccountEdit = forwardRef(
                         value={formik.values.bankName}
                       />
                       {formik.touched.bankName && formik.errors.bankName && (
-                        <div className="text-danger">
+                        <div
+                          className="text-danger"
+                          style={{ fontSize: ".875em" }}
+                        >
                           <small>{formik.errors.bankName}</small>
                         </div>
                       )}
@@ -106,7 +117,7 @@ const EmpBankAccountEdit = forwardRef(
                       </lable>
                       <br />
                       <input
-                        className="form-control "
+                        className="form-control form-control-sm "
                         type="text"
                         name="IFSCCode"
                         onChange={formik.handleChange}
@@ -114,7 +125,10 @@ const EmpBankAccountEdit = forwardRef(
                         value={formik.values.IFSCCode}
                       />
                       {formik.touched.IFSCCode && formik.errors.IFSCCode && (
-                        <div className="text-danger">
+                        <div
+                          className="text-danger"
+                          style={{ fontSize: ".875em" }}
+                        >
                           <small>{formik.errors.IFSCCode}</small>
                         </div>
                       )}
@@ -132,15 +146,17 @@ const EmpBankAccountEdit = forwardRef(
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.brName}
-                        className="form-control "
+                        className="form-control form-control-sm "
                         type="text"
                       />
-                      {formik.touched.brName &&
-                        formik.errors.brName && (
-                          <div className="text-danger">
-                            <small>{formik.errors.brName}</small>
-                          </div>
-                        )}
+                      {formik.touched.brName && formik.errors.brName && (
+                        <div
+                          className="text-danger"
+                          style={{ fontSize: ".875em" }}
+                        >
+                          <small>{formik.errors.brName}</small>
+                        </div>
+                      )}
                     </div>
                     <div className="text-start mt-4">
                       <lable className="form-label">
@@ -151,14 +167,108 @@ const EmpBankAccountEdit = forwardRef(
                       <input
                         type="number"
                         name="accNumber"
-                        className="form-control"
+                        className="form-control form-control-sm"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                       />
-                      {formik.touched.accNumber &&
-                        formik.errors.accNumber && (
-                          <div className="error text-danger ">
-                            <small>{formik.errors.accNumber}</small>
+                      {formik.touched.accNumber && formik.errors.accNumber && (
+                        <div className="error text-danger ">
+                          <small>{formik.errors.accNumber}</small>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="col-lg-6 col-md-6 col-12 px-5">
+                    <div className="text-start mt-2">
+                      <lable className="form-label">
+                        Account Holder Name
+                        <span className="text-danger">*</span>
+                      </lable>
+                      <br />
+                      <input
+                        name="accountHolderName"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.accountHolderName}
+                        className="form-control form-control-sm "
+                        type="text"
+                      />
+                      {formik.touched.accountHolderName &&
+                        formik.errors.accountHolderName && (
+                          <div
+                            className="text-danger"
+                            style={{ fontSize: ".875em" }}
+                          >
+                            <small>{formik.errors.accountHolderName}</small>
+                          </div>
+                        )}
+                    </div>
+                    <div className="text-start mt-4">
+                      <lable className="form-label">
+                        Bank Address
+                        <span className="text-danger">*</span>
+                      </lable>
+                      <br />
+                      <input
+                        type="number"
+                        name="bankAddress"
+                        className="form-control form-control-sm"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />
+                      {formik.touched.bankAddress &&
+                        formik.errors.bankAddress && (
+                          <div
+                            className="error text-danger "
+                            style={{ fontSize: ".875em" }}
+                          >
+                            <small>{formik.errors.bankAddress}</small>
+                          </div>
+                        )}
+                    </div>
+                  </div>
+                  <div className="col-lg-6 col-md-6 col-12 px-5">
+                    <div className="text-start mt-2">
+                      <lable className="form-label">
+                        Account Type
+                        <span className="text-danger">*</span>
+                      </lable>
+                      <br />
+                      <input
+                        name="accountType"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.accountType}
+                        className="form-control form-control-sm "
+                        type="text"
+                      />
+                      {formik.touched.accountType &&
+                        formik.errors.accountType && (
+                          <div
+                            className="text-danger"
+                            style={{ fontSize: ".875em" }}
+                          >
+                            <small>{formik.errors.accountType}</small>
+                          </div>
+                        )}
+                    </div>
+                    <div className="text-start mt-4">
+                      <lable className="form-label">
+                        Bank Phone Number
+                        <span className="text-danger">*</span>
+                      </lable>
+                      <br />
+                      <input
+                        type="number"
+                        name="bankPhoneNumber"
+                        className="form-control form-control-sm"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />
+                      {formik.touched.bankPhoneNumber &&
+                        formik.errors.bankPhoneNumber && (
+                          <div className="error text-danger " style={{ fontSize: ".875em" }}>
+                            <small>{formik.errors.bankPhoneNumber}</small>
                           </div>
                         )}
                     </div>

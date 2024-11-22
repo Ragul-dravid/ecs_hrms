@@ -57,18 +57,6 @@ const EmpPersonalInfoEdit = forwardRef(
         citizenship: "",
         nationality: "",
       },
-      validate: (values) => {
-        const errors = {};
-        if (values.file) {
-          // Check if the file is one of the allowed types
-          const file = values.file;
-          const validTypes = ["image/jpeg", "image/png"];
-          if (!validTypes.includes(file.type)) {
-            errors.file = "Only JPG and PNG files are accepted";
-          }
-        }
-        return errors;
-      },
       validationSchema: validationSchema,
       onSubmit: async (values) => {
         console.log("object",values)
@@ -137,21 +125,21 @@ const EmpPersonalInfoEdit = forwardRef(
       setShowPassword(!showPassword);
     };
 
-    useEffect(() => {
-      const getData = async () => {
-        try {
-          const response = await api.get(`emp-reg-details-by-companyId/${formData.empId}`);
-          formik.setValues(response.data);
-          console.log("Employee response", response.data)
-          setEmployeeProfile(response.data.files);
-        } catch (error) {
-          // console.log(error.message);
-          toast.error("Error Fetching Data ", error.message);
-        }
-      };
-      getData();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    // useEffect(() => {
+    //   const getData = async () => {
+    //     try {
+    //       const response = await api.get(`emp-reg-details-by-companyId/${formData.empId}`);
+    //       formik.setValues(response.data);
+    //       console.log("Employee response", response.data)
+    //       setEmployeeProfile(response.data.files);
+    //     } catch (error) {
+    //       // console.log(error.message);
+    //       toast.error("Error Fetching Data ", error.message);
+    //     }
+    //   };
+    //   getData();
+    //   // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, []);
 
     useImperativeHandle(ref, () => ({
       personalInfo: formik.handleSubmit,

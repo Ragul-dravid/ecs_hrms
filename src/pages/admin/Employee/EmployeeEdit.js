@@ -100,21 +100,17 @@ function EmployeeEdit() {
 
   return (
     <div class="container-fluid minHeight my-5">
-      <Stepper className="my-5" activeStep={activeStep}>
-        {steps.map((step, i) => {
-          const stepProps = {};
-          return (
-            <Step key={i} {...stepProps} onClick={() => setActiveStep(i)}>
-              <OverlayTrigger
-                placement="top"
-                overlay={<Tooltip id={`tooltip-${i}`}>{step.tooltip}</Tooltip>}
-              >
-                <StepLabel>{step.label}</StepLabel>
-              </OverlayTrigger>
-            </Step>
-          );
-        })}
-      </Stepper>
+   <Stepper className="m-5 p-5" activeStep={activeStep}>
+  {steps.map((step, i) => (
+    <Step key={i} onClick={() => setActiveStep(i)} className="step-container">
+      <div className="custom-tooltip-container">
+        <StepLabel>{step.label}</StepLabel>
+        <span className="custom-tooltip">{step.tooltip}</span>
+      </div>
+    </Step>
+  ))}
+</Stepper>
+
       <div class="container-fluid py-3 card shadow border-0 mb-7 mt-5">
         <React.Fragment>
           {activeStep === 0 && (

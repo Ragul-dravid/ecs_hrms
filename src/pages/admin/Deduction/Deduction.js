@@ -15,11 +15,12 @@ const Deduction = () => {
   // const storedScreens = JSON.parse(localStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const cmpId = localStorage.getItem("cmpId")
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("/deduction");
+        const response = await api.get(`deduction-by-cmpId/${cmpId}`);
         setDatas(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -61,7 +62,7 @@ const Deduction = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("/deduction");
+      const response = await api.get(`deduction-by-cmpId/${cmpId}`);
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {

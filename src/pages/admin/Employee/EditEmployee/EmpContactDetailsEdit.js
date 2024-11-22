@@ -9,7 +9,7 @@ const EmpContactDetailsEdit = forwardRef(
     const validationSchema = Yup.object().shape({
       dob: Yup.string().required("*Date of birth is required"),
       gender: Yup.string().required("*Select a gender"),
-      // maritalStatus: Yup.string().required("*Select a marital status"),
+      maritalStatus: Yup.string().required("*Select a marital status"),
       religion: Yup.string().required("*Religion is required "),
       // empAddr: Yup.string().required("*Address is required "),
       city: Yup.string().required("*City is required "),
@@ -338,7 +338,7 @@ const EmpContactDetailsEdit = forwardRef(
           </div>
           {formik.values.empEmergencyContact.map((row, index) => (
             <div key={index}>
-                <div className="row mt-5 align-items-center">
+                <div className="row my-5 align-items-center">
                   <div className="col-md-11 col-12">
                     <div className="row">
                       <div className="col-md-4 col-12 mb-3">
