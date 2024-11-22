@@ -9,6 +9,8 @@ import { PropagateLoader } from 'react-spinners';
 import DeleteModel from "../../../../components/admin/DeleteModel";
 import { BiEditAlt } from "react-icons/bi";
 import { HiOutlineEye } from "react-icons/hi";
+import DepartmentAdd from "./DepartmentAdd";
+import DepartmentCAdd from "./DepartmentCAdd";
 
 const Department = () => {
   const tableRef = useRef(null);
@@ -62,7 +64,7 @@ const Department = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("/department");
+      const response = await api.get(`/department-by-company/${cmpId}`);
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -111,16 +113,7 @@ const Department = () => {
                 </div>
                 <div className="col-auto">
                   <div className="hstack gap-2 justify-content-end">
-                    <Link to="/departments/add">
-                      <button
-                        type="submit"
-                        className="btn btn-sm btn-button btn-primary"
-                      >
-                        <span cla>
-                          Add <FaPlus className="pb-1" />
-                        </span>
-                      </button>
-                    </Link>
+                  <DepartmentCAdd onSuccess={refreshData}/>
                   </div>
                 </div>
               </div>

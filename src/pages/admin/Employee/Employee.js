@@ -14,6 +14,8 @@ const Employee = () => {
   const tableRef = useRef(null);
   // const storedScreens = JSON.parse(localStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
+  console.log("Emp Data:",datas);
+  
   const [loading, setLoading] = useState(true);
   const cmpId = localStorage.getItem("cmpId");
 
@@ -155,7 +157,7 @@ const Employee = () => {
                   </tr>
                 </thead>
                 <tbody>
-                {Array.isArray(datas) && datas?.map((data, index) => (
+                {Array.isArray(datas) && datas.map((data, index) => (
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
                       <td className="text-center">{data.employeeId}</td>
