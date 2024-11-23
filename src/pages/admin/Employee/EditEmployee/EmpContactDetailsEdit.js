@@ -127,7 +127,7 @@ const EmpContactDetailsEdit = forwardRef(
             city: response.city || "",
             age: 25 || "",
             pincode: response.pincode || "",
-            
+
             emergencyContactName: response.emergencyContactName || "",
             emergencyContactNo: response.emergencyContactNo || "",
             emergencyContactAddress: response.emergencyContactAddress || "",
@@ -158,7 +158,7 @@ const EmpContactDetailsEdit = forwardRef(
       <div className="container-fluid p-0">
         <form onSubmit={formik.handleSubmit}>
           <div className="row my-2">
-            <p className="headColor">Contact Information</p>
+            <p className="headColor ">Contact Information</p>
           </div>
           <div className=" border-0 mb-5">
             <div className="container p-0">
