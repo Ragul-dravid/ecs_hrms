@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import api from "../../../../config/URL";
 import toast from "react-hot-toast";
 
+
 const CompanyRegistrationEdit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const CompanyRegistrationEdit = () => {
     cmpCity: Yup.string().required("City is required"),
     cmpPincode: Yup.string().required("Pin Code is required"),
     cmpTaxCode: Yup.string().required("Tax Code is required"),
+    headQuaterAddress: Yup.string().required("HeadQuater Address is required"),
   });
 
   // useFormik hook for form handling
@@ -36,6 +38,11 @@ const CompanyRegistrationEdit = () => {
       cmpCity: "",
       cmpPincode: "",
       cmpTaxCode: "",
+      startDate: "",
+      companyType: "",
+      representative: "",
+      headQuaterAddress: "",
+      branchLocation: [],
       logoFile: null,
       profileImgFile: null,
     },
@@ -52,6 +59,11 @@ const CompanyRegistrationEdit = () => {
       formDatas.append("cmpCity", values.cmpCity);
       formDatas.append("cmpPincode", values.cmpPincode);
       formDatas.append("cmpTaxCode", values.cmpTaxCode);
+      formDatas.append("representative", values.representative);
+      formDatas.append("startDate", values.startDate);
+      formDatas.append("companyType", values.companyType);
+      formDatas.append("headQuaterAddress", values.headQuaterAddress);
+      formDatas.append("branchLocation", values.branchLocation);
       formDatas.append("logoFile", values.logoFile);
       formDatas.append("profileImgFile", values.profileImgFile);
       try {
@@ -69,6 +81,8 @@ const CompanyRegistrationEdit = () => {
       }
     },
   });
+
+
 
   useEffect(() => {
     const getData = async () => {
@@ -261,6 +275,112 @@ const CompanyRegistrationEdit = () => {
                 {formik.touched.cmpTaxCode && formik.errors.cmpTaxCode && (
                   <div className="invalid-feedback">{formik.errors.cmpTaxCode}</div>
                 )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Start Date<span className="text-danger">*</span>
+                </label>
+                <input
+                  type="date"
+                  name="startDate"
+                  className={`form-control form-control-sm ${
+                    formik.touched.startDate && formik.errors.startDate
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("startDate")}
+                />
+                {formik.touched.startDate && formik.errors.startDate && (
+                  <div className="invalid-feedback">
+                    {formik.errors.startDate}
+                  </div>
+                )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Representative<span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="representative"
+                  className={`form-control form-control-sm ${
+                    formik.touched.representative &&
+                    formik.errors.representative
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("representative")}
+                />
+                {formik.touched.representative &&
+                  formik.errors.representative && (
+                    <div className="invalid-feedback">
+                      {formik.errors.representative}
+                    </div>
+                  )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Company Type<span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="companyType"
+                  className={`form-control form-control-sm ${
+                    formik.touched.companyType && formik.errors.companyType
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("companyType")}
+                />
+                {formik.touched.companyType && formik.errors.companyType && (
+                  <div className="invalid-feedback">
+                    {formik.errors.companyType}
+                  </div>
+                )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  HeadQuater Address<span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="headQuaterAddress"
+                  className={`form-control form-control-sm ${
+                    formik.touched.headQuaterAddress &&
+                    formik.errors.headQuaterAddress
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("headQuaterAddress")}
+                />
+                {formik.touched.headQuaterAddress &&
+                  formik.errors.headQuaterAddress && (
+                    <div className="invalid-feedback">
+                      {formik.errors.headQuaterAddress}
+                    </div>
+                  )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Branch Location<span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="branchLocation"
+                  className={`form-control form-control-sm ${
+                    formik.touched.branchLocation &&
+                    formik.errors.branchLocation
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("branchLocation")}
+                />
+                {formik.touched.branchLocation &&
+                  formik.errors.branchLocation && (
+                    <div className="invalid-feedback">
+                      {formik.errors.branchLocation}
+                    </div>
+                  )}
               </div>
 
               {/* logoFile Field */}

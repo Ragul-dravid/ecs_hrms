@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import api from "../../../../config/URL";
 import toast from "react-hot-toast";
-import { PropagateLoader } from 'react-spinners';
+import { PropagateLoader } from "react-spinners";
 import Modal from "react-bootstrap/Modal";
 
 const CompanyRegistrationView = () => {
@@ -32,7 +32,9 @@ const CompanyRegistrationView = () => {
   const handleStatusChange = async (status) => {
     setLoadIndicator(true);
     try {
-      const response = await api.put(`status/${id}?cmpId=${id}&newStatus=${status}`);
+      const response = await api.put(
+        `status/${id}?cmpId=${id}&newStatus=${status}`
+      );
       if (response.status === 200) {
         getData();
         handleClose();
@@ -50,7 +52,9 @@ const CompanyRegistrationView = () => {
   const handleStatusChange2 = async (status) => {
     setLoading(true);
     try {
-      const response = await api.put(`status/${id}?cmpId=${id}&newStatus=${status}`);
+      const response = await api.put(
+        `status/${id}?cmpId=${id}&newStatus=${status}`
+      );
       if (response.status === 200) {
         getData();
         toast.success(`Company Register Rejected`);
@@ -79,14 +83,17 @@ const CompanyRegistrationView = () => {
             ariaLabel="hourglass-loading"
             wrapperStyle={{}}
             wrapperClass=""
-
           />
         </div>
       ) : (
-        <div className="container-fluid px-2 minHeight"
-          style={{ borderRadius: "0" }}>
-          <div className="card shadow border-0 mb-2 top-header"
-            style={{ borderRadius: "0" }}>
+        <div
+          className="container-fluid px-2 minHeight"
+          style={{ borderRadius: "0" }}
+        >
+          <div
+            className="card shadow border-0 mb-2 top-header"
+            style={{ borderRadius: "0" }}
+          >
             <div className="container-fluid py-4">
               <div className="row align-items-center">
                 <div className="col">
@@ -142,10 +149,11 @@ const CompanyRegistrationView = () => {
           </div>
 
           {/* Card for displaying company details */}
-          <div className="card shadow border-0 mb-2 minHeight"
-            style={{ borderRadius: "0" }}>
+          <div
+            className="card shadow border-0 mb-2 minHeight"
+            style={{ borderRadius: "0" }}
+          >
             <div className="container">
-
               <div className="d-flex justify-content-center">
                 <p className="my-2 d-flex">
                   {data?.profileImg ? (
@@ -167,12 +175,13 @@ const CompanyRegistrationView = () => {
                 </p>
               </div>
               <div className="row mt-2 p-3">
-
                 {/* Company Name */}
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
-                      <p className="text-sm"><b>Name</b></p>
+                      <p className="text-sm">
+                        <b>Name</b>
+                      </p>
                     </div>
                     <div className="col-6">
                       <p className="text-muted text-sm">: {data?.name || ""}</p>
@@ -183,10 +192,14 @@ const CompanyRegistrationView = () => {
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
-                      <p className="text-sm"><b>Company Name</b></p>
+                      <p className="text-sm">
+                        <b>Company Name</b>
+                      </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {data?.cmpName || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {data?.cmpName || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -195,10 +208,14 @@ const CompanyRegistrationView = () => {
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
-                      <p className="text-sm"><b>Company Email</b></p>
+                      <p className="text-sm">
+                        <b>Company Email</b>
+                      </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {data?.cmpEmail || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {data?.cmpEmail || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -207,10 +224,14 @@ const CompanyRegistrationView = () => {
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
-                      <p className="text-sm"><b>Phone Number</b></p>
+                      <p className="text-sm">
+                        <b>Phone Number</b>
+                      </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {data?.cmpPhNumber || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {data?.cmpPhNumber || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -219,10 +240,14 @@ const CompanyRegistrationView = () => {
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
-                      <p className="text-sm"><b>Tax Code</b></p>
+                      <p className="text-sm">
+                        <b>Tax Code</b>
+                      </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {data?.cmpTaxCode || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {data?.cmpTaxCode || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -231,10 +256,14 @@ const CompanyRegistrationView = () => {
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
-                      <p className="text-sm"><b>Company Address</b></p>
+                      <p className="text-sm">
+                        <b>Company Address</b>
+                      </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {data?.cmpAddr || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {data?.cmpAddr || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -243,10 +272,14 @@ const CompanyRegistrationView = () => {
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
-                      <p className="text-sm"><b>City</b></p>
+                      <p className="text-sm">
+                        <b>City</b>
+                      </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {data?.cmpCity || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {data?.cmpCity || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -255,10 +288,14 @@ const CompanyRegistrationView = () => {
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
-                      <p className="text-sm"><b>Pincode</b></p>
+                      <p className="text-sm">
+                        <b>Pincode</b>
+                      </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {data?.cmpPincode || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {data?.cmpPincode || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -267,10 +304,84 @@ const CompanyRegistrationView = () => {
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
-                      <p className="text-sm"><b>Tax Code</b></p>
+                      <p className="text-sm">
+                        <b>Tax Code</b>
+                      </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {data?.cmpTaxCode || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {data?.cmpTaxCode || ""}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm">
+                        <b>Company Type</b>
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data?.companyType || ""}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm">
+                        <b>HeadQuater Address</b>
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data?.headQuaterAddress || ""}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm">
+                        <b>Representative</b>
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data?.representative || ""}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm">
+                        <b>Start Date</b>
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data?.startDate?.slice(0, 10) || ""}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm">
+                        <b>Branch Location</b>
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data?.branchLocation || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -294,7 +405,25 @@ const CompanyRegistrationView = () => {
                     </div>
                   </div>
                 </div>
-
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm">
+                        <b>File</b>
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        :{" "}
+                        <img
+                          src={`${data?.fileAttachment}`}
+                          alt="icon"
+                          style={{ maxWidth: "100px", maxHeight: "100px" }}
+                        />
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

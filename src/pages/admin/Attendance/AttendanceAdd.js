@@ -75,7 +75,6 @@ const AttendanceAdd = () => {
     };
 
     getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const handleStatuschange = (event) => {
     const status = event.target.value;

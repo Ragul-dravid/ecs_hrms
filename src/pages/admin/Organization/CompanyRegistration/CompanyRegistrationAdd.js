@@ -21,6 +21,7 @@ const CompanyRegistrationAdd = () => {
     cmpCity: Yup.string().required("City is required"),
     cmpPincode: Yup.string().required("Pin Code is required"),
     cmpTaxCode: Yup.string().required("Tax Code is required"),
+    headQuaterAddress: Yup.string().required("HeadQuater Address is required"),
   });
 
   const formik = useFormik({
@@ -32,6 +33,11 @@ const CompanyRegistrationAdd = () => {
       cmpAddr: "",
       cmpCity: "",
       cmpPincode: "",
+      startDate: "",
+      companyType: "",
+      representative: "",
+      headQuaterAddress: "",
+      branchLocation: [],
       cmpTaxCode: "",
       logoFile: null,
       profileImgFile: null,
@@ -39,7 +45,7 @@ const CompanyRegistrationAdd = () => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
-      console.log("value", values)
+      console.log("value", values);
       const formDatas = new FormData();
       formDatas.append("name", values.name);
       formDatas.append("cmpName", values.cmpName);
@@ -47,6 +53,11 @@ const CompanyRegistrationAdd = () => {
       formDatas.append("cmpPhNumber", values.cmpPhNumber);
       formDatas.append("cmpAddr", values.cmpAddr);
       formDatas.append("cmpCity", values.cmpCity);
+      formDatas.append("representative", values.representative);
+      formDatas.append("startDate", values.startDate);
+      formDatas.append("companyType", values.companyType);
+      formDatas.append("headQuaterAddress", values.headQuaterAddress);
+      formDatas.append("branchLocation", values.branchLocation);
       formDatas.append("cmpPincode", values.cmpPincode);
       formDatas.append("cmpTaxCode", values.cmpTaxCode);
       formDatas.append("logoFile", values.logoFile);
@@ -68,6 +79,7 @@ const CompanyRegistrationAdd = () => {
     },
   });
 
+
   const handleFileChange = (event) => {
     const { name, files } = event.target;
     if (files.length) {
@@ -78,12 +90,17 @@ const CompanyRegistrationAdd = () => {
   return (
     <div className="container-fluid px-2 minHeight m-0">
       <form onSubmit={formik.handleSubmit}>
-        <div className="card shadow border-0 mb-2 top-header" style={{ borderRadius: "0" }}>
+        <div
+          className="card shadow border-0 mb-2 top-header"
+          style={{ borderRadius: "0" }}
+        >
           <div className="container-fluid py-4">
             <div className="row align-items-center">
               <div className="col">
                 <div className="d-flex align-items-center gap-4">
-                  <h1 className="h4 ls-tight headingColor">Add Company Registration</h1>
+                  <h1 className="h4 ls-tight headingColor">
+                    Add Company Registration
+                  </h1>
                 </div>
               </div>
               <div className="col-auto">
@@ -93,9 +110,16 @@ const CompanyRegistrationAdd = () => {
                       <span>Back</span>
                     </button>
                   </Link>
-                  <button type="submit" className="btn btn-sm btn-primary" disabled={loading}>
+                  <button
+                    type="submit"
+                    className="btn btn-sm btn-primary"
+                    disabled={loading}
+                  >
                     {loading ? (
-                      <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
                     ) : (
                       <span>Save</span>
                     )}
@@ -106,7 +130,10 @@ const CompanyRegistrationAdd = () => {
           </div>
         </div>
 
-        <div className="card shadow border-0 my-2" style={{ borderRadius: "0" }}>
+        <div
+          className="card shadow border-0 my-2"
+          style={{ borderRadius: "0" }}
+        >
           <div className="container mb-5">
             <div className="row py-4">
               {/* Name Field */}
@@ -117,8 +144,11 @@ const CompanyRegistrationAdd = () => {
                 <input
                   type="text"
                   name="name"
-                  className={`form-control form-control-sm ${formik.touched.name && formik.errors.name ? "is-invalid" : ""
-                    }`}
+                  className={`form-control form-control-sm ${
+                    formik.touched.name && formik.errors.name
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("name")}
                 />
                 {formik.touched.name && formik.errors.name && (
@@ -134,10 +164,11 @@ const CompanyRegistrationAdd = () => {
                 <input
                   type="text"
                   name="cmpName"
-                  className={`form-control form-control-sm ${formik.touched.cmpName && formik.errors.cmpName
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                  className={`form-control form-control-sm ${
+                    formik.touched.cmpName && formik.errors.cmpName
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("cmpName")}
                 />
                 {formik.touched.cmpName && formik.errors.cmpName && (
@@ -155,12 +186,17 @@ const CompanyRegistrationAdd = () => {
                 <input
                   type="text"
                   name="cmpEmail"
-                  className={`form-control form-control-sm ${formik.touched.cmpEmail && formik.errors.cmpEmail ? "is-invalid" : ""
-                    }`}
+                  className={`form-control form-control-sm ${
+                    formik.touched.cmpEmail && formik.errors.cmpEmail
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("cmpEmail")}
                 />
                 {formik.touched.cmpEmail && formik.errors.cmpEmail && (
-                  <div className="invalid-feedback">{formik.errors.cmpEmail}</div>
+                  <div className="invalid-feedback">
+                    {formik.errors.cmpEmail}
+                  </div>
                 )}
               </div>
 
@@ -172,12 +208,17 @@ const CompanyRegistrationAdd = () => {
                 <input
                   type="text"
                   name="cmpPhNumber"
-                  className={`form-control form-control-sm ${formik.touched.cmpPhNumber && formik.errors.cmpPhNumber ? "is-invalid" : ""
-                    }`}
+                  className={`form-control form-control-sm ${
+                    formik.touched.cmpPhNumber && formik.errors.cmpPhNumber
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("cmpPhNumber")}
                 />
                 {formik.touched.cmpPhNumber && formik.errors.cmpPhNumber && (
-                  <div className="invalid-feedback">{formik.errors.cmpPhNumber}</div>
+                  <div className="invalid-feedback">
+                    {formik.errors.cmpPhNumber}
+                  </div>
                 )}
               </div>
 
@@ -189,12 +230,17 @@ const CompanyRegistrationAdd = () => {
                 <input
                   type="text"
                   name="cmpAddr"
-                  className={`form-control form-control-sm ${formik.touched.cmpAddr && formik.errors.cmpAddr ? "is-invalid" : ""
-                    }`}
+                  className={`form-control form-control-sm ${
+                    formik.touched.cmpAddr && formik.errors.cmpAddr
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("cmpAddr")}
                 />
                 {formik.touched.cmpAddr && formik.errors.cmpAddr && (
-                  <div className="invalid-feedback">{formik.errors.cmpAddr}</div>
+                  <div className="invalid-feedback">
+                    {formik.errors.cmpAddr}
+                  </div>
                 )}
               </div>
 
@@ -206,12 +252,17 @@ const CompanyRegistrationAdd = () => {
                 <input
                   type="text"
                   name="cmpCity"
-                  className={`form-control form-control-sm ${formik.touched.cmpCity && formik.errors.cmpCity ? "is-invalid" : ""
-                    }`}
+                  className={`form-control form-control-sm ${
+                    formik.touched.cmpCity && formik.errors.cmpCity
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("cmpCity")}
                 />
                 {formik.touched.cmpCity && formik.errors.cmpCity && (
-                  <div className="invalid-feedback">{formik.errors.cmpCity}</div>
+                  <div className="invalid-feedback">
+                    {formik.errors.cmpCity}
+                  </div>
                 )}
               </div>
 
@@ -223,12 +274,17 @@ const CompanyRegistrationAdd = () => {
                 <input
                   type="text"
                   name="cmpPincode"
-                  className={`form-control form-control-sm ${formik.touched.cmpPincode && formik.errors.cmpPincode ? "is-invalid" : ""
-                    }`}
+                  className={`form-control form-control-sm ${
+                    formik.touched.cmpPincode && formik.errors.cmpPincode
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("cmpPincode")}
                 />
                 {formik.touched.cmpPincode && formik.errors.cmpPincode && (
-                  <div className="invalid-feedback">{formik.errors.cmpPincode}</div>
+                  <div className="invalid-feedback">
+                    {formik.errors.cmpPincode}
+                  </div>
                 )}
               </div>
               <div className="col-md-6 col-12 mb-3">
@@ -238,49 +294,166 @@ const CompanyRegistrationAdd = () => {
                 <input
                   type="text"
                   name="cmpTaxCode"
-                  className={`form-control form-control-sm ${formik.touched.cmpTaxCode && formik.errors.cmpTaxCode ? "is-invalid" : ""
-                    }`}
+                  className={`form-control form-control-sm ${
+                    formik.touched.cmpTaxCode && formik.errors.cmpTaxCode
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("cmpTaxCode")}
                 />
                 {formik.touched.cmpTaxCode && formik.errors.cmpTaxCode && (
-                  <div className="invalid-feedback">{formik.errors.cmpTaxCode}</div>
+                  <div className="invalid-feedback">
+                    {formik.errors.cmpTaxCode}
+                  </div>
                 )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Start Date<span className="text-danger">*</span>
+                </label>
+                <input
+                  type="date"
+                  name="startDate"
+                  className={`form-control form-control-sm ${
+                    formik.touched.startDate && formik.errors.startDate
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("startDate")}
+                />
+                {formik.touched.startDate && formik.errors.startDate && (
+                  <div className="invalid-feedback">
+                    {formik.errors.startDate}
+                  </div>
+                )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Representative<span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="representative"
+                  className={`form-control form-control-sm ${
+                    formik.touched.representative &&
+                    formik.errors.representative
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("representative")}
+                />
+                {formik.touched.representative &&
+                  formik.errors.representative && (
+                    <div className="invalid-feedback">
+                      {formik.errors.representative}
+                    </div>
+                  )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Company Type<span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="companyType"
+                  className={`form-control form-control-sm ${
+                    formik.touched.companyType && formik.errors.companyType
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("companyType")}
+                />
+                {formik.touched.companyType && formik.errors.companyType && (
+                  <div className="invalid-feedback">
+                    {formik.errors.companyType}
+                  </div>
+                )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  HeadQuater Address<span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="headQuaterAddress"
+                  className={`form-control form-control-sm ${
+                    formik.touched.headQuaterAddress &&
+                    formik.errors.headQuaterAddress
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("headQuaterAddress")}
+                />
+                {formik.touched.headQuaterAddress &&
+                  formik.errors.headQuaterAddress && (
+                    <div className="invalid-feedback">
+                      {formik.errors.headQuaterAddress}
+                    </div>
+                  )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Branch Location<span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="branchLocation"
+                  className={`form-control form-control-sm ${
+                    formik.touched.branchLocation &&
+                    formik.errors.branchLocation
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("branchLocation")}
+                />
+                {formik.touched.branchLocation &&
+                  formik.errors.branchLocation && (
+                    <div className="invalid-feedback">
+                      {formik.errors.branchLocation}
+                    </div>
+                  )}
               </div>
 
               {/* logoFile Field */}
               <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Logo
-                </label>
+                <label className="form-label">Logo</label>
                 <input
                   type="file"
                   name="logoFile"
-                  className={`form-control form-control-sm ${formik.touched.logoFile && formik.errors.logoFile ? "is-invalid" : ""
-                    }`}
+                  className={`form-control form-control-sm ${
+                    formik.touched.logoFile && formik.errors.logoFile
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   onChange={handleFileChange}
                 />
                 {formik.touched.logoFile && formik.errors.logoFile && (
-                  <div className="invalid-feedback">{formik.errors.logoFile}</div>
+                  <div className="invalid-feedback">
+                    {formik.errors.logoFile}
+                  </div>
                 )}
               </div>
 
               {/* Profile Image Field */}
               <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Profile Image
-                </label>
+                <label className="form-label">Profile Image</label>
                 <input
                   type="file"
                   name="profileImgFile"
-                  className={`form-control form-control-sm ${formik.touched.profileImgFile && formik.errors.profileImgFile
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                  className={`form-control form-control-sm ${
+                    formik.touched.profileImgFile &&
+                    formik.errors.profileImgFile
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   onChange={handleFileChange}
                 />
-                {formik.touched.profileImgFile && formik.errors.profileImgFile && (
-                  <div className="invalid-feedback">{formik.errors.profileImgFile}</div>
-                )}
+                {formik.touched.profileImgFile &&
+                  formik.errors.profileImgFile && (
+                    <div className="invalid-feedback">
+                      {formik.errors.profileImgFile}
+                    </div>
+                  )}
               </div>
             </div>
           </div>

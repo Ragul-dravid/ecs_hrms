@@ -124,7 +124,7 @@ function AdminSidebar({ handleLogout }) {
                 {activeSubmenu === "Organization" && (
                   <ul className="list-unstyled p-0">
                     <li>
-                      {role === "ORGANIZATION_OWNER" ? (
+                      {role === "HR_SUPER_ADMIN" ? (
                         <NavLink className="nav-link" to="/companyRegistration">
                           <span
                             style={{ display: "flex", alignItems: "center" }}
