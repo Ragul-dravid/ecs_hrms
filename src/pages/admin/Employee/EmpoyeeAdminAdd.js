@@ -5,20 +5,14 @@ import * as Yup from "yup";
 import api from "../../../config/URL";
 import { toast } from "react-toastify";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import { CiCirclePlus } from "react-icons/ci";
 import DepartmentAdd from "../Settings/Department/DepartmentAdd";
 import departmentListByCompId from "../List_Apis/DepartmentListByCmpId";
-// import fetchAllDepartmentNamesWithId from "../List/DepartmentNameList";
 
 function EmployeeAdminAdd() {
   const cmpId = localStorage.getItem("cmpId");
-  const [companyData, setCompanyData] = useState(null);
   const [departmentData, setDepartmentData] = useState(null);
-  console.log("departmentData:",departmentData);
-  
+  // console.log("departmentData:", departmentData);
   const [selectedIdType, setSelectedIdType] = useState("");
-  const [currentDate, setCurrentDate] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = React.useState(false);
   const [loadIndicator, setLoadIndicators] = useState(false);
   const navigate = useNavigate();
@@ -31,9 +25,34 @@ function EmployeeAdminAdd() {
       .required("*Primary phone number is required")
       .typeError("*Must be a number"),
     email: Yup.string()
-      .email("*Enter valid email")
-      .required("*Primary email id is required"),
-    password: Yup.string().required("*Primary email password is required"),
+      .email("*Enter a valid email")
+      .required("*Primary email is required"),
+    password: Yup.string().required("*Password is required"),
+    NRICFin: Yup.string().nullable(), // Optional field
+    nationality: Yup.string().nullable(), // Optional field
+    citizenship: Yup.string().nullable(), // Optional field
+    NRICType: Yup.string().nullable(), // Optional field
+    aadharNumber: Yup.string().matches(
+      /^\d{12}$/,
+      "*Aadhar number must be a 12-digit number"
+    ).nullable(), // Aadhar-specific validation
+    empRegDeptId: Yup.string().required("*Department is required"),
+    empDesignation: Yup.string().nullable(), // Optional field
+    proof: Yup.string().nullable(), // Optional field
+    empDateOfJoin: Yup.date()
+      .required("*Date of joining is required")
+      .typeError("*Enter a valid date"),
+    empType: Yup.string().nullable(), // Optional field
+    noticePeriod: Yup.string().nullable(), // Optional field
+    repManagerName: Yup.string().nullable(), // Optional field
+    file: Yup.mixed().required("*Photo is required"),
+    roleName: Yup.string().nullable(), // Optional field
+    pan: Yup.string()
+      .matches(
+        /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/,
+        "*Enter a valid PAN number"
+      )
+      .nullable(), // PAN-specific validation
   });
 
   const formik = useFormik({
@@ -58,20 +77,7 @@ function EmployeeAdminAdd() {
       repManagerName: "",
       file: "",
       roleName: "",
-      age: "",
-      pan:"",
-    },
-    validate: (values) => {
-      const errors = {};
-      if (values.file) {
-        // Check if the file is one of the allowed types
-        const file = values.file;
-        const validTypes = ["image/jpeg", "image/png"];
-        if (!validTypes.includes(file.type)) {
-          errors.file = "Only JPG and PNG files are accepted";
-        }
-      }
-      return errors;
+      pan: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -97,8 +103,7 @@ function EmployeeAdminAdd() {
         formData.append("citizenship", values.citizenship);
         formData.append("nationality", values.nationality);
         formData.append("roleName", values.roleName);
-        formData.append("age", 25);
-        formData.append("pan", 2872783);
+        formData.append("pan", values.pan);
 
         const response = await api.post("/emp-reg-details", formData);
         if (response.status === 201) {
@@ -117,25 +122,20 @@ function EmployeeAdminAdd() {
 
   const fetchData = async () => {
     try {
-      const departmentData = await departmentListByCompId(cmpId)
+      const departmentData = await departmentListByCompId(cmpId);
       setDepartmentData(departmentData);
     } catch (error) {
       toast.error(error);
     }
   };
 
-   // Callback to add a new department
+  // Callback to add a new department
   const addDepartment = (newDepartment) => {
     setDepartmentData((prevData) => [...prevData, newDepartment]);
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    const today = new Date().toISOString().split("T")[0];
-    setCurrentDate(today);
   }, []);
 
   const handleIdTypeChange = (event) => {
@@ -339,7 +339,7 @@ function EmployeeAdminAdd() {
                   <label className="form-label mb-0">
                     Department Name <span className="text-danger">*</span>
                   </label>
-                  <DepartmentAdd addDepartment={addDepartment}/>
+                  <DepartmentAdd addDepartment={addDepartment} />
                 </div>
                 <div className="input-group mb-3">
                   <select
@@ -391,21 +391,19 @@ function EmployeeAdminAdd() {
                 </div>
               </div>
               <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">Photo</label>
+                <label className="form-label">Photo </label>
+              <span className="text-danger">*</span>
                 <input
                   type="file"
-                  name="harish"
+                  name="file"
                   className={`form-control form-control-sm ${
                     formik.touched.file && formik.errors.file
                       ? "is-invalid"
                       : ""
                   }`}
-                  accept=".jpg, .jpeg, .png" // Restrict file types
+                  accept="image/*"
                   onChange={(event) => {
-                    const file = event.target.files[0];
-                    if (file) {
-                      formik.setFieldValue("file", file);
-                    }
+                    formik.setFieldValue("file", event.target.files[0]);
                   }}
                   onBlur={formik.handleBlur}
                 />
@@ -552,31 +550,58 @@ function EmployeeAdminAdd() {
                   </div>
                 )}
                 {selectedIdType === "AADHAR" && (
-                  <div className="col-md-6 col-12 mb-3 ">
-                    <div className="mb-2">
-                      <label
-                        for="exampleFormControlInput1"
-                        className="form-label"
-                      >
-                        Aadhar Number<span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="aadharNumber"
-                        className={`form-control form-control-sm ${
-                          formik.touched.aadharNumber &&
-                          formik.errors.aadharNumber
-                            ? "is-invalid"
-                            : ""
-                        }`}
-                        {...formik.getFieldProps("aadharNumber")}
-                      />
-                      {formik.touched.aadharNumber &&
-                        formik.errors.aadharNumber && (
+                  <div className="row">
+                    <div className="col-md-6 col-12 mb-3 ">
+                      <div className="mb-2">
+                        <label
+                          for="exampleFormControlInput1"
+                          className="form-label"
+                        >
+                          Aadhar Number<span className="text-danger">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          name="aadharNumber"
+                          className={`form-control form-control-sm ${
+                            formik.touched.aadharNumber &&
+                            formik.errors.aadharNumber
+                              ? "is-invalid"
+                              : ""
+                          }`}
+                          {...formik.getFieldProps("aadharNumber")}
+                        />
+                        {formik.touched.aadharNumber &&
+                          formik.errors.aadharNumber && (
+                            <div className="invalid-feedback">
+                              {formik.errors.aadharNumber}
+                            </div>
+                          )}
+                      </div>
+                    </div>
+                    <div className="col-md-6 col-12 mb-3 ">
+                      <div className="mb-2">
+                        <label
+                          for="exampleFormControlInput1"
+                          className="form-label"
+                        >
+                          PAN<span className="text-danger">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          name="pan"
+                          className={`form-control form-control-sm ${
+                            formik.touched.pan && formik.errors.pan
+                              ? "is-invalid"
+                              : ""
+                          }`}
+                          {...formik.getFieldProps("pan")}
+                        />
+                        {formik.touched.pan && formik.errors.pan && (
                           <div className="invalid-feedback">
-                            {formik.errors.aadharNumber}
+                            {formik.errors.pan}
                           </div>
                         )}
+                      </div>
                     </div>
                   </div>
                 )}
