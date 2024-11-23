@@ -28,8 +28,6 @@ const AttendanceEdit = () => {
       attendanceStatus: "",
       attendanceRemarks: "",
       attendanceModeOfWorking: "",
-      attendanceCheckInMode: "",
-      attendanceCheckOutMode: "",
       attendanceOtStarttime: "",
       attendanceOtEndtime: "",
       attendanceShiftMode: "",
@@ -38,66 +36,6 @@ const AttendanceEdit = () => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
-      let payload = {
-        attendanceDate: values.attendanceDate,
-        attendanceStatus: values.attendanceStatus,
-        attendanceCheckInTime: values.attendanceCheckInTime,
-        attendanceCheckOutTime: values.attendanceCheckOutTime,
-        attendanceCheckInMode: values.attendanceCheckInMode,
-        attendanceCheckOutMode: values.attendanceCheckOutMode,
-        attendanceOtStarttime: values.attendanceOtStarttime,
-        attendanceOtEndtime: values.attendanceOtEndtime,
-        attendanceRemarks: values.attendanceRemarks,
-      };
-
-      if (values.attendanceModeOfWorking !== "") {
-        payload = {
-          ...payload,
-          attendanceModeOfWorking: values.attendanceModeOfWorking,
-        };
-      }
-
-      if (values.attendanceCheckInTime !== "") {
-        payload = {
-          ...payload,
-          attendanceCheckInTime: values.attendanceCheckInTime,
-        };
-      }
-
-      if (values.attendanceCheckOutTime !== "") {
-        payload = {
-          ...payload,
-          attendanceCheckOutTime: values.attendanceCheckOutTime,
-        };
-      }
-
-      if (values.attendanceCheckInMode !== "") {
-        payload = {
-          ...payload,
-          attendanceCheckInMode: values.attendanceCheckInMode,
-        };
-      }
-
-      if (values.attendanceCheckOutMode !== "") {
-        payload = {
-          ...payload,
-          attendanceCheckOutMode: values.attendanceCheckOutMode,
-        };
-      }
-
-      if (values.attendanceOtStarttime !== "") {
-        payload = {
-          ...payload,
-          attendanceOtStarttime: values.attendanceOtStarttime,
-        };
-      }
-
-      if (values.attendanceOtEndtime !== "") {
-        payload = {
-          ...payload,
-          attendanceOtEndtime: values.attendanceOtEndtime,
-        };
-      }
       try {
         const response = await api.put(`/daily-attendance/${id}`, values);
         if (response.status === 200) {
@@ -118,7 +56,8 @@ const AttendanceEdit = () => {
     const getData = async () => {
       try {
         const response = await api.get(`/daily-attendance/${id}`);
-        formik.setValues(response.data); // Load the data into the form
+        formik.setValues(response.data);
+        formik.setFieldValue("attendanceDate",response.data?.attendanceDate?.slice(0,10)) // Load the data into the form
       } catch (e) {
         toast.error("Error fetching data: ", e?.response?.data?.message);
       }
@@ -160,7 +99,7 @@ const AttendanceEdit = () => {
                         aria-hidden="true"
                       ></span>
                     ) : (
-                      <span>Save</span>
+                      <span>Update</span>
                     )}
                   </button>
                 </div>
@@ -281,17 +220,17 @@ const AttendanceEdit = () => {
                       type="time"
                       // onFocus={(e) => e.target.showPicker()}
                       className={`form-control form-control-sm ${
-                        formik.touched.attendanceCheckInMode &&
-                        formik.errors.attendanceCheckInMode
+                        formik.touched.attendanceCheckInTime &&
+                        formik.errors.attendanceCheckInTime
                           ? "is-invalid"
                           : ""
                       }`}
-                      {...formik.getFieldProps("attendanceCheckInMode")}
+                      {...formik.getFieldProps("attendanceCheckInTime")}
                     />
-                    {formik.touched.attendanceCheckInMode &&
-                      formik.errors.attendanceCheckInMode && (
+                    {formik.touched.attendanceCheckInTime &&
+                      formik.errors.attendanceCheckInTime && (
                         <div className="invalid-feedback">
-                          {formik.errors.attendanceCheckInMode}
+                          {formik.errors.attendanceCheckInTime}
                         </div>
                       )}
                   </div>
@@ -303,17 +242,17 @@ const AttendanceEdit = () => {
                       type="time"
                       // onFocus={(e) => e.target.showPicker()}
                       className={`form-control form-control-sm${
-                        formik.touched.attendanceCheckOutMode &&
-                        formik.errors.attendanceCheckOutMode
+                        formik.touched.attendanceCheckOutTime &&
+                        formik.errors.attendanceCheckOutTime
                           ? "is-invalid"
                           : ""
                       }`}
-                      {...formik.getFieldProps("attendanceCheckOutMode")}
+                      {...formik.getFieldProps("attendanceCheckOutTime")}
                     />
-                    {formik.touched.attendanceCheckOutMode &&
-                      formik.errors.attendanceCheckOutMode && (
+                    {formik.touched.attendanceCheckOutTime &&
+                      formik.errors.attendanceCheckOutTime && (
                         <div className="invalid-feedback">
-                          {formik.errors.attendanceCheckOutMode}
+                          {formik.errors.attendanceCheckOutTime}
                         </div>
                       )}
                   </div>

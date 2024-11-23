@@ -10,24 +10,38 @@ import "react-quill/dist/quill.snow.css"; // Import styles for ReactQuill
 // Define custom toolbar modules
 const modules = {
   toolbar: [
-    [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-    [{ 'size': [] }],
-    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-    [{ 'color': [] }, { 'background': [] }],   // Text color and background color
-    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-    [{ 'align': [] }],
-    ['link', 'image', 'video'],                // Link, image, and video options
-    ['clean'],                                 // Remove formatting button
+    [{ header: "1" }, { header: "2" }, { font: [] }],
+    [{ size: [] }],
+    ["bold", "italic", "underline", "strike", "blockquote"],
+    [{ color: [] }, { background: [] }], // Text color and background color
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ align: [] }],
+    ["link", "image", "video"], // Link, image, and video options
+    ["clean"], // Remove formatting button
   ],
   clipboard: {
     matchVisual: false,
-  }
+  },
 };
 
 // Define formats to enable the editor to accept these types
 const formats = [
-  'header', 'font', 'size', 'bold', 'italic', 'underline', 'strike', 'blockquote',
-  'color', 'background', 'list', 'bullet', 'align', 'link', 'image', 'video'
+  "header",
+  "font",
+  "size",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "blockquote",
+  "color",
+  "background",
+  "list",
+  "bullet",
+  "align",
+  "link",
+  "image",
+  "video",
 ];
 const HrPolicyEdit = () => {
   const { id } = useParams();
@@ -42,22 +56,34 @@ const HrPolicyEdit = () => {
 
   const formik = useFormik({
     initialValues: {
-      hrPolicyId :id,
+      hrPolicyId: id,
       hrPolicyList: "",
       hrPolicyDescr: "",
+      hrPolicyOwner: "",
+      effectiveDate: "",
+      hrPolicyCategory: "",
+      attachments: [],
       hrPolicyCmpId: cmpId,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
       try {
-        // Update API payload to include HTML from ReactQuill
-        const payload = {
-          ...values,
-          hrPolicyDescr: values.hrPolicyDescr, // Contains HTML from ReactQuill
-        };
+        const formattedEffectiveDate = new Date(
+          values.effectiveDate
+        ).toISOString();
+        const formData = new FormData();
+        formData.append("hrPolicyList", values.hrPolicyList);
+        formData.append("hrPolicyDescr", values.hrPolicyDescr);
+        formData.append("hrPolicyOwner", values.hrPolicyOwner);
+        formData.append("effectiveDate", formattedEffectiveDate);
+        formData.append("hrPolicyCategory", values.hrPolicyCategory);
+        values.attachments.forEach((file) => {
+          formData.append("attachments", file);
+        });
+        formData.append("hrPolicyCmpId", values.hrPolicyCmpId);
 
-        const response = await api.put(`/hR-policy/${id}`, payload);
+        const response = await api.put(`/hR-policy/${id}`, formData);
         if (response.status === 200) {
           toast.success(response.data.message);
           navigate("/hrpolicy");
@@ -71,6 +97,12 @@ const HrPolicyEdit = () => {
       }
     },
   });
+  const handleFileChange = (event) => {
+    const { files } = event.target;
+    if (files.length) {
+      formik.setFieldValue("attachments", Array.from(files));
+    }
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -165,8 +197,8 @@ const HrPolicyEdit = () => {
                 <ReactQuill
                   value={formik.values.hrPolicyDescr}
                   onChange={handleDescriptionChange}
-                  modules={modules}      // Add custom toolbar modules
-                  formats={formats}      // Define formats allowed
+                  modules={modules} // Add custom toolbar modules
+                  formats={formats} // Define formats allowed
                   className={`${
                     formik.touched.hrPolicyDescr && formik.errors.hrPolicyDescr
                       ? "is-invalid"
@@ -177,6 +209,89 @@ const HrPolicyEdit = () => {
                   formik.errors.hrPolicyDescr && (
                     <div className="invalid-feedback">
                       {formik.errors.hrPolicyDescr}
+                    </div>
+                  )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">Attachments</label>
+                <input
+                  type="file"
+                  name="attachments"
+                  className={`form-control form-control-sm ${
+                    formik.touched.attachments && formik.errors.attachments
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  onChange={handleFileChange}
+                  multiple
+                />
+                {formik.touched.attachments && formik.errors.attachments && (
+                  <div className="invalid-feedback">
+                    {formik.errors.attachments}
+                  </div>
+                )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  HrPolicy Owner <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="hrPolicyOwner"
+                  className={`form-control form-control-sm ${
+                    formik.touched.hrPolicyOwner && formik.errors.hrPolicyOwner
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("hrPolicyOwner")}
+                />
+                {formik.touched.hrPolicyOwner &&
+                  formik.errors.hrPolicyOwner && (
+                    <div className="invalid-feedback">
+                      {formik.errors.hrPolicyOwner}
+                    </div>
+                  )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Effective Date <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="date"
+                  name="effectiveDate"
+                  className={`form-control form-control-sm ${
+                    formik.touched.effectiveDate && formik.errors.effectiveDate
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("effectiveDate")}
+                />
+                {formik.touched.effectiveDate &&
+                  formik.errors.effectiveDate && (
+                    <div className="invalid-feedback">
+                      {formik.errors.effectiveDate}
+                    </div>
+                  )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  HrPolicy Category <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="hrPolicyCategory"
+                  className={`form-control form-control-sm ${
+                    formik.touched.hrPolicyCategory &&
+                    formik.errors.hrPolicyCategory
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("hrPolicyCategory")}
+                />
+                {formik.touched.hrPolicyCategory &&
+                  formik.errors.hrPolicyCategory && (
+                    <div className="invalid-feedback">
+                      {formik.errors.hrPolicyCategory}
                     </div>
                   )}
               </div>

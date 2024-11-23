@@ -6,12 +6,14 @@ import api from "../../../../config/URL";
 import toast from "react-hot-toast";
 import ExitManagement from "./ExitManagement";
 import employeeListByCompId from "../../List_Apis/EmployeeListByCmpId";
+import departmentListByCompId from "../../List_Apis/DepartmentListByCmpId";
 
 const ExitManagementAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
   const cmpId = localStorage.getItem("cmpId");
   const [empData, setEmpData] = useState(null);
+  const [dptData, setDptData] = useState(null);
 
   const validationSchema = Yup.object({
     // exitMgmtEmpName: Yup.string().required("*Employee Name is required"),
@@ -31,13 +33,21 @@ const ExitManagementAdd = () => {
       exitMgmtNoticePeriod: "",
       dateOfRelieving: "",
       relievingApproverName: "",
-      relievingApproverStatus: "",
-      assetsReturned: "",
+      relievingApproverStatus: "pending",
+      assetsReturned: true,
       exitManagementOwner: "",
+      deptId: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
+      let exitMgmtEmpName;
+      empData.forEach((emp) => {
+        if (parseInt(values.centerId) === emp.id) {
+          exitMgmtEmpName = emp.firstName || "--";
+        }
+      });
+      values.exitMgmtEmpName = exitMgmtEmpName;
       try {
         const response = await api.post(`/exit-management`, values);
         if (response.status === 201) {
@@ -62,10 +72,19 @@ const ExitManagementAdd = () => {
       toast.error(error.message);
     }
   };
+  const fetchDept = async () => {
+    try {
+      const employee = await departmentListByCompId(cmpId);
+      setDptData(employee);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   useEffect(() => {
     fetchTeacher();
-  },[]);
+    fetchDept();
+  }, []);
 
   return (
     <div className="container-fluid px-2 minHeight m-0">
@@ -116,24 +135,24 @@ const ExitManagementAdd = () => {
         >
           <div className="container mb-5">
             <div className="row py-4">
-    
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Employee Name <span className="text-danger">*</span>
                 </label>
                 <select
                   {...formik.getFieldProps("exitMgmtEmpId")}
-                  className={`form-select form-select-sm${formik.touched.exitMgmtEmpId && formik.errors.exitMgmtEmpId
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                  className={`form-select form-select-sm${
+                    formik.touched.exitMgmtEmpId && formik.errors.exitMgmtEmpId
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   aria-label="Default select example"
                 >
                   <option selected></option>
                   {empData &&
                     empData.map((exitMgmtEmpId) => (
-                      <option key={exitMgmtEmpId.id} value={exitMgmtEmpId.exitMgmtEmpId}>
-                        {exitMgmtEmpId.exitMgmtEmpName}
+                      <option key={exitMgmtEmpId.id} value={exitMgmtEmpId.id}>
+                        {`${exitMgmtEmpId.firstName}${exitMgmtEmpId.lastName}`}
                       </option>
                     ))}
                 </select>
@@ -146,16 +165,45 @@ const ExitManagementAdd = () => {
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
+                  Department Name <span className="text-danger">*</span>
+                </label>
+                <select
+                  {...formik.getFieldProps("deptId")}
+                  className={`form-select form-select-sm${
+                    formik.touched.deptId && formik.errors.deptId
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  aria-label="Default select example"
+                >
+                  <option selected></option>
+                  {dptData &&
+                    dptData.map((exitMgmtEmpId) => (
+                      <option
+                        key={exitMgmtEmpId.id}
+                        value={exitMgmtEmpId.deptId}
+                      >
+                        {exitMgmtEmpId.deptName}
+                      </option>
+                    ))}
+                </select>
+                {formik.touched.deptId && formik.errors.deptId && (
+                  <div className="invalid-feedback">{formik.errors.deptId}</div>
+                )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
                   Date Of Apply<span className="text-danger">*</span>
                 </label>
                 <input
                   type="date"
                   name="exitMgmtDateOfApply"
-                  className={`form-control form-control-sm ${formik.touched.exitMgmtDateOfApply &&
+                  className={`form-control form-control-sm ${
+                    formik.touched.exitMgmtDateOfApply &&
                     formik.errors.exitMgmtDateOfApply
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("exitMgmtDateOfApply")}
                 />
                 {formik.touched.exitMgmtDateOfApply &&
@@ -172,11 +220,12 @@ const ExitManagementAdd = () => {
                 <input
                   type="date"
                   name="dateOfRelieving"
-                  className={`form-control form-control-sm ${formik.touched.dateOfRelieving &&
+                  className={`form-control form-control-sm ${
+                    formik.touched.dateOfRelieving &&
                     formik.errors.dateOfRelieving
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("dateOfRelieving")}
                 />
                 {formik.touched.dateOfRelieving &&
@@ -193,11 +242,12 @@ const ExitManagementAdd = () => {
                 <input
                   type="text"
                   name="exitMgmtNoticePeriod"
-                  className={`form-control form-control-sm ${formik.touched.exitMgmtNoticePeriod &&
+                  className={`form-control form-control-sm ${
+                    formik.touched.exitMgmtNoticePeriod &&
                     formik.errors.exitMgmtNoticePeriod
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("exitMgmtNoticePeriod")}
                 />
                 {formik.touched.exitMgmtNoticePeriod &&
@@ -214,11 +264,12 @@ const ExitManagementAdd = () => {
                 <textarea
                   type="text"
                   name="reasonForRelieving"
-                  className={`form-control form-control-sm ${formik.touched.reasonForRelieving &&
+                  className={`form-control form-control-sm ${
+                    formik.touched.reasonForRelieving &&
                     formik.errors.reasonForRelieving
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("reasonForRelieving")}
                 />
                 {formik.touched.reasonForRelieving &&
@@ -235,11 +286,12 @@ const ExitManagementAdd = () => {
                 <input
                   type="text"
                   name="relievingApproverName"
-                  className={`form-control form-control-sm ${formik.touched.relievingApproverName &&
+                  className={`form-control form-control-sm ${
+                    formik.touched.relievingApproverName &&
                     formik.errors.relievingApproverName
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("relievingApproverName")}
                 />
                 {formik.touched.relievingApproverName &&

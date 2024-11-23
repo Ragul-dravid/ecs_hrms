@@ -154,7 +154,7 @@ const AttendanceView = () => {
                     </div>
                     <div className="col-6">
                       <p className="text-muted text-sm">
-                        : {data.attendanceCheckInMode || ""}
+                        : {data.attendanceCheckInTime || ""}
                       </p>
                     </div>
                   </div>
@@ -168,7 +168,7 @@ const AttendanceView = () => {
                     </div>
                     <div className="col-6">
                       <p className="text-muted text-sm">
-                        : {data.attendanceCheckOutMode || ""}
+                        : {data.attendanceCheckOutTime || ""}
                       </p>
                     </div>
                   </div>

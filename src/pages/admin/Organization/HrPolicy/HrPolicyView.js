@@ -95,6 +95,53 @@ const HrPolicyView = () => {
                     </div>
                   </div>
                 </div>
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm">
+                        <b>Effective Date</b>
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data?.effectiveDate || ""}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm">
+                        <b>HrPolicy List</b>
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data?.hrPolicyList || ""}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm">
+                        <b>Attachments</b>
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        :{" "}
+                        <img
+                          src={`${data?.attachments}`}
+                          alt="icon"
+                          style={{ maxWidth: "100px", maxHeight: "100px" }}
+                        />
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

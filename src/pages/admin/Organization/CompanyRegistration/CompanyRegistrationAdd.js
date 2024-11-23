@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../../config/URL";
 import toast from "react-hot-toast";
+import ReactTagInput from "@pathofdev/react-tag-input";
 
 const CompanyRegistrationAdd = () => {
   const { id } = useParams();
@@ -79,11 +80,10 @@ const CompanyRegistrationAdd = () => {
     },
   });
 
-
   const handleFileChange = (event) => {
-    const { name, files } = event.target;
+    const { files } = event.target;
     if (files.length) {
-      formik.setFieldValue(name, files[0]);
+      formik.setFieldValue("attachments", [...files]);
     }
   };
 
@@ -155,7 +155,6 @@ const CompanyRegistrationAdd = () => {
                   <div className="invalid-feedback">{formik.errors.name}</div>
                 )}
               </div>
-
               {/* Company Name Field */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
@@ -177,7 +176,6 @@ const CompanyRegistrationAdd = () => {
                   </div>
                 )}
               </div>
-
               {/* cmpEmail Field */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
@@ -199,7 +197,6 @@ const CompanyRegistrationAdd = () => {
                   </div>
                 )}
               </div>
-
               {/* cmpPhNumber Field */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
@@ -221,7 +218,6 @@ const CompanyRegistrationAdd = () => {
                   </div>
                 )}
               </div>
-
               {/* cmpAddr Field */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
@@ -243,7 +239,6 @@ const CompanyRegistrationAdd = () => {
                   </div>
                 )}
               </div>
-
               {/* cmpCity Field */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
@@ -265,7 +260,6 @@ const CompanyRegistrationAdd = () => {
                   </div>
                 )}
               </div>
-
               {/* Zip Code Field */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
@@ -395,17 +389,62 @@ const CompanyRegistrationAdd = () => {
                 <label className="form-label">
                   Branch Location<span className="text-danger">*</span>
                 </label>
-                <input
-                  type="text"
-                  name="branchLocation"
+                <div
                   className={`form-control form-control-sm ${
                     formik.touched.branchLocation &&
                     formik.errors.branchLocation
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("branchLocation")}
-                />
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "5px",
+                    alignItems: "center",
+                    minHeight: "38px",
+                  }}
+                >
+                  {formik.values.branchLocation.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="badge bg-primary text-white d-flex align-items-center"
+                      style={{ padding: "5px 10px", borderRadius: "10px" }}
+                    >
+                      {tag}
+                      <button
+                        type="button"
+                        className="btn-close btn-close-white ms-2"
+                        style={{ fontSize: "10px", lineHeight: 1 }}
+                        onClick={() => {
+                          const updatedTags = [...formik.values.branchLocation];
+                          updatedTags.splice(index, 1);
+                          formik.setFieldValue("branchLocation", updatedTags);
+                        }}
+                      />
+                    </span>
+                  ))}
+                  <input
+                    type="text"
+                    className="border-0"
+                    style={{ flex: 1, outline: "none", minWidth: "150px" }}
+                    value={formik.values.newTag || ""}
+                    onChange={(e) =>
+                      formik.setFieldValue("newTag", e.target.value)
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === ",") {
+                        e.preventDefault();
+                        if (formik.values.newTag) {
+                          formik.setFieldValue("branchLocation", [
+                            ...formik.values.branchLocation,
+                            formik.values.newTag.trim(),
+                          ]);
+                          formik.setFieldValue("newTag", "");
+                        }
+                      }
+                    }}
+                  />
+                </div>
                 {formik.touched.branchLocation &&
                   formik.errors.branchLocation && (
                     <div className="invalid-feedback">
@@ -413,8 +452,6 @@ const CompanyRegistrationAdd = () => {
                     </div>
                   )}
               </div>
-
-              {/* logoFile Field */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">Logo</label>
                 <input
@@ -433,7 +470,6 @@ const CompanyRegistrationAdd = () => {
                   </div>
                 )}
               </div>
-
               {/* Profile Image Field */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">Profile Image</label>

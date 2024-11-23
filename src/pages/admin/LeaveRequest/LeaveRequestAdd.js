@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -11,12 +11,13 @@ const LeaveRequestAdd = () => {
   const [loading, setLoadIndicator] = useState(false);
   const cmpId = localStorage.getItem("cmpId");
   const [companyData, setCompanyData] = useState(null);
-
+  const [empData, setEmpData] = useState(null);
+  
   const validationSchema = Yup.object({
-    pubHolidayName: Yup.string().required("*Holiday Name is required"),
-    pubHolidayType: Yup.string().required("*Holiday Type is required"),
-    pubHolidayCountryCode: Yup.string().required("*Country is required"),
-    endDate: Yup.string().required("*End Date is required"),
+    // pubHolidayName: Yup.string().required("*Holiday Name is required"),
+    // pubHolidayType: Yup.string().required("*Holiday Type is required"),
+    // pubHolidayCountryCode: Yup.string().required("*Country is required"),
+    // endDate: Yup.string().required("*End Date is required"),
   });
 
   const formik = useFormik({
@@ -68,6 +69,18 @@ const LeaveRequestAdd = () => {
       }
     },
   });
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`/emp-reg-details-with-id`);
+        setEmpData(response.data);
+      } catch (e) {
+        toast.error("Error fetching data: ", e?.response?.data?.message);
+      }
+    };
+
+    getData();
+  }, []);
 
   return (
     <div className="container-fluid px-2 minHeight m-0">
@@ -116,20 +129,30 @@ const LeaveRequestAdd = () => {
         >
           <div className="container mb-5">
             <div className="row py-4">
-              <div className="col-md-6 col-12 mb-3">
+            <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  Employee Name <span className="text-danger">*</span>
+                  Employee Name
+                  <span className="text-danger">*</span>
                 </label>
-                <input
-                  type="text"
+                <select
                   name="leaveReqEmpId"
-                  className={`form-control form-control-sm ${
-                    formik.touched.leaveReqEmpId && formik.errors.leaveReqEmpId
+                  className={`form-select form-select-sm ${
+                    formik.touched.leaveReqEmpId &&
+                    formik.errors.leaveReqEmpId
                       ? "is-invalid"
                       : ""
                   }`}
                   {...formik.getFieldProps("leaveReqEmpId")}
-                />
+                >
+                  {/* Add a default option */}
+                  <option value="" selected></option>
+                  {empData &&
+                    empData.map((emp) => (
+                      <option key={emp.id} value={emp.id}>
+                        {`${emp.firstName} ${emp.lastName}`}
+                      </option>
+                    ))}
+                </select>
                 {formik.touched.leaveReqEmpId &&
                   formik.errors.leaveReqEmpId && (
                     <div className="invalid-feedback">
