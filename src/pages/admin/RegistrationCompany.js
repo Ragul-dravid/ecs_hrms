@@ -1,35 +1,34 @@
-import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useNavigate, Link } from "react-router-dom";
-import { IoMdArrowBack } from "react-icons/io";
-// import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import toast from "react-hot-toast";
 import api from "../../config/URL";
+import toast from "react-hot-toast";
 
-function Register() {
-  // const [showPassword, setShowPassword] = useState(false);
-  // const [showactualPassword, setShowactualPassword] = useState(false);
-  const [loadIndicator, setLoadIndicator] = useState(false);
+const RegistrationCompany = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoadIndicator] = useState(false);
+  const cmpId = id;
+  const [logoPreview, setLogoPreview] = useState(null);
+  const [profileImgPreview, setProfileImgPreview] = useState(null);
 
+  // Validation schema for form fields
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
     cmpName: Yup.string().required("Company Name is required"),
     cmpEmail: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
-    // cmpPhNumber: Yup.string().required("Phone number is required"),
+    cmpPhNumber: Yup.string().required("Phone number is required"),
     cmpAddr: Yup.string().required("Address is required"),
-    // cmpCity: Yup.string().required("City is required"),
-    // cmpPincode: Yup.string().required("Pin Code is required"),
-    // cmpTaxCode: Yup.string().required("Tax Code is required"),
-    // logoFile: Yup.mixed().required("Logo is required"),
-    // profileImgFile: Yup.mixed().required("Profile Image is required"),
-    // headQuaterAddress: Yup.string().required("HeadQuater Address is required"),
+    cmpCity: Yup.string().required("City is required"),
+    cmpPincode: Yup.string().required("Pin Code is required"),
+    cmpTaxCode: Yup.string().required("Tax Code is required"),
+    headQuaterAddress: Yup.string().required("HeadQuater Address is required"),
   });
 
+  // useFormik hook for form handling
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -37,16 +36,16 @@ function Register() {
       cmpEmail: "",
       cmpPhNumber: "",
       cmpAddr: "",
-      // cmpCity: "",
-      // cmpPincode: "",
-      // cmpTaxCode: "",
-      // startDate: "",
-      // companyType: "",
-      // representative: "",
-      // headQuaterAddress: "",
-      // branchLocation: [],
-      // logoFile: null,
-      // profileImgFile: null,
+      cmpCity: "",
+      cmpPincode: "",
+      cmpTaxCode: "",
+      startDate: "",
+      companyType: "",
+      representative: "",
+      headQuaterAddress: "",
+      branchLocation: [],
+      logoFile: null,
+      profileImgFile: null,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -58,77 +57,109 @@ function Register() {
       formDatas.append("cmpEmail", values.cmpEmail);
       formDatas.append("cmpPhNumber", values.cmpPhNumber);
       formDatas.append("cmpAddr", values.cmpAddr);
-      // formDatas.append("cmpCity", values.cmpCity);
-      // formDatas.append("cmpPincode", values.cmpPincode);
-      // formDatas.append("cmpTaxCode", values.cmpTaxCode);
-      // formDatas.append("representative", values.representative);
-      // formDatas.append("startDate", values.startDate);
-      // formDatas.append("companyType", values.companyType);
-      // formDatas.append("headQuaterAddress", values.headQuaterAddress);
-      // formDatas.append("branchLocation", values.branchLocation);
-      // formDatas.append("logoFile", values.logoFile);
-      // formDatas.append("profileImgFile", values.profileImgFile);
-
+      formDatas.append("cmpCity", values.cmpCity);
+      formDatas.append("cmpPincode", values.cmpPincode);
+      formDatas.append("cmpTaxCode", values.cmpTaxCode);
+      formDatas.append("representative", values.representative);
+      formDatas.append("startDate", values.startDate);
+      formDatas.append("companyType", values.companyType);
+      formDatas.append("headQuaterAddress", values.headQuaterAddress);
+      formDatas.append("branchLocation", values.branchLocation);
+      formDatas.append("logoFile", values.logoFile);
+      formDatas.append("profileImgFile", values.profileImgFile);
       try {
-        const response = await api.post("company-attach", formDatas);
-        if (response.status === 201) {
+        const response = await api.put(`/company-reg/${cmpId}`, formDatas);
+        if (response.status === 200) {
           toast.success(response.data.message);
-          navigate("/");
+          //   navigate("/companyRegistration");
         } else {
           toast.error(response.data.message);
         }
       } catch (e) {
-        toast.error("Error fetching data: " + e?.response?.data?.message);
+        toast.error("Error updating data: ", e?.response?.data?.message);
       } finally {
         setLoadIndicator(false);
       }
     },
   });
 
-  // const handleFileChange = (event) => {
-  //   const { name, files } = event.target;
-  //   if (files.length) {
-  //     formik.setFieldValue(name, files[0]);
-  //   }
-  // };
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`/company-reg/${id}`);
+        formik.setValues(response.data); // Load the data into the form
+      } catch (e) {
+        toast.error("Error fetching data: ", e?.response?.data?.message);
+      }
+    };
 
-  // const togglePasswordVisibility = () => {
-  //   setShowPassword(!showPassword);
-  // };
-  // const toggleConfirmPasswordVisibility = () => {
-  //   setShowactualPassword(!showactualPassword);
-  // };
+    const handleFileChange = (event) => {
+      const { name, files } = event.target;
+      if (files.length) {
+        formik.setFieldValue(name, files[0]);
+      }
+    };
 
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  // Handle file change and preview generation
+  const handleFileChange = (event, setPreview) => {
+    const file = event.target.files[0];
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+      formik.setFieldValue(event.target.name, file); // Update Formik field value
+    }
+  };
   return (
-    <div
-      className="container-fluid d-flex justify-content-center align-items-center"
-      style={{ backgroundColor: "#f2f2f2", minHeight: "100vh" }}
-    >
-      <div
-        className="card shadow-lg p-3 my-5 rounded"
-        style={{ width: "100%", maxWidth: "80%" }}
-      >
-        <Link to="/">
-          <button className="btn btn-link text-start shadow-none h-0">
-            <IoMdArrowBack style={{ color: "#181c2e" }} />
-          </button>
-        </Link>
-        <div className="d-flex justify-content-around ">
-          <h3
-            className="py-2"
-            style={{
-              borderBottom: "2px solid #181c2e",
-              paddingBottom: "5px",
-              width: "100%",
-              textAlign: "center",
-              color: "#181c2e",
-            }}
-          >
-            Register
-          </h3>
+    <div className="container-fluid px-2 minHeight m-0">
+      <form onSubmit={formik.handleSubmit}>
+        <div
+          className="card shadow border-0 mb-2 top-header"
+          style={{ borderRadius: "0" }}
+        >
+          <div className="container-fluid py-4">
+            <div className="row align-items-center">
+              <div className="col">
+                <div className="d-flex align-items-center gap-4">
+                  <h1 className="h4 ls-tight headingColor">
+                    Edit Registration
+                  </h1>
+                </div>
+              </div>
+              <div className="col-auto">
+                <div className="hstack gap-2 justify-content-end">
+                  {/* <Link to="/companyRegistration">
+                    <button type="button" className="btn btn-sm btn-light">
+                      <span>Back</span>
+                    </button>
+                  </Link> */}
+                  <button
+                    type="submit"
+                    className="btn btn-sm btn-primary"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
+                    ) : (
+                      <span>Update</span>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="container mb-5">
-          <Form onSubmit={formik.handleSubmit}>
+
+        <div
+          className="card shadow border-0 my-2"
+          style={{ borderRadius: "0" }}
+        >
+          <div className="container mb-5">
             <div className="row py-4">
               {/* Name Field */}
               <div className="col-md-6 col-12 mb-3">
@@ -237,7 +268,9 @@ function Register() {
                   </div>
                 )}
               </div>
-              {/* <div className="col-md-6 col-12 mb-3">
+
+              {/* cmpCity Field */}
+              <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   City <span className="text-danger">*</span>
                 </label>
@@ -257,6 +290,8 @@ function Register() {
                   </div>
                 )}
               </div>
+
+              {/* Zip Code Field */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Zip Code <span className="text-danger">*</span>
@@ -381,6 +416,70 @@ function Register() {
                     </div>
                   )}
               </div>
+
+              {/* logoFile Field */}
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">Logo</label>
+                <input
+                  type="file"
+                  name="logoFile"
+                  accept="image/*"
+                  className={`form-control form-control-sm ${
+                    formik.touched.logoFile && formik.errors.logoFile
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  onChange={(e) => handleFileChange(e, setLogoPreview)}
+                />
+                {formik.touched.logoFile && formik.errors.logoFile && (
+                  <div className="invalid-feedback">
+                    {formik.errors.logoFile}
+                  </div>
+                )}
+                {/* Logo Preview */}
+                {logoPreview && (
+                  <div className="mt-2">
+                    <img
+                      src={logoPreview}
+                      alt="Logo Preview"
+                      style={{ maxWidth: "100%", height: "auto" }}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Profile Image Field */}
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">Profile Image</label>
+                <input
+                  type="file"
+                  name="profileImgFile"
+                  accept="image/*"
+                  className={`form-control form-control-sm ${
+                    formik.touched.profileImgFile &&
+                    formik.errors.profileImgFile
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  onChange={(e) => handleFileChange(e, setProfileImgPreview)}
+                />
+                {formik.touched.profileImgFile &&
+                  formik.errors.profileImgFile && (
+                    <div className="invalid-feedback">
+                      {formik.errors.profileImgFile}
+                    </div>
+                  )}
+                {/* Profile Image Preview */}
+                {profileImgPreview && (
+                  <div className="mt-2">
+                    <img
+                      src={profileImgPreview}
+                      alt="Profile Image Preview"
+                      style={{ maxWidth: "100%", height: "auto" }}
+                    />
+                  </div>
+                )}
+              </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Branch Location<span className="text-danger">*</span>
@@ -403,63 +502,12 @@ function Register() {
                     </div>
                   )}
               </div>
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Logo<span className="text-danger">*</span>
-                </label>
-                <input
-                  type="file"
-                  name="logoFile"
-                  className={`form-control form-control-sm ${
-                    formik.touched.logoFile && formik.errors.logoFile
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  onChange={handleFileChange}
-                />
-                {formik.touched.logoFile && formik.errors.logoFile && (
-                  <div className="invalid-feedback">
-                    {formik.errors.logoFile}
-                  </div>
-                )}
-              </div>
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Profile Image <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="file"
-                  name="profileImgFile"
-                  className={`form-control form-control-sm ${
-                    formik.touched.profileImgFile &&
-                    formik.errors.profileImgFile
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  onChange={handleFileChange}
-                />
-                {formik.touched.profileImgFile &&
-                  formik.errors.profileImgFile && (
-                    <div className="invalid-feedback">
-                      {formik.errors.profileImgFile}
-                    </div>
-                  )}
-              </div> */}
             </div>
-
-            <Button
-              type="submit"
-              variant="primary"
-              className="w-100 my-3"
-              disabled={loadIndicator}
-            >
-              {loadIndicator ? "Loading..." : "Register"}
-            </Button>
-          </Form>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   );
-}
+};
 
-export default Register;
+export default RegistrationCompany;
