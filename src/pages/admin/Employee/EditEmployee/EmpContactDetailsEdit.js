@@ -25,19 +25,19 @@ const EmpContactDetailsEdit = forwardRef(
       empSecPhNumber: Yup.number()
         .required("*Secondary phone number is required ")
         .typeError("*Must be a number"),
-      empEmergencyContact: Yup.array().of(
-        Yup.object().shape({
-          emergencyContactName: Yup.string().required(
-            "*contact name is required"
-          ),
-          emergencyContactNo: Yup.number()
-            .required("*contact number is required")
-            .typeError("*Must be a number"),
-          emergencyContactAddress: Yup.string().required(
-            "*contact address is required"
-          ),
-        })
-      ),
+      // empEmergencyContact: Yup.array().of(
+      //   Yup.object().shape({
+      //     emergencyContactName: Yup.string().required(
+      //       "*contact name is required"
+      //     ),
+      //     emergencyContactNo: Yup.number()
+      //       .required("*contact number is required")
+      //       .typeError("*Must be a number"),
+      //     emergencyContactAddress: Yup.string().required(
+      //       "*contact address is required"
+      //     ),
+      //   })
+      // ),
     });
 
     const formik = useFormik({
@@ -47,7 +47,9 @@ const EmpContactDetailsEdit = forwardRef(
         gender: formData.gender,
         maritalStatus: formData.maritalStatus,
         religion: formData.religion,
+        email: formData.email,
         address: formData.address,
+        file: formData.file || null,
         city: formData.city,
         pincode: formData.pincode,
         empSecPhNumber: formData.empSecPhNumber,
@@ -94,7 +96,6 @@ const EmpContactDetailsEdit = forwardRef(
         emergencyContactName: "",
         emergencyContactNo: "",
         emergencyContactAddress: "",
-        relationshipOfEmployee: "",
       };
 
       const updatedContacts = [
@@ -110,41 +111,76 @@ const EmpContactDetailsEdit = forwardRef(
       formik.setFieldValue("empEmergencyContact", updatedEntities);
     };
 
+    // useEffect(() => {
+    //   const getData = async () => {
+    //     try {
+    //       const response = await api.get(
+    //         `emp-personal-details/${formData.empId}`
+    //       );
+    //       // formik.setValues(response.data);
+    //       formik.setValues({
+    //         ...response.data,
+    //         dob: response.dob || "",
+    //         gender: response.gender || "",
+    //         maritalStatus: response.maritalStatus || "",
+    //         religion: response.religion || "",
+    //         empAddr: response.empAddr || "",
+    //         city: response.city || "",
+    //         age: 25 || "",
+    //         pincode: response.pincode || "",
+
+    //         emergencyContactName: response.emergencyContactName || "",
+    //         emergencyContactNo: response.emergencyContactNo || "",
+    //         emergencyContactAddress: response.emergencyContactAddress || "",
+    //         // relationshipOfEmployee: response.relationshipOfEmployee || "",
+
+    //         // empEmergencyContact: [
+    //         //   {
+    //         //     emergencyContactName: response.emergencyContactName || "",
+    //         //     emergencyContactNo: response.emergencyContactNo || "",
+    //         //     emergencyContactAddress: response.emergencyContactAddress || "",
+    //         //     relationshipOfEmployee: response.relationshipOfEmployee || "",
+    //         //   },
+    //         // ],
+    //       });
+    //       console.log("Employee response", response.data);
+    //     } catch (error) {
+    //       toast.error("Error Fetching Data ", error.message);
+    //     }
+    //   };
+    //   getData();
+    // }, []);
+
     useEffect(() => {
       const getData = async () => {
         try {
           const response = await api.get(
             `emp-personal-details/${formData.empId}`
           );
-          // formik.setValues(response.data);
+
+          const emergencyContacts = Array.isArray(
+            response.data.empEmergencyContact
+          )
+            ? response.data.empEmergencyContact
+            : [
+                {
+                  emergencyContactName:
+                    response.data.emergencyContactName || "",
+                  emergencyContactNo: response.data.emergencyContactNo || "",
+                  emergencyContactAddress:
+                    response.data.emergencyContactAddress || "",
+                },
+              ];
+
           formik.setValues({
+            ...formik.values,
             ...response.data,
-            dob: response.dob || "",
-            gender: response.gender || "",
-            maritalStatus: response.maritalStatus || "",
-            religion: response.religion || "",
-            empAddr: response.empAddr || "",
-            city: response.city || "",
-            age: 25 || "",
-            pincode: response.pincode || "",
-
-            emergencyContactName: response.emergencyContactName || "",
-            emergencyContactNo: response.emergencyContactNo || "",
-            emergencyContactAddress: response.emergencyContactAddress || "",
-            relationshipOfEmployee: response.relationshipOfEmployee || "",
-
-            // empEmergencyContact: [
-            //   {
-            //     emergencyContactName: response.emergencyContactName || "",
-            //     emergencyContactNo: response.emergencyContactNo || "",
-            //     emergencyContactAddress: response.emergencyContactAddress || "",
-            //     relationshipOfEmployee: response.relationshipOfEmployee || "",
-            //   },
-            // ],
+            empEmergencyContact: emergencyContacts,
           });
+
           console.log("Employee response", response.data);
         } catch (error) {
-          toast.error("Error Fetching Data ", error.message);
+          toast.error("Error Fetching Data: " + error.message);
         }
       };
       getData();
@@ -158,7 +194,7 @@ const EmpContactDetailsEdit = forwardRef(
       <div className="container-fluid p-0">
         <form onSubmit={formik.handleSubmit}>
           <div className="row my-2">
-            <p className="headColor ">Contact Information</p>
+            <p className="headColor ">personal Information</p>
           </div>
           <div className=" border-0 mb-5">
             <div className="container p-0">
@@ -200,6 +236,45 @@ const EmpContactDetailsEdit = forwardRef(
                         <small>{formik.errors.empSecPhNumber}</small>
                       </div>
                     )}
+                </div>
+                <div className="col-md-6 col-12 mb-3">
+                  <lable className="form-lable">
+                    Secondary Email
+                    <span className="text-danger">*</span>
+                  </lable>
+                  <input
+                    className="form-control form-control-sm "
+                    type="email"
+                    name="email"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.email}
+                  />
+                  {formik.touched.email &&
+                    formik.errors.email && (
+                      <div className="text-danger">
+                        <small>{formik.errors.email}</small>
+                      </div>
+                    )}
+                </div>
+                <div className="col-md-6 col-12 mb-3">
+                  <lable className="form-lable">
+                    Religion
+                    <span className="text-danger">*</span>
+                  </lable>
+                  <input
+                    className="form-control form-control-sm "
+                    type="text"
+                    name="religion"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.religion}
+                  />
+                  {formik.touched.religion && formik.errors.religion && (
+                    <div className="text-danger">
+                      <small>{formik.errors.religion}</small>
+                    </div>
+                  )}
                 </div>
                 <div className="col-md-6 col-12">
                   <div className="mb-3">
@@ -317,23 +392,26 @@ const EmpContactDetailsEdit = forwardRef(
                     </div>
                   )}
                 </div>
+            
                 <div className="col-md-6 col-12 mb-3">
-                  <lable className="form-lable">
-                    Religion
-                    <span className="text-danger">*</span>
-                  </lable>
+                  <label className="form-label">Photo </label>
+                  <span className="text-danger"> *</span>
                   <input
-                    className="form-control form-control-sm "
-                    type="text"
-                    name="religion"
-                    onChange={formik.handleChange}
+                    type="file"
+                    name="file"
+                    className={`form-control form-control-sm ${
+                      formik.touched.file && formik.errors.file
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    accept="image/*"
+                    onChange={(event) => {
+                      formik.setFieldValue("file", event.target.files[0]);
+                    }}
                     onBlur={formik.handleBlur}
-                    value={formik.values.religion}
                   />
-                  {formik.touched.religion && formik.errors.religion && (
-                    <div className="text-danger">
-                      <small>{formik.errors.religion}</small>
-                    </div>
+                  {formik.touched.file && formik.errors.file && (
+                    <div className="invalid-feedback">{formik.errors.file}</div>
                   )}
                 </div>
                 <div className="col-md-6 col-12 mb-3">

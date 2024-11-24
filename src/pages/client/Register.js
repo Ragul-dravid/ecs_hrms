@@ -4,13 +4,13 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
 import { IoMdArrowBack } from "react-icons/io";
-import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+// import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 import api from "../../config/URL";
 
 function Register() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showactualPassword, setShowactualPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
+  // const [showactualPassword, setShowactualPassword] = useState(false);
   const [loadIndicator, setLoadIndicator] = useState(false);
   const navigate = useNavigate();
 
@@ -20,14 +20,14 @@ function Register() {
     cmpEmail: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
-    cmpPhNumber: Yup.string().required("Phone number is required"),
+    // cmpPhNumber: Yup.string().required("Phone number is required"),
     cmpAddr: Yup.string().required("Address is required"),
-    cmpCity: Yup.string().required("City is required"),
-    cmpPincode: Yup.string().required("Pin Code is required"),
-    cmpTaxCode: Yup.string().required("Tax Code is required"),
-    logoFile: Yup.mixed().required("Logo is required"),
-    profileImgFile: Yup.mixed().required("Profile Image is required"),
-    headQuaterAddress: Yup.string().required("HeadQuater Address is required"),
+    // cmpCity: Yup.string().required("City is required"),
+    // cmpPincode: Yup.string().required("Pin Code is required"),
+    // cmpTaxCode: Yup.string().required("Tax Code is required"),
+    // logoFile: Yup.mixed().required("Logo is required"),
+    // profileImgFile: Yup.mixed().required("Profile Image is required"),
+    // headQuaterAddress: Yup.string().required("HeadQuater Address is required"),
   });
 
   const formik = useFormik({
@@ -37,16 +37,16 @@ function Register() {
       cmpEmail: "",
       cmpPhNumber: "",
       cmpAddr: "",
-      cmpCity: "",
-      cmpPincode: "",
-      cmpTaxCode: "",
-      startDate: "",
-      companyType: "",
-      representative: "",
-      headQuaterAddress: "",
-      branchLocation: [],
-      logoFile: null,
-      profileImgFile: null,
+      // cmpCity: "",
+      // cmpPincode: "",
+      // cmpTaxCode: "",
+      // startDate: "",
+      // companyType: "",
+      // representative: "",
+      // headQuaterAddress: "",
+      // branchLocation: [],
+      // logoFile: null,
+      // profileImgFile: null,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -58,16 +58,16 @@ function Register() {
       formDatas.append("cmpEmail", values.cmpEmail);
       formDatas.append("cmpPhNumber", values.cmpPhNumber);
       formDatas.append("cmpAddr", values.cmpAddr);
-      formDatas.append("cmpCity", values.cmpCity);
-      formDatas.append("cmpPincode", values.cmpPincode);
-      formDatas.append("cmpTaxCode", values.cmpTaxCode);
-      formDatas.append("representative", values.representative);
-      formDatas.append("startDate", values.startDate);
-      formDatas.append("companyType", values.companyType);
-      formDatas.append("headQuaterAddress", values.headQuaterAddress);
-      formDatas.append("branchLocation", values.branchLocation);
-      formDatas.append("logoFile", values.logoFile);
-      formDatas.append("profileImgFile", values.profileImgFile);
+      // formDatas.append("cmpCity", values.cmpCity);
+      // formDatas.append("cmpPincode", values.cmpPincode);
+      // formDatas.append("cmpTaxCode", values.cmpTaxCode);
+      // formDatas.append("representative", values.representative);
+      // formDatas.append("startDate", values.startDate);
+      // formDatas.append("companyType", values.companyType);
+      // formDatas.append("headQuaterAddress", values.headQuaterAddress);
+      // formDatas.append("branchLocation", values.branchLocation);
+      // formDatas.append("logoFile", values.logoFile);
+      // formDatas.append("profileImgFile", values.profileImgFile);
 
       try {
         const response = await api.post("company-attach", formDatas);
@@ -85,19 +85,19 @@ function Register() {
     },
   });
 
-  const handleFileChange = (event) => {
-    const { name, files } = event.target;
-    if (files.length) {
-      formik.setFieldValue(name, files[0]);
-    }
-  };
+  // const handleFileChange = (event) => {
+  //   const { name, files } = event.target;
+  //   if (files.length) {
+  //     formik.setFieldValue(name, files[0]);
+  //   }
+  // };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-  const toggleConfirmPasswordVisibility = () => {
-    setShowactualPassword(!showactualPassword);
-  };
+  // const togglePasswordVisibility = () => {
+  //   setShowPassword(!showPassword);
+  // };
+  // const toggleConfirmPasswordVisibility = () => {
+  //   setShowactualPassword(!showactualPassword);
+  // };
 
   return (
     <div
@@ -237,9 +237,7 @@ function Register() {
                   </div>
                 )}
               </div>
-
-              {/* cmpCity Field */}
-              <div className="col-md-6 col-12 mb-3">
+              {/* <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   City <span className="text-danger">*</span>
                 </label>
@@ -259,8 +257,6 @@ function Register() {
                   </div>
                 )}
               </div>
-
-              {/* Zip Code Field */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Zip Code <span className="text-danger">*</span>
@@ -301,7 +297,6 @@ function Register() {
                   </div>
                 )}
               </div>
-
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Start Date<span className="text-danger">*</span>
@@ -408,8 +403,6 @@ function Register() {
                     </div>
                   )}
               </div>
-
-              {/* logoFile Field */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Logo<span className="text-danger">*</span>
@@ -430,8 +423,6 @@ function Register() {
                   </div>
                 )}
               </div>
-
-              {/* Profile Image Field */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Profile Image <span className="text-danger">*</span>
@@ -453,7 +444,7 @@ function Register() {
                       {formik.errors.profileImgFile}
                     </div>
                   )}
-              </div>
+              </div> */}
             </div>
 
             <Button
