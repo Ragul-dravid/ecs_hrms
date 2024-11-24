@@ -78,23 +78,38 @@ const HrPolicyView = () => {
           >
             <div className="container">
               <div className="row mt-2 p-3">
-                <p className="text-lg text-center">
+                <p className="text-lg text-center my-5">
                   <b>{data.hrPolicyList || ""}</b>
                 </p>
-
-                <div className="col-md-12 col-12">
+                <div className="col-md-6 col-12">
                   <div className="row mb-3">
-                    <div className="col-12">
-                      {/* Render HTML content with formatting */}
-                      <div
-                        className="text-muted"
-                        dangerouslySetInnerHTML={{
-                          __html: data.hrPolicyDescr || "",
-                        }}
-                      />
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm">
+                        <b>Hr Policy Owner</b>
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data?.hrPolicyOwner || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm">
+                        <b>Hr Policy Category</b>
+                      </p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">
+                        : {data?.hrPolicyCategory || ""}
+                      </p>
+                    </div>
+                  </div>
+                </div>        
+               
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
@@ -105,20 +120,6 @@ const HrPolicyView = () => {
                     <div className="col-6">
                       <p className="text-muted text-sm">
                         : {data?.effectiveDate || ""}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6 col-12">
-                  <div className="row mb-3">
-                    <div className="col-6 d-flex justify-content-start align-items-center">
-                      <p className="text-sm">
-                        <b>HrPolicy List</b>
-                      </p>
-                    </div>
-                    <div className="col-6">
-                      <p className="text-muted text-sm">
-                        : {data?.hrPolicyList || ""}
                       </p>
                     </div>
                   </div>
