@@ -4,7 +4,7 @@ import api from "../../../config/URL";
 const cpmId = localStorage.getItem("cmpId");
 const employeeListByCompId = async () => {
   try {
-    const response = await api.get(`emp-reg-details-by-companyId/${cpmId}`);
+    const response = await api.get(`getEmpolyeeWithRole/${cpmId}`);
     console.log("emp-reg-details-by-companyId",response.data);
     return response.data;    
   } catch (error) {

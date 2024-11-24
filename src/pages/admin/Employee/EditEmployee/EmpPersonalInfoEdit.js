@@ -31,7 +31,7 @@ const EmpPersonalInfoEdit = forwardRef(
       email: Yup.string()
         .email("*Enter a valid email")
         .required("*Primary email is required"),
-      password: Yup.string().required("*Password is required"),
+      // password: Yup.string().required("*Password is required"),
       NRICFin: Yup.string().nullable(), // Optional field
       nationality: Yup.string().nullable(), // Optional field
       citizenship: Yup.string().nullable(), // Optional field
@@ -48,7 +48,7 @@ const EmpPersonalInfoEdit = forwardRef(
       empType: Yup.string().nullable(), // Optional field
       noticePeriod: Yup.string().nullable(), // Optional field
       repManagerName: Yup.string().nullable(), // Optional field
-      file: Yup.mixed().required("*Photo is required"),
+      // file: Yup.mixed().required("*Photo is required"),
       // roleName: Yup.string().nullable(), // Optional field
       pan: Yup.string()
         .matches(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, "*Enter a valid PAN number")
@@ -75,7 +75,6 @@ const EmpPersonalInfoEdit = forwardRef(
         empType: formData.empType || "",
         noticePeriod: formData.noticePeriod || "",
         repManagerName: formData.repManagerName || "",
-        file: formData.file || null,
         roleName: formData.roleName || "",
         pan: formData.pan || "",
       },
@@ -103,7 +102,7 @@ const EmpPersonalInfoEdit = forwardRef(
           formDatas.append("noticePeriod", values.noticePeriod);
           formDatas.append("citizenship", values.citizenship);
           formDatas.append("nationality", values.nationality);
-          // formDatas.append("roleName", values.roleName || "");
+          formDatas.append("roleName", "employee");
           formDatas.append("pan", values.pan);
 
           const response = await api.put(
@@ -143,9 +142,9 @@ const EmpPersonalInfoEdit = forwardRef(
       setSelectedIdType(event.target.value);
     };
 
-    const togglePasswordVisibility = () => {
-      setShowPassword(!showPassword);
-    };
+    // const togglePasswordVisibility = () => {
+    //   setShowPassword(!showPassword);
+    // };
 
     useEffect(() => {
       const getData = async () => {
@@ -174,7 +173,7 @@ const EmpPersonalInfoEdit = forwardRef(
       <div className="container-fluid px-2  minHeight m-0">
         <form onSubmit={formik.handleSubmit}>
           <div className="row my-2">
-            <p className="headColor">Personal Information</p>
+            <p className="headColor">Primary Information</p>
           </div>
           <div className="row py-4">
             <div className="col-md-6 col-12 mb-3">
@@ -241,7 +240,7 @@ const EmpPersonalInfoEdit = forwardRef(
                 )}
               </div>
             </div>
-            <div className="col-md-6 col-12 mb-3">
+            {/* <div className="col-md-6 col-12 mb-3">
               <div className="mb-2">
                 <label className="form-label">
                   Primary Email Password <span className="text-danger">*</span>
@@ -283,7 +282,7 @@ const EmpPersonalInfoEdit = forwardRef(
                   </div>
                 )}
               </div>
-            </div>
+            </div> */}
             <div className="col-md-6 col-12 mb-3 ">
               <div className="mb-2">
                 <label className="form-label">
@@ -344,17 +343,23 @@ const EmpPersonalInfoEdit = forwardRef(
                 <label className="form-label">
                   Employee Designation <span className="text-danger">*</span>
                 </label>
-                <input
+                <select
                   type="text"
                   name="empDesignation"
-                  className={`form-control form-control-sm  ${
+                  className={`form-select form-select-sm  ${
                     formik.touched.empDesignation &&
                     formik.errors.empDesignation
                       ? "is-invalid"
                       : ""
                   }`}
                   {...formik.getFieldProps("empDesignation")}
-                />
+                >
+                  <option selected />
+                  <option value="admin">Admin</option>
+                  <option value="employee">Employee</option>
+                  <option value="owner">Owner</option>
+                </select>
+
                 {formik.touched.empDesignation &&
                   formik.errors.empDesignation && (
                     <div className="invalid-feedback">
@@ -364,38 +369,32 @@ const EmpPersonalInfoEdit = forwardRef(
               </div>
             </div>
             <div className="col-md-6 col-12 mb-3">
-              <label className="form-label">Photo </label>
-              <span className="text-danger"> *</span>
-              <input
-                type="file"
-                name="file"
-                className={`form-control form-control-sm ${
-                  formik.touched.file && formik.errors.file ? "is-invalid" : ""
-                }`}
-                accept="image/*"
-                onChange={(event) => {
-                  formik.setFieldValue("file", event.target.files[0]);
-                }}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.file && formik.errors.file && (
-                <div className="invalid-feedback">{formik.errors.file}</div>
-              )}
-            </div>
-            <div className="col-md-6 col-12 mb-3">
               <label className="form-label">
                 Nationality <span className="text-danger">*</span>
               </label>
-              <input
+              <select
                 type="text"
                 name="nationality"
-                className={`form-control form-control-sm  ${
+                className={`form-select form-select-sm  ${
                   formik.touched.nationality && formik.errors.nationality
                     ? "is-invalid"
                     : ""
                 }`}
-                {...formik.getFieldProps("nationality")}
-              />
+                value={formik.values.nationality}
+                onChange={(e) => {
+                  formik.handleChange(e);
+                  if (e.target.value === "INDIAN") {
+                    setSelectedIdType("AADHAR");
+                  } else if (e.target.value === "SINGAPORE") {
+                    setSelectedIdType("NRIC");
+                  }
+                }}
+              >
+                <option selected />
+                <option value="INDIAN">INDIAN</option>
+                {/* <option value="MUSLIM">MUSLIM</option> */}
+                <option value="SINGAPORE">SINGAPORE</option>
+              </select>
               {formik.touched.nationality && formik.errors.nationality && (
                 <div className="invalid-feedback">
                   {formik.errors.nationality}
@@ -406,16 +405,20 @@ const EmpPersonalInfoEdit = forwardRef(
               <label className="form-label">
                 Citizenship <span className="text-danger">*</span>
               </label>
-              <input
-                type="text"
+              <select
                 name="citizenship"
-                className={`form-control form-control-sm  ${
+                className={`form-select form-select-sm ${
                   formik.touched.citizenship && formik.errors.citizenship
                     ? "is-invalid"
                     : ""
                 }`}
+             
                 {...formik.getFieldProps("citizenship")}
-              />
+              >
+                <option selected></option>
+                <option value="INDIAN">1 Year Pr</option>
+                <option value="SINGAPORE">2 Year Pr</option>
+              </select>
               {formik.touched.citizenship && formik.errors.citizenship && (
                 <div className="invalid-feedback">
                   {formik.errors.citizenship}
@@ -423,36 +426,6 @@ const EmpPersonalInfoEdit = forwardRef(
               )}
             </div>
             <div>
-              <div className="mb-3">
-                <div className="form-check form-check-inline mb-2">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="proof"
-                    id="nricRadio"
-                    value="NRIC"
-                    checked={formik.values.proof === "NRIC" || selectedIdType === "NRIC"}
-                    onChange={handleIdTypeChange}
-                  />
-                  <label className="form-check-label" htmlFor="nricRadio">
-                    NRIC
-                  </label>
-                </div>
-                <div className="form-check form-check-inline mb-2">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="proof"
-                    id="aadharRadio"
-                    value="AADHAR"
-                    checked={formik.values.proof === "AADHAR" || selectedIdType === "AADHAR"}
-                    onChange={handleIdTypeChange}
-                  />
-                  <label className="form-check-label" htmlFor="aadharRadio">
-                    Aadhar
-                  </label>
-                </div>
-              </div>
               {selectedIdType === "NRIC" && (
                 <div className="row">
                   <div className="col-md-6 col-12 mb-3 ">
@@ -615,7 +588,7 @@ const EmpPersonalInfoEdit = forwardRef(
                   <option selected></option>
                   <option value="Full Time">Full Time</option>
                   <option value="Part Time">Part Time</option>
-                  <option value="Hourly Basis">Hourly Basis</option>
+                  <option value="Hourly Basis">Freelancer</option>
                 </select>
                 {formik.touched.empType && formik.errors.empType && (
                   <div className="invalid-feedback">
@@ -639,6 +612,7 @@ const EmpPersonalInfoEdit = forwardRef(
                   {...formik.getFieldProps("noticePeriod")}
                 >
                   <option selected></option>
+                  <option value="15 days">15 days</option>
                   <option value="30 days">30 days</option>
                   <option value="60 days">60 days</option>
                   <option value="90 days">90 days</option>
@@ -650,7 +624,7 @@ const EmpPersonalInfoEdit = forwardRef(
                 )}
               </div>
             </div>
-            <div className="col-md-6 col-12 mb-2">
+            {/* <div className="col-md-6 col-12 mb-2">
               <label className="form-label">
                 Role <span className="text-danger">*</span>
               </label>
@@ -678,7 +652,7 @@ const EmpPersonalInfoEdit = forwardRef(
                   </div>
                 )}
               </div>
-            </div>
+            </div> */}
           </div>
         </form>
       </div>

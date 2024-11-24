@@ -256,17 +256,7 @@ function AdminSidebar({ handleLogout }) {
                 </div>
                 {activeSubmenu === "Settings" && (
                   <ul className="list-unstyled p-0">
-                    <li>
-                      <NavLink className="nav-link" to="/roles">
-                        <span style={{ display: "flex", alignItems: "center" }}>
-                          <BsBullseye
-                            style={{ fontSize: "xx-small", marginRight: "8px" }}
-                          />
-                          Roles
-                        </span>
-                      </NavLink>
-                    </li>
-                    <li>
+                      <li>
                       <NavLink className="nav-link" to="/departments">
                         <span style={{ display: "flex", alignItems: "center" }}>
                           <BsBullseye
@@ -277,15 +267,27 @@ function AdminSidebar({ handleLogout }) {
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink className="nav-link" to="/rolesMatrix">
+                      <NavLink className="nav-link" to="/designation">
                         <span style={{ display: "flex", alignItems: "center" }}>
                           <BsBullseye
                             style={{ fontSize: "xx-small", marginRight: "8px" }}
                           />
-                          Roles & Matrix
+                         Designation
                         </span>
                       </NavLink>
                     </li>
+                    <li>
+                      <NavLink className="nav-link" to="/roles">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                         Roles & Matrix
+                        </span>
+                      </NavLink>
+                    </li>
+                  
+                    
                   </ul>
                 )}
               </li>

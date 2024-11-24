@@ -9,6 +9,9 @@ import { Hourglass } from "react-loader-spinner";
 import DeleteModel from "../../../../components/admin/DeleteModel";
 import { BiEditAlt } from "react-icons/bi";
 import { HiOutlineEye } from "react-icons/hi2";
+import RolesAdd from "./RolesAdd";
+import { PiPlusLight } from "react-icons/pi";
+import AssignRole from "./AssignRole";
 
 const Roles = () => {
   const tableRef = useRef(null);
@@ -102,22 +105,16 @@ const Roles = () => {
                 <div className="col">
                   <div className="d-flex align-items-center gap-4">
                     <h1 className="h4 ls-tight headingColor ">
-                      Company Compliance
+                      Role
                     </h1>
                   </div>
                 </div>
                 <div className="col-auto">
                   <div className="hstack gap-2 justify-content-end">
-                    <Link to="/roles/add">
-                      <button
-                        type="submit"
-                        className="btn btn-sm btn-button btn-primary"
-                      >
-                        <span cla>
+                    {/* <span cla>
                           Add <FaPlus className="pb-1" />
-                        </span>
-                      </button>
-                    </Link>
+                        </span> */}
+                    <RolesAdd />
                   </div>
                 </div>
               </div>
@@ -135,16 +132,13 @@ const Roles = () => {
                       S.NO
                     </th>
                     <th scope="col" className="text-center">
-                      Company ID
+                      Role Name
                     </th>
                     <th scope="col" className="text-center">
-                      Company Name
+                      Discription
                     </th>
                     <th scope="col" className="text-center">
-                      Company Email
-                    </th>
-                    <th scope="col" className="text-center">
-                      Company Status
+                      Status
                     </th>
                     <th scope="col" className="text-center">
                       ACTION
@@ -155,31 +149,24 @@ const Roles = () => {
                   {datas.map((data, index) => (
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
-                      <td className="text-center">{data.cmpId}</td>
-                      <td className="text-center">{data.cmpName}</td>
-                      <td className="text-center">{data.cmpEmail}</td>
+                      <td className="text-center">{data.roleName}</td>
+                      <td className="text-center">{data.roleDesc}</td>
                       <td className="text-center">
-                        {data.cmpStatus === "Approve" ? (
+                        {data.roleStatus === "Approve" ? (
                           <span className="badge-approved">Approved</span>
-                        ) : data.cmpStatus === "Pending" ? (
-                          <span className="badge-rejected">Rejected</span>
                         ) : (
-                          <span className="badge-pending">Pending</span>
+                          <span className="badge-pending">Active</span>
                         )}
                       </td>
-                      <td className="text-center">
-                        <div className="gap-2">
-                          <Link to={`/companyCompliance/view/${data.cmpId}`}>
-                          <button className="btn p-1  shadow-none border-none">
-                            <HiOutlineEye />
-                            </button>
-                          </Link>
+                      <td className="">
+                        <div className="d-flex justify-content-center gap-2">
+                          <AssignRole />
                           <Link
                             to={`/companyCompliance/edit/${data.cmpId}`}
                             className="px-2"
                           >
-                             <button className="btn p-1 shadow-none border-none">
-                            <BiEditAlt />
+                            <button className="btn p-1 shadow-none border-none">
+                              <BiEditAlt />
                             </button>
                           </Link>
                           <DeleteModel
