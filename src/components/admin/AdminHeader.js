@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import user from "../../assets/user.webp";
 import { Offcanvas } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoPersonAdd } from "react-icons/io5";
 import { MdOutlineLogout } from "react-icons/md";
 import api from "../../config/URL";
@@ -18,10 +18,15 @@ function AdminHeader({ handleLogout }) {
   const cpmId = localStorage.getItem("cmpId");
   const email = localStorage.getItem("email");
   const role = localStorage.getItem("role");
+  const [isCanvasVisible, setIsCanvasVisible] = useState(true);
+  const navigate = useNavigate();
 
   const handleClose = () => {
     setShow(false);
     setSearchTerm("");
+  };
+  const handleLinkClick = (e) => {
+    setShow(false);
   };
   const handelNavigate = () => {
     // navigate("/users");
@@ -58,21 +63,21 @@ function AdminHeader({ handleLogout }) {
               </div>
               <div className="col-sm-6 col-12 text-sm-end">
                 <div className="mx-n1">
-                  <span className="position-relative mx-2">
+                  {/* <span className="position-relative mx-2">
                     <i className="bi bi-bell admin-icons"></i>
                     <span className="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle icon-badge">
                       4
                     </span>
-                  </span>
+                  </span> */}
                   &nbsp;&nbsp;&nbsp;
-                  <span className="position-relative mx-2">
+                  {/* <span className="position-relative mx-2">
                     <i className="bi bi-question-circle admin-icons"></i>
                     <span className="badge rounded-pill bg-warning position-absolute top-0 start-100 translate-middle icon-badge">
                       2
                     </span>
-                  </span>
+                  </span> */}
                   &nbsp;&nbsp;&nbsp;
-                  <span className="position-relative mx-2">
+                  {/* <span className="position-relative mx-2">
                     <i className="bi bi-megaphone admin-icons"></i>
                     <span className="badge rounded-pill bg-primary position-absolute top-0 start-100 translate-middle icon-badge">
                       1
@@ -81,7 +86,7 @@ function AdminHeader({ handleLogout }) {
                   &nbsp;&nbsp;&nbsp;
                   <span className="position-relative mx-2">
                     <i className="bi bi-journal admin-icons"></i>
-                  </span>
+                  </span> */}
                   &nbsp;&nbsp;&nbsp;
                   <span style={{ fontSize: "24px" }} onClick={handleShow}>
                     <img
@@ -123,7 +128,10 @@ function AdminHeader({ handleLogout }) {
               />
               <p className="mt-2">{userName}</p>
               <p className="mt-2">{email}</p>
-              <Link to={`/companyRegistration/edit/${cpmId}`}>
+              <Link
+                to={`/registrationcompany/edit/${cpmId}`}
+                onClick={handleLinkClick}
+              >
                 <p className="my-2">
                   <PiBuildingsThin /> &nbsp; {cmpName}
                 </p>
