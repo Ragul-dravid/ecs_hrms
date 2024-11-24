@@ -9,6 +9,7 @@ import { CiCirclePlus } from "react-icons/ci";
 const EmpExperienceEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const [rows, setRows] = useState([{}]);
+    const [isFresher, setIsFresher] = useState(false);
 
     const validationSchema = Yup.object().shape({
       empExperience: Yup.array().of(
@@ -53,6 +54,7 @@ const EmpExperienceEdit = forwardRef(
       },
       validationSchema: validationSchema,
       onSubmit: async (values) => {
+        console.log("data", values)
         setLoadIndicators(true);
         values.experienceEmpId = formData.empId;
 
@@ -66,20 +68,20 @@ const EmpExperienceEdit = forwardRef(
           experienceEmpId: formData.empId,
         }));
 
-        // try {
-        //   const response = await api.post(`/createEmpExperiences`, payload);
-        //   if (response.status === 201) {
-        //     toast.success(response.data.message);
-        //     setFormData((prv) => ({ ...prv, ...values }));
-        handleNext();
-        //   } else {
-        //     toast.error(response.data.message);
-        //   }
-        // } catch (error) {
-        //   toast.error(error);
-        // } finally {
-        setLoadIndicators(false);
-        // }
+        try {
+          const response = await api.post(`/emp-experience`, payload);
+          if (response.status === 201) {
+            toast.success(response.data.message);
+            setFormData((prv) => ({ ...prv, ...values }));
+            handleNext();
+          } else {
+            toast.error(response.data.message);
+          }
+        } catch (error) {
+          toast.error(error);
+        } finally {
+          setLoadIndicators(false);
+        }
       },
     });
     const addExp = () => {
@@ -104,8 +106,24 @@ const EmpExperienceEdit = forwardRef(
       formik.setFieldValue("empExperience", updatedEntities);
     };
 
+    const handleRadioChange = (e) => {
+      const { name } = e.target;
+      if (name === "fresher") {
+        setIsFresher(true);
+        handleNext();
+      } else {
+        setIsFresher(false);
+      }
+    };
+
     useImperativeHandle(ref, () => ({
-      experience: formik.handleSubmit,
+      experience: () => {
+        if (isFresher) {
+          handleNext();
+        } else {
+          formik.handleSubmit();
+        }
+      },
     }));
 
     return (
@@ -113,7 +131,28 @@ const EmpExperienceEdit = forwardRef(
         <form onSubmit={formik.handleSubmit}>
           {formik.values.empExperience.map((row, index) => (
             <div key={index}>
-              <p class="headColor mt-3">Experience</p>
+              <div className="d-flex mt-3">
+                <p class="headColor">Experience</p>
+                <div className="">
+                  <input
+                    type="radio"
+                    name="experience"
+                    className="form-check-input ms-3 mt-2"
+                    onChange={handleRadioChange}
+                    checked={!isFresher}
+                  />
+                </div>
+                <div className="">
+                  <p class="headColor">Fresher</p>
+                  <input
+                    type="radio"
+                    name="fresher"
+                    className="form-check-input ms-3 mt-2"
+                    onChange={handleRadioChange}
+                    checked={isFresher}
+                  />
+                </div>
+              </div>
               <div className="container">
                 <div className="row mt-3">
                   <div className=" col-md-6 col-12 text-start my-3">
@@ -402,34 +441,34 @@ const EmpExperienceEdit = forwardRef(
                         </div>
                       )}
                   </div>
-               
+
                 </div>
               </div>
-          
+
             </div>
-            
+
           ))}
-              <div className="row">
-                    <div className="col-12 mb-4">
-                      <button
-                        type="button"
-                        onClick={addExp}
-                        className="btn btn-sm border-none shadow-none"
-                      >
-                        <CiCirclePlus size={40} />
-                      </button>{" "}
-                      &nbsp;&nbsp;
-                      {formik.values.empExperience.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={removeExp}
-                          className="btn btn-sm text-danger border-none shadow-none"
-                        >
-                          <FaRegTrashAlt />
-                        </button>
-                      )}
-                    </div>
-                  </div>
+          <div className="row">
+            <div className="col-12 mb-4">
+              <button
+                type="button"
+                onClick={addExp}
+                className="btn btn-sm border-none shadow-none"
+              >
+                <CiCirclePlus size={40} />
+              </button>{" "}
+              &nbsp;&nbsp;
+              {formik.values.empExperience.length > 1 && (
+                <button
+                  type="button"
+                  onClick={removeExp}
+                  className="btn btn-sm text-danger border-none shadow-none"
+                >
+                  <FaRegTrashAlt />
+                </button>
+              )}
+            </div>
+          </div>
         </form>
       </div>
     );
