@@ -62,7 +62,9 @@ const EmpPersonalInfoEdit = forwardRef(
         lastName: formData.lastName || "",
         empPriPhNumber: formData.empPriPhNumber || "",
         email: formData.email || "",
-        password: formData.password || "",
+        basicSalary: formData.basicSalary || "",
+        workingType: formData.workingType || "",
+        // password: formData.password || "",
         NRICFin: formData.NRICFin || "",
         nationality: formData.nationality || "",
         citizenship: formData.citizenship || "",
@@ -89,7 +91,9 @@ const EmpPersonalInfoEdit = forwardRef(
           formDatas.append("lastName", values.lastName);
           formDatas.append("empPriPhNumber", values.empPriPhNumber);
           formDatas.append("email", values.email);
-          formDatas.append("password", values.password);
+          formDatas.append("basicSalary", values.basicSalary);
+          formDatas.append("workingType", values.workingType);
+          // formDatas.append("password", values.password);
           formDatas.append("NRICFin", values.NRICFin || "");
           formDatas.append("NRICType", values.NRICType || "");
           formDatas.append("aadharNumber", values.aadharNumber);
@@ -136,10 +140,6 @@ const EmpPersonalInfoEdit = forwardRef(
     // Callback to add a new department
     const addDepartment = (newDepartment) => {
       setDepartmentData((prevData) => [...prevData, newDepartment]);
-    };
-
-    const handleIdTypeChange = (event) => {
-      setSelectedIdType(event.target.value);
     };
 
     // const togglePasswordVisibility = () => {
@@ -412,7 +412,6 @@ const EmpPersonalInfoEdit = forwardRef(
                     ? "is-invalid"
                     : ""
                 }`}
-             
                 {...formik.getFieldProps("citizenship")}
               >
                 <option selected></option>
@@ -551,6 +550,29 @@ const EmpPersonalInfoEdit = forwardRef(
             <div className="col-md-6 col-12 mb-3 ">
               <div className="mb-2">
                 <label for="exampleFormControlInput1" className="form-label">
+                  Basic Salary
+                  <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="basicSalary"
+                  className={`form-control form-control-sm ${
+                    formik.touched.basicSalary && formik.errors.basicSalary
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("basicSalary")}
+                />
+                {formik.touched.basicSalary && formik.errors.basicSalary && (
+                  <div className="invalid-feedback">
+                    {formik.errors.basicSalary}
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="col-md-6 col-12 mb-3 ">
+              <div className="mb-2">
+                <label for="exampleFormControlInput1" className="form-label">
                   Employee Date of Joining
                   <span className="text-danger">*</span>
                 </label>
@@ -588,7 +610,7 @@ const EmpPersonalInfoEdit = forwardRef(
                   <option selected></option>
                   <option value="Full Time">Full Time</option>
                   <option value="Part Time">Part Time</option>
-                  <option value="Hourly Basis">Freelancer</option>
+                  <option value="freelancer">Freelancer</option>
                 </select>
                 {formik.touched.empType && formik.errors.empType && (
                   <div className="invalid-feedback">
@@ -597,6 +619,33 @@ const EmpPersonalInfoEdit = forwardRef(
                 )}
               </div>
             </div>
+            {formik.values.empType === "freelancer" && (
+              <div className="col-md-6 col-12 mb-2">
+                <label className="form-label">
+                  Working Type <span className="text-danger">*</span>
+                </label>
+                <div className="input-group mb-3">
+                  <select
+                    {...formik.getFieldProps("workingType")}
+                    className={`form-select form-select-sm  ${
+                      formik.touched.workingType && formik.errors.workingType
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                  >
+                    <option selected></option>
+                    <option value="Hour">Hour</option>
+                    <option value="Week">Week</option>
+                    <option value="Day">Days</option>
+                  </select>
+                  {formik.touched.workingType && formik.errors.workingType && (
+                    <div className="invalid-feedback">
+                      {formik.errors.workingType}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
             <div className="col-md-6 col-12 mb-3 ">
               <div className="mb-2">
                 <label for="exampleFormControlInput1" className="form-label">
