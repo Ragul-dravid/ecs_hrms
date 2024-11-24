@@ -11,11 +11,12 @@ const EmpQualificationDetailsEdit = forwardRef(
       empQualificationEntities: Yup.array().of(
         Yup.object().shape({
           qualName: Yup.string().required("*Qualification name is required"),
-          qualType: Yup.string().required("*Qualification type is required"),
+          fieldOfStudy: Yup.string().required("*Field Of Study is required"),
           qualModeOfStudy: Yup.string().required("*Mode of study is required"),
           qualInstitution: Yup.string().required("*Institution is required"),
+          percentage: Yup.string().required("*Percentage is required"),
           qualificationDate: Yup.string().required(
-            "*Qualification date is required"
+            "*Qualification Year is required"
           ),
           certificate: Yup.string().required("*Certificate is required"),
           empQualificationSkils: Yup.array().of(
@@ -37,11 +38,12 @@ const EmpQualificationDetailsEdit = forwardRef(
         empQualificationEntities: [
           {
             qualName: "",
-            qualType: "",
+            fieldOfStudy: "",
             qualModeOfStudy: "",
             qualInstitution: "",
             qualificationDate: "",
             certificate: "",
+            percentage: "",
             empQualificationSkils: [
               {
                 employeeSkill: "",
@@ -87,11 +89,12 @@ const EmpQualificationDetailsEdit = forwardRef(
         ...formik.values.empQualificationEntities,
         {
           qualName: "",
-          qualType: "",
+          fieldOfStudy: "",
           qualModeOfStudy: "",
           qualInstitution: "",
           qualificationDate: "",
           certificate: "",
+          percentage: "",
           empQualificationSkils: [
             {
               employeeSkill: "",
@@ -196,7 +199,7 @@ const EmpQualificationDetailsEdit = forwardRef(
                 </div>
                 <div className="col-md-6 mb-3">
                   <label>
-                    Qualification Type{" "}
+                    Field of Study{" "}
                     <span
                       className="text-danger"
                       style={{ fontSize: ".875em" }}
@@ -204,31 +207,25 @@ const EmpQualificationDetailsEdit = forwardRef(
                       *
                     </span>
                   </label>
-                  <select
+                  <input
                     type="text"
-                    className="form-select form-select-sm"
-                    name={`empQualificationEntities[${entityIndex}].qualType`}
-                    value={entity.qualType}
+                    className="form-control form-control-sm"
+                    name={`empQualificationEntities[${entityIndex}].fieldOfStudy`}
+                    value={entity.fieldOfStudy}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                  >
-                    <option selected></option>
-                    <option value="Masters">Masters</option>
-                    <option value="Bachelor">Bachelor</option>
-                    <option value="Diploma">Diploma</option>
-                    <option value="PG Diploma">PG Diploma</option>
-                  </select>
+                  />
                   {formik.touched.empQualificationEntities?.[entityIndex]
-                    ?.qualType &&
+                    ?.fieldOfStudy &&
                     formik.errors.empQualificationEntities?.[entityIndex]
-                      ?.qualType && (
+                      ?.fieldOfStudy && (
                       <div
                         className="text-danger"
                         style={{ fontSize: ".875em" }}
                       >
                         {
                           formik.errors.empQualificationEntities[entityIndex]
-                            .qualType
+                            .fieldOfStudy
                         }
                       </div>
                     )}
@@ -279,7 +276,34 @@ const EmpQualificationDetailsEdit = forwardRef(
                 </div>
                 <div className="col-md-6 mb-3">
                   <label>
-                    Qualification Date{" "}
+                    Percentage(%){" "}
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control form-control-sm"
+                    name={`empQualificationEntities[${entityIndex}].percentage`}
+                    value={entity.percentage}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.touched.empQualificationEntities?.[entityIndex]
+                    ?.percentage &&
+                    formik.errors.empQualificationEntities?.[entityIndex]
+                      ?.percentage && (
+                      <div
+                        className="text-danger"
+                        style={{ fontSize: ".875em" }}
+                      >
+                        {
+                          formik.errors.empQualificationEntities[entityIndex]
+                            .percentage
+                        }
+                      </div>
+                    )}
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label>
+                    Course complition Year{" "}
                     <span
                       className="text-danger"
                       style={{ fontSize: ".875em" }}
@@ -288,7 +312,7 @@ const EmpQualificationDetailsEdit = forwardRef(
                     </span>
                   </label>
                   <input
-                    type="date"
+                    type="month"
                     className="form-control form-control-sm"
                     name={`empQualificationEntities[${entityIndex}].qualificationDate`}
                     value={entity.qualificationDate}
