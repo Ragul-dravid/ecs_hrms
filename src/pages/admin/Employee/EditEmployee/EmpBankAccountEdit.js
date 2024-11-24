@@ -15,10 +15,10 @@ const validationSchema = Yup.object().shape({
   brName: Yup.string().required("*Branch name is required"),
   IFSCCode: Yup.string().required("*IFSC code is required"),
   accNumber: Yup.string().required("*Account number is required"),
-  bankAddress: Yup.string().required("*Bank Address is required"),
-  accountType: Yup.string().required("*Account Type is required"),
-  bankPhoneNumber: Yup.string().required("*Bank Phone Number is required"),
   accountHolderName: Yup.string().required("*Account Holder Name is required"),
+  accountType: Yup.string().required("*Account Type is required"),
+  bankAddress: Yup.string().required("*Bank Address is required"),
+  bankPhoneNumber: Yup.string().required("*Bank Phone Number is required"),
 });
 
 const EmpBankAccountEdit = forwardRef(
@@ -51,6 +51,7 @@ const EmpBankAccountEdit = forwardRef(
       },
       validationSchema: validationSchema,
       onSubmit: async (values) => {
+        console.log("data", values)
         setLoadIndicators(true);
         values.bankAccDetailsEmpId = formData.empId;
         navigate("/employee");
@@ -165,7 +166,7 @@ const EmpBankAccountEdit = forwardRef(
                       </lable>
                       <br />
                       <input
-                        type="number"
+                        type="text"
                         name="accNumber"
                         className="form-control form-control-sm"
                         onChange={formik.handleChange}
@@ -209,13 +210,13 @@ const EmpBankAccountEdit = forwardRef(
                         <span className="text-danger">*</span>
                       </lable>
                       <br />
-                      <input
-                        type="number"
+                      <textarea
+                        rows="5"
+                        className="form-control form-control-sm "
                         name="bankAddress"
-                        className="form-control form-control-sm"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                      />
+                      ></textarea>
                       {formik.touched.bankAddress &&
                         formik.errors.bankAddress && (
                           <div
@@ -259,7 +260,7 @@ const EmpBankAccountEdit = forwardRef(
                       </lable>
                       <br />
                       <input
-                        type="number"
+                        type="text"
                         name="bankPhoneNumber"
                         className="form-control form-control-sm"
                         onChange={formik.handleChange}

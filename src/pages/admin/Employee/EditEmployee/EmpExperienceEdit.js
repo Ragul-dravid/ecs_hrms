@@ -127,27 +127,28 @@ const EmpExperienceEdit = forwardRef(
     }));
 
     return (
-      <div className="container-fluid">
-        <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formik.handleSubmit}>
+        <div className="container p-0">
           {formik.values.empExperience.map((row, index) => (
             <div key={index}>
-              <div className="d-flex mt-3">
-                <p class="headColor">Experience</p>
-                <div className="">
+              <div className="d-flex align-items-center mt-3">
+                <div className="me-3 d-flex align-items-center">
+                  <p className="headColor me-2 mb-0">Experience</p>
                   <input
                     type="radio"
                     name="experience"
-                    className="form-check-input ms-3 mt-2"
+                    className="form-check-input mt-0"
                     onChange={handleRadioChange}
                     checked={!isFresher}
                   />
                 </div>
-                <div className="">
-                  <p class="headColor">Fresher</p>
+                <div className="d-flex align-items-center">
+                  <p className="fw-bold me-2 mb-0">/</p>
+                  <p className="headColor me-2 mb-0">Fresher</p>
                   <input
                     type="radio"
                     name="fresher"
-                    className="form-check-input ms-3 mt-2"
+                    className="form-check-input mt-0"
                     onChange={handleRadioChange}
                     checked={isFresher}
                   />
@@ -441,12 +442,9 @@ const EmpExperienceEdit = forwardRef(
                         </div>
                       )}
                   </div>
-
                 </div>
               </div>
-
             </div>
-
           ))}
           <div className="row">
             <div className="col-12 mb-4">
@@ -469,8 +467,8 @@ const EmpExperienceEdit = forwardRef(
               )}
             </div>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     );
   }
 );
