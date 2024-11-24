@@ -691,6 +691,7 @@ function EmployeeAdminAdd() {
                     {...formik.getFieldProps("noticePeriod")}
                   >
                     <option selected></option>
+                    <option value="NILL">NILL</option>
                     <option value="15 days">15 days</option>
                     <option value="30 days">30 days</option>
                     <option value="60 days">60 days</option>

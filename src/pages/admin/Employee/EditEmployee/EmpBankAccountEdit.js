@@ -79,7 +79,7 @@ const EmpBankAccountEdit = forwardRef(
     }));
 
     return (
-      <div className="container-fluid">
+      <div className="container-fluid p-0">
         <form onSubmit={formik.handleSubmit}>
           <div className=" border-0 mb-5">
             <div className="mb-3">
