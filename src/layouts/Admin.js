@@ -63,6 +63,12 @@ import RolesAdd from "../pages/admin/Settings/Roles/RolesAdd.js";
 import RolesEdit from "../pages/admin/Settings/Roles/RolesEdit.js";
 import RolesView from "../pages/admin/Settings/Roles/RolesView.js";
 import ScrollToTop from "../pages/ScrollToTop.js";
+import Designation from "../pages/admin/Settings/Designation/Designation.js";
+import DesignationCAdd from "../pages/admin/Settings/Designation/DesignationCAdd.js";
+import DesignationEdit from "../pages/admin/Settings/Designation/DesignationEdit.js";
+import DesignationView from "../pages/admin/Settings/Designation/DesignationView.js";
+import DesignationAdd from "../pages/admin/Settings/Designation/DesignationAdd.js";
+import RegistrationCompany from "../pages/admin/RegistrationCompany.js";
 
 function Admin({ handleLogout }) {
   return (
@@ -225,6 +231,17 @@ function Admin({ handleLogout }) {
                   <Route path="/roles/add" element={<RolesAdd />} />
                   <Route path="/roles/edit/:id" element={<RolesEdit />} />
                   <Route path="/roles/view/:id" element={<RolesView />} />
+
+                  {/* Designation  */}
+                  <Route path="/designation" element={<Designation />} />
+                  <Route path="/designation/add" element={<DesignationAdd />} />
+                  <Route path="/designation/edit/:id" element={<DesignationEdit />} />
+                  <Route path="/designation/view/:id" element={<DesignationView />} />
+                
+                  <Route
+                    path="/registrationcompany/edit/:id"
+                    element={<RegistrationCompany />}
+                  />
                 </Routes>
               </div>
             </main>

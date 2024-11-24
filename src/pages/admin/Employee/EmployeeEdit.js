@@ -11,9 +11,9 @@ import EmpBankAccountEdit from "./EditEmployee/EmpBankAccountEdit";
 import { useParams } from "react-router-dom";
 
 const steps = [
+  { tooltip: "Primary Information" },
   { tooltip: "Personal Information" },
-  { tooltip: "Contact Details" },
-  { tooltip: "Qualification Details" },
+  { tooltip: "Qualification Information" },
   { tooltip: "Experience" },
   { tooltip: "Bank Account" },
 ];
