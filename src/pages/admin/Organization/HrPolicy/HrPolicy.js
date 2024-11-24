@@ -139,6 +139,9 @@ const HrPolicy = () => {
                       Hr Policy
                     </th>
                     <th scope="col" className="text-center">
+                      Hr Policy Category
+                    </th>
+                    <th scope="col" className="text-center">
                       Hr Policy Date
                     </th>
                     <th scope="col" className="text-center">
@@ -151,6 +154,7 @@ const HrPolicy = () => {
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
                       <td className="text-center">{data.hrPolicyList}</td>
+                      <td className="text-center">{data.hrPolicyCategory}</td>
                       <td className="text-center">{data.createdDate.substring(0,10)}</td>
                       <td className="text-center">
                         <div className="gap-2">

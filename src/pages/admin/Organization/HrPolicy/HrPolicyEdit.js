@@ -76,7 +76,7 @@ const HrPolicyEdit = () => {
         formData.append("hrPolicyList", values.hrPolicyList);
         formData.append("hrPolicyDescr", values.hrPolicyDescr);
         formData.append("hrPolicyOwner", values.hrPolicyOwner);
-        formData.append("effectiveDate", formattedEffectiveDate);
+        // formData.append("effectiveDate", formattedEffectiveDate);
         formData.append("hrPolicyCategory", values.hrPolicyCategory);
         values.attachments.forEach((file) => {
           formData.append("attachments", file);
@@ -190,47 +190,7 @@ const HrPolicyEdit = () => {
                   </div>
                 )}
               </div>
-              <div className="col-md-12 col-12 mb-3">
-                <label className="form-label">
-                  Policy Description <span className="text-danger">*</span>
-                </label>
-                <ReactQuill
-                  value={formik.values.hrPolicyDescr}
-                  onChange={handleDescriptionChange}
-                  modules={modules} // Add custom toolbar modules
-                  formats={formats} // Define formats allowed
-                  className={`${
-                    formik.touched.hrPolicyDescr && formik.errors.hrPolicyDescr
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                />
-                {formik.touched.hrPolicyDescr &&
-                  formik.errors.hrPolicyDescr && (
-                    <div className="invalid-feedback">
-                      {formik.errors.hrPolicyDescr}
-                    </div>
-                  )}
-              </div>
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">Attachments</label>
-                <input
-                  type="file"
-                  name="attachments"
-                  className={`form-control form-control-sm ${
-                    formik.touched.attachments && formik.errors.attachments
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  onChange={handleFileChange}
-                  multiple
-                />
-                {formik.touched.attachments && formik.errors.attachments && (
-                  <div className="invalid-feedback">
-                    {formik.errors.attachments}
-                  </div>
-                )}
-              </div>
+
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   HrPolicy Owner <span className="text-danger">*</span>
@@ -249,6 +209,28 @@ const HrPolicyEdit = () => {
                   formik.errors.hrPolicyOwner && (
                     <div className="invalid-feedback">
                       {formik.errors.hrPolicyOwner}
+                    </div>
+                  )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  HrPolicy Category <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="hrPolicyCategory"
+                  className={`form-control form-control-sm ${
+                    formik.touched.hrPolicyCategory &&
+                    formik.errors.hrPolicyCategory
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("hrPolicyCategory")}
+                />
+                {formik.touched.hrPolicyCategory &&
+                  formik.errors.hrPolicyCategory && (
+                    <div className="invalid-feedback">
+                      {formik.errors.hrPolicyCategory}
                     </div>
                   )}
               </div>
@@ -274,24 +256,43 @@ const HrPolicyEdit = () => {
                   )}
               </div>
               <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  HrPolicy Category <span className="text-danger">*</span>
-                </label>
+                <label className="form-label">Attachments</label>
                 <input
-                  type="text"
-                  name="hrPolicyCategory"
+                  type="file"
+                  name="attachments"
                   className={`form-control form-control-sm ${
-                    formik.touched.hrPolicyCategory &&
-                    formik.errors.hrPolicyCategory
+                    formik.touched.attachments && formik.errors.attachments
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("hrPolicyCategory")}
+                  onChange={handleFileChange}
+                  multiple
                 />
-                {formik.touched.hrPolicyCategory &&
-                  formik.errors.hrPolicyCategory && (
+                {formik.touched.attachments && formik.errors.attachments && (
+                  <div className="invalid-feedback">
+                    {formik.errors.attachments}
+                  </div>
+                )}
+              </div>
+              <div className="col-md-12 col-12 mb-3">
+                <label className="form-label">
+                  Policy Description <span className="text-danger">*</span>
+                </label>
+                <ReactQuill
+                  value={formik.values.hrPolicyDescr}
+                  onChange={handleDescriptionChange}
+                  modules={modules} // Add custom toolbar modules
+                  formats={formats} // Define formats allowed
+                  className={`${
+                    formik.touched.hrPolicyDescr && formik.errors.hrPolicyDescr
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                />
+                {formik.touched.hrPolicyDescr &&
+                  formik.errors.hrPolicyDescr && (
                     <div className="invalid-feedback">
-                      {formik.errors.hrPolicyCategory}
+                      {formik.errors.hrPolicyDescr}
                     </div>
                   )}
               </div>
