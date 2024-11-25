@@ -71,9 +71,9 @@ const HrPolicyAdd = () => {
     onSubmit: async (values) => {
       setLoadIndicator(true);
       try {
-        const formattedEffectiveDate = new Date(
-          values.effectiveDate
-        ).toISOString();
+        // const formattedEffectiveDate = new Date(
+        //   values.effectiveDate
+        // ).toISOString();
         const formData = new FormData();
         formData.append("hrPolicyList", values.hrPolicyList);
         formData.append("hrPolicyDescr", values.hrPolicyDescr);

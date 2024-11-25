@@ -17,7 +17,28 @@ const CompanyRegistrationAdd = () => {
     cmpEmail: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
-    cmpPhNumber: Yup.string().required("Phone number is required"),
+      countryCode: Yup.string().required("!Contact number is required"),
+      cmpPhNumber: Yup.string()
+        .required("!Mobile number is required")
+        .matches(/^\d+$/, "!Mobile number must contain only digits")
+        .test("phone-length", function (value) {
+          const { countryCode } = this.parent;
+          if (countryCode === "65") {
+            return value && value.length === 8
+              ? true
+              : this.createError({
+                  message: "!Phone number must be 8 digits only",
+                });
+          }
+          if (countryCode === "91") {
+            return value && value.length === 10
+              ? true
+              : this.createError({
+                  message: "!Phone number must be 10 digits only",
+                });
+          }
+          return true;
+        }),
     cmpAddr: Yup.string().required("Address is required"),
     cmpCity: Yup.string().required("City is required"),
     cmpPincode: Yup.string().required("Pin Code is required"),
@@ -30,6 +51,7 @@ const CompanyRegistrationAdd = () => {
       name: "",
       cmpName: "",
       cmpEmail: "",
+      countryCode: "",
       cmpPhNumber: "",
       cmpAddr: "",
       cmpCity: "",
@@ -86,7 +108,9 @@ const CompanyRegistrationAdd = () => {
       formik.setFieldValue("attachments", [...files]);
     }
   };
-
+  useEffect(() => {
+    formik.setFieldValue("countryCode", "65");
+  }, []);
   return (
     <div className="container-fluid px-2 minHeight m-0">
       <form onSubmit={formik.handleSubmit}>
@@ -202,19 +226,49 @@ const CompanyRegistrationAdd = () => {
                 <label className="form-label">
                   Number <span className="text-danger">*</span>
                 </label>
-                <input
-                  type="text"
-                  name="cmpPhNumber"
-                  className={`form-control form-control-sm ${
-                    formik.touched.cmpPhNumber && formik.errors.cmpPhNumber
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("cmpPhNumber")}
-                />
+                <div
+                  className="input-group  input-group-sm"
+                  style={{
+                    // borderRadius: "10px",
+                    overflow: "hidden",
+                    // height: "10px",
+                  }}
+                >
+                  <span
+                    className="input-group-text"
+                    style={{
+                      borderRight: "none",
+                      backgroundColor: "#fff",
+                      // borderRadius: "10px 0 0 10px",
+                    }}
+                  >
+                    <select
+                      // name="countryCode"
+                      // onChange={formik.handleChange}
+                      // onBlur={formik.handleBlur}
+                      {...formik.getFieldProps("countryCode")}
+                      className=""
+                    >
+                      <option value="65">+65</option>
+                      <option value="91">+91</option>
+                    </select>
+                  </span>
+                  <input
+                    type="text"
+                    className={`form-control form-control-sm ${
+                      formik.touched.cmpPhNumber && formik.errors.cmpPhNumber
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    placeholder="Enter a contact number"
+                    {...formik.getFieldProps("cmpPhNumber")}
+                  />
+                </div>
                 {formik.touched.cmpPhNumber && formik.errors.cmpPhNumber && (
-                  <div className="invalid-feedback">
-                    {formik.errors.cmpPhNumber}
+                  <div className="">
+                    <small className="text-danger">
+                      {formik.errors.cmpPhNumber}
+                    </small>
                   </div>
                 )}
               </div>
@@ -281,7 +335,7 @@ const CompanyRegistrationAdd = () => {
                   </div>
                 )}
               </div>
-              <div className="col-md-6 col-12 mb-3">
+              {/* <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Tax Code<span className="text-danger">*</span>
                 </label>
@@ -470,7 +524,7 @@ const CompanyRegistrationAdd = () => {
                   </div>
                 )}
               </div>
-              {/* Profile Image Field */}
+             
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">Profile Image</label>
                 <input
@@ -490,7 +544,7 @@ const CompanyRegistrationAdd = () => {
                       {formik.errors.profileImgFile}
                     </div>
                   )}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

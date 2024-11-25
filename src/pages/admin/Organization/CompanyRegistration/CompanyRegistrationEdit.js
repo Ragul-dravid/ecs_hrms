@@ -58,14 +58,14 @@ const CompanyRegistrationEdit = () => {
       cmpAddr: "",
       cmpCity: "",
       cmpPincode: "",
-      // cmpTaxCode: "",
-      // startDate: "",
-      // companyType: "",
-      // representative: "",
-      // headQuaterAddress: "",
-      // branchLocation: [],
-      // logoFile: null,
-      // profileImgFile: null,
+      cmpTaxCode: "",
+      startDate: "",
+      companyType: "",
+      representative: "",
+      headQuaterAddress: "",
+      branchLocation: [],
+      logoFile: null,
+      profileImgFile: null,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -79,14 +79,14 @@ const CompanyRegistrationEdit = () => {
       formDatas.append("cmpAddr", values.cmpAddr);
       formDatas.append("cmpCity", values.cmpCity);
       formDatas.append("cmpPincode", values.cmpPincode);
-      // formDatas.append("cmpTaxCode", values.cmpTaxCode);
-      // formDatas.append("representative", values.representative);
-      // formDatas.append("startDate", values.startDate);
-      // formDatas.append("companyType", values.companyType);
-      // formDatas.append("headQuaterAddress", values.headQuaterAddress);
-      // formDatas.append("branchLocation", values.branchLocation);
-      // formDatas.append("logoFile", values.logoFile);
-      // formDatas.append("profileImgFile", values.profileImgFile);
+      formDatas.append("cmpTaxCode", values.cmpTaxCode);
+      formDatas.append("representative", values.representative);
+      formDatas.append("startDate", values.startDate);
+      formDatas.append("companyType", values.companyType);
+      formDatas.append("headQuaterAddress", values.headQuaterAddress);
+      formDatas.append("branchLocation", values.branchLocation);
+      formDatas.append("logoFile", values.logoFile);
+      formDatas.append("profileImgFile", values.profileImgFile);
       try {
         const response = await api.put(`/company-reg/${cmpId}`, formDatas);
         if (response.status === 200) {
@@ -356,7 +356,7 @@ const CompanyRegistrationEdit = () => {
                   </div>
                 )}
               </div>
-              {/* <div className="col-md-6 col-12 mb-3">
+              <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Tax Code<span className="text-danger">*</span>
                 </label>
@@ -508,7 +508,7 @@ const CompanyRegistrationEdit = () => {
                 {formik.touched.profileImgFile && formik.errors.profileImgFile && (
                   <div className="invalid-feedback">{formik.errors.profileImgFile}</div>
                 )}
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
