@@ -65,26 +65,36 @@ const EmpContactDetailsEdit = forwardRef(
       onSubmit: async (values) => {
         console.log("Contact Details:", values);
         setLoadIndicators(true);
+        const isUpdate = formData.empId;
         values.perDetailsEmpId = formData.empId;
+
         try {
-          const response = await api.put(
-            `/emp-personal-details/${formData.empId}`,
-            values,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
+          const response = isUpdate
+            ? await api.put(`/personal-emergency-contacts/${formData.empId}`, values, {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              })
+            : await api.post("/emp-personal-emergency", values, {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              });
+
           if (response.status === 200) {
             toast.success(response.data.message);
-            setFormData((prev) => ({ ...prev, ...values }));
+            if (!isUpdate) {
+              // Update formData with new empId for a POST call
+              setFormData((prev) => ({ ...prev, empId: response.data.empId }));
+            } else {
+              setFormData((prev) => ({ ...prev, ...values }));
+            }
             handleNext();
           } else {
             toast.error(response.data.message);
           }
         } catch (error) {
-          toast.error(error);
+          toast.error(error.message || "An error occurred");
         } finally {
           setLoadIndicators(false);
         }
@@ -250,12 +260,11 @@ const EmpContactDetailsEdit = forwardRef(
                     onBlur={formik.handleBlur}
                     value={formik.values.email}
                   />
-                  {formik.touched.email &&
-                    formik.errors.email && (
-                      <div className="text-danger">
-                        <small>{formik.errors.email}</small>
-                      </div>
-                    )}
+                  {formik.touched.email && formik.errors.email && (
+                    <div className="text-danger">
+                      <small>{formik.errors.email}</small>
+                    </div>
+                  )}
                 </div>
                 <div className="col-md-6 col-12 mb-3">
                   <lable className="form-lable">
@@ -392,7 +401,7 @@ const EmpContactDetailsEdit = forwardRef(
                     </div>
                   )}
                 </div>
-            
+
                 <div className="col-md-6 col-12 mb-3">
                   <label className="form-label">Photo </label>
                   <span className="text-danger"> *</span>

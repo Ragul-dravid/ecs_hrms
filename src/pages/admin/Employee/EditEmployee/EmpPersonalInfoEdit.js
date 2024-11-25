@@ -21,6 +21,7 @@ const EmpPersonalInfoEdit = forwardRef(
     const [selectedIdType, setSelectedIdType] = useState("");
     const [showPassword, setShowPassword] = React.useState(false);
     const roleName = localStorage.getItem("role");
+    console.log("object",formData.empId)
 
     const validationSchema = Yup.object({
       firstName: Yup.string().required("*First name is required"),
