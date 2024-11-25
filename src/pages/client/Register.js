@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -20,10 +20,31 @@ function Register() {
     cmpEmail: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
-    // cmpPhNumber: Yup.string().required("Phone number is required"),
+    countryCode: Yup.string().required("!Contact number is required"),
+    cmpPhNumber: Yup.string()
+      .required("!Mobile number is required")
+      .matches(/^\d+$/, "!Mobile number must contain only digits")
+      .test("phone-length", function (value) {
+        const { countryCode } = this.parent;
+        if (countryCode === "65") {
+          return value && value.length === 8
+            ? true
+            : this.createError({
+                message: "!Phone number must be 8 digits only",
+              });
+        }
+        if (countryCode === "91") {
+          return value && value.length === 10
+            ? true
+            : this.createError({
+                message: "!Phone number must be 10 digits only",
+              });
+        }
+        return true;
+      }),
     cmpAddr: Yup.string().required("Address is required"),
-    // cmpCity: Yup.string().required("City is required"),
-    // cmpPincode: Yup.string().required("Pin Code is required"),
+    cmpCity: Yup.string().required("City is required"),
+    cmpPincode: Yup.string().required("Pin Code is required"),
     // cmpTaxCode: Yup.string().required("Tax Code is required"),
     // logoFile: Yup.mixed().required("Logo is required"),
     // profileImgFile: Yup.mixed().required("Profile Image is required"),
@@ -35,10 +56,11 @@ function Register() {
       name: "",
       cmpName: "",
       cmpEmail: "",
+      countryCode: "",
       cmpPhNumber: "",
       cmpAddr: "",
-      // cmpCity: "",
-      // cmpPincode: "",
+      cmpCity: "",
+      cmpPincode: "",
       // cmpTaxCode: "",
       // startDate: "",
       // companyType: "",
@@ -58,8 +80,8 @@ function Register() {
       formDatas.append("cmpEmail", values.cmpEmail);
       formDatas.append("cmpPhNumber", values.cmpPhNumber);
       formDatas.append("cmpAddr", values.cmpAddr);
-      // formDatas.append("cmpCity", values.cmpCity);
-      // formDatas.append("cmpPincode", values.cmpPincode);
+      formDatas.append("cmpCity", values.cmpCity);
+      formDatas.append("cmpPincode", values.cmpPincode);
       // formDatas.append("cmpTaxCode", values.cmpTaxCode);
       // formDatas.append("representative", values.representative);
       // formDatas.append("startDate", values.startDate);
@@ -85,6 +107,10 @@ function Register() {
     },
   });
 
+  useEffect(() => {
+    formik.setFieldValue("countryCode", "65");
+  }, []);
+
   // const handleFileChange = (event) => {
   //   const { name, files } = event.target;
   //   if (files.length) {
@@ -106,7 +132,7 @@ function Register() {
     >
       <div
         className="card shadow-lg p-3 my-5 rounded"
-        style={{ width: "100%", maxWidth: "80%" }}
+        style={{ maxWidth: "39%" }}
       >
         <Link to="/">
           <button className="btn btn-link text-start shadow-none h-0">
@@ -131,7 +157,7 @@ function Register() {
           <Form onSubmit={formik.handleSubmit}>
             <div className="row py-4">
               {/* Name Field */}
-              <div className="col-md-6 col-12 mb-3">
+              <div className="col-12 mb-3">
                 <label className="form-label">
                   Name <span className="text-danger">*</span>
                 </label>
@@ -151,7 +177,7 @@ function Register() {
               </div>
 
               {/* Company Name Field */}
-              <div className="col-md-6 col-12 mb-3">
+              <div className="col-12 mb-3">
                 <label className="form-label">
                   Company Name <span className="text-danger">*</span>
                 </label>
@@ -173,7 +199,7 @@ function Register() {
               </div>
 
               {/* cmpEmail Field */}
-              <div className="col-md-6 col-12 mb-3">
+              <div className="col-12 mb-3">
                 <label className="form-label">
                   Email <span className="text-danger">*</span>
                 </label>
@@ -195,8 +221,56 @@ function Register() {
               </div>
 
               {/* cmpPhNumber Field */}
-              <div className="col-md-6 col-12 mb-3">
+              <div className="col-12 mb-3">
                 <label className="form-label">
+                  Number <span className="text-danger">*</span>
+                </label>
+                <div
+                  className="input-group  input-group-sm"
+                  style={{
+                    // borderRadius: "10px",
+                    overflow: "hidden",
+                    // height: "10px",
+                  }}
+                >
+                  <span
+                    className="input-group-text"
+                    style={{
+                      borderRight: "none",
+                      backgroundColor: "#fff",
+                      // borderRadius: "10px 0 0 10px",
+                    }}
+                  >
+                    <select
+                      // name="countryCode"
+                      // onChange={formik.handleChange}
+                      // onBlur={formik.handleBlur}
+                      {...formik.getFieldProps("countryCode")}
+                      className=""
+                    >
+                      <option value="65">+65</option>
+                      <option value="91">+91</option>
+                    </select>
+                  </span>
+                  <input
+                    type="text"
+                    className={`form-control form-control-sm ${
+                      formik.touched.cmpPhNumber && formik.errors.cmpPhNumber
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    placeholder="Enter a contact number"
+                    {...formik.getFieldProps("cmpPhNumber")}
+                  />
+                </div>
+                {formik.touched.cmpPhNumber && formik.errors.cmpPhNumber && (
+                  <div className="">
+                    <small className="text-danger">
+                      {formik.errors.cmpPhNumber}
+                    </small>
+                  </div>
+                )}
+                {/* <label className="form-label">
                   Number <span className="text-danger">*</span>
                 </label>
                 <input
@@ -208,16 +282,11 @@ function Register() {
                       : ""
                   }`}
                   {...formik.getFieldProps("cmpPhNumber")}
-                />
-                {formik.touched.cmpPhNumber && formik.errors.cmpPhNumber && (
-                  <div className="invalid-feedback">
-                    {formik.errors.cmpPhNumber}
-                  </div>
-                )}
+                /> */}
               </div>
 
               {/* cmpAddr Field */}
-              <div className="col-md-6 col-12 mb-3">
+              <div className="col-12 mb-3">
                 <label className="form-label">
                   Address <span className="text-danger">*</span>
                 </label>
@@ -237,7 +306,7 @@ function Register() {
                   </div>
                 )}
               </div>
-              {/* <div className="col-md-6 col-12 mb-3">
+              <div className="col-12 mb-3">
                 <label className="form-label">
                   City <span className="text-danger">*</span>
                 </label>
@@ -257,7 +326,7 @@ function Register() {
                   </div>
                 )}
               </div>
-              <div className="col-md-6 col-12 mb-3">
+              <div className="col-12 mb-3">
                 <label className="form-label">
                   Zip Code <span className="text-danger">*</span>
                 </label>
@@ -277,7 +346,7 @@ function Register() {
                   </div>
                 )}
               </div>
-              <div className="col-md-6 col-12 mb-3">
+              {/*  <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Tax Code<span className="text-danger">*</span>
                 </label>
