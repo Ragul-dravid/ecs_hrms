@@ -13,12 +13,12 @@ const EmpQualificationDetailsEdit = forwardRef(
           qualName: Yup.string().required("*Qualification name is required"),
           fieldOfStudy: Yup.string().required("*Field Of Study is required"),
           qualModeOfStudy: Yup.string().required("*Mode of study is required"),
-          studying: Yup.string().required("*studying is required"),
           qualInstitution: Yup.string().required("*Institution is required"),
-          percentage: Yup.string().required("*Percentage is required"),
-          qualificationDate: Yup.string().required(
-            "*Qualification Year is required"
-          ),
+          studying: Yup.string().required("*studying is required"),
+          // percentage: Yup.string().required("*Percentage is required"),
+          // qualificationDate: Yup.string().required(
+          //   "*Qualification Year is required"
+          // ),
           certificate: Yup.string().required("*Certificate is required"),
           empQualificationSkils: Yup.array().of(
             Yup.object().shape({
@@ -278,113 +278,140 @@ const EmpQualificationDetailsEdit = forwardRef(
                 </div>
                 <div className="col-md-6 col-12 mb-2">
                   <label className="form-label">
-                    Studying <span className="text-danger">*</span>
+                    Currently Pursuing <span className="text-danger">*</span>
                   </label>
                   <div className="d-flex">
                     <div className="form-check me-3">
                       <input
                         type="radio"
-                        id="studyingYes"
-                        name="studying"
+                        id={`studyingYes-${entityIndex}`}
+                        name={`empQualificationEntities[${entityIndex}].studying`}
                         value="Yes"
-                        {...formik.getFieldProps("studying")}
+                        checked={entity.studying === "Yes"}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         className={`form-check-input ${
-                          formik.touched.studying && formik.errors.studying
+                          formik.touched.empQualificationEntities?.[entityIndex]
+                            ?.studying &&
+                          formik.errors.empQualificationEntities?.[entityIndex]
+                            ?.studying
                             ? "is-invalid"
                             : ""
                         }`}
                       />
-                      <label className="form-check-label" htmlFor="studyingYes">
+                      <label
+                        className="form-check-label"
+                        htmlFor={`studyingYes-${entityIndex}`}
+                      >
                         Yes
                       </label>
                     </div>
                     <div className="form-check">
                       <input
                         type="radio"
-                        id="studyingNo"
-                        name="studying"
+                        id={`studyingNo-${entityIndex}`}
+                        name={`empQualificationEntities[${entityIndex}].studying`}
                         value="No"
-                        {...formik.getFieldProps("studying")}
+                        checked={entity.studying === "No"}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         className={`form-check-input ${
-                          formik.touched.studying && formik.errors.studying
+                          formik.touched.empQualificationEntities?.[entityIndex]
+                            ?.studying &&
+                          formik.errors.empQualificationEntities?.[entityIndex]
+                            ?.studying
                             ? "is-invalid"
                             : ""
                         }`}
                       />
-                      <label className="form-check-label" htmlFor="studyingNo">
+                      <label
+                        className="form-check-label"
+                        htmlFor={`studyingNo-${entityIndex}`}
+                      >
                         No
                       </label>
                     </div>
                   </div>
-
-                  {formik.touched.studying && formik.errors.studying && (
-                    <div className="invalid-feedback d-block">
-                      {formik.errors.studying}
-                    </div>
-                  )}
-                </div>
-                {/* {formik.values.studying === "No" && ( */}
-                <>
-                  <div className="col-md-6 mb-3">
-                    <label>Percentage(%) </label>
-                    <input
-                      type="text"
-                      className="form-control form-control-sm"
-                      name={`empQualificationEntities[${entityIndex}].percentage`}
-                      value={entity.percentage}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                    />
-                    {formik.touched.empQualificationEntities?.[entityIndex]
-                      ?.percentage &&
-                      formik.errors.empQualificationEntities?.[entityIndex]
-                        ?.percentage && (
-                        <div
-                          className="text-danger"
-                          style={{ fontSize: ".875em" }}
-                        >
-                          {
-                            formik.errors.empQualificationEntities[entityIndex]
-                              .percentage
-                          }
-                        </div>
-                      )}
-                  </div>
-                  <div className="col-md-6 mb-3">
-                    <label>
-                      Course complition Year{" "}
-                      <span
+                  {formik.touched.empQualificationEntities?.[entityIndex]
+                    ?.studying &&
+                    formik.errors.empQualificationEntities?.[entityIndex]
+                      ?.studying && (
+                      <div
                         className="text-danger"
                         style={{ fontSize: ".875em" }}
                       >
-                        *
-                      </span>
-                    </label>
-                    <input
-                      type="month"
-                      className="form-control form-control-sm"
-                      name={`empQualificationEntities[${entityIndex}].qualificationDate`}
-                      value={entity.qualificationDate}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                    />
-                    {formik.touched.empQualificationEntities?.[entityIndex]
-                      ?.qualificationDate &&
-                      formik.errors.empQualificationEntities?.[entityIndex]
-                        ?.qualificationDate && (
-                        <div
+                        {
+                          formik.errors.empQualificationEntities[entityIndex]
+                            .studying
+                        }
+                      </div>
+                    )}
+                </div>
+
+                {entity.studying === "No" && (
+                  <>
+                    <div className="col-md-6 mb-3">
+                      <label>Percentage(%) </label>
+                      <input
+                        type="text"
+                        className="form-control form-control-sm"
+                        name={`empQualificationEntities[${entityIndex}].percentage`}
+                        value={entity.percentage}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />
+                      {formik.touched.empQualificationEntities?.[entityIndex]
+                        ?.percentage &&
+                        formik.errors.empQualificationEntities?.[entityIndex]
+                          ?.percentage && (
+                          <div
+                            className="text-danger"
+                            style={{ fontSize: ".875em" }}
+                          >
+                            {
+                              formik.errors.empQualificationEntities[
+                                entityIndex
+                              ].percentage
+                            }
+                          </div>
+                        )}
+                    </div>
+                    <div className="col-md-6 mb-3">
+                      <label>
+                        Course complition Year{" "}
+                        <span
                           className="text-danger"
                           style={{ fontSize: ".875em" }}
                         >
-                          {
-                            formik.errors.empQualificationEntities[entityIndex]
-                              .qualificationDate
-                          }
-                        </div>
-                      )}
-                  </div>
-                </>
-                {/* )} */}
+                          *
+                        </span>
+                      </label>
+                      <input
+                        type="month"
+                        className="form-control form-control-sm"
+                        name={`empQualificationEntities[${entityIndex}].qualificationDate`}
+                        value={entity.qualificationDate}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />
+                      {formik.touched.empQualificationEntities?.[entityIndex]
+                        ?.qualificationDate &&
+                        formik.errors.empQualificationEntities?.[entityIndex]
+                          ?.qualificationDate && (
+                          <div
+                            className="text-danger"
+                            style={{ fontSize: ".875em" }}
+                          >
+                            {
+                              formik.errors.empQualificationEntities[
+                                entityIndex
+                              ].qualificationDate
+                            }
+                          </div>
+                        )}
+                    </div>
+                  </>
+                )}
                 <div className="col-md-6 mb-3">
                   <label>
                     Certificate{" "}

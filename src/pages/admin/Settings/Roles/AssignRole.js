@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import api from "../../../../config/URL";
+import Select from "react-select"; // Import react-select
 import toast from "react-hot-toast";
 import { PiPlusLight } from "react-icons/pi";
 import employeeListByCompId from "../../List_Apis/EmployeeListByCmpId";
@@ -9,62 +9,81 @@ import employeeListByCompId from "../../List_Apis/EmployeeListByCmpId";
 const AssignRole = () => {
   const [loading, setLoadIndicator] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  //   const [selectedEmp, setSelectedEmp] = useState([]);
   const [empData, setEmpData] = useState([]);
   const cmpId = localStorage.getItem("cmpId");
-  //   const empOptions = empData?.map((emp) => ({
-  //     label: emp.empName,
-  //     value: emp.id,
-  //   }));
+
+  const handleopen = async () => {
+    setShowModal(true);
+    try {
+      const empData = await employeeListByCompId();
+      setEmpData(empData);
+    } catch (error) {
+      toast.error("Error fetching employees.");
+    }
+  };
 
   const validationSchema = Yup.object({
-    // roleName: Yup.string().required("Role Name is required"),
-    // roleDesc: Yup.string().required("Description is required"),
-    // roleStatus: Yup.string().required("Status is required"),
+    roleName: Yup.string().required("Role Name is required"),
+    empId: Yup.array()
+      .of(Yup.string())
+      .min(1, "At least one employee must be selected"),
   });
 
   const formik = useFormik({
     initialValues: {
       cmpId: cmpId,
-      empId: "",
-      role: "",
+      empId: [],
+      roleName: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log("object", values);
+      console.log("Submitted values:", values);
       setLoadIndicator(true);
-      //   try {
-      //     const response = await api.post(`/company-reg`, values);
-      //     if (response.status === 201) {
-      //       toast.success(response.data.message);
-      //       setShowModal(false); // Close the modal on success
-      //     } else {
-      //       toast.error(response.data.message);
-      //     }
-      //   } catch (e) {
-      //     toast.error("Error updating data: " + e?.response?.data?.message);
-      //   } finally {
-      //     setLoadIndicator(false);
-      //   }
-      setLoadIndicator(false);
+      try {
+        // Simulate API call
+        toast.success("Role assigned successfully!");
+        setShowModal(false);
+      } catch (error) {
+        toast.error("Failed to assign role.");
+      } finally {
+        setLoadIndicator(false);
+      }
     },
   });
 
-  const fetchData = async () => {
-    try {
-      const empData = await employeeListByCompId();
-      setEmpData(empData);
-    } catch (error) {
-      toast.error(error);
-    }
+  const empOptions = empData.map((emp) => ({
+    label: emp.empName,
+    value: emp.id,
+  }));
+
+  // Custom option component with a checkbox
+  const CustomOption = (props) => {
+    const { data, isSelected, innerRef, innerProps } = props;
+
+    return (
+      <div
+        ref={innerRef}
+        {...innerProps}
+        className="d-flex align-items-center p-2"
+        style={{
+          backgroundColor: isSelected ? "#e0f7fa" : "white",
+          cursor: "pointer",
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={isSelected}
+          onChange={() => null}
+          className="me-2"
+        />
+        {data.label}
+      </div>
+    );
   };
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <div>
-      <button className="btn btn-sm p-0" onClick={() => setShowModal(true)}>
+      <button className="btn btn-sm p-0" onClick={handleopen}>
         <PiPlusLight />
       </button>
 
@@ -104,31 +123,36 @@ const AssignRole = () => {
                         </div>
                       )}
                     </div>
-                    <div className=" col-12 mb-3">
+                    <div className="col-12 mb-3">
                       <label className="form-label">
-                        Employee Name
-                        <span className="text-danger">*</span>
+                        Employee Name <span className="text-danger">*</span>
                       </label>
-                      <select
+                      <Select
+                        isMulti
                         name="empId"
-                        className={`form-select form-select-sm ${
+                        options={empOptions}
+                        className={`react-select-container ${
                           formik.touched.empId && formik.errors.empId
                             ? "is-invalid"
                             : ""
                         }`}
-                        {...formik.getFieldProps("empId")}
-                      >
-                        {/* Add a default option */}
-                        <option value="" selected></option>
-                        {empData &&
-                          empData.map((emp) => (
-                            <option key={emp.id} value={emp.id}>
-                             {emp.empName}
-                            </option>
-                          ))}
-                      </select>
+                        classNamePrefix="react-select"
+                        value={empOptions.filter((option) =>
+                          formik.values.empId.includes(option.value)
+                        )}
+                        onChange={(selectedOptions) =>
+                          formik.setFieldValue(
+                            "empId",
+                            selectedOptions.map((option) => option.value)
+                          )
+                        }
+                        onBlur={() => formik.setFieldTouched("empId", true)}
+                        components={{
+                          Option: CustomOption,
+                        }}
+                      />
                       {formik.touched.empId && formik.errors.empId && (
-                        <div className="invalid-feedback">
+                        <div className="invalid-feedback d-block">
                           {formik.errors.empId}
                         </div>
                       )}

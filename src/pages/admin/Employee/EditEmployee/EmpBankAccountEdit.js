@@ -18,7 +18,7 @@ const validationSchema = Yup.object().shape({
   accountHolderName: Yup.string().required("*Account Holder Name is required"),
   accountType: Yup.string().required("*Account Type is required"),
   bankAddress: Yup.string().required("*Bank Address is required"),
-  bankPhoneNumber: Yup.string().required("*Bank Phone Number is required"),
+  // bankPhoneNumber: Yup.string().required("*Bank Phone Number is required"),
 });
 
 const EmpBankAccountEdit = forwardRef(
@@ -46,7 +46,7 @@ const EmpBankAccountEdit = forwardRef(
         accNumber: formData.accNumber || "",
         accountHolderName: formData.accountHolderName || "",
         bankAddress: formData.bankAddress || "",
-        bankPhoneNumber: formData.bankPhoneNumber || "",
+        // bankPhoneNumber: formData.bankPhoneNumber || "",
         accountType: formData.accountType || "",
       },
       validationSchema: validationSchema,
@@ -82,9 +82,8 @@ const EmpBankAccountEdit = forwardRef(
       <div className="container-fluid p-0">
         <form onSubmit={formik.handleSubmit}>
           <div className=" border-0 mb-5">
-            <div className="mb-3">
+            <div className="my-3">
               <p class="headColor">Bank Account Information</p>
-              <div className="container">
                 <div className="row mt-3">
                   <div className="col-lg-6 col-md-6 col-12">
                     <div className="text-start mt-2">
@@ -253,7 +252,7 @@ const EmpBankAccountEdit = forwardRef(
                           </div>
                         )}
                     </div>
-                    <div className="text-start mt-4">
+                    {/* <div className="text-start mt-4">
                       <lable className="form-label">
                         Bank Phone Number
                         <span className="text-danger">*</span>
@@ -272,10 +271,10 @@ const EmpBankAccountEdit = forwardRef(
                             <small>{formik.errors.bankPhoneNumber}</small>
                           </div>
                         )}
-                    </div>
+                    </div> */}
                   </div>
                 </div>
-              </div>
+
             </div>
           </div>
         </form>
