@@ -64,25 +64,29 @@ const ExitManagementAdd = () => {
     },
   });
 
-  const fetchTeacher = async () => {
+  const fetchEmployeeList = async () => {
     try {
-      const employee = await employeeListByCompId(cmpId);
-      setEmpData(employee);
+      const employee = await api.get(`getEmpolyeeWithRole/${cmpId}`);
+      setEmpData(employee.data);
+      console.log("Employee:",employee.data);
+      return employee.data;
     } catch (error) {
-      toast.error(error.message);
+      console.error(error);
     }
   };
+
   const fetchDept = async () => {
     try {
-      const employee = await departmentListByCompId(cmpId);
-      setDptData(employee);
+      const department = await api.get(`department-by-companyId/${cmpId}`);
+      setDptData(department.data);
+      return department.data;
     } catch (error) {
-      toast.error(error.message);
+      console.error(error);
     }
   };
 
   useEffect(() => {
-    fetchTeacher();
+    fetchEmployeeList();
     fetchDept();
   }, []);
 
@@ -149,10 +153,10 @@ const ExitManagementAdd = () => {
                   aria-label="Default select example"
                 >
                   <option selected></option>
-                  {empData &&
+                  {Array.isArray(empData) &&
                     empData.map((exitMgmtEmpId) => (
                       <option key={exitMgmtEmpId.id} value={exitMgmtEmpId.id}>
-                        {`${exitMgmtEmpId.firstName}${exitMgmtEmpId.lastName}`}
+                        {exitMgmtEmpId.empName}
                       </option>
                     ))}
                 </select>
@@ -177,7 +181,7 @@ const ExitManagementAdd = () => {
                   aria-label="Default select example"
                 >
                   <option selected></option>
-                  {dptData &&
+                  {Array.isArray(dptData) &&
                     dptData.map((exitMgmtEmpId) => (
                       <option
                         key={exitMgmtEmpId.id}

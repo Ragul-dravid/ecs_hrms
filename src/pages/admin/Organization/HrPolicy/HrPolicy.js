@@ -104,7 +104,7 @@ const HrPolicy = () => {
               <div className="row align-items-center justify-content-between ">
                 <div className="col">
                   <div className="d-flex align-items-center gap-4">
-                    <h1 className="h4 ls-tight headingColor ">Hr Policy</h1>
+                    <h1 className="h4 ls-tight headingColor ">HR Policy</h1>
                   </div>
                 </div>
                 <div className="col-auto">

@@ -223,7 +223,7 @@ function Register() {
               {/* cmpPhNumber Field */}
               <div className="col-12 mb-3">
                 <label className="form-label">
-                  Number <span className="text-danger">*</span>
+                  Phone Number <span className="text-danger">*</span>
                 </label>
                 <div
                   className="input-group  input-group-sm"
@@ -306,7 +306,7 @@ function Register() {
                   </div>
                 )}
               </div>
-              <div className="col-12 mb-3">
+              <div className="col-6 mb-3">
                 <label className="form-label">
                   City <span className="text-danger">*</span>
                 </label>
@@ -326,7 +326,7 @@ function Register() {
                   </div>
                 )}
               </div>
-              <div className="col-12 mb-3">
+              <div className="col-6 mb-3">
                 <label className="form-label">
                   Zip Code <span className="text-danger">*</span>
                 </label>

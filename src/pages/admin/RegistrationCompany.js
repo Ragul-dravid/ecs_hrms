@@ -41,7 +41,6 @@ const RegistrationCompany = () => {
       cmpTaxCode: "",
       startDate: "",
       companyType: "",
-      representative: "",
       headQuaterAddress: "",
       branchLocation: [],
       logoFile: null,
@@ -60,7 +59,6 @@ const RegistrationCompany = () => {
       formDatas.append("cmpCity", values.cmpCity);
       formDatas.append("cmpPincode", values.cmpPincode);
       formDatas.append("cmpTaxCode", values.cmpTaxCode);
-      formDatas.append("representative", values.representative);
       formDatas.append("startDate", values.startDate);
       formDatas.append("companyType", values.companyType);
       formDatas.append("headQuaterAddress", values.headQuaterAddress);
@@ -124,7 +122,7 @@ const RegistrationCompany = () => {
               <div className="col">
                 <div className="d-flex align-items-center gap-4">
                   <h1 className="h4 ls-tight headingColor">
-                    Edit Registration
+                    Update Company Details
                   </h1>
                 </div>
               </div>
@@ -334,7 +332,7 @@ const RegistrationCompany = () => {
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  Start Date<span className="text-danger">*</span>
+                  Company Start Date<span className="text-danger">*</span>
                 </label>
                 <input
                   type="date"
@@ -351,28 +349,6 @@ const RegistrationCompany = () => {
                     {formik.errors.startDate}
                   </div>
                 )}
-              </div>
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Representative<span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="representative"
-                  className={`form-control form-control-sm ${
-                    formik.touched.representative &&
-                    formik.errors.representative
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("representative")}
-                />
-                {formik.touched.representative &&
-                  formik.errors.representative && (
-                    <div className="invalid-feedback">
-                      {formik.errors.representative}
-                    </div>
-                  )}
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">

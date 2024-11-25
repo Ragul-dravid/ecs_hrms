@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../config/URL";
 import toast from "react-hot-toast";
+import employeeListByCompId from "../List_Apis/EmployeeListByCmpId";
 
 const DeductionAdd = () => {
   const navigate = useNavigate();
@@ -48,17 +49,20 @@ const DeductionAdd = () => {
       }
     },
   });
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await api.get(`/emp-reg-details-with-id`);
-        setEmpData(response.data);
-      } catch (e) {
-        toast.error("Error fetching data: ", e?.response?.data?.message);
-      }
-    };
 
-    getData();
+  const fetchEmployeeList = async () => {
+    try {
+      const employee = await api.get(`getEmpolyeeWithRole/${cmpId}`);
+      setEmpData(employee.data);
+      console.log("Employee:",employee.data);
+      return employee.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+   fetchEmployeeList();
   }, []);
 
   return (
@@ -108,8 +112,6 @@ const DeductionAdd = () => {
         >
           <div className="container mb-5">
             <div className="row py-4">
-              {/* Company Name */}
-
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Deduction Name <span className="text-danger">*</span>
@@ -153,10 +155,10 @@ const DeductionAdd = () => {
                   {...formik.getFieldProps("deductionEmpId")}
                 >
                   <option selected />
-                  {empData &&
-                    empData.map((emp) => (
-                      <option key={emp.id} value={emp.id}>
-                        {`${emp.firstName} ${emp.lastName}`}
+                  {Array.isArray(empData) &&
+                    empData.map((exitMgmtEmpId) => (
+                      <option key={exitMgmtEmpId.id} value={exitMgmtEmpId.id}>
+                        {exitMgmtEmpId.empName}
                       </option>
                     ))}
                 </select>

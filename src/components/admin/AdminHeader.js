@@ -91,7 +91,7 @@ function AdminHeader({ handleLogout }) {
                   <span style={{ fontSize: "24px" }} onClick={handleShow}>
                     <img
                       className="img-fluid"
-                      src={data.profileImg || user}
+                      src={data.fileAttachment || user}
                       alt="user"
                       style={{
                         borderRadius: "50%", // Makes the image circular
@@ -117,7 +117,7 @@ function AdminHeader({ handleLogout }) {
             <div className="text-center">
               <img
                 className="img-fluid mb-3"
-                src={data.profileImg || user}
+                src={data.fileAttachment || user}
                 alt="user"
                 style={{
                   borderRadius: "50%", // Makes the image circular
