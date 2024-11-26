@@ -17,33 +17,33 @@ const CompanyRegistrationAdd = () => {
     cmpEmail: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
-      countryCode: Yup.string().required("!Contact number is required"),
-      cmpPhNumber: Yup.string()
-        .required("!Mobile number is required")
-        .matches(/^\d+$/, "!Mobile number must contain only digits")
-        .test("phone-length", function (value) {
-          const { countryCode } = this.parent;
-          if (countryCode === "65") {
-            return value && value.length === 8
-              ? true
-              : this.createError({
-                  message: "!Phone number must be 8 digits only",
-                });
-          }
-          if (countryCode === "91") {
-            return value && value.length === 10
-              ? true
-              : this.createError({
-                  message: "!Phone number must be 10 digits only",
-                });
-          }
-          return true;
-        }),
+    countryCode: Yup.string().required("!Contact number is required"),
+    cmpPhNumber: Yup.string()
+      .required("!Mobile number is required")
+      .matches(/^\d+$/, "!Mobile number must contain only digits")
+      .test("phone-length", function (value) {
+        const { countryCode } = this.parent;
+        if (countryCode === "65") {
+          return value && value.length === 8
+            ? true
+            : this.createError({
+                message: "!Phone number must be 8 digits only",
+              });
+        }
+        if (countryCode === "91") {
+          return value && value.length === 10
+            ? true
+            : this.createError({
+                message: "!Phone number must be 10 digits only",
+              });
+        }
+        return true;
+      }),
     cmpAddr: Yup.string().required("Address is required"),
     cmpCity: Yup.string().required("City is required"),
     cmpPincode: Yup.string().required("Pin Code is required"),
-    cmpTaxCode: Yup.string().required("Tax Code is required"),
-    headQuaterAddress: Yup.string().required("HeadQuater Address is required"),
+    // cmpTaxCode: Yup.string().required("Tax Code is required"),
+    // headQuaterAddress: Yup.string().required("HeadQuater Address is required"),
   });
 
   const formik = useFormik({
@@ -56,14 +56,14 @@ const CompanyRegistrationAdd = () => {
       cmpAddr: "",
       cmpCity: "",
       cmpPincode: "",
-      startDate: "",
-      companyType: "",
-      representative: "",
-      headQuaterAddress: "",
-      branchLocation: [],
-      cmpTaxCode: "",
-      logoFile: null,
-      profileImgFile: null,
+      // startDate: "",
+      // companyType: "",
+      // representative: "",
+      // headQuaterAddress: "",
+      // branchLocation: [],
+      // cmpTaxCode: "",
+      // logoFile: null,
+      // profileImgFile: null,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -76,15 +76,15 @@ const CompanyRegistrationAdd = () => {
       formDatas.append("cmpPhNumber", values.cmpPhNumber);
       formDatas.append("cmpAddr", values.cmpAddr);
       formDatas.append("cmpCity", values.cmpCity);
-      formDatas.append("representative", values.representative);
-      formDatas.append("startDate", values.startDate);
-      formDatas.append("companyType", values.companyType);
-      formDatas.append("headQuaterAddress", values.headQuaterAddress);
-      formDatas.append("branchLocation", values.branchLocation);
+      // formDatas.append("representative", values.representative);
+      // formDatas.append("startDate", values.startDate);
+      // formDatas.append("companyType", values.companyType);
+      // formDatas.append("headQuaterAddress", values.headQuaterAddress);
+      // formDatas.append("branchLocation", values.branchLocation);
       formDatas.append("cmpPincode", values.cmpPincode);
-      formDatas.append("cmpTaxCode", values.cmpTaxCode);
-      formDatas.append("logoFile", values.logoFile);
-      formDatas.append("profileImgFile", values.profileImgFile);
+      // formDatas.append("cmpTaxCode", values.cmpTaxCode);
+      // formDatas.append("logoFile", values.logoFile);
+      // formDatas.append("profileImgFile", values.profileImgFile);
 
       try {
         const response = await api.post("company-attach", formDatas);
@@ -108,9 +108,9 @@ const CompanyRegistrationAdd = () => {
       formik.setFieldValue("attachments", [...files]);
     }
   };
-  useEffect(() => {
-    formik.setFieldValue("countryCode", "65");
-  }, []);
+  // useEffect(() => {
+  //   formik.setFieldValue("countryCode", "65");
+  // }, []);
   return (
     <div className="container-fluid px-2 minHeight m-0">
       <form onSubmit={formik.handleSubmit}>

@@ -43,8 +43,8 @@ const CompanyRegistrationEdit = () => {
     cmpAddr: Yup.string().required("Address is required"),
     cmpCity: Yup.string().required("City is required"),
     cmpPincode: Yup.string().required("Pin Code is required"),
-    cmpTaxCode: Yup.string().required("Tax Code is required"),
-    headQuaterAddress: Yup.string().required("HeadQuater Address is required"),
+    // cmpTaxCode: Yup.string().required("Tax Code is required"),
+    // headQuaterAddress: Yup.string().required("HeadQuater Address is required"),
   });
 
   // useFormik hook for form handling
