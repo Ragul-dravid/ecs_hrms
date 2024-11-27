@@ -180,7 +180,7 @@ const Employee = () => {
                           </Link>
                           <DeleteModel
                             onSuccess={refreshData}
-                            path={`/employee/${data.id}`}
+                            path={`/emp-reg-details/${data.id}`}
                           />
                         </div>
                       </td>

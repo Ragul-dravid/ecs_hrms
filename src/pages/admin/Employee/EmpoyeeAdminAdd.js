@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import api from "../../../config/URL";
 import { toast } from "react-toastify";
-// import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import DepartmentAdd from "../Settings/Department/DepartmentAdd";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+// import DepartmentAdd from "../Settings/Department/DepartmentAdd";
 import departmentListByCompId from "../List_Apis/DepartmentListByCmpId";
 
 function EmployeeAdminAdd() {
@@ -13,10 +13,9 @@ function EmployeeAdminAdd() {
   const [departmentData, setDepartmentData] = useState(null);
   // console.log("departmentData:", departmentData);
   const [selectedIdType, setSelectedIdType] = useState("");
-  // const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
   const [loadIndicator, setLoadIndicators] = useState(false);
   const navigate = useNavigate();
-  // const roleName = localStorage.getItem("role");
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("*First name is required"),
@@ -27,7 +26,7 @@ function EmployeeAdminAdd() {
     email: Yup.string()
       .email("*Enter a valid email")
       .required("*Primary email is required"),
-    // password: Yup.string().required("*Password is required"),
+    password: Yup.string().required("*Password is required"),
     NRICFin: Yup.string().nullable(), // Optional field
     nationality: Yup.string().nullable(), // Optional field
     citizenship: Yup.string().nullable(), // Optional field
@@ -58,7 +57,7 @@ function EmployeeAdminAdd() {
       lastName: "",
       empPriPhNumber: "",
       email: "",
-      // password: "",
+      password: "",
       NRICFin: "",
       nationality: "",
       citizenship: "",
@@ -71,11 +70,10 @@ function EmployeeAdminAdd() {
       empType: "",
       noticePeriod: "",
       repManagerName: "",
-      // file: "",
       roleName: "",
       pan: "",
       basicSalary: "",
-      workingType:"",
+      workingType: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -87,14 +85,13 @@ function EmployeeAdminAdd() {
         formData.append("lastName", values.lastName);
         formData.append("empPriPhNumber", values.empPriPhNumber);
         formData.append("email", values.email);
-        // formData.append("password", values.password);
+        formData.append("password", values.password);
         formData.append("NRICFin", values.NRICFin);
         formData.append("basicSalary", values.basicSalary);
         formData.append("workingType", values.workingType);
         formData.append("NRICType", values.NRICType);
         formData.append("aadharNumber", values.aadharNumber);
         formData.append("empRegDeptId", values.empRegDeptId);
-        // formData.append("file", values.file);
         formData.append("proof", selectedIdType);
         formData.append("empDesignation", values.empDesignation);
         formData.append("empDateOfJoin", values.empDateOfJoin);
@@ -111,9 +108,20 @@ function EmployeeAdminAdd() {
           navigate("/employee");
         } else {
           toast.error(response.data.message);
+          console.log("log 1");
         }
       } catch (error) {
-        toast.error(error);
+        if (error.response) {
+          console.log("Error R:",error.response.status);
+          
+          if (error.response.status === 409) {
+            toast.warn(error.response.data.message || "Conflict error");
+          } else {
+            toast.error(error.response.data.message || "An error occurred");
+          }
+        } else {
+          toast.error("A network error occurred. Please try again.");
+        }
       } finally {
         setLoadIndicators(false);
       }
@@ -138,13 +146,13 @@ function EmployeeAdminAdd() {
     fetchData();
   }, []);
 
-  // const handleIdTypeChange = (event) => {
-  //   setSelectedIdType(event.target.value);
-  // };
+  const handleIdTypeChange = (event) => {
+    setSelectedIdType(event.target.value);
+  };
 
-  // const togglePasswordVisibility = () => {
-  //   setShowPassword(!showPassword);
-  // };
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div className="container-fluid px-2  minHeight m-0">
@@ -265,49 +273,50 @@ function EmployeeAdminAdd() {
                   )}
                 </div>
               </div>
-              {/* <div className="col-md-6 col-12 mb-3">
-              <div className="mb-2">
-                <label className="form-label">
-                  Primary Email Password <span className="text-danger">*</span>
-                </label>
-                <div className={`input-group mb-3`}>
-                  <input
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    className={`form-control form-control-sm ${
-                      formik.touched.password && formik.errors.password
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    {...formik.getFieldProps("password")}
-                    style={{
-                      borderRight: "none",
-                      borderTopRightRadius: "0px",
-                      borderBottomRightRadius: "0px",
-                    }}
-                  />
-                  <span
-                    className="input-group-text bg-white"
-                    id="basic-addon1"
-                    onClick={togglePasswordVisibility}
-                    style={{
-                      cursor: "pointer",
-                      borderRadius: "5px",
-                      borderLeft: "none",
-                      borderTopLeftRadius: "0px",
-                      borderBottomLeftRadius: "0px",
-                    }}
-                  >
-                    {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
-                  </span>
-                </div>
-                {formik.touched.password && formik.errors.password && (
-                  <div className="invalid-feedback">
-                    {formik.errors.password}
+              <div className="col-md-6 col-12 mb-3">
+                <div className="mb-2">
+                  <label className="form-label">
+                    Primary Email Password{" "}
+                    <span className="text-danger">*</span>
+                  </label>
+                  <div className={`input-group mb-3`}>
+                    <input
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      className={`form-control form-control-sm ${
+                        formik.touched.password && formik.errors.password
+                          ? "is-invalid"
+                          : ""
+                      }`}
+                      {...formik.getFieldProps("password")}
+                      style={{
+                        borderRight: "none",
+                        borderTopRightRadius: "0px",
+                        borderBottomRightRadius: "0px",
+                      }}
+                    />
+                    <span
+                      className="input-group-text bg-white"
+                      id="basic-addon1"
+                      onClick={togglePasswordVisibility}
+                      style={{
+                        cursor: "pointer",
+                        borderRadius: "5px",
+                        borderLeft: "none",
+                        borderTopLeftRadius: "0px",
+                        borderBottomLeftRadius: "0px",
+                      }}
+                    >
+                      {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
+                    </span>
                   </div>
-                )}
+                  {formik.touched.password && formik.errors.password && (
+                    <div className="invalid-feedback">
+                      {formik.errors.password}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div> */}
               <div className="col-md-6 col-12 mb-3 ">
                 <div className="mb-2">
                   <label className="form-label">
@@ -334,10 +343,10 @@ function EmployeeAdminAdd() {
               </div>
               <div className="col-md-6 col-12 mb-2">
                 <div className="d-flex justify-content-between align-items-center">
-                  <label className="form-label mb-0">
+                  <label className="form-label">
                     Department Name <span className="text-danger">*</span>
                   </label>
-                  <DepartmentAdd addDepartment={addDepartment} />
+                  {/* <DepartmentAdd addDepartment={addDepartment} /> */}
                 </div>
                 <div className="input-group mb-3">
                   <select
@@ -390,6 +399,31 @@ function EmployeeAdminAdd() {
                     formik.errors.empDesignation && (
                       <div className="invalid-feedback">
                         {formik.errors.empDesignation}
+                      </div>
+                    )}
+                </div>
+              </div>
+              <div className="col-md-6 col-12 mb-3 ">
+                <div className="mb-2">
+                  <label for="exampleFormControlInput1" className="form-label">
+                    Employee Date of Joining
+                    <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    name="empDateOfJoin"
+                    className={`form-control form-control-sm ${
+                      formik.touched.empDateOfJoin &&
+                      formik.errors.empDateOfJoin
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    {...formik.getFieldProps("empDateOfJoin")}
+                  />
+                  {formik.touched.empDateOfJoin &&
+                    formik.errors.empDateOfJoin && (
+                      <div className="invalid-feedback">
+                        {formik.errors.empDateOfJoin}
                       </div>
                     )}
                 </div>
@@ -598,31 +632,7 @@ function EmployeeAdminAdd() {
                   )}
                 </div>
               </div>
-              <div className="col-md-6 col-12 mb-3 ">
-                <div className="mb-2">
-                  <label for="exampleFormControlInput1" className="form-label">
-                    Employee Date of Joining
-                    <span className="text-danger">*</span>
-                  </label>
-                  <input
-                    type="date"
-                    name="empDateOfJoin"
-                    className={`form-control form-control-sm ${
-                      formik.touched.empDateOfJoin &&
-                      formik.errors.empDateOfJoin
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    {...formik.getFieldProps("empDateOfJoin")}
-                  />
-                  {formik.touched.empDateOfJoin &&
-                    formik.errors.empDateOfJoin && (
-                      <div className="invalid-feedback">
-                        {formik.errors.empDateOfJoin}
-                      </div>
-                    )}
-                </div>
-              </div>
+
               <div className="col-md-6 col-12 mb-2">
                 <label className="form-label">
                   Employee Type <span className="text-danger">*</span>
@@ -705,35 +715,6 @@ function EmployeeAdminAdd() {
                     )}
                 </div>
               </div>
-              {/* <div className="col-md-6 col-12 mb-2">
-              <label className="form-label">
-                Role <span className="text-danger">*</span>
-              </label>
-              <div className="input-group mb-3">
-                <select
-                  {...formik.getFieldProps("roleName")}
-                  className={`form-select form-select-sm  ${
-                    formik.touched.roleName && formik.errors.roleName
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                >
-                  <option selected></option>
-                  <option value="Employee">Employee</option>
-                  {departmentData &&
-                    departmentData.map((deptId) => (
-                      <option key={deptId.deptId} value={deptId.deptId}>
-                        {deptId.deptName}
-                      </option>
-                    ))}
-                </select>
-                {formik.touched.roleName && formik.errors.roleName && (
-                  <div className="invalid-feedback">
-                    {formik.errors.roleName}
-                  </div>
-                )}
-              </div>
-            </div> */}
             </div>
           </div>
         </div>
