@@ -64,18 +64,20 @@ const AttendanceAdd = () => {
     },
   });
 
+  const fetchEmployeeList = async () => {
+    try {
+      const employee = await api.get(`getEmpolyeeWithRole/${cmpId}`);
+      setEmpData(employee.data);
+      console.log("Employee:",employee.data);
+      return employee.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await api.get(`/emp-reg-details-with-id`);
-        setEmpData(response.data);
-      } catch (e) {
-        toast.error("Error fetching data: ", e?.response?.data?.message);
-      }
-    };
-
-    getData();
+    fetchEmployeeList();
   }, []);
+
   const handleStatuschange = (event) => {
     const status = event.target.value;
     formik.setFieldValue("attendanceStatus", status);
@@ -152,12 +154,11 @@ const AttendanceAdd = () => {
                   }`}
                   {...formik.getFieldProps("dailyAttendanceEmpId")}
                 >
-                  {/* Add a default option */}
-                  <option value="" selected></option>
-                  {empData &&
-                    empData.map((emp) => (
-                      <option key={emp.id} value={emp.id}>
-                        {`${emp.firstName} ${emp.lastName}`}
+                  <option selected></option>
+                   {Array.isArray(empData) &&
+                    empData.map((exitMgmtEmpId) => (
+                      <option key={exitMgmtEmpId.id} value={exitMgmtEmpId.id}>
+                        {exitMgmtEmpId.empName}
                       </option>
                     ))}
                 </select>

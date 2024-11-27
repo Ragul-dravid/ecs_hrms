@@ -20,7 +20,7 @@ const Attendance = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`daily-attendance-by-companyId/${cmpId}`);
+        const response = await api.get(`attendance-EmpName/${cmpId}`);
         setDatas(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -62,7 +62,7 @@ const Attendance = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get(`daily-attendance-by-companyId/${cmpId}`);
+      const response = await api.get(`attendance-EmpName/${cmpId}`);
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -160,12 +160,9 @@ const Attendance = () => {
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
                       <td className="text-center">
-                        {data.dailyAttendanceEmpId}
+                        {data.employeeId}
                       </td>
-                      <td className="text-center">{data.deductionName}</td>
-                      {/* <td className="text-center">
-                        {data.attendanceModeOfWorking}
-                      </td> */}
+                      <td className="text-center">{data.empName}</td>
                       <td className="text-center">
                         {" "}
                         {new Date(data.attendanceDate).toLocaleDateString()}
@@ -176,7 +173,7 @@ const Attendance = () => {
                       <td className="text-center">
                         <div className="gap-2">
                           <Link to={`/attendance/view/${data.attendanceId}`}>
-                            <button className="btn btn-sm  shadow-none border-none">
+                            <button className="btn btn-sm p-1 shadow-none border-none">
                               <HiOutlineEye />
                             </button>
                           </Link>
@@ -184,7 +181,7 @@ const Attendance = () => {
                             to={`/attendance/edit/${data.attendanceId}`}
                             className="px-2"
                           >
-                            <button className="btn btn-sm shadow-none border-none">
+                            <button className="btn btn-sm p-1 shadow-none border-none">
                               <BiEditAlt />
                             </button>
                           </Link>

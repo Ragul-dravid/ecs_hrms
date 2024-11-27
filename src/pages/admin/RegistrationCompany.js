@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../config/URL";
 import toast from "react-hot-toast";
 
 const RegistrationCompany = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = id;
+  const cmpId = localStorage.getItem("cmpId");
   const [logoPreview, setLogoPreview] = useState(null);
+  const [data, setData] = useState([]);
+  console.log("Cmp Data:", data);
+
   const [profileImgPreview, setProfileImgPreview] = useState(null);
 
   // Validation schema for form fields
@@ -28,7 +28,6 @@ const RegistrationCompany = () => {
     headQuaterAddress: Yup.string().required("HeadQuater Address is required"),
   });
 
-  // useFormik hook for form handling
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -40,11 +39,13 @@ const RegistrationCompany = () => {
       cmpPincode: "",
       cmpTaxCode: "",
       startDate: "",
+      salaryCalculationDate: "",
+      salaryStartDate: "",
       companyType: "",
       headQuaterAddress: "",
       branchLocation: [],
       logoFile: null,
-      profileImgFile: null,
+      fileAttachment: null,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -64,7 +65,7 @@ const RegistrationCompany = () => {
       formDatas.append("headQuaterAddress", values.headQuaterAddress);
       formDatas.append("branchLocation", values.branchLocation);
       formDatas.append("logoFile", values.logoFile);
-      formDatas.append("profileImgFile", values.profileImgFile);
+      formDatas.append("fileAttachment", values.fileAttachment);
       try {
         const response = await api.put(`/company-reg/${cmpId}`, formDatas);
         if (response.status === 200) {
@@ -84,23 +85,17 @@ const RegistrationCompany = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/company-reg/${id}`);
+        const response = await api.get(`/company-reg/${cmpId}`);
         formik.setValues(response.data); // Load the data into the form
+        setData(response.data);
       } catch (e) {
         toast.error("Error fetching data: ", e?.response?.data?.message);
       }
     };
 
-    const handleFileChange = (event) => {
-      const { name, files } = event.target;
-      if (files.length) {
-        formik.setFieldValue(name, files[0]);
-      }
-    };
-
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [cmpId]);
 
   // Handle file change and preview generation
   const handleFileChange = (event, setPreview) => {
@@ -128,11 +123,6 @@ const RegistrationCompany = () => {
               </div>
               <div className="col-auto">
                 <div className="hstack gap-2 justify-content-end">
-                  {/* <Link to="/companyRegistration">
-                    <button type="button" className="btn btn-sm btn-light">
-                      <span>Back</span>
-                    </button>
-                  </Link> */}
                   <button
                     type="submit"
                     className="btn btn-sm btn-primary"
@@ -310,6 +300,7 @@ const RegistrationCompany = () => {
                   </div>
                 )}
               </div>
+
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Tax Code<span className="text-danger">*</span>
@@ -349,6 +340,50 @@ const RegistrationCompany = () => {
                     {formik.errors.startDate}
                   </div>
                 )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Salary Calculation Date<span className="text-danger">*</span>
+                </label>
+                <input
+                  type="date"
+                  name="salaryCalculationDate"
+                  className={`form-control form-control-sm ${
+                    formik.touched.salaryCalculationDate &&
+                    formik.errors.salaryCalculationDate
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("salaryCalculationDate")}
+                />
+                {formik.touched.salaryCalculationDate &&
+                  formik.errors.salaryCalculationDate && (
+                    <div className="invalid-feedback">
+                      {formik.errors.salaryCalculationDate}
+                    </div>
+                  )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Salary Date<span className="text-danger">*</span>
+                </label>
+                <input
+                  type="date"
+                  name="salaryStartDate"
+                  className={`form-control form-control-sm ${
+                    formik.touched.salaryStartDate &&
+                    formik.errors.salaryStartDate
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("salaryStartDate")}
+                />
+                {formik.touched.salaryStartDate &&
+                  formik.errors.salaryStartDate && (
+                    <div className="invalid-feedback">
+                      {formik.errors.salaryStartDate}
+                    </div>
+                  )}
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
@@ -393,69 +428,6 @@ const RegistrationCompany = () => {
                   )}
               </div>
 
-              {/* logoFile Field */}
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">Logo</label>
-                <input
-                  type="file"
-                  name="logoFile"
-                  accept="image/*"
-                  className={`form-control form-control-sm ${
-                    formik.touched.logoFile && formik.errors.logoFile
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  onChange={(e) => handleFileChange(e, setLogoPreview)}
-                />
-                {formik.touched.logoFile && formik.errors.logoFile && (
-                  <div className="invalid-feedback">
-                    {formik.errors.logoFile}
-                  </div>
-                )}
-                {/* Logo Preview */}
-                {logoPreview && (
-                  <div className="mt-2">
-                    <img
-                      src={logoPreview}
-                      alt="Logo Preview"
-                      style={{ maxWidth: "100%", height: "auto" }}
-                    />
-                  </div>
-                )}
-              </div>
-
-              {/* Profile Image Field */}
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">Profile Image</label>
-                <input
-                  type="file"
-                  name="profileImgFile"
-                  accept="image/*"
-                  className={`form-control form-control-sm ${
-                    formik.touched.profileImgFile &&
-                    formik.errors.profileImgFile
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  onChange={(e) => handleFileChange(e, setProfileImgPreview)}
-                />
-                {formik.touched.profileImgFile &&
-                  formik.errors.profileImgFile && (
-                    <div className="invalid-feedback">
-                      {formik.errors.profileImgFile}
-                    </div>
-                  )}
-                {/* Profile Image Preview */}
-                {profileImgPreview && (
-                  <div className="mt-2">
-                    <img
-                      src={profileImgPreview}
-                      alt="Profile Image Preview"
-                      style={{ maxWidth: "100%", height: "auto" }}
-                    />
-                  </div>
-                )}
-              </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Branch Location<span className="text-danger">*</span>
@@ -477,6 +449,87 @@ const RegistrationCompany = () => {
                       {formik.errors.branchLocation}
                     </div>
                   )}
+              </div>
+
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">Company Logo</label>
+                <input
+                  type="file"
+                  name="logoFile"
+                  accept="image/*"
+                  className={`form-control form-control-sm ${
+                    formik.touched.logoFile && formik.errors.logoFile
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  onChange={(e) => handleFileChange(e, setLogoPreview)}
+                />
+                {formik.touched.logoFile && formik.errors.logoFile && (
+                  <div className="invalid-feedback">
+                    {formik.errors.logoFile}
+                  </div>
+                )}
+                {logoPreview ? (
+                  <div className="mt-2">
+                    <img
+                      src={data.logo || logoPreview}
+                      alt="Logo Preview"
+                      style={{ maxWidth: "20%", height: "auto" }}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <div className="mt-2">
+                      <img
+                        src={data.logo || logoPreview}
+                        alt="Logo Preview"
+                        style={{ maxWidth: "20%", height: "auto" }}
+                      />
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">Profile Image</label>
+                <input
+                  type="file"
+                  name="fileAttachment"
+                  accept="image/*"
+                  className={`form-control form-control-sm ${
+                    formik.touched.fileAttachment &&
+                    formik.errors.fileAttachment
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  onChange={(e) => handleFileChange(e, setProfileImgPreview)}
+                />
+                {formik.touched.fileAttachment &&
+                  formik.errors.fileAttachment && (
+                    <div className="invalid-feedback">
+                      {formik.errors.fileAttachment}
+                    </div>
+                  )}
+
+                {profileImgPreview ? (
+                  <div className="mt-2">
+                    <img
+                      src={profileImgPreview}
+                      alt="Profile Image Preview"
+                      style={{ maxWidth: "20%", height: "auto" }}
+                    />
+                  </div>
+                ) : (
+                  <>
+                    <div className="mt-2">
+                      <img
+                        src={data.fileAttachment}
+                        alt="Profile Image Preview"
+                        style={{ maxWidth: "20%", height: "auto" }}
+                      />
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

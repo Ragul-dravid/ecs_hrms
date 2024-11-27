@@ -123,9 +123,11 @@ const CompanyRegistrationEdit = () => {
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
   useEffect(() => {
     formik.setFieldValue("countryCode", "65");
   }, []);
+
   return (
     <div className="container-fluid px-2 minHeight m-0">
       <form onSubmit={formik.handleSubmit}>
@@ -356,6 +358,7 @@ const CompanyRegistrationEdit = () => {
                   </div>
                 )}
               </div>
+
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Tax Code<span className="text-danger">*</span>
@@ -371,9 +374,10 @@ const CompanyRegistrationEdit = () => {
                   <div className="invalid-feedback">{formik.errors.cmpTaxCode}</div>
                 )}
               </div>
+
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  Start Date<span className="text-danger">*</span>
+                  Company Start Date<span className="text-danger">*</span>
                 </label>
                 <input
                   type="date"

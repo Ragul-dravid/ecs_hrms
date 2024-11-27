@@ -560,3 +560,15 @@ svg polygon {
   visibility: visible;
   opacity: 1;
 }
+
+.custom-close-btn {
+  color: #007bff; /* Set your desired color */
+  font-size: 0.8rem; /* Set small size */
+  box-shadow: none !important; /* Remove shadow */
+  background-color: transparent; /* Ensure background is transparent */
+  border: none; /* Remove any border */
+}
+
+.custom-close-btn:hover {
+  color: #0056b3; /* Optional hover effect */
+}

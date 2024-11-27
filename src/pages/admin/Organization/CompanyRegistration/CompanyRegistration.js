@@ -175,14 +175,14 @@ const CompanyRegistration = () => {
                               <HiOutlineEye />
                             </button>
                           </Link>
-                          <Link
+                          {/* <Link
                             to={`/companyRegistration/edit/${data.cmpId}`}
                             className="px-2"
                           >
                             <button className="btn btn-sm p-1 shadow-none border-none">
                               <BiEditAlt />
                             </button>
-                          </Link>
+                          </Link> */}
                           <DeleteModel
                             onSuccess={refreshData}
                             path={`/company-reg/${data.cmpId}`}
