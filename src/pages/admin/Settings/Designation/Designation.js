@@ -21,7 +21,7 @@ const Designation = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/designation-by-company/${cmpId}`);
+        const response = await api.get(`/emp-desig-companyId/${cmpId}`);
         setDatas(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -156,7 +156,7 @@ const Designation = () => {
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
                       <td className="text-center">{data.deptName}</td>
-                      <td className="text-center">{data.designation}</td>
+                      <td className="text-center">{data.empDesignation}</td>
                       <td className="text-center">
                         <div className="gap-2">
                           <Link to={`/designation/view/${data.id}`}>

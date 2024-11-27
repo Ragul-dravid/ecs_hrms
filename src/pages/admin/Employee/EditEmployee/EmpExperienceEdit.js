@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useState } from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
@@ -115,6 +115,20 @@ const EmpExperienceEdit = forwardRef(
         setIsFresher(false);
       }
     };
+    useEffect(() => {
+      const getData = async () => {
+        try {
+          const response = await api.get(`/emp-experience/${formData.empId}`);
+          // formik.setValues(response.data);
+          // formik.setValues(response.data)
+          console.log("Exp response", response.data);
+        } catch (error) {
+          // console.log(error.message);
+          toast.error("Error Fetching Data ", error.message);
+        }
+      };
+      getData();
+    }, []);
 
     useImperativeHandle(ref, () => ({
       experience: () => {

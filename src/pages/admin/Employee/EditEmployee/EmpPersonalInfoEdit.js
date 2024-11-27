@@ -99,7 +99,7 @@ const EmpPersonalInfoEdit = forwardRef(
           formDatas.append("NRICType", values.NRICType || "");
           formDatas.append("aadharNumber", values.aadharNumber);
           formDatas.append("empRegDeptId", values.empRegDeptId);
-          formDatas.append("file", values.file || "");
+          // formDatas.append("file", values.file || "");
           formDatas.append("proof", selectedIdType);
           formDatas.append("empDesignation", values.empDesignation);
           formDatas.append("empDateOfJoin", values.empDateOfJoin);

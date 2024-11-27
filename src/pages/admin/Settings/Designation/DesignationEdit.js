@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../../config/URL";
@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import departmentListByCompId from "../../List_Apis/DepartmentListByCmpId";
 
 const DesignationEdit = () => {
+  const {id} = useParams();
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
   const cmpId = localStorage.getItem("cmpId");
@@ -36,6 +37,7 @@ const DesignationEdit = () => {
   const formik = useFormik({
     initialValues: {
       desigCmpId: cmpId,
+      desigId:id,
       empDesignation: "",
       desigDeptId: "",
       desingDescription: "",
@@ -47,8 +49,8 @@ const DesignationEdit = () => {
     onSubmit: async (values) => {
       setLoadIndicator(true);
       try {
-        const response = await api.post(`/emp-desig-details`, values);
-        if (response.status === 201) {
+        const response = await api.put(`/emp-desig-details/${id}`, values);
+        if (response.status === 200) {
           toast.success(response.data.message);
           navigate("/designation");
         } else {
@@ -75,6 +77,18 @@ const DesignationEdit = () => {
     fetchData();
   }, []);
 
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     try {
+  //       const response = await api.get(`/emp-desig-details/${id}`);
+  //       formik.setValues(response.data);
+  //     } catch (e) {
+  //       toast.error("Error fetching data: ", e?.response?.data?.message);
+  //     }
+  //   };
+  //   getData();
+  // }, [id]);
+
 
   return (
     <div className="container-fluid px-2 minHeight m-0">
@@ -87,7 +101,7 @@ const DesignationEdit = () => {
             <div className="row align-items-center">
               <div className="col">
                 <div className="d-flex align-items-center gap-4">
-                  <h1 className="h4 ls-tight headingColor">Add Designation</h1>
+                  <h1 className="h4 ls-tight headingColor">Edit Designation</h1>
                 </div>
               </div>
               <div className="col-auto">
@@ -108,7 +122,7 @@ const DesignationEdit = () => {
                         aria-hidden="true"
                       ></span>
                     ) : (
-                      <span>Save</span>
+                      <span>Update</span>
                     )}
                   </button>
                 </div>

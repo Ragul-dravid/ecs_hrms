@@ -70,11 +70,15 @@ const EmpContactDetailsEdit = forwardRef(
 
         try {
           const response = isUpdate
-            ? await api.put(`/personal-emergency-contacts/${formData.empId}`, values, {
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              })
+            ? await api.put(
+                `/personal-emergency-contacts/${formData.empId}`,
+                values,
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              )
             : await api.post("/emp-personal-emergency", values, {
                 headers: {
                   "Content-Type": "application/json",
