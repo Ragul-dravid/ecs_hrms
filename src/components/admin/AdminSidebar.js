@@ -142,13 +142,33 @@ function AdminSidebar({ handleLogout }) {
                         <></>
                       )}
                     </li>
-                    <li>
+                    {/* <li>
                       <NavLink className="nav-link" to="/companyCompliance">
                         <span style={{ display: "flex", alignItems: "center" }}>
                           <BsBullseye
                             style={{ fontSize: "xx-small", marginRight: "8px" }}
                           />
                           Company Compliance
+                        </span>
+                      </NavLink>
+                    </li> */}
+                      <li>
+                      <NavLink className="nav-link" to="/departments">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Departments
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/designation">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                         Designation
                         </span>
                       </NavLink>
                     </li>
@@ -256,26 +276,7 @@ function AdminSidebar({ handleLogout }) {
                 </div>
                 {activeSubmenu === "Settings" && (
                   <ul className="list-unstyled p-0">
-                      <li>
-                      <NavLink className="nav-link" to="/departments">
-                        <span style={{ display: "flex", alignItems: "center" }}>
-                          <BsBullseye
-                            style={{ fontSize: "xx-small", marginRight: "8px" }}
-                          />
-                          Departments
-                        </span>
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink className="nav-link" to="/designation">
-                        <span style={{ display: "flex", alignItems: "center" }}>
-                          <BsBullseye
-                            style={{ fontSize: "xx-small", marginRight: "8px" }}
-                          />
-                         Designation
-                        </span>
-                      </NavLink>
-                    </li>
+                    
                     <li>
                       <NavLink className="nav-link" to="/roles">
                         <span style={{ display: "flex", alignItems: "center" }}>

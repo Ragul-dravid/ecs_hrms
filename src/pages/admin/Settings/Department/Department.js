@@ -11,6 +11,7 @@ import { BiEditAlt } from "react-icons/bi";
 import { HiOutlineEye } from "react-icons/hi";
 import DepartmentAdd from "./DepartmentAdd";
 import DepartmentCAdd from "./DepartmentCAdd";
+import DepartmentCEdit from "./DepartmentEdit";
 
 const Department = () => {
   const tableRef = useRef(null);
@@ -149,19 +150,12 @@ const Department = () => {
                       {/* <td className="text-center">{data.deptDesc}</td> */}
                       <td className="text-center">
                         <div className="gap-2">
-                          <Link to={`/departments/view/${data.deptId}`}>
+                          {/* <Link to={`/departments/view/${data.deptId}`}>
                             <button className="btn btn-sm p-1 shadow-none border-none">
                               <HiOutlineEye />
                             </button>
-                          </Link>
-                          <Link
-                            to={`/departments/edit/${data.deptId}`}
-                            className="px-2"
-                          >
-                            <button className="btn btn-sm p-1 shadow-none border-none">
-                              <BiEditAlt />
-                            </button>
-                          </Link>
+                          </Link> */}
+                          <DepartmentCEdit id={data.deptId} onSuccess={refreshData}/>
                           <DeleteModel
                             onSuccess={refreshData}
                             path={`/department/${data.deptId}`}
