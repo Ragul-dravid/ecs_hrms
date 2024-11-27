@@ -1,12 +1,15 @@
-import React, { forwardRef, useImperativeHandle } from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FaPlus, FaRegTrashAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { CiCirclePlus } from "react-icons/ci";
+import api from "../../../../config/URL";
 
 const EmpQualificationDetailsEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
+    const [perDetailsId, setPerDetailsId] = useState(null);
+
     const validationSchema = Yup.object().shape({
       empQualificationEntities: Yup.array().of(
         Yup.object().shape({
@@ -59,18 +62,38 @@ const EmpQualificationDetailsEdit = forwardRef(
       onSubmit: async (values) => {
         console.log("Employee Qualification & Skill Details:", values);
         setLoadIndicators(true);
+        console.log("Contact Details:", values);
+        setLoadIndicators(true);
+        values.perDetailsEmpId = formData.empId;
+
         try {
-          // Mock API call
-          // const response = await api.post(`/addEmpQualification`, values);
-          // if (response.status === 201) {
-          //   toast.success(response.data.message);
-          //   setFormData((prev) => ({ ...prev, ...values }));
-          handleNext();
-          // } else {
-          //   toast.error(response.data.message);
-          // }
+          const formDatas = new FormData();
+          const response =
+          perDetailsId !== null
+            ? await api.put(
+                `/personal-emergency-contacts/${perDetailsId}`,
+                formDatas,
+                {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                  },
+                }
+              )
+            : await api.post("/emp-personal-emergency", formDatas, {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              });
+
+          if (response.status === 200) {
+            setFormData((prev) => ({ ...prev, ...values }));
+            toast.success(response.data.message);
+            handleNext();
+          } else {
+            toast.error(response.data.message);
+          }
         } catch (error) {
-          toast.error("An error occurred while submitting the form");
+          toast.error(error.message || "An error occurred");
         } finally {
           setLoadIndicators(false);
         }
@@ -119,6 +142,19 @@ const EmpQualificationDetailsEdit = forwardRef(
       updatedEntities[entityIndex].empQualificationSkils.splice(skillIndex, 1);
       formik.setFieldValue("empQualificationEntities", updatedEntities);
     };
+
+    useEffect(() => {
+      const getData = async () => {
+        try {
+          const response = await api.get(`emp-reg-details/${formData.empId}`);
+          console.log(response.data)
+        } catch (error) {
+          toast.error("Error Fetching Data: " + error.message);
+        }
+      };
+    
+      getData();
+    }, []);
 
     useImperativeHandle(ref, () => ({
       qualificationDetails: formik.handleSubmit,
