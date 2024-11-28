@@ -7,6 +7,7 @@ import { IoMdArrowBack } from "react-icons/io";
 // import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 import api from "../../config/URL";
+import { FiAlertTriangle } from "react-icons/fi";
 
 function Register() {
   // const [showPassword, setShowPassword] = useState(false);
@@ -96,11 +97,19 @@ function Register() {
         if (response.status === 201) {
           toast.success(response.data.message);
           navigate("/");
-        } else {
-          toast.error(response.data.message);
+        } else if (response.status === 409) {
+          toast(response.data.message, {
+            icon: <FiAlertTriangle className="text-warning" />,
+          });
         }
       } catch (e) {
-        toast.error("Error fetching data: " + e?.response?.data?.message);
+        if (e.response.status === 409) {
+          toast(e.response.data.message, {
+            icon: <FiAlertTriangle className="text-warning" />,
+          });
+        } else {
+          toast.error(e?.response?.data?.message);
+        }
       } finally {
         setLoadIndicator(false);
       }

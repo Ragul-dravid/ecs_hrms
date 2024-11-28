@@ -19,9 +19,9 @@ const EmpPersonalInfoEdit = forwardRef(
     const [departmentData, setDepartmentData] = useState(null);
     console.log("FormData:", formData);
     const [selectedIdType, setSelectedIdType] = useState("");
-    const [showPassword, setShowPassword] = React.useState(false);
+    // const [showPassword, setShowPassword] = React.useState(false);
     const roleName = localStorage.getItem("role");
-    console.log("object",formData.empId)
+    console.log("object", formData.empId);
 
     const validationSchema = Yup.object({
       firstName: Yup.string().required("*First name is required"),
@@ -152,11 +152,12 @@ const EmpPersonalInfoEdit = forwardRef(
         try {
           const response = await api.get(`emp-reg-details/${formData.empId}`);
           // formik.setValues(response.data);
+          setSelectedIdType(response.data.nationality);
           formik.setValues({
             ...response.data,
             proof: response.data.proof === "AADHAR" || "NRIC",
           });
-          console.log("123",response.data.empPersonalDetailsEntities)
+          console.log("123", response.data.empPersonalDetailsEntities);
           console.log("Employee response", response.data);
         } catch (error) {
           // console.log(error.message);
@@ -375,26 +376,29 @@ const EmpPersonalInfoEdit = forwardRef(
                 Nationality <span className="text-danger">*</span>
               </label>
               <select
-                type="text"
                 name="nationality"
-                className={`form-select form-select-sm  ${
+                className={`form-select form-select-sm ${
                   formik.touched.nationality && formik.errors.nationality
                     ? "is-invalid"
                     : ""
                 }`}
                 value={formik.values.nationality}
                 onChange={(e) => {
-                  formik.handleChange(e);
-                  if (e.target.value === "INDIAN") {
-                    setSelectedIdType("AADHAR");
-                  } else if (e.target.value === "SINGAPORE") {
-                    setSelectedIdType("NRIC");
+                  const selectedValue = e.target.value;
+                  formik.setFieldValue("nationality", selectedValue);
+                  if (selectedValue === "INDIAN") {
+                    setSelectedIdType("INDIAN");
+                    formik.setFieldValue("NRICFin", "");
+                    formik.setFieldValue("NRICType", "");
+                  } else if (selectedValue === "SINGAPORE") {
+                    setSelectedIdType("SINGAPORE");
+                    formik.setFieldValue("aadharNumber", "");
+                    formik.setFieldValue("pan", "");
                   }
                 }}
               >
-                <option selected />
+                <option value="">Select Nationality</option>
                 <option value="INDIAN">INDIAN</option>
-                {/* <option value="MUSLIM">MUSLIM</option> */}
                 <option value="SINGAPORE">SINGAPORE</option>
               </select>
               {formik.touched.nationality && formik.errors.nationality && (
@@ -403,6 +407,7 @@ const EmpPersonalInfoEdit = forwardRef(
                 </div>
               )}
             </div>
+
             <div className="col-md-6 col-12 mb-3">
               <label className="form-label">
                 Citizenship <span className="text-danger">*</span>
@@ -427,7 +432,7 @@ const EmpPersonalInfoEdit = forwardRef(
               )}
             </div>
             <div>
-              {selectedIdType === "NRIC" && (
+              {selectedIdType === "SINGAPORE" && (
                 <div className="row">
                   <div className="col-md-6 col-12 mb-3 ">
                     <div className="mb-2">
@@ -492,7 +497,7 @@ const EmpPersonalInfoEdit = forwardRef(
                   </div>
                 </div>
               )}
-              {selectedIdType === "AADHAR" && (
+              {selectedIdType === "INDIAN" && (
                 <div className="row">
                   <div className="col-md-6 col-12 mb-3 ">
                     <div className="mb-2">

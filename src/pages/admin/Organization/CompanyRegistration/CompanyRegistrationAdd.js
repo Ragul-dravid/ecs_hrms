@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import api from "../../../../config/URL";
 import toast from "react-hot-toast";
 import ReactTagInput from "@pathofdev/react-tag-input";
+import { FiAlertTriangle } from "react-icons/fi";
 
 const CompanyRegistrationAdd = () => {
   const { id } = useParams();
@@ -95,7 +96,13 @@ const CompanyRegistrationAdd = () => {
           toast.error(response.data.message);
         }
       } catch (e) {
-        toast.error("Error fetching data: " + e?.response?.data?.message);
+        if (e.response.status === 409) {
+          toast(e.response.data.message, {
+            icon: <FiAlertTriangle className="text-warning" />,
+          });
+        } else {
+          toast.error(e?.response?.data?.message);
+        }
       } finally {
         setLoadIndicator(false);
       }

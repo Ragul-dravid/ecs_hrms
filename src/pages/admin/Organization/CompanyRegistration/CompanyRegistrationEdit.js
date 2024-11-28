@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../../config/URL";
 import toast from "react-hot-toast";
+import { FiAlertTriangle } from "react-icons/fi";
 
 const CompanyRegistrationEdit = () => {
   const { id } = useParams();
@@ -96,7 +97,13 @@ const CompanyRegistrationEdit = () => {
           toast.error(response.data.message);
         }
       } catch (e) {
-        toast.error("Error updating data: ", e?.response?.data?.message);
+        if (e.response.status === 409) {
+          toast(e.response.data.message, {
+            icon: <FiAlertTriangle className="text-warning" />,
+          });
+        } else {
+          toast.error(e?.response?.data?.message);
+        }
       } finally {
         setLoadIndicator(false);
       }

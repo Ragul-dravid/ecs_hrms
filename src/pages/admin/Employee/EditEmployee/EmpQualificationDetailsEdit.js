@@ -1,4 +1,9 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FaPlus, FaRegTrashAlt } from "react-icons/fa";
@@ -9,6 +14,7 @@ import api from "../../../../config/URL";
 const EmpQualificationDetailsEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const [perDetailsId, setPerDetailsId] = useState(null);
+    const cmpId = localStorage.getItem("cmpId");
 
     const validationSchema = Yup.object().shape({
       empQualificationEntities: Yup.array().of(
@@ -68,22 +74,48 @@ const EmpQualificationDetailsEdit = forwardRef(
 
         try {
           const formDatas = new FormData();
+          const formattedQualifications = values.empQualificationEntities.map(
+            (qualification) => ({
+              qualType: qualification.qualType,
+              qualName: qualification.qualName,
+              qualInstitution: qualification.qualInstitution,
+              qualModeOfStudy: qualification.qualModeOfStudy,
+              qualStartDate: qualification.qualStartDate,
+              study: qualification.fieldOfStudy,
+              percentage: qualification.percentage,
+              courseComplitionYear: qualification.qualificationDate,
+              certificate: "Degree",
+              qualEmpId: formData.empId,
+              cmpId: cmpId,
+              skills: qualification.empQualificationSkils.map((skill) => ({
+                employeeSkill: skill.employeeSkill,
+                skillDescription: skill.skillDescription,
+              })),
+            })
+          );
+
+          formDatas.append(
+            "qualifications",
+            JSON.stringify(formattedQualifications)
+          );
+          values.empQualificationEntities.forEach((qualification, index) => {
+            if (qualification.certificate) {
+              formDatas.append(`attachments`, qualification.certificate);
+            }
+          });
+
           const response =
-          perDetailsId !== null
-            ? await api.put(
-                `/personal-emergency-contacts/${perDetailsId}`,
-                formDatas,
-                {
+            perDetailsId !== null
+              ? await api.post(`/createQualificationAndSkills`, formDatas, {
                   headers: {
                     "Content-Type": "multipart/form-data",
                   },
-                }
-              )
-            : await api.post("/emp-personal-emergency", formDatas, {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              });
+                })
+              : await api.post("/createQualificationAndSkills", formDatas, {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                  },
+                });
 
           if (response.status === 200) {
             setFormData((prev) => ({ ...prev, ...values }));
@@ -147,12 +179,13 @@ const EmpQualificationDetailsEdit = forwardRef(
       const getData = async () => {
         try {
           const response = await api.get(`emp-reg-details/${formData.empId}`);
-          console.log(response.data)
+          setPerDetailsId(response.data)
+          console.log(response.data);
         } catch (error) {
           toast.error("Error Fetching Data: " + error.message);
         }
       };
-    
+
       getData();
     }, []);
 
@@ -462,8 +495,13 @@ const EmpQualificationDetailsEdit = forwardRef(
                     type="file"
                     className="form-control form-control-sm"
                     name={`empQualificationEntities[${entityIndex}].certificate`}
-                    value={entity.certificate}
-                    onChange={formik.handleChange}
+                    onChange={(event) => {
+                      const file = event.target.files[0];
+                      formik.setFieldValue(
+                        `empQualificationEntities[${entityIndex}].certificate`,
+                        file
+                      );
+                    }}
                     onBlur={formik.handleBlur}
                   />
                   {formik.touched.empQualificationEntities?.[entityIndex]
@@ -481,6 +519,7 @@ const EmpQualificationDetailsEdit = forwardRef(
                       </div>
                     )}
                 </div>
+
                 <div className="d-flex justify-content-between align-items-center my-4">
                   <p className="headColor mt-3">Skill</p>
                   <button

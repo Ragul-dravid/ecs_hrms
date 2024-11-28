@@ -13,11 +13,11 @@ import api from "../../../../config/URL";
 const validationSchema = Yup.object().shape({
   bankName: Yup.string().required("*Bank name is required"),
   brName: Yup.string().required("*Branch name is required"),
-  IFSCCode: Yup.string().required("*IFSC code is required"),
+  ifsccode: Yup.string().required("*IFSC code is required"),
   accNumber: Yup.string().required("*Account number is required"),
-  accountHolderName: Yup.string().required("*Account Holder Name is required"),
+  accHoldName: Yup.string().required("*Account Holder Name is required"),
   accountType: Yup.string().required("*Account Type is required"),
-  bankAddress: Yup.string().required("*Bank Address is required"),
+  // bankAddress: Yup.string().required("*Bank Address is required"),
   // bankPhoneNumber: Yup.string().required("*Bank Phone Number is required"),
 });
 
@@ -42,10 +42,10 @@ const EmpBankAccountEdit = forwardRef(
       initialValues: {
         bankName: formData.bankName || "",
         brName: formData.brName || "",
-        IFSCCode: formData.IFSCCode || "",
+        ifsccode: formData.ifsccode || "",
         accNumber: formData.accNumber || "",
-        accountHolderName: formData.accountHolderName || "",
-        bankAddress: formData.bankAddress || "",
+        accHoldName: formData.accHoldName || "",
+        // bankAddress: formData.bankAddress || "",
         // bankPhoneNumber: formData.bankPhoneNumber || "",
         accountType: formData.accountType || "",
       },
@@ -54,23 +54,21 @@ const EmpBankAccountEdit = forwardRef(
         console.log("data", values)
         setLoadIndicators(true);
         values.bankAccDetailsEmpId = formData.empId;
-        navigate("/employee");
-        setLoadIndicators(false);
-        // console.log("Body Values is ", values);
-        // try {
-        //   const response = await api.post(`/addEmpBankAccDetails`, values);
-        //   if (response.status === 201) {
-        //     toast.success(response.data.message);
-        //     setFormData((prv) => ({ ...prv, ...values }));
-        //     navigate("/employee/view")
-        //   } else {
-        //     toast.error(response.data.message);
-        //   }
-        // } catch (error) {
-        //   toast.error(error);
-        // } finally {
-        //   setLoadIndicators(false);
-        // }
+        
+        try {
+          const response = await api.post(`/emp-bank-acc-details`, values);
+          if (response.status === 201) {
+            toast.success(response.data.message);
+            navigate("/employee");
+            setFormData((prv) => ({ ...prv, ...values }));
+          } else {
+            toast.error(response.data.message);
+          }
+        } catch (error) {
+          toast.error(error);
+        } finally {
+          setLoadIndicators(false);
+        }
       },
     });
 
@@ -119,17 +117,17 @@ const EmpBankAccountEdit = forwardRef(
                       <input
                         className="form-control form-control-sm "
                         type="text"
-                        name="IFSCCode"
+                        name="ifsccode"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.IFSCCode}
+                        value={formik.values.ifsccode}
                       />
-                      {formik.touched.IFSCCode && formik.errors.IFSCCode && (
+                      {formik.touched.ifsccode && formik.errors.ifsccode && (
                         <div
                           className="text-danger"
                           style={{ fontSize: ".875em" }}
                         >
-                          <small>{formik.errors.IFSCCode}</small>
+                          <small>{formik.errors.ifsccode}</small>
                         </div>
                       )}
                     </div>
@@ -186,24 +184,24 @@ const EmpBankAccountEdit = forwardRef(
                       </lable>
                       <br />
                       <input
-                        name="accountHolderName"
+                        name="accHoldName"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        value={formik.values.accountHolderName}
+                        value={formik.values.accHoldName}
                         className="form-control form-control-sm "
                         type="text"
                       />
-                      {formik.touched.accountHolderName &&
-                        formik.errors.accountHolderName && (
+                      {formik.touched.accHoldName &&
+                        formik.errors.accHoldName && (
                           <div
                             className="text-danger"
                             style={{ fontSize: ".875em" }}
                           >
-                            <small>{formik.errors.accountHolderName}</small>
+                            <small>{formik.errors.accHoldName}</small>
                           </div>
                         )}
                     </div>
-                    <div className="text-start mt-4">
+                    {/* <div className="text-start mt-4">
                       <lable className="form-label">
                         Bank Address
                         <span className="text-danger">*</span>
@@ -225,7 +223,7 @@ const EmpBankAccountEdit = forwardRef(
                             <small>{formik.errors.bankAddress}</small>
                           </div>
                         )}
-                    </div>
+                    </div> */}
                   </div>
                   <div className="col-lg-6 col-md-6 col-12 px-5">
                     <div className="text-start mt-2">
