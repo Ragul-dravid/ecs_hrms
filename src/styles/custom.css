@@ -572,3 +572,11 @@ svg polygon {
 .custom-close-btn:hover {
   color: #0056b3; /* Optional hover effect */
 }
+
+.bg-fc td {
+  background-color: white !important;
+}
+
+.bg-fc td:hover {
+  background-color: whitesmoke !important;
+}

@@ -13647,11 +13647,11 @@ fieldset:disabled .btn {
 
 .table-light {
   --x-table-bg: #e7eaf0;
-  --x-table-striped-bg: #dbdee4;
+  --x-table-striped-bg: #ffffff;
   --x-table-striped-color: #000;
   --x-table-active-bg: #d0d3d8;
   --x-table-active-color: #000;
-  --x-table-hover-bg: #e2e5eb;
+  --x-table-hover-bg: #ffffff;
   --x-table-hover-color: #000;
   color: #000;
   border-color: #d0d3d8;
@@ -13667,6 +13667,18 @@ fieldset:disabled .btn {
   --x-table-hover-color: #fff;
   color: #fff;
   border-color: #2d3041;
+}
+
+.table-permission {
+  --x-table-bg: #ccf6ff;
+  --x-table-striped-bg: #ffffff;
+  --x-table-striped-color: #000;
+  --x-table-active-bg: #f2f2f2;
+  --x-table-active-color: #000;
+  --x-table-hover-bg: #f2f2f2;
+  --x-table-hover-color: #f2f2f2;
+  color: #000;
+  border-color: #f2f2f2;
 }
 
 .table-responsive {

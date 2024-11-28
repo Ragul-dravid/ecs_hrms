@@ -39,12 +39,12 @@ function DepartmentCEdit({id, onSuccess}) {
     onSubmit: async (values) => {
       setLoadIndicator(true);
       try {
-        const response = await api.post(`/department/${id}`, values, {
+        const response = await api.put(`/department/${id}`, values, {
           headers: {
             "Content-Type": "application/json",
           },
         });
-        if (response.status === 201) {
+        if (response.status === 200) {
           onSuccess();
           handleClose();
           toast.success(response.data.message);

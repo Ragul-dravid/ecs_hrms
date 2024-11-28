@@ -5,24 +5,22 @@ import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import api from "../../../../config/URL";
-import { Hourglass } from "react-loader-spinner";
+import { PropagateLoader } from 'react-spinners';
 import DeleteModel from "../../../../components/admin/DeleteModel";
 import { BiEditAlt } from "react-icons/bi";
-import { HiOutlineEye } from "react-icons/hi2";
-import RolesAdd from "./RolesAdd";
-import { PiPlusLight } from "react-icons/pi";
-import AssignRole from "./AssignRole";
+import { HiOutlineEye } from "react-icons/hi";
 
 const Roles = () => {
   const tableRef = useRef(null);
   // const storedScreens = JSON.parse(localStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const cmpId = localStorage.getItem("cmpId");
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("/company-compliance");
+        const response = await api.get("/role");
         setDatas(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -64,7 +62,7 @@ const Roles = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("/company-compliance");
+      const response = await api.get("/role");
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -84,10 +82,12 @@ const Roles = () => {
     <div>
       {loading ? (
         <div className="loader-container">
-          <Hourglass
+          <PropagateLoader
             visible={true}
+            color="#a070ff"
             height="50"
             width="50"
+            size={10}
             ariaLabel="hourglass-loading"
             wrapperStyle={{}}
             wrapperClass=""
@@ -96,34 +96,37 @@ const Roles = () => {
         </div>
       ) : (
         <div className="container-fluid px-2 minHeight">
-          <div
-            className="card shadow border-0 mb-2 top-header"
-            style={{ borderRadius: "0" }}
-          >
+          <div className="card shadow border-0 mb-2 top-header"
+            style={{ borderRadius: "0" }}>
             <div className="container-fluid py-4">
               <div className="row align-items-center justify-content-between ">
                 <div className="col">
                   <div className="d-flex align-items-center gap-4">
                     <h1 className="h4 ls-tight headingColor ">
-                      Role
+                      Company Roles
                     </h1>
                   </div>
                 </div>
                 <div className="col-auto">
                   <div className="hstack gap-2 justify-content-end">
-                    {/* <span cla>
+                    <Link to="/roles/add">
+                      <button
+                        type="submit"
+                        className="btn btn-sm btn-button btn-primary"
+                      >
+                        <span cla>
                           Add <FaPlus className="pb-1" />
-                        </span> */}
-                    <RolesAdd />
+                        </span>
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div
-            className="card shadow border-0 my-2"
-            style={{ borderRadius: "0" }}
-          >
+
+          <div className="card shadow border-0 my-2"
+            style={{ borderRadius: "0" }}>
             <div className="table-responsive p-2 minHeight">
               <table ref={tableRef} className="display table ">
                 <thead className="thead-light">
@@ -133,9 +136,6 @@ const Roles = () => {
                     </th>
                     <th scope="col" className="text-center">
                       Role Name
-                    </th>
-                    <th scope="col" className="text-center">
-                      Discription
                     </th>
                     <th scope="col" className="text-center">
                       Status
@@ -150,28 +150,33 @@ const Roles = () => {
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
                       <td className="text-center">{data.roleName}</td>
-                      <td className="text-center">{data.roleDesc}</td>
                       <td className="text-center">
                         {data.roleStatus === "Approve" ? (
                           <span className="badge-approved">Approved</span>
+                        ) : data.roleStatus === "Rejected" ? (
+                          <span className="badge-rejected">Rejected</span>
                         ) : (
-                          <span className="badge-pending">Active</span>
+                          <span className="badge-pending">Pending</span>
                         )}
                       </td>
-                      <td className="">
-                        <div className="d-flex justify-content-center gap-2">
-                          <AssignRole />
+                      <td className="text-center">
+                        <div className="gap-2">
+                          <Link to={`/roles/view/${data.id}`}>
+                            <button className="btn btn-sm p-1 shadow-none border-none">
+                              <HiOutlineEye />
+                            </button>
+                          </Link>
                           <Link
-                            to={`/companyCompliance/edit/${data.cmpId}`}
+                            to={`/roles/edit/${data.id}`}
                             className="px-2"
                           >
-                            <button className="btn p-1 shadow-none border-none">
+                            <button className="btn btn-sm p-1 shadow-none border-none">
                               <BiEditAlt />
                             </button>
                           </Link>
                           <DeleteModel
                             onSuccess={refreshData}
-                            path={`/company-compliance/${data.cmpId}`}
+                            path={`/role/${data.id}`}
                           />
                         </div>
                       </td>

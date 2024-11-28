@@ -1,80 +1,115 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../../config/URL";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
-const RolesEdit = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
+const validationSchema = Yup.object().shape({});
+
+function RolesEdit() {
+  const [role, setRole] = useState("1");
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = localStorage.getItem("cmpId");
 
-  const validationSchema = Yup.object({
-    cmpName: Yup.string().required("*Company Name is required"),
-    cmpEmail: Yup.string().email("Invalid email format").required("*Email is required"),
-    cmpPhNumber: Yup.string().matches(/^[0-9]{10}$/, "Invalid phone number")
-      .required("*Phone number is required"),
-    cmpRegNumber: Yup.string().required("*Registration Number is required"),
-    cmpTaxCode: Yup.string().required("*Tax Code is required"),
-    cmpAddr: Yup.string().required("*Company Address is required"),
-    cmpCity: Yup.string().required("*City is required"),
-    cmpPincode: Yup.string().matches(/^[0-9]{6}$/, "Invalid Pin Code").required("*Pincode is required"),
-    cmpRoleId: Yup.string().required("*Role is required")
-  });
-
-  // useFormik hook for form handling
   const formik = useFormik({
     initialValues: {
-      cmpId: cmpId,
-      cmpName: "",
-      cmpEmail: "",
-      cmpPhNumber: "",
-      cmpRegNumber: "",
-      cmpTaxCode: "",
-      cmpAddr: "",
-      cmpCity: "",
-      cmpPincode: "",
-      cmpRoleId: ""
+      courseIndex: true,
+      courseRead: true,
+      courseCreate: true,
+      courseUpdate: true,
+      courseDelete: true,
+      classIndex: true,
+      classRead: true,
+      classCreate: true,
+      classUpdate: true,
+      classDelete: true,
+      levelIndex: true,
+      levelRead: true,
+      levelCreate: true,
+      levelUpdate: true,
+      levelDelete: true,
+      subjectIndex: true,
+      subjectRead: true,
+      subjectCreate: true,
+      subjectUpdate: true,
+      subjectDelete: true,
+      curriculumIndex: true,
+      curriculumRead: true,
+      curriculumCreate: true,
+      curriculumUpdate: true,
+      curriculumDelete: true,
+      courseFeesIndex: true,
+      courseFeesRead: true,
+      courseFeesCreate: true,
+      courseFeesUpdate: true,
+      courseFeesDelete: true,
+      courseDepositFeesIndex: true,
+      courseDepositFeesRead: true,
+      courseDepositFeesCreate: true,
+      courseDepositFeesUpdate: true,
+      courseDepositFeesDelete: true,
+      curriculumOutlineIndex: true,
+      curriculumOutlineRead: true,
+      curriculumOutlineCreate: true,
+      curriculumOutlineUpdate: true,
+      curriculumOutlineDelete: true,
+      
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      setLoadIndicator(true);
+      console.log("Api Data:", values);
       try {
-        const response = await api.put(`/company-reg/${id}`, values);
+        const response = await api.put(`/updateRoleInfo/${role}`, values, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         if (response.status === 200) {
           toast.success(response.data.message);
-          navigate("/roles");
         } else {
           toast.error(response.data.message);
         }
-      } catch (e) {
-        toast.error("Error updating data: ", e?.response?.data?.message);
-      } finally {
-        setLoadIndicator(false);
+      } catch (error) {
+        toast.error(error);
       }
     },
   });
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await api.get(`/company-reg/${id}`);
-        formik.setValues(response.data); // Load the data into the form
-      } catch (e) {
-        toast.error("Error fetching data: ", e?.response?.data?.message);
-      }
-    };
-
-    getData();
+    getRoleData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [role]);
+
+  const handleCheckboxChange = (fieldName) => {
+    return (event) => {
+      formik.setFieldValue(fieldName, event.target.checked);
+    };
+  };
+
+  const getRoleData = async () => {
+    try {
+      const response = await api.get(`/getAllRoleInfoById/${role}`);
+      formik.setValues(response.data);
+      // console.log(response.data, "getroleData");
+    } catch (error) {
+      console.error("Error fetching role data:", error);
+    }
+  };
 
   return (
-    <div className="container-fluid px-2 minHeight m-0">
-      <form onSubmit={formik.handleSubmit}>
-        <div className="card shadow border-0 mb-2 top-header" style={{ borderRadius: "0" }}>
+    <div className="container-fluid">
+      <form
+        onSubmit={formik.handleSubmit}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !formik.isSubmitting) {
+            e.preventDefault(); // Prevent default form submission
+          }
+        }}
+      >
+        <div
+          className="card shadow border-0 mb-2 top-header"
+          style={{ borderRadius: "0" }}
+        >
           <div className="container-fluid py-4">
             <div className="row align-items-center">
               <div className="col">
@@ -89,11 +124,18 @@ const RolesEdit = () => {
                       <span>Back</span>
                     </button>
                   </Link>
-                  <button type="submit" className="btn btn-sm btn-primary" disabled={loading}>
+                  <button
+                    type="submit"
+                    className="btn btn-sm btn-primary"
+                    disabled={loading}
+                  >
                     {loading ? (
-                      <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                      <span
+                        className="spinner-border spinner-border-sm"
+                        aria-hidden="true"
+                      ></span>
                     ) : (
-                      <span>Save</span>
+                      <span>Update</span>
                     )}
                   </button>
                 </div>
@@ -101,160 +143,751 @@ const RolesEdit = () => {
             </div>
           </div>
         </div>
-
-        <div className="card shadow border-0 my-2" style={{ borderRadius: "0" }}>
-          <div className="container mb-5">
-            <div className="row py-4">
-              {/* Company Name */}
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Company Name <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="cmpName"
-                  className={`form-control form-control-sm ${formik.touched.cmpName && formik.errors.cmpName ? "is-invalid" : ""}`}
-                  {...formik.getFieldProps("cmpName")}
-                />
-                {formik.touched.cmpName && formik.errors.cmpName && (
-                  <div className="invalid-feedback">{formik.errors.cmpName}</div>
-                )}
+        <div className="card shadow border-0 my-2 p-3">
+          <div className="row">
+            <div className="col-md-6 col-12 mb-3">
+              <label className="form-label">
+                Role Name <span className="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                name="roleStatus"
+                className={`form-control form-control-sm ${
+                  formik.touched.roleStatus && formik.errors.roleStatus
+                    ? "is-invalid"
+                    : ""
+                }`}
+                {...formik.getFieldProps("roleStatus")}
+              />
+              {formik.touched.roleStatus && formik.errors.roleStatus && (
+                <div className="invalid-feedback">
+                  {formik.errors.roleStatus}
+                </div>
+              )}
+            </div>
+            <div className="col-md-6 col-12 mb-3">
+              <label className="form-label">
+                Status <span className="text-danger">*</span>
+              </label>
+              <select
+                name="roleStatus"
+                className={`form-select form-select-sm ${
+                  formik.touched.roleStatus && formik.errors.roleStatus
+                    ? "is-invalid"
+                    : ""
+                }`}
+                {...formik.getFieldProps("roleStatus")}
+              >
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+              {formik.touched.roleStatus && formik.errors.roleStatus && (
+                <div className="invalid-feedback">
+                  {formik.errors.roleStatus}
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="row">
+            <div className="clo-12">
+              <div className="table-responsive">
+                <table class="table table-permission table-striped table-hover">
+                  <thead className="thead-light">
+                    <tr>
+                      <th scope="col">Module Permission</th>
+                      <th scope="col">Index</th>
+                      <th scope="col">Read</th>
+                      <th scope="col">Create</th>
+                      <th scope="col">Update</th>
+                      <th scope="col">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="bg-fc">
+                      <td>
+                        <p style={{ marginLeft: "30px", marginBottom: "0px" }}>
+                          Company Registration
+                        </p>
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="courseIndex"
+                          checked={formik.values.courseIndex}
+                          onChange={handleCheckboxChange(`courseIndex`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="courseRead"
+                          checked={formik.values.courseRead}
+                          onChange={handleCheckboxChange(`courseRead`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="courseCreate"
+                          checked={formik.values.courseCreate}
+                          onChange={handleCheckboxChange(`courseCreate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="courseUpdate"
+                          checked={formik.values.courseUpdate}
+                          onChange={handleCheckboxChange(`courseUpdate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="courseDelete"
+                          checked={formik.values.courseDelete}
+                          onChange={handleCheckboxChange(`courseDelete`)}
+                        />
+                      </td>
+                    </tr>
+                    <tr className="bg-fc">
+                      <td>
+                        <p style={{ marginLeft: "30px", marginBottom: "0px" }}>
+                          Department
+                        </p>
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="classIndex"
+                          checked={formik.values.classIndex}
+                          onChange={handleCheckboxChange(`classIndex`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="classRead"
+                          checked={formik.values.classRead}
+                          onChange={handleCheckboxChange(`classRead`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="classCreate"
+                          checked={formik.values.classCreate}
+                          onChange={handleCheckboxChange(`classCreate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="classUpdate"
+                          checked={formik.values.classUpdate}
+                          onChange={handleCheckboxChange(`classUpdate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="classDelete"
+                          checked={formik.values.classDelete}
+                          onChange={handleCheckboxChange(`classDelete`)}
+                        />
+                      </td>
+                    </tr>
+                    <tr className="bg-fc">
+                      <td>
+                        <p style={{ marginLeft: "30px", marginBottom: "0px" }}>
+                          Designation
+                        </p>
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="levelIndex"
+                          checked={formik.values.levelIndex}
+                          onChange={handleCheckboxChange(`levelIndex`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="levelRead"
+                          checked={formik.values.levelRead}
+                          onChange={handleCheckboxChange(`levelRead`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="levelCreate"
+                          checked={formik.values.levelCreate}
+                          onChange={handleCheckboxChange(`levelCreate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="levelUpdate"
+                          checked={formik.values.levelUpdate}
+                          onChange={handleCheckboxChange(`levelUpdate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="levelDelete"
+                          checked={formik.values.levelDelete}
+                          onChange={handleCheckboxChange(`levelDelete`)}
+                        />
+                      </td>
+                    </tr>
+                    <tr className="bg-fc">
+                      <td>
+                        <p style={{ marginLeft: "30px", marginBottom: "0px" }}>
+                          HR Policy
+                        </p>
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="curriculumIndex"
+                          checked={formik.values.curriculumIndex}
+                          onChange={handleCheckboxChange(`curriculumIndex`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="curriculumRead"
+                          checked={formik.values.curriculumRead}
+                          onChange={handleCheckboxChange(`curriculumRead`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="curriculumCreate"
+                          checked={formik.values.curriculumCreate}
+                          onChange={handleCheckboxChange(`curriculumCreate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="curriculumUpdate"
+                          checked={formik.values.curriculumUpdate}
+                          onChange={handleCheckboxChange(`curriculumUpdate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="curriculumDelete"
+                          checked={formik.values.curriculumDelete}
+                          onChange={handleCheckboxChange(`curriculumDelete`)}
+                        />
+                      </td>
+                    </tr>
+                    <tr className="bg-fc">
+                      <td>
+                        <p style={{ marginLeft: "30px", marginBottom: "0px" }}>
+                          Exit Management
+                        </p>
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectIndex"
+                          checked={formik.values.subjectIndex}
+                          onChange={handleCheckboxChange(`subjectIndex`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectRead"
+                          checked={formik.values.subjectRead}
+                          onChange={handleCheckboxChange(`subjectRead`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectCreate"
+                          checked={formik.values.subjectCreate}
+                          onChange={handleCheckboxChange(`subjectCreate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectUpdate"
+                          checked={formik.values.subjectUpdate}
+                          onChange={handleCheckboxChange(`subjectUpdate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectDelete"
+                          checked={formik.values.subjectDelete}
+                          onChange={handleCheckboxChange(`subjectDelete`)}
+                        />
+                      </td>
+                    </tr>
+                    <tr  className="bg-fc">
+                      <td>
+                        <p style={{ marginLeft: "30px", marginBottom: "0px" }}>
+                          Employee Info
+                        </p>
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectIndex"
+                          checked={formik.values.subjectIndex}
+                          onChange={handleCheckboxChange(`subjectIndex`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectRead"
+                          checked={formik.values.subjectRead}
+                          onChange={handleCheckboxChange(`subjectRead`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectCreate"
+                          checked={formik.values.subjectCreate}
+                          onChange={handleCheckboxChange(`subjectCreate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectUpdate"
+                          checked={formik.values.subjectUpdate}
+                          onChange={handleCheckboxChange(`subjectUpdate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectDelete"
+                          checked={formik.values.subjectDelete}
+                          onChange={handleCheckboxChange(`subjectDelete`)}
+                        />
+                      </td>
+                    </tr>
+                    <tr className="bg-fc">
+                      <td>
+                        <p style={{ marginLeft: "30px", marginBottom: "0px" }}>
+                          Holiday
+                        </p>
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectIndex"
+                          checked={formik.values.subjectIndex}
+                          onChange={handleCheckboxChange(`subjectIndex`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectRead"
+                          checked={formik.values.subjectRead}
+                          onChange={handleCheckboxChange(`subjectRead`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectCreate"
+                          checked={formik.values.subjectCreate}
+                          onChange={handleCheckboxChange(`subjectCreate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectUpdate"
+                          checked={formik.values.subjectUpdate}
+                          onChange={handleCheckboxChange(`subjectUpdate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectDelete"
+                          checked={formik.values.subjectDelete}
+                          onChange={handleCheckboxChange(`subjectDelete`)}
+                        />
+                      </td>
+                    </tr>
+                    <tr className="bg-fc">
+                      <td>
+                        <p style={{ marginLeft: "30px", marginBottom: "0px" }}>
+                          Leave
+                        </p>
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectIndex"
+                          checked={formik.values.subjectIndex}
+                          onChange={handleCheckboxChange(`subjectIndex`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectRead"
+                          checked={formik.values.subjectRead}
+                          onChange={handleCheckboxChange(`subjectRead`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectCreate"
+                          checked={formik.values.subjectCreate}
+                          onChange={handleCheckboxChange(`subjectCreate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectUpdate"
+                          checked={formik.values.subjectUpdate}
+                          onChange={handleCheckboxChange(`subjectUpdate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectDelete"
+                          checked={formik.values.subjectDelete}
+                          onChange={handleCheckboxChange(`subjectDelete`)}
+                        />
+                      </td>
+                    </tr>
+                    <tr className="bg-fc">
+                      <td>
+                        <p style={{ marginLeft: "30px", marginBottom: "0px" }}>
+                          Attendance
+                        </p>
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectIndex"
+                          checked={formik.values.subjectIndex}
+                          onChange={handleCheckboxChange(`subjectIndex`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectRead"
+                          checked={formik.values.subjectRead}
+                          onChange={handleCheckboxChange(`subjectRead`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectCreate"
+                          checked={formik.values.subjectCreate}
+                          onChange={handleCheckboxChange(`subjectCreate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectUpdate"
+                          checked={formik.values.subjectUpdate}
+                          onChange={handleCheckboxChange(`subjectUpdate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectDelete"
+                          checked={formik.values.subjectDelete}
+                          onChange={handleCheckboxChange(`subjectDelete`)}
+                        />
+                      </td>
+                    </tr>
+                    <tr className="bg-fc">
+                      <td>
+                        <p style={{ marginLeft: "30px", marginBottom: "0px" }}>
+                          Deduction
+                        </p>
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectIndex"
+                          checked={formik.values.subjectIndex}
+                          onChange={handleCheckboxChange(`subjectIndex`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectRead"
+                          checked={formik.values.subjectRead}
+                          onChange={handleCheckboxChange(`subjectRead`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectCreate"
+                          checked={formik.values.subjectCreate}
+                          onChange={handleCheckboxChange(`subjectCreate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectUpdate"
+                          checked={formik.values.subjectUpdate}
+                          onChange={handleCheckboxChange(`subjectUpdate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectDelete"
+                          checked={formik.values.subjectDelete}
+                          onChange={handleCheckboxChange(`subjectDelete`)}
+                        />
+                      </td>
+                    </tr>
+                    <tr className="bg-fc">
+                      <td>
+                        <p style={{ marginLeft: "30px", marginBottom: "0px" }}>
+                          Payroll
+                        </p>
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectIndex"
+                          checked={formik.values.subjectIndex}
+                          onChange={handleCheckboxChange(`subjectIndex`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectRead"
+                          checked={formik.values.subjectRead}
+                          onChange={handleCheckboxChange(`subjectRead`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectCreate"
+                          checked={formik.values.subjectCreate}
+                          onChange={handleCheckboxChange(`subjectCreate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectUpdate"
+                          checked={formik.values.subjectUpdate}
+                          onChange={handleCheckboxChange(`subjectUpdate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectDelete"
+                          checked={formik.values.subjectDelete}
+                          onChange={handleCheckboxChange(`subjectDelete`)}
+                        />
+                      </td>
+                    </tr>
+                    <tr className="bg-fc">
+                      <td>
+                        <p style={{ marginLeft: "30px", marginBottom: "0px" }}>
+                          Payslip
+                        </p>
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectIndex"
+                          checked={formik.values.subjectIndex}
+                          onChange={handleCheckboxChange(`subjectIndex`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectRead"
+                          checked={formik.values.subjectRead}
+                          onChange={handleCheckboxChange(`subjectRead`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectCreate"
+                          checked={formik.values.subjectCreate}
+                          onChange={handleCheckboxChange(`subjectCreate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectUpdate"
+                          checked={formik.values.subjectUpdate}
+                          onChange={handleCheckboxChange(`subjectUpdate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectDelete"
+                          checked={formik.values.subjectDelete}
+                          onChange={handleCheckboxChange(`subjectDelete`)}
+                        />
+                      </td>
+                    </tr>
+                    <tr className="bg-fc">
+                      <td>
+                        <p style={{ marginLeft: "30px", marginBottom: "0px" }}>
+                          Settings
+                        </p>
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectIndex"
+                          checked={formik.values.subjectIndex}
+                          onChange={handleCheckboxChange(`subjectIndex`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectRead"
+                          checked={formik.values.subjectRead}
+                          onChange={handleCheckboxChange(`subjectRead`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectCreate"
+                          checked={formik.values.subjectCreate}
+                          onChange={handleCheckboxChange(`subjectCreate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectUpdate"
+                          checked={formik.values.subjectUpdate}
+                          onChange={handleCheckboxChange(`subjectUpdate`)}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="subjectDelete"
+                          checked={formik.values.subjectDelete}
+                          onChange={handleCheckboxChange(`subjectDelete`)}
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-
-              {/* Company Email */}
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Company Email <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="email"
-                  name="cmpEmail"
-                  className={`form-control form-control-sm ${formik.touched.cmpEmail && formik.errors.cmpEmail ? "is-invalid" : ""}`}
-                  {...formik.getFieldProps("cmpEmail")}
-                />
-                {formik.touched.cmpEmail && formik.errors.cmpEmail && (
-                  <div className="invalid-feedback">{formik.errors.cmpEmail}</div>
-                )}
-              </div>
-
-              {/* Phone Number */}
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Phone Number <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="cmpPhNumber"
-                  className={`form-control form-control-sm ${formik.touched.cmpPhNumber && formik.errors.cmpPhNumber ? "is-invalid" : ""}`}
-                  {...formik.getFieldProps("cmpPhNumber")}
-                />
-                {formik.touched.cmpPhNumber && formik.errors.cmpPhNumber && (
-                  <div className="invalid-feedback">{formik.errors.cmpPhNumber}</div>
-                )}
-              </div>
-
-              {/* Registration Number */}
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Registration Number <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="cmpRegNumber"
-                  className={`form-control form-control-sm ${formik.touched.cmpRegNumber && formik.errors.cmpRegNumber ? "is-invalid" : ""}`}
-                  {...formik.getFieldProps("cmpRegNumber")}
-                />
-                {formik.touched.cmpRegNumber && formik.errors.cmpRegNumber && (
-                  <div className="invalid-feedback">{formik.errors.cmpRegNumber}</div>
-                )}
-              </div>
-
-              {/* Tax Code */}
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Tax Code <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="cmpTaxCode"
-                  className={`form-control form-control-sm ${formik.touched.cmpTaxCode && formik.errors.cmpTaxCode ? "is-invalid" : ""}`}
-                  {...formik.getFieldProps("cmpTaxCode")}
-                />
-                {formik.touched.cmpTaxCode && formik.errors.cmpTaxCode && (
-                  <div className="invalid-feedback">{formik.errors.cmpTaxCode}</div>
-                )}
-              </div>
-
-              {/* Address */}
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Company Address <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="cmpAddr"
-                  className={`form-control form-control-sm ${formik.touched.cmpAddr && formik.errors.cmpAddr ? "is-invalid" : ""}`}
-                  {...formik.getFieldProps("cmpAddr")}
-                />
-                {formik.touched.cmpAddr && formik.errors.cmpAddr && (
-                  <div className="invalid-feedback">{formik.errors.cmpAddr}</div>
-                )}
-              </div>
-
-              {/* City */}
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  City <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="cmpCity"
-                  className={`form-control form-control-sm ${formik.touched.cmpCity && formik.errors.cmpCity ? "is-invalid" : ""}`}
-                  {...formik.getFieldProps("cmpCity")}
-                />
-                {formik.touched.cmpCity && formik.errors.cmpCity && (
-                  <div className="invalid-feedback">{formik.errors.cmpCity}</div>
-                )}
-              </div>
-
-              {/* Pincode */}
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Pincode <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="cmpPincode"
-                  className={`form-control form-control-sm ${formik.touched.cmpPincode && formik.errors.cmpPincode ? "is-invalid" : ""}`}
-                  {...formik.getFieldProps("cmpPincode")}
-                />
-                {formik.touched.cmpPincode && formik.errors.cmpPincode && (
-                  <div className="invalid-feedback">{formik.errors.cmpPincode}</div>
-                )}
-              </div>
-
-              {/* Role */}
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Role <span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="cmpRoleId"
-                  className={`form-control form-control-sm ${formik.touched.cmpRoleId && formik.errors.cmpRoleId ? "is-invalid" : ""}`}
-                  {...formik.getFieldProps("cmpRoleId")}
-                />
-                {formik.touched.cmpRoleId && formik.errors.cmpRoleId && (
-                  <div className="invalid-feedback">{formik.errors.cmpRoleId}</div>
-                )}
-              </div>
-
             </div>
           </div>
         </div>
       </form>
     </div>
   );
-};
+}
 
 export default RolesEdit;
