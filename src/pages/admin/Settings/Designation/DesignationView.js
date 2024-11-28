@@ -13,7 +13,7 @@ const DesignationView = () => {
     const getData = async () => {
       setLoading(true); // Change this to true to show loader while fetching data
       try {
-        const response = await api.get(`/department/${id}`);
+        const response = await api.get(`/emp-desig-details/${id}`);
         setData(response.data);
       } catch (e) {
         toast.error("Error fetching data: ", e?.response?.data?.message);
@@ -54,13 +54,13 @@ const DesignationView = () => {
                 <div className="col">
                   <div className="d-flex align-items-center gap-4">
                     <h1 className="h4 ls-tight headingColor">
-                      View Department
+                      View Designation
                     </h1>
                   </div>
                 </div>
                 <div className="col-auto">
                   <div className="hstack gap-2 justify-content-start">
-                    <Link to="/departments">
+                    <Link to="/designation">
                       <button type="submit" className="btn btn-sm btn-light">
                         <span>Back</span>
                       </button>
@@ -71,7 +71,6 @@ const DesignationView = () => {
             </div>
           </div>
 
-          {/* Card for displaying company details */}
           <div
             className="card shadow border-0 mb-2 minHeight"
             style={{ borderRadius: "0" }}
@@ -79,26 +78,68 @@ const DesignationView = () => {
             <div className="container">
               <div className="row mt-2 p-3">
 
-                {/* Department Name */}
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
                       <p className="text-sm"><b>Department Name</b></p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {data.deptName || ""}</p>
+                      <p className="text-muted text-sm">: {data.deptId || ""}</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Department Description */}
-                <div className="col-md-12 col-12">
+                <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
-                      <p className="text-sm"><b>Department Description</b></p>
+                      <p className="text-sm"><b>Designation Name</b></p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {data.deptDesc || ""}</p>
+                      <p className="text-muted text-sm">: {data.empDesignation || ""}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm"><b>Medical Leave</b></p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.medicalLeave || ""}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm"><b>Annual Leave</b></p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.annualLeave || ""}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm"><b>Other Leave</b></p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.otherLeave || ""}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-6 col-12">
+                  <div className="row mb-3">
+                    <div className="col-6 d-flex justify-content-start align-items-center">
+                      <p className="text-sm"><b>Designation Description</b></p>
+                    </div>
+                    <div className="col-6">
+                      <p className="text-muted text-sm">: {data.description || ""}</p>
                     </div>
                   </div>
                 </div>

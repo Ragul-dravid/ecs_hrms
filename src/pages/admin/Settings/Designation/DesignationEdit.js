@@ -17,7 +17,7 @@ const DesignationEdit = () => {
     empDesignation: Yup.string()
       .required("*Designation is required.")
       .max(100, "*Designation must not exceed 100 characters."),
-    desigDeptId: Yup.string()
+    deptId: Yup.string()
       .required("*Department is required."),
     annualLeave: Yup.number()
       .required("*Annual Leave is required.")
@@ -39,8 +39,8 @@ const DesignationEdit = () => {
       desigCmpId: cmpId,
       desigId:id,
       empDesignation: "",
-      desigDeptId: "",
-      desingDescription: "",
+      deptId: "",
+      description: "",
       otherLeave: "",
       medicalLeave: "",
       annualLeave: "",
@@ -77,17 +77,17 @@ const DesignationEdit = () => {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     try {
-  //       const response = await api.get(`/emp-desig-details/${id}`);
-  //       formik.setValues(response.data);
-  //     } catch (e) {
-  //       toast.error("Error fetching data: ", e?.response?.data?.message);
-  //     }
-  //   };
-  //   getData();
-  // }, [id]);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`/emp-desig-details/${id}`);
+        formik.setValues(response.data);
+      } catch (e) {
+        toast.error("Error fetching data: ", e?.response?.data?.message);
+      }
+    };
+    getData();
+  }, [id]);
 
 
   return (
@@ -143,9 +143,9 @@ const DesignationEdit = () => {
                 </label>
                 <div className="input-group mb-3">
                   <select
-                    {...formik.getFieldProps("desigDeptId")}
+                    {...formik.getFieldProps("deptId")}
                     className={`form-select form-select-sm  ${
-                      formik.touched.desigDeptId && formik.errors.desigDeptId
+                      formik.touched.deptId && formik.errors.deptId
                         ? "is-invalid"
                         : ""
                     }`}
@@ -158,10 +158,10 @@ const DesignationEdit = () => {
                         </option>
                       ))}
                   </select>
-                  {formik.touched.desigDeptId &&
-                    formik.errors.desigDeptId && (
+                  {formik.touched.deptId &&
+                    formik.errors.deptId && (
                       <div className="invalid-feedback">
-                        {formik.errors.desigDeptId}
+                        {formik.errors.deptId}
                       </div>
                     )}
                 </div>
@@ -254,17 +254,17 @@ const DesignationEdit = () => {
                 </label>
                 <textarea
                   type="text"
-                  name="desingDescription"
+                  name="description"
                   className={`form-control form-control-sm ${
-                    formik.touched.desingDescription && formik.errors.desingDescription
+                    formik.touched.description && formik.errors.description
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("desingDescription")}
+                  {...formik.getFieldProps("description")}
                 />
-                {formik.touched.desingDescription && formik.errors.desingDescription && (
+                {formik.touched.description && formik.errors.description && (
                   <div className="invalid-feedback">
-                    {formik.errors.desingDescription}
+                    {formik.errors.description}
                   </div>
                 )}
               </div>

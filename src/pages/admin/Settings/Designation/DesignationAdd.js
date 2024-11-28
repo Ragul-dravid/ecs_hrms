@@ -10,13 +10,14 @@ const DesignationAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
   const cmpId = localStorage.getItem("cmpId");
+  const createdBy = localStorage.getItem("userName");
   const [departmentData, setDepartmentData] = useState(null);
 
   const validationSchema = Yup.object({
     empDesignation: Yup.string()
       .required("*Designation is required.")
       .max(100, "*Designation must not exceed 100 characters."),
-    desigDeptId: Yup.string()
+    deptId: Yup.string()
       .required("*Department is required."),
     annualLeave: Yup.number()
       .required("*Annual Leave is required.")
@@ -37,11 +38,13 @@ const DesignationAdd = () => {
     initialValues: {
       desigCmpId: cmpId,
       empDesignation: "",
-      desigDeptId: "",
-      desingDescription: "",
+      deptId: "",
+      description: "",
       otherLeave: "",
       medicalLeave: "",
       annualLeave: "",
+      createdBy:createdBy,
+      createdDate:""
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -129,9 +132,9 @@ const DesignationAdd = () => {
                 </label>
                 <div className="input-group mb-3">
                   <select
-                    {...formik.getFieldProps("desigDeptId")}
+                    {...formik.getFieldProps("deptId")}
                     className={`form-select form-select-sm  ${
-                      formik.touched.desigDeptId && formik.errors.desigDeptId
+                      formik.touched.deptId && formik.errors.deptId
                         ? "is-invalid"
                         : ""
                     }`}
@@ -144,10 +147,10 @@ const DesignationAdd = () => {
                         </option>
                       ))}
                   </select>
-                  {formik.touched.desigDeptId &&
-                    formik.errors.desigDeptId && (
+                  {formik.touched.deptId &&
+                    formik.errors.deptId && (
                       <div className="invalid-feedback">
-                        {formik.errors.desigDeptId}
+                        {formik.errors.deptId}
                       </div>
                     )}
                 </div>
@@ -240,17 +243,17 @@ const DesignationAdd = () => {
                 </label>
                 <textarea
                   type="text"
-                  name="desingDescription"
+                  name="description"
                   className={`form-control form-control-sm ${
-                    formik.touched.desingDescription && formik.errors.desingDescription
+                    formik.touched.description && formik.errors.description
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("desingDescription")}
+                  {...formik.getFieldProps("description")}
                 />
-                {formik.touched.desingDescription && formik.errors.desingDescription && (
+                {formik.touched.description && formik.errors.description && (
                   <div className="invalid-feedback">
-                    {formik.errors.desingDescription}
+                    {formik.errors.description}
                   </div>
                 )}
               </div>

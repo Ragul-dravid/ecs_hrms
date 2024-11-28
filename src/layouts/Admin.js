@@ -64,7 +64,6 @@ import RolesEdit from "../pages/admin/Settings/Roles/RolesEdit.js";
 import RolesView from "../pages/admin/Settings/Roles/RolesView.js";
 import ScrollToTop from "../pages/ScrollToTop.js";
 import Designation from "../pages/admin/Settings/Designation/Designation.js";
-import DesignationCAdd from "../pages/admin/Settings/Designation/DesignationCAdd.js";
 import DesignationEdit from "../pages/admin/Settings/Designation/DesignationEdit.js";
 import DesignationView from "../pages/admin/Settings/Designation/DesignationView.js";
 import DesignationAdd from "../pages/admin/Settings/Designation/DesignationAdd.js";
