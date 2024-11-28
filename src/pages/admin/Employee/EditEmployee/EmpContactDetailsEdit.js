@@ -13,6 +13,8 @@ import api from "../../../../config/URL";
 
 const EmpContactDetailsEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
+    const [perDetailsId, setPerDetailsId] = useState(null);
+    console.log("perDetailsId", perDetailsId);
     const validationSchema = Yup.object().shape({
       dob: Yup.string().required("*Date of birth is required"),
       gender: Yup.string().required("*Select a gender"),
@@ -65,34 +67,49 @@ const EmpContactDetailsEdit = forwardRef(
       onSubmit: async (values) => {
         console.log("Contact Details:", values);
         setLoadIndicators(true);
-        const isUpdate = formData.empId;
         values.perDetailsEmpId = formData.empId;
+        const age = calculateAge(values.dob);
 
         try {
-          const response = isUpdate
-            ? await api.put(
-                `/personal-emergency-contacts/${formData.empId}`,
-                values,
-                {
+          const formDatas = new FormData();
+          formDatas.append("perDetailsEmpId", formData.empId);
+          formDatas.append("dob", values.dob);
+          formDatas.append("age", age);
+          formDatas.append("gender", values.gender);
+          formDatas.append("maritalStatus", values.maritalStatus);
+          formDatas.append("religion", values.religion);
+          formDatas.append("empSecEmail", values.email);
+          formDatas.append("address", values.address);
+          formDatas.append("city", values.city);
+          formDatas.append("pincode", values.pincode);
+          formDatas.append("empSecPhNumber", values.empSecPhNumber);
+          if (values.file) {
+            formDatas.append("file", values.file);
+          }
+          formDatas.append(
+            "empEmergencyContact",
+            JSON.stringify(values.empEmergencyContact)
+          );
+          const response =
+            perDetailsId !== null
+              ? await api.put(
+                  `/personal-emergency-contacts/${perDetailsId}`,
+                  formDatas,
+                  {
+                    headers: {
+                      "Content-Type": "multipart/form-data",
+                    },
+                  }
+                )
+              : await api.post("/emp-personal-emergency", formDatas, {
                   headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "multipart/form-data",
                   },
-                }
-              )
-            : await api.post("/emp-personal-emergency", values, {
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              });
+                });
 
           if (response.status === 200) {
+            setFormData((prev) => ({ ...prev, ...values }));
             toast.success(response.data.message);
-            if (!isUpdate) {
-              // Update formData with new empId for a POST call
-              setFormData((prev) => ({ ...prev, empId: response.data.empId }));
-            } else {
-              setFormData((prev) => ({ ...prev, ...values }));
-            }
             handleNext();
           } else {
             toast.error(response.data.message);
@@ -104,6 +121,16 @@ const EmpContactDetailsEdit = forwardRef(
         }
       },
     });
+    const calculateAge = (dob) => {
+      const today = new Date();
+      const birthDate = new Date(dob);
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    };
 
     const addRow = () => {
       const newContact = {
@@ -125,78 +152,41 @@ const EmpContactDetailsEdit = forwardRef(
       formik.setFieldValue("empEmergencyContact", updatedEntities);
     };
 
-    // useEffect(() => {
-    //   const getData = async () => {
-    //     try {
-    //       const response = await api.get(
-    //         `emp-personal-details/${formData.empId}`
-    //       );
-    //       // formik.setValues(response.data);
-    //       formik.setValues({
-    //         ...response.data,
-    //         dob: response.dob || "",
-    //         gender: response.gender || "",
-    //         maritalStatus: response.maritalStatus || "",
-    //         religion: response.religion || "",
-    //         empAddr: response.empAddr || "",
-    //         city: response.city || "",
-    //         age: 25 || "",
-    //         pincode: response.pincode || "",
-
-    //         emergencyContactName: response.emergencyContactName || "",
-    //         emergencyContactNo: response.emergencyContactNo || "",
-    //         emergencyContactAddress: response.emergencyContactAddress || "",
-    //         // relationshipOfEmployee: response.relationshipOfEmployee || "",
-
-    //         // empEmergencyContact: [
-    //         //   {
-    //         //     emergencyContactName: response.emergencyContactName || "",
-    //         //     emergencyContactNo: response.emergencyContactNo || "",
-    //         //     emergencyContactAddress: response.emergencyContactAddress || "",
-    //         //     relationshipOfEmployee: response.relationshipOfEmployee || "",
-    //         //   },
-    //         // ],
-    //       });
-    //       console.log("Employee response", response.data);
-    //     } catch (error) {
-    //       toast.error("Error Fetching Data ", error.message);
-    //     }
-    //   };
-    //   getData();
-    // }, []);
-
     useEffect(() => {
       const getData = async () => {
         try {
-          const response = await api.get(
-            `emp-personal-details/${formData.empId}`
-          );
+          const response = await api.get(`emp-reg-details/${formData.empId}`);
 
-          const emergencyContacts = Array.isArray(
-            response.data.empEmergencyContact
-          )
-            ? response.data.empEmergencyContact
-            : [
-                {
-                  emergencyContactName:
-                    response.data.emergencyContactName || "",
-                  emergencyContactNo: response.data.emergencyContactNo || "",
-                  emergencyContactAddress:
-                    response.data.emergencyContactAddress || "",
-                },
-              ];
+          if (response?.data?.empPersonalDetailsEntities?.length > 0) {
+            const personalDetails = response.data.empPersonalDetailsEntities[0];
+            setPerDetailsId(personalDetails.perDetailsId);
+            const emergencyContacts =
+              personalDetails.empEmergencyContactEntities.map((contact) => ({
+                emergencyContactName: contact.emergencyContactName || "",
+                emergencyContactNo: contact.emergencyContactNo || "",
+                emergencyContactAddress: contact.emergencyContactAddress || "",
+              }));
 
-          formik.setValues({
-            ...formik.values,
-            ...response.data,
-            empEmergencyContact: emergencyContacts,
-          });
-
-          console.log("Employee response", response.data);
+            formik.setValues({
+              dob: personalDetails?.dob?.slice(0, 10) || "",
+              age: personalDetails.age || "",
+              gender: personalDetails.gender || "",
+              maritalStatus: personalDetails.maritalStatus || "",
+              religion: personalDetails.religion || "",
+              email: personalDetails.empSecEmail || "",
+              address: personalDetails.empAddr || "",
+              city: personalDetails.city || "",
+              pincode: personalDetails.pincode || "",
+              empSecPhNumber: personalDetails.empSecPhNumber || "",
+              file: personalDetails.fileAttachment || null,
+              empEmergencyContact: emergencyContacts,
+            });
+          }
         } catch (error) {
           toast.error("Error Fetching Data: " + error.message);
         }
       };
+
       getData();
     }, []);
 

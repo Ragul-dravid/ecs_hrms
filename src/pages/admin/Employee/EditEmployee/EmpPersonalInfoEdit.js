@@ -156,6 +156,7 @@ const EmpPersonalInfoEdit = forwardRef(
             ...response.data,
             proof: response.data.proof === "AADHAR" || "NRIC",
           });
+          console.log("123",response.data.empPersonalDetailsEntities)
           console.log("Employee response", response.data);
         } catch (error) {
           // console.log(error.message);
