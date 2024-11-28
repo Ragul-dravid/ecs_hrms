@@ -20,7 +20,7 @@ const ExitManagement = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/exitManagement-empName/${cmpId}`);
+        const response = await api.get(`/exitManagement-companyId/${cmpId}`);
 
         setDatas(response.data);
       } catch (error) {
@@ -63,7 +63,7 @@ const ExitManagement = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get(`/exitManagement-empName/${cmpId}`);
+      const response = await api.get(`/exitManagement-companyId/${cmpId}`);
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -188,7 +188,7 @@ const ExitManagement = () => {
                           </Link>
                           <DeleteModel
                             onSuccess={refreshData}
-                            path={`/company-compliance/${data.cmpId}`}
+                            path={`/exit-management/${data.exitMgmtId}`}
                           />
                         </div>
                       </td>
