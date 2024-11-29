@@ -4,58 +4,60 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../config/URL";
 import toast from "react-hot-toast";
-import LeaveRequest from "./LeaveRequest";
+import departmentListByCompId from "../List_Apis/DepartmentListByCmpId";
 
 const LeaveRequestAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = localStorage.getItem("cmpId");
-  const [empData, setEmpData] = useState(null);
-  
-  const validationSchema = Yup.object({
-    // pubHolidayName: Yup.string().required("*Holiday Name is required"),
-    // pubHolidayType: Yup.string().required("*Holiday Type is required"),
-    // pubHolidayCountryCode: Yup.string().required("*Country is required"),
-    // endDate: Yup.string().required("*End Date is required"),
-  });
+  const cmpId = sessionStorage.getItem("cmpId");
+  const empName = sessionStorage.getItem("userName");
+  const empId = sessionStorage.getItem("userId");
+  const [departmentData, setDepartmentData] = useState(null);
+  const validationSchema = Yup.object({});
 
   const formik = useFormik({
     initialValues: {
       cmpId: cmpId,
-      leaveReqId: "",
-      leaveReqEmpId: "",
+      leaveDeptId: "",
+      leaveReqEmpId: empName,
       leaveReqStartDate: "",
-      //   pubHolidayDate: "",
       leaveReqEndDate: "",
       leaveReqType: "",
       leaveReqRemarks: "",
       leaveReqStatus: "",
-      totalLeaveReqDays: "",
+      totalLeaveReqDays: 0,
+      leaveReqApproverId: "",
+      leaveReqApproverName: "",
+      leaveReqStatus: "",
+      leaveReqApproverId: "",
       pendingLeaveReqDays: "",
+      file: null || "",
     },
     validationSchema: validationSchema,
     onSubmit: async (data) => {
       setLoadIndicator(true);
       try {
         const formDatas = new FormData();
-        // formDatas.append("userId", userId);
-        // formDatas.append("centerName", selectedCenterName);
-        // formDatas.append("employeeName", datas && datas.employeeName);
-        // formDatas.append("leaveTypeId", data.leaveTypeId);
-        // formDatas.append("noOfDays", data.noOfDays);
-        // formDatas.append("fromDate", data.fromDate);
-        // formDatas.append("toDate", data.toDate);
-        // formDatas.append("dayType", data.dayType);
-        // formDatas.append("leaveReason", data.leaveReason);
-        // formDatas.append("leaveStatus", "PENDING");
-        // formDatas.append("file", data.file);
-        // formDatas.append("createdBy", userName);
-        const response = await api.post("/leave-request", formDatas, {
+        formDatas.append("leaveCmpId", cmpId);
+        formDatas.append("leaveReqEmpId", empId);
+        formDatas.append("leaveDeptId", data.leaveDeptId);
+        formDatas.append("leaveReqStartDate", data.leaveReqStartDate);
+        formDatas.append("leaveReqEndDate", data.leaveReqEndDate);
+        formDatas.append("totalLeaveReqDays", data.totalLeaveReqDays);
+        formDatas.append("leaveReqType", data.leaveReqType);
+        formDatas.append("leaveReqRemarks", data.leaveReqRemarks);
+        formDatas.append("leaveReqApproverId", "11");
+        formDatas.append("leaveReqApproverName", "Admin");
+        formDatas.append("leaveReqStatus", "P");
+        formDatas.append("pendingLeaveReqDays", data.pendingLeaveReqDays);
+        formDatas.append("file", data.file);
+
+        const response = await api.post("/create-leave-attach", formDatas, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
-        if (response.status === 201) {
+        if (response.status === 201 || response.status === 200) {
           toast.success(response.data.message);
           navigate("/leaverequest");
         } else {
@@ -69,20 +71,32 @@ const LeaveRequestAdd = () => {
     },
   });
 
-  const fetchEmployeeList = async () => {
+  const fetchDeptData = async () => {
     try {
-      const employee = await api.get(`getEmpolyeeWithRole/${cmpId}`);
-      setEmpData(employee.data);
-      console.log("Employee:",employee.data);
-      return employee.data;
+      const departmentData = await departmentListByCompId(cmpId);
+      setDepartmentData(departmentData);
     } catch (error) {
-      console.error(error);
+      toast.error(error);
     }
   };
 
   useEffect(() => {
-    fetchEmployeeList();
+    fetchDeptData();
   }, []);
+
+  // Calculate number of days
+  useEffect(() => {
+    const { leaveReqStartDate, leaveReqEndDate } = formik.values;
+    if (leaveReqStartDate && leaveReqEndDate) {
+      const startDate = new Date(leaveReqStartDate);
+      const endDate = new Date(leaveReqEndDate);
+
+      // Calculate the difference in time and convert to days
+      const differenceInTime = endDate - startDate;
+      const days = differenceInTime / (1000 * 60 * 60 * 24) + 1; // Including the start date
+      formik.setFieldValue("totalLeaveReqDays", days > 0 ? days : 0);
+    }
+  }, [formik.values.leaveReqStartDate, formik.values.leaveReqEndDate]);
 
   return (
     <div className="container-fluid px-2 minHeight m-0">
@@ -131,29 +145,22 @@ const LeaveRequestAdd = () => {
         >
           <div className="container mb-5">
             <div className="row py-4">
-            <div className="col-md-6 col-12 mb-3">
+              <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Employee Name
                   <span className="text-danger">*</span>
                 </label>
-                <select
+                <input
+                  type="text"
                   name="leaveReqEmpId"
-                  className={`form-select form-select-sm ${
-                    formik.touched.leaveReqEmpId &&
-                    formik.errors.leaveReqEmpId
+                  {...formik.getFieldProps("leaveReqEmpId")}
+                  className={`form-control form-control-sm ${
+                    formik.touched.leaveReqEmpId && formik.errors.leaveReqEmpId
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("leaveReqEmpId")}
-                >
-                  <option selected></option>
-                  {Array.isArray(empData) &&
-                    empData.map((exitMgmtEmpId) => (
-                      <option key={exitMgmtEmpId.id} value={exitMgmtEmpId.id}>
-                        {exitMgmtEmpId.empName}
-                      </option>
-                    ))}
-                </select>
+                  readOnly
+                />
                 {formik.touched.leaveReqEmpId &&
                   formik.errors.leaveReqEmpId && (
                     <div className="invalid-feedback">
@@ -163,23 +170,32 @@ const LeaveRequestAdd = () => {
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  Leave Type <span className="text-danger">*</span>
+                  Department Name <span className="text-danger">*</span>
                 </label>
-                <input
-                  type="text"
-                  name="leaveReqType"
-                  className={`form-control form-control-sm ${
-                    formik.touched.leaveReqType && formik.errors.leaveReqType
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("leaveReqType")}
-                />
-                {formik.touched.leaveReqType && formik.errors.leaveReqType && (
-                  <div className="invalid-feedback">
-                    {formik.errors.leaveReqType}
-                  </div>
-                )}
+                <div className="input-group mb-3">
+                  <select
+                    {...formik.getFieldProps("leaveDeptId")}
+                    className={`form-select form-select-sm  ${
+                      formik.touched.leaveDeptId && formik.errors.leaveDeptId
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                  >
+                    <option selected></option>
+                    {departmentData &&
+                      departmentData.map((dept) => (
+                        <option key={dept.deptId} value={dept.deptId}>
+                          {dept.deptName}
+                        </option>
+                      ))}
+                  </select>
+                  {formik.touched.leaveDeptId &&
+                    formik.errors.leaveDeptId && (
+                      <div className="invalid-feedback">
+                        {formik.errors.leaveDeptId}
+                      </div>
+                    )}
+                </div>
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
@@ -227,21 +243,66 @@ const LeaveRequestAdd = () => {
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
+                  No.Of.Days<span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="totalLeaveReqDays"
+                  className={`form-control form-control-sm ${
+                    formik.touched.totalLeaveReqDays &&
+                    formik.errors.totalLeaveReqDays
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  value={formik.values.totalLeaveReqDays || 0}
+                  readOnly
+                />
+                {formik.touched.totalLeaveReqDays &&
+                  formik.errors.totalLeaveReqDays && (
+                    <div className="invalid-feedback">
+                      {formik.errors.totalLeaveReqDays}
+                    </div>
+                  )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Leave Type <span className="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="leaveReqType"
+                  className={`form-control form-control-sm ${
+                    formik.touched.leaveReqType && formik.errors.leaveReqType
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("leaveReqType")}
+                />
+                {formik.touched.leaveReqType && formik.errors.leaveReqType && (
+                  <div className="invalid-feedback">
+                    {formik.errors.leaveReqType}
+                  </div>
+                )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
                   Attachment<span className="text-danger">*</span>
                 </label>
                 <input
                   type="file"
-                  name="endDate"
+                  name="file"
                   className={`form-control form-control-sm ${
-                    formik.touched.endDate && formik.errors.endDate
+                    formik.touched.file && formik.errors.file
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("endDate")}
+                  onChange={(event) => {
+                    formik.setFieldValue("file", event.currentTarget.files[0]);
+                  }}
                 />
-                {formik.touched.endDate && formik.errors.endDate && (
+                {formik.touched.file && formik.errors.file && (
                   <div className="invalid-feedback">
-                    {formik.errors.endDate}
+                    {formik.errors.file}
                   </div>
                 )}
               </div>
