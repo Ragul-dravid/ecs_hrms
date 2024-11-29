@@ -582,11 +582,7 @@ svg polygon {
 }
 .file-link {
   color: black;
-  text-decoration: none;
-}
-
-.file-link:hover {
-  text-decoration: underline;
+  font-size: 12px;
 }
 
 .file-icon {
