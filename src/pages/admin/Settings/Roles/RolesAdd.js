@@ -827,58 +827,6 @@ function RolesAdd() {
                         />
                       </td>
                     </tr>
-                    <tr className="bg-fc">
-                      <td>
-                        <p style={{ marginLeft: "30px", marginBottom: "0px" }}>
-                          Settings
-                        </p>
-                      </td>
-                      <td>
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          name="subjectIndex"
-                          checked={formik.values.subjectIndex}
-                          onChange={handleCheckboxChange(`subjectIndex`)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          name="subjectRead"
-                          checked={formik.values.subjectRead}
-                          onChange={handleCheckboxChange(`subjectRead`)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          name="subjectCreate"
-                          checked={formik.values.subjectCreate}
-                          onChange={handleCheckboxChange(`subjectCreate`)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          name="subjectUpdate"
-                          checked={formik.values.subjectUpdate}
-                          onChange={handleCheckboxChange(`subjectUpdate`)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          name="subjectDelete"
-                          checked={formik.values.subjectDelete}
-                          onChange={handleCheckboxChange(`subjectDelete`)}
-                        />
-                      </td>
-                    </tr>
                   </tbody>
                 </table>
               </div>

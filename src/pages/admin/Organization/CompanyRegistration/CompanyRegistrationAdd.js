@@ -88,7 +88,7 @@ const CompanyRegistrationAdd = () => {
       // formDatas.append("profileImgFile", values.profileImgFile);
 
       try {
-        const response = await api.post("company-attach", formDatas);
+        const response = await api.post("company-reg", formDatas);
         if (response.status === 201) {
           toast.success(response.data.message);
           navigate("/companyRegistration");

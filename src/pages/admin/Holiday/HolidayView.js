@@ -144,20 +144,7 @@ const HolidayView = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-6 col-12">
-                  <div className="row mb-3">
-                    <div className="col-6 d-flex justify-content-start align-items-center">
-                      <p className="text-sm">
-                        <b>Country</b>
-                      </p>
-                    </div>
-                    <div className="col-6">
-                      <p className="text-muted text-sm">
-                        : {data.pubHolidayCountryCode || ""}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                
               </div>
             </div>
           </div>
