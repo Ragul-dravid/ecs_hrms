@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 const RegistrationCompany = () => {
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = localStorage.getItem("cmpId");
+  const cmpId = sessionStorage.getItem("cmpId");
   const [logoPreview, setLogoPreview] = useState(null);
   const [data, setData] = useState([]);
   console.log("Cmp Data:", data);

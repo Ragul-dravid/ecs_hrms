@@ -8,8 +8,8 @@ const CompanyComplianceView = () => {
   const { id } = useParams();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
-  const userName = localStorage.getItem("userName");
-  const cmpName = localStorage.getItem("cmpName");
+  const userName = sessionStorage.getItem("userName");
+  const cmpName = sessionStorage.getItem("cmpName");
 
   useEffect(() => {
     const getData = async () => {

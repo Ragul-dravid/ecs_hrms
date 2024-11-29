@@ -9,7 +9,7 @@ import employeeListByCompId from "../List_Apis/EmployeeListByCmpId";
 const DeductionAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = localStorage.getItem("cmpId");
+  const cmpId = sessionStorage.getItem("cmpId");
   const [empData, setEmpData] = useState(null);
 
   const validationSchema = Yup.object({

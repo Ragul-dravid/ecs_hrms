@@ -47,7 +47,7 @@ const HrPolicyEdit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = localStorage.getItem("cmpId");
+  const cmpId = sessionStorage.getItem("cmpId");
 
   const validationSchema = Yup.object({
     hrPolicyList: Yup.string().required("*Policy Name is required"),

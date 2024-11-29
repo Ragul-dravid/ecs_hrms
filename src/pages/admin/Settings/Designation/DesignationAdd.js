@@ -3,14 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../../config/URL";
-import { toast } from "react-toastify";
 import departmentListByCompId from "../../List_Apis/DepartmentListByCmpId";
+import { FiAlertTriangle } from "react-icons/fi";
+import toast from "react-hot-toast";
 
 const DesignationAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = localStorage.getItem("cmpId");
-  const createdBy = localStorage.getItem("userName");
+  const cmpId = sessionStorage.getItem("cmpId");
+  const createdBy = sessionStorage.getItem("userName");
   const [departmentData, setDepartmentData] = useState(null);
 
   const validationSchema = Yup.object({
@@ -58,7 +59,13 @@ const DesignationAdd = () => {
           toast.error(response.data.message);
         }
       } catch (e) {
-        toast.error("Error updating data: ", e?.response?.data?.message);
+        if (e.response.status === 409) {
+          toast(e.response.data.message, {
+            icon: <FiAlertTriangle className="text-warning" />,
+          });
+        } else {
+          toast.error(e?.response?.data?.message);
+        }
       } finally {
         setLoadIndicator(false);
       }

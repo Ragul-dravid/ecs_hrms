@@ -5,17 +5,19 @@ import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import api from "../../../config/URL";
-import { PropagateLoader } from 'react-spinners';
+import { PropagateLoader } from "react-spinners";
 import DeleteModel from "../../../components/admin/DeleteModel";
 import { BiEditAlt } from "react-icons/bi";
 import { HiOutlineEye } from "react-icons/hi";
+import HolidayAdd from "./HolidayAdd";
+import HolidayEdit from "./HolidayEdit";
 
 const Holiday = () => {
   const tableRef = useRef(null);
-  // const storedScreens = JSON.parse(localStorage.getItem("screens") || "{}");
+  // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const cmpId = localStorage.getItem("cmpId");
+  const cmpId = sessionStorage.getItem("cmpId");
 
   useEffect(() => {
     const getData = async () => {
@@ -109,16 +111,7 @@ const Holiday = () => {
                 </div>
                 <div className="col-auto">
                   <div className="hstack gap-2 justify-content-end">
-                    <Link to="/holidays/add">
-                      <button
-                        type="submit"
-                        className="btn btn-sm btn-button btn-primary"
-                      >
-                        <span>
-                          Add <FaPlus className="pb-1" />
-                        </span>
-                      </button>
-                    </Link>
+                    <HolidayAdd onSuccess={refreshData} />
                   </div>
                 </div>
               </div>
@@ -170,20 +163,13 @@ const Holiday = () => {
                       </td>
 
                       <td className="text-center">
-                        <div className="gap-2">
+                        <div className="gap-2 d-flex justify-content-center">
                           <Link to={`/holidays/view/${data.pubHolidayId}`}>
-                            <button className="btn btn-sm p-1 shadow-none border-none">
+                            <button className="btn btn-sm p-1 pt-4 shadow-none border-none">
                               <HiOutlineEye />
                             </button>
                           </Link>
-                          <Link
-                            to={`/holidays/edit/${data.pubHolidayId}`}
-                            className="px-2"
-                          >
-                            <button className="btn btn-sm p-1 shadow-none border-none">
-                              <BiEditAlt />
-                            </button>
-                          </Link>
+                          <HolidayEdit onSuccess={refreshData} id={data.pubHolidayId} />
                           <DeleteModel
                             onSuccess={refreshData}
                             path={`/public-holidays/${data.pubHolidayId}`}

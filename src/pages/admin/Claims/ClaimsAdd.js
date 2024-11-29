@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 const ClaimsAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = localStorage.getItem("cmpId");
+  const cmpId = sessionStorage.getItem("cmpId");
   const [companyData, setCompanyData] = useState(null);
 
   const validationSchema = Yup.object({

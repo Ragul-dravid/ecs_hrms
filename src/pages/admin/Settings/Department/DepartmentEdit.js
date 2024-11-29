@@ -12,15 +12,22 @@ function DepartmentCEdit({id, onSuccess}) {
   const [show, setShow] = useState(false);
   const [loadIndicator, setLoadIndicator] = useState(false);
   const [isModified, setIsModified] = useState(false);
-  const cmpId = localStorage.getItem("cmpId");
+  const cmpId = sessionStorage.getItem("cmpId");
 
   const handleClose = () => {
     setShow(false);
     formik.resetForm();
   };
-  const handleShow = () => {
+  const handleShow = async() => {
     setShow(true);
     setIsModified(false);
+    try {
+      const response = await api.get(`/department/${id}`);
+      formik.setValues(response.data);
+    } catch (e) {
+      toast.error("Error fetching data: ", e?.response?.data?.message);
+    }
+
   };
 
   const validationSchema = Yup.object({
@@ -73,20 +80,6 @@ function DepartmentCEdit({id, onSuccess}) {
       }
     },
   });
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await api.get(`/department/${id}`);
-        formik.setValues(response.data);
-      } catch (e) {
-        toast.error("Error fetching data: ", e?.response?.data?.message);
-      }
-    };
-
-    getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
 
   return (
     <>

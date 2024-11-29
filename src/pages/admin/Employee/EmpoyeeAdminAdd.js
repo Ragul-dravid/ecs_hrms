@@ -3,13 +3,14 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import api from "../../../config/URL";
-import { toast } from "react-toastify";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 // import DepartmentAdd from "../Settings/Department/DepartmentAdd";
 import departmentListByCompId from "../List_Apis/DepartmentListByCmpId";
+import { FiAlertTriangle } from "react-icons/fi";
+import toast from "react-hot-toast";
 
 function EmployeeAdminAdd() {
-  const cmpId = localStorage.getItem("cmpId");
+  const cmpId = sessionStorage.getItem("cmpId");
   const [departmentData, setDepartmentData] = useState(null);
   // console.log("departmentData:", departmentData);
   const [selectedIdType, setSelectedIdType] = useState("");
@@ -107,21 +108,17 @@ function EmployeeAdminAdd() {
           toast.success(response.data.message);
           navigate("/employee");
         } else {
-          toast.error(response.data.message);
-          console.log("log 1");
+          toast.error(response?.data?.message);
         }
-      } catch (error) {
-        if (error.response) {
-          console.log("Error R:",error.response.status);
-          
-          if (error.response.status === 409) {
-            toast.warn(error.response.data.message || "Conflict error");
-          } else {
-            toast.error(error.response.data.message || "An error occurred");
-          }
+      } catch (e) {
+        if (e.response.status === 409) {
+          toast(e.response.data.message, {
+            icon: <FiAlertTriangle className="text-warning" />,
+          });
         } else {
-          toast.error("A network error occurred. Please try again.");
+          toast.error(e?.response?.data?.message);
         }
+        console.log("object12", e.response.data.message);
       } finally {
         setLoadIndicators(false);
       }

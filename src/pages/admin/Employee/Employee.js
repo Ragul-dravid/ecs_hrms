@@ -12,12 +12,12 @@ import { BiEditAlt } from "react-icons/bi";
 
 const Employee = () => {
   const tableRef = useRef(null);
-  // const storedScreens = JSON.parse(localStorage.getItem("screens") || "{}");
+  // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
   console.log("Emp Data:",datas);
   
   const [loading, setLoading] = useState(true);
-  const cmpId = localStorage.getItem("cmpId");
+  const cmpId = sessionStorage.getItem("cmpId");
 
   useEffect(() => {
     const getData = async () => {
@@ -25,7 +25,7 @@ const Employee = () => {
         const response = await api.get(`emp-reg-details-by-companyId/${cmpId}`);
         setDatas(response.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data:", error.message);
       } finally {
         setLoading(false);
       }

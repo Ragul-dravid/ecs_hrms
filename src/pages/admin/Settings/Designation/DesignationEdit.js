@@ -10,7 +10,7 @@ const DesignationEdit = () => {
   const {id} = useParams();
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = localStorage.getItem("cmpId");
+  const cmpId = sessionStorage.getItem("cmpId");
   const [departmentData, setDepartmentData] = useState(null);
 
   const validationSchema = Yup.object({
