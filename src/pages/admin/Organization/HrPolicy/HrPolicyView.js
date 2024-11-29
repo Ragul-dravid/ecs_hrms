@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import api from "../../../../config/URL";
 import toast from "react-hot-toast";
 import { PropagateLoader } from "react-spinners";
-import { FaDownload } from "react-icons/fa"; // Import download icon
+import { VscCloudDownload } from "react-icons/vsc";
 
 const HrPolicyView = () => {
   const { id } = useParams();
@@ -124,52 +124,53 @@ const HrPolicyView = () => {
                     </div>
                   </div>
                 </div>
-
-                {/* <div className="col-md-12 col-12">
-                  <div className="row mb-3">
-                    <div className="col-3 d-flex justify-content-start align-items-center">
-                      <p className="text-sm">
-                        <b>Attachments</b>
-                      </p>
-                    </div>
-                    <div className="col-9">
-                      {data?.attachments && data.attachments.length > 0 ? (
-                        <ul className="list-unstyled d-flex gap-3">
-                          {data.attachments.map((file, index) => {
-                            const fileName = file.split("/").pop();
-                            return (
-                              <li
-                                key={index}
-                                className="d-flex align-items-center mb-2"
-                              >
-                                <a
-                                  href={file}
-                                  download
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                   className="file-link"
-                                >
-                                  {fileName}
-                                </a>
-                                <a
-                                  href={file}
-                                  download
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="ms-2 file-icon"
-                                >
-                                  <FaDownload />
-                                </a>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      ) : (
-                        <p className="text-muted text-sm">: No Attachments</p>
-                      )}
-                    </div>
+              </div>
+              <div className="col-md-12 col-12">
+                <div className="row mb-3">
+                  <div className="col-12 d-flex justify-content-start align-items-center">
+                    <p className="text-sm">
+                      <b>Attachments</b>
+                    </p>
                   </div>
-                </div> */}
+                  <div className="col-12">
+                    {data?.attachments && data.attachments.length > 0 ? (
+                      <>
+                      <ul className="">
+                        {data.attachments.map((file, index) => {
+                          const fileName = file.split("/").pop();
+                          return (
+                            <li
+                              key={index}
+                              className="d-flex align-items-center mb-2"
+                            >
+                              <a
+                                href={file}
+                                download
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="file-link"
+                              >
+                                {fileName}
+                              </a>
+                              <a
+                                href={file}
+                                download
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="ms-2 file-icon"
+                              >
+                                <VscCloudDownload />
+                              </a>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                      </>
+                    ) : (
+                      <p className="text-muted text-sm">: No Attachments</p>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
