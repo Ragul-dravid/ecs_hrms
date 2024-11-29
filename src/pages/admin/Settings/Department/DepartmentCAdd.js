@@ -11,7 +11,7 @@ function DepartmentCAdd({onSuccess}) {
   const [show, setShow] = useState(false);
   const [loadIndicator, setLoadIndicator] = useState(false);
   const [isModified, setIsModified] = useState(false);
-  const cmpId = localStorage.getItem("cmpId");
+  const cmpId = sessionStorage.getItem("cmpId");
 
   const handleClose = () => {
     setShow(false);

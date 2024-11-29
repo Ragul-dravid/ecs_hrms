@@ -10,7 +10,7 @@ const AssignRole = () => {
   const [loading, setLoadIndicator] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [empData, setEmpData] = useState([]);
-  const cmpId = localStorage.getItem("cmpId");
+  const cmpId = sessionStorage.getItem("cmpId");
 
   const handleopen = async () => {
     setShowModal(true);

@@ -15,12 +15,12 @@ import departmentListByCompId from "../../List_Apis/DepartmentListByCmpId";
 
 const EmpPersonalInfoEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
-    const cmpId = localStorage.getItem("cmpId");
+    const cmpId = sessionStorage.getItem("cmpId");
     const [departmentData, setDepartmentData] = useState(null);
     console.log("FormData:", formData);
     const [selectedIdType, setSelectedIdType] = useState("");
     // const [showPassword, setShowPassword] = React.useState(false);
-    const roleName = localStorage.getItem("role");
+    const roleName = sessionStorage.getItem("role");
     console.log("object", formData.empId);
 
     const validationSchema = Yup.object({
@@ -315,7 +315,7 @@ const EmpPersonalInfoEdit = forwardRef(
                 <label className="form-label mb-0">
                   Department Name <span className="text-danger">*</span>
                 </label>
-                <DepartmentAdd addDepartment={addDepartment} />
+                {/* <DepartmentAdd addDepartment={addDepartment} /> */}
               </div>
               <div className="input-group mb-3">
                 <select

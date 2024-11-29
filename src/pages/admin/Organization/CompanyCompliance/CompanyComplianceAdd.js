@@ -8,8 +8,8 @@ import toast from "react-hot-toast";
 const CompanyComplianceAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = localStorage.getItem("cmpId");
-  const userName = localStorage.getItem("userName");
+  const cmpId = sessionStorage.getItem("cmpId");
+  const userName = sessionStorage.getItem("userName");
 
   const validationSchema = Yup.object({
     compComplianceDesignationName: Yup.string().required(

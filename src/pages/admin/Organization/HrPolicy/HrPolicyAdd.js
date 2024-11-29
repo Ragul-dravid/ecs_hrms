@@ -50,7 +50,7 @@ const formats = [
 const HrPolicyAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = localStorage.getItem("cmpId");
+  const cmpId = sessionStorage.getItem("cmpId");
 
   const validationSchema = Yup.object({
     hrPolicyList: Yup.string().required("*Policy Name is required"),
@@ -78,7 +78,7 @@ const HrPolicyAdd = () => {
         formData.append("hrPolicyList", values.hrPolicyList);
         formData.append("hrPolicyDescr", values.hrPolicyDescr);
         formData.append("hrPolicyOwner", values.hrPolicyOwner);
-        // formData.append("effectiveDate", `${values.effectiveDate} 00:00:00`);
+        // formData.append("effectiveDate", values.effectiveDate);
         formData.append("hrPolicyCategory", values.hrPolicyCategory);
         values.attachments.forEach((file) => {
           formData.append("attachments", file);

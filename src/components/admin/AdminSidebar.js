@@ -19,9 +19,9 @@ import toast from "react-hot-toast";
 
 function AdminSidebar({ handleLogout }) {
   const navigate = useNavigate();
-  const role = localStorage.getItem("role");
-  const cmpName = localStorage.getItem("cmpName");
-  const cpmId = localStorage.getItem("cmpId");
+  const role = sessionStorage.getItem("role");
+  const cmpName = sessionStorage.getItem("cmpName");
+  const cpmId = sessionStorage.getItem("cmpId");
   const [data, setData] = useState([]);
 
   const handleLogOutClick = () => {

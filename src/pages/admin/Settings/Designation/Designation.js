@@ -15,7 +15,7 @@ const Designation = () => {
   // const storedScreens = JSON.parse(localStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const cmpId = localStorage.getItem("cmpId");
+  const cmpId = sessionStorage.getItem("cmpId");
 
   useEffect(() => {
     const getData = async () => {
@@ -62,7 +62,7 @@ const Designation = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get(`/designation-by-company/${cmpId}`);
+      const response = await api.get(`/emp-desig-companyId/${cmpId}`);
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {

@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import api from "../../../../config/URL";
 import toast from "react-hot-toast";
 import { PropagateLoader } from "react-spinners";
+import { FaDownload } from "react-icons/fa"; // Import download icon
 
 const HrPolicyView = () => {
   const { id } = useParams();
@@ -76,30 +77,16 @@ const HrPolicyView = () => {
             className="card shadow border-0 mb-2 minHeight"
             style={{ borderRadius: "0" }}
           >
-            <div className="container">
-              <div className="row mt-2 p-3">
+            <div className="container ">
+              <div className="row mt-2 p-3 border-1 my-2">
                 <p className="text-lg text-center my-5">
                   <b>{data.hrPolicyList || ""}</b>
                 </p>
-                <div className="col-md-6 col-12">
+                {/* <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
                       <p className="text-sm">
-                        <b>Hr Policy Owner</b>
-                      </p>
-                    </div>
-                    <div className="col-6">
-                      <p className="text-muted text-sm">
-                        : {data?.hrPolicyOwner || ""}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6 col-12">
-                  <div className="row mb-3">
-                    <div className="col-6 d-flex justify-content-start align-items-center">
-                      <p className="text-sm">
-                        <b>Hr Policy Category</b>
+                        <b>HR Policy Category</b>
                       </p>
                     </div>
                     <div className="col-6">
@@ -108,8 +95,8 @@ const HrPolicyView = () => {
                       </p>
                     </div>
                   </div>
-                </div>        
-               
+                </div>
+
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
@@ -123,26 +110,66 @@ const HrPolicyView = () => {
                       </p>
                     </div>
                   </div>
-                </div>
-                <div className="col-md-6 col-12">
+                </div> */}
+
+                <div className="col-md-12 col-12 ">
                   <div className="row mb-3">
-                    <div className="col-6 d-flex justify-content-start align-items-center">
+                    <div className="col-12">
+                      <p
+                        className="text-muted text-sm"
+                        dangerouslySetInnerHTML={{
+                          __html: data?.hrPolicyDescr || "",
+                        }}
+                      ></p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* <div className="col-md-12 col-12">
+                  <div className="row mb-3">
+                    <div className="col-3 d-flex justify-content-start align-items-center">
                       <p className="text-sm">
                         <b>Attachments</b>
                       </p>
                     </div>
-                    <div className="col-6">
-                      <p className="text-muted text-sm">
-                        :{" "}
-                        <img
-                          src={`${data?.attachments}`}
-                          alt="icon"
-                          style={{ maxWidth: "100px", maxHeight: "100px" }}
-                        />
-                      </p>
+                    <div className="col-9">
+                      {data?.attachments && data.attachments.length > 0 ? (
+                        <ul className="list-unstyled d-flex gap-3">
+                          {data.attachments.map((file, index) => {
+                            const fileName = file.split("/").pop();
+                            return (
+                              <li
+                                key={index}
+                                className="d-flex align-items-center mb-2"
+                              >
+                                <a
+                                  href={file}
+                                  download
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                   className="file-link"
+                                >
+                                  {fileName}
+                                </a>
+                                <a
+                                  href={file}
+                                  download
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="ms-2 file-icon"
+                                >
+                                  <FaDownload />
+                                </a>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      ) : (
+                        <p className="text-muted text-sm">: No Attachments</p>
+                      )}
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

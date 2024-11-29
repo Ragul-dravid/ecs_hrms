@@ -14,7 +14,7 @@ import api from "../../../../config/URL";
 const EmpQualificationDetailsEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const [perDetailsId, setPerDetailsId] = useState(null);
-    const cmpId = localStorage.getItem("cmpId");
+    const cmpId = sessionStorage.getItem("cmpId");
 
     const validationSchema = Yup.object().shape({
       empQualificationEntities: Yup.array().of(

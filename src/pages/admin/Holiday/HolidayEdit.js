@@ -4,18 +4,34 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../config/URL";
 import toast from "react-hot-toast";
+import { Button, Modal } from "react-bootstrap";
+import { FaPlus } from "react-icons/fa";
+import { BiEditAlt } from "react-icons/bi";
 
-const HolidayEdit = () => {
-  const { id } = useParams();
+const HolidayEdit = ({ onSuccess, id }) => {
   const navigate = useNavigate();
+  const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoadIndicator] = useState(false);
-  const cmpId = localStorage.getItem("cmpId");
+  const cmpId = sessionStorage.getItem("cmpId");
   const [companyData, setCompanyData] = useState(null);
 
+  const handleShow = async () => {
+    setModalVisible(true);
+    try {
+      const response = await api.get(`/public-holidays/${id}`);
+      formik.setValues(response.data);
+      formik.setValues({
+        ...response.data,
+        startDate: response.data.startDate?.substring(0, 10),
+        endDate: response.data.endDate?.substring(0, 10),
+      });
+    } catch (e) {
+      toast.error("Error fetching data: ", e?.response?.data?.message);
+    }
+  };
   const validationSchema = Yup.object({
     pubHolidayName: Yup.string().required("*Holiday Name is required"),
     pubHolidayType: Yup.string().required("*Holiday Type is required"),
-    pubHolidayCountryCode: Yup.string().required("*Country is required"),
     endDate: Yup.string().required("*End Date is required"),
   });
 
@@ -23,9 +39,8 @@ const HolidayEdit = () => {
   const formik = useFormik({
     initialValues: {
       pubHolidayCmpId: cmpId,
-      publicHolidayOwner: "Sivasankari",
+      publicHolidayOwner: "",
       pubHolidayId: "",
-      pubHolidayCountryCode: "",
       pubHolidayName: "",
       pubHolidayType: "",
       startDate: "",
@@ -37,8 +52,10 @@ const HolidayEdit = () => {
       try {
         const response = await api.put(`/public-holidays/${id}`, values);
         if (response.status === 200) {
+          setModalVisible(false);
+          onSuccess();
           toast.success(response.data.message);
-          navigate("/deduction");
+          navigate("/holidays");
         } else {
           toast.error(response.data.message);
         }
@@ -50,74 +67,29 @@ const HolidayEdit = () => {
     },
   });
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await api.get(`/public-holidays/${id}`);
-        formik.setValues(response.data);
-        formik.setValues({
-          ...response.data,
-          startDate: response.data.startDate?.substring(0, 10),
-          endDate: response.data.endDate?.substring(0, 10)
-        });
-      } catch (e) {
-        toast.error("Error fetching data: ", e?.response?.data?.message);
-      }
-    };
-
-    getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
   return (
-    <div className="container-fluid px-2 minHeight m-0">
-      <form onSubmit={formik.handleSubmit}>
-        <div
-          className="card shadow border-0 mb-2 top-header"
-          style={{ borderRadius: "0" }}
+    <>
+      <div className="mb-3 d-flex justify-content-end">
+        <button
+          className="btn btn-sm p-1 shadow-none border-none pt-4"
+          onClick={handleShow}
         >
-          <div className="container-fluid py-4">
-            <div className="row align-items-center">
-              <div className="col">
-                <div className="d-flex align-items-center gap-4">
-                  <h1 className="h4 ls-tight headingColor">Edit Holiday</h1>
-                </div>
-              </div>
-              <div className="col-auto">
-                <div className="hstack gap-2 justify-content-end">
-                  <Link to="/holidays">
-                    <button type="button" className="btn btn-sm btn-light">
-                      <span>Back</span>
-                    </button>
-                  </Link>
-                  <button
-                    type="submit"
-                    className="btn btn-sm btn-primary"
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <span
-                        className="spinner-border spinner-border-sm"
-                        aria-hidden="true"
-                      ></span>
-                    ) : (
-                      <span>Update</span>
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          className="card shadow border-0 my-2"
-          style={{ borderRadius: "0" }}
-        >
-          <div className="container mb-5">
-            <div className="row py-4">
-              {/* Company Name */}
-
+          <BiEditAlt />
+        </button>
+      </div>
+      <Modal
+        show={modalVisible}
+        onHide={() => setModalVisible(false)}
+        centered
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Holiday</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={formik.handleSubmit}>
+            <div className="row">
+              {/* Holiday Name */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Holiday Name <span className="text-danger">*</span>
@@ -125,11 +97,12 @@ const HolidayEdit = () => {
                 <input
                   type="text"
                   name="pubHolidayName"
-                  className={`form-control form-control-sm ${formik.touched.pubHolidayName &&
+                  className={`form-control form-control-sm ${
+                    formik.touched.pubHolidayName &&
                     formik.errors.pubHolidayName
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("pubHolidayName")}
                 />
                 {formik.touched.pubHolidayName &&
@@ -146,11 +119,12 @@ const HolidayEdit = () => {
                 <input
                   type="text"
                   name="pubHolidayType"
-                  className={`form-control form-control-sm ${formik.touched.pubHolidayType &&
+                  className={`form-control form-control-sm ${
+                    formik.touched.pubHolidayType &&
                     formik.errors.pubHolidayType
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("pubHolidayType")}
                 />
                 {formik.touched.pubHolidayType &&
@@ -162,36 +136,16 @@ const HolidayEdit = () => {
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  Country<span className="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="pubHolidayCountryCode"
-                  className={`form-control form-control-sm ${formik.touched.pubHolidayCountryCode &&
-                    formik.errors.pubHolidayCountryCode
-                    ? "is-invalid"
-                    : ""
-                    }`}
-                  {...formik.getFieldProps("pubHolidayCountryCode")}
-                />
-                {formik.touched.pubHolidayCountryCode &&
-                  formik.errors.pubHolidayCountryCode && (
-                    <div className="invalid-feedback">
-                      {formik.errors.pubHolidayCountryCode}
-                    </div>
-                  )}
-              </div>
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Start Date<span className="text-danger">*</span>
+                  Start Date <span className="text-danger">*</span>
                 </label>
                 <input
                   type="date"
                   name="startDate"
-                  className={`form-control form-control-sm ${formik.touched.startDate && formik.errors.startDate
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                  className={`form-control form-control-sm ${
+                    formik.touched.startDate && formik.errors.startDate
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("startDate")}
                 />
                 {formik.touched.startDate && formik.errors.startDate && (
@@ -202,15 +156,16 @@ const HolidayEdit = () => {
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
-                  End Date<span className="text-danger">*</span>
+                  End Date <span className="text-danger">*</span>
                 </label>
                 <input
                   type="date"
                   name="endDate"
-                  className={`form-control form-control-sm ${formik.touched.endDate && formik.errors.endDate
-                    ? "is-invalid"
-                    : ""
-                    }`}
+                  className={`form-control form-control-sm ${
+                    formik.touched.endDate && formik.errors.endDate
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   {...formik.getFieldProps("endDate")}
                 />
                 {formik.touched.endDate && formik.errors.endDate && (
@@ -219,11 +174,42 @@ const HolidayEdit = () => {
                   </div>
                 )}
               </div>
+              <div className="col-md-12 col-12 mb-3">
+                <label className="form-label">Description</label>
+                <textarea
+                  name="description"
+                  className={`form-control form-control-sm ${
+                    formik.touched.description && formik.errors.description
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("description")}
+                />
+                {formik.touched.description && formik.errors.description && (
+                  <div className="invalid-feedback">
+                    {formik.errors.description}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        </div>
-      </form>
-    </div>
+
+            <div className="d-flex justify-content-end gap-2">
+              <Button
+                className="btn btn-sm"
+                variant="secondary"
+                onClick={() => setModalVisible(false)}
+              >
+                Cancel
+              </Button>
+
+              <Button type="submit" variant="primary" className="btn btn-sm">
+                Update
+              </Button>
+            </div>
+          </form>
+        </Modal.Body>
+      </Modal>
+    </>
   );
 };
 

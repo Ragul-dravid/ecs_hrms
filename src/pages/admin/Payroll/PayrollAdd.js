@@ -15,7 +15,7 @@ function PayrollAdd() {
   const [loadIndicator, setLoadIndicator] = useState(false);
   const [bonus, setBonus] = useState(0);
   const navigate = useNavigate();
-  const cmpId = localStorage.getItem("cmpId");
+  const cmpId = sessionStorage.getItem("cmpId");
 
   const validationSchema = Yup.object().shape({
     centerId: Yup.string().required("*Centre name is required"),
