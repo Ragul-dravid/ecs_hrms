@@ -59,9 +59,9 @@ const HrPolicyEdit = () => {
       hrPolicyId: id,
       hrPolicyList: "",
       hrPolicyDescr: "",
-      hrPolicyOwner: "",
+      // hrPolicyOwner: "",
       effectiveDate: "",
-      hrPolicyCategory: "",
+      // hrPolicyCategory: "",
       attachments: [],
       hrPolicyCmpId: cmpId,
     },
@@ -75,9 +75,9 @@ const HrPolicyEdit = () => {
         const formData = new FormData();
         formData.append("hrPolicyList", values.hrPolicyList);
         formData.append("hrPolicyDescr", values.hrPolicyDescr);
-        formData.append("hrPolicyOwner", values.hrPolicyOwner);
+        // formData.append("hrPolicyOwner", values.hrPolicyOwner);
         // formData.append("effectiveDate", formattedEffectiveDate);
-        formData.append("hrPolicyCategory", values.hrPolicyCategory);
+        // formData.append("hrPolicyCategory", values.hrPolicyCategory);
         values.attachments.forEach((file) => {
           formData.append("attachments", file);
         });
@@ -190,8 +190,8 @@ const HrPolicyEdit = () => {
                   </div>
                 )}
               </div>
-
-              <div className="col-md-6 col-12 mb-3">
+                
+              {/* <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   HrPolicy Owner <span className="text-danger">*</span>
                 </label>
@@ -233,7 +233,7 @@ const HrPolicyEdit = () => {
                       {formik.errors.hrPolicyCategory}
                     </div>
                   )}
-              </div>
+              </div> */}
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Effective Date <span className="text-danger">*</span>
