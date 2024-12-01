@@ -1,4 +1,9 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
@@ -10,7 +15,8 @@ const EmpExperienceEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const [rows, setRows] = useState([{}]);
     const [isFresher, setIsFresher] = useState(false);
-
+    const [perDetailsId, setPerDetailsId] = useState([]);
+    console.log("perDetailsId", perDetailsId);
     const validationSchema = Yup.object().shape({
       empExperience: Yup.array().of(
         Yup.object().shape({
@@ -69,7 +75,11 @@ const EmpExperienceEdit = forwardRef(
         }));
 
         try {
-          const response = await api.post(`/emp-experience`, payload);
+          const response =
+            perDetailsId !== null
+              // ? await api.put(`/emp-experience/${perDetailsId}`, payload)
+              ? await api.post("/emp-experience", payload)
+              : await api.post("/emp-experience", payload);
           if (response.status === 201) {
             toast.success(response.data.message);
             setFormData((prv) => ({ ...prv, ...values }));
@@ -118,15 +128,33 @@ const EmpExperienceEdit = forwardRef(
     useEffect(() => {
       const getData = async () => {
         try {
-          const response = await api.get(`/emp-experience/${formData.empId}`);
-          // formik.setValues(response.data);
-          // formik.setValues(response.data)
-          console.log("Exp response", response.data);
+          const response = await api.get(`/emp-reg-details/${formData.empId}`);
+
+          const experiences = response.data.empExperienceEntities.map(
+            (exp) => ({
+              prevCmpName: exp.prevCmpName || "",
+              prevCmpAddr: exp.prevCmpAddr || "",
+              designation: exp.designation || "",
+              experienceDesc: exp.experienceDesc || "",
+              experienceStartDate: exp.experienceStartDate?.slice(0, 10) || "",
+              experienceEndDate: exp.experienceEndDate?.slice(0, 10) || "",
+              prevCompReferralName: exp.prevCompReferralName || "",
+              prevCompReferralContactNum: exp.prevCompReferralContactNum || "",
+              experienceId: exp.experienceId || null,
+            })
+          );
+
+          formik.setValues({ empExperience: experiences });
+          const experienceIds = experiences.map(
+            (experience) => experience.experienceId
+          );
+          setPerDetailsId(experienceIds);
         } catch (error) {
-          // console.log(error.message);
-          toast.error("Error Fetching Data ", error.message);
+          console.error("Error fetching experience data:", error.message);
+          toast.error("Error Fetching Data");
         }
       };
+
       getData();
     }, []);
 

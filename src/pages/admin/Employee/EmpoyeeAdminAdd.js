@@ -130,7 +130,7 @@ function EmployeeAdminAdd() {
       const departmentData = await departmentListByCompId(cmpId);
       setDepartmentData(departmentData);
     } catch (error) {
-      toast.error(error);
+      toast.error(error.message);
     }
   };
 

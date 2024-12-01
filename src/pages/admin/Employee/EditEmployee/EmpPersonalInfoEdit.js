@@ -387,11 +387,11 @@ const EmpPersonalInfoEdit = forwardRef(
                   const selectedValue = e.target.value;
                   formik.setFieldValue("nationality", selectedValue);
                   if (selectedValue === "INDIAN") {
-                    setSelectedIdType("INDIAN");
+                    setSelectedIdType("AADHAR");
                     formik.setFieldValue("NRICFin", "");
                     formik.setFieldValue("NRICType", "");
                   } else if (selectedValue === "SINGAPORE") {
-                    setSelectedIdType("SINGAPORE");
+                    setSelectedIdType("NRIC");
                     formik.setFieldValue("aadharNumber", "");
                     formik.setFieldValue("pan", "");
                   }
@@ -432,7 +432,8 @@ const EmpPersonalInfoEdit = forwardRef(
               )}
             </div>
             <div>
-              {selectedIdType === "SINGAPORE" && (
+              {(selectedIdType === "SINGAPORE" ||
+                selectedIdType === "NRIC") && (
                 <div className="row">
                   <div className="col-md-6 col-12 mb-3 ">
                     <div className="mb-2">
@@ -497,7 +498,7 @@ const EmpPersonalInfoEdit = forwardRef(
                   </div>
                 </div>
               )}
-              {selectedIdType === "INDIAN" && (
+              {(selectedIdType === "INDIAN" || selectedIdType === "AADHAR") && (
                 <div className="row">
                   <div className="col-md-6 col-12 mb-3 ">
                     <div className="mb-2">
