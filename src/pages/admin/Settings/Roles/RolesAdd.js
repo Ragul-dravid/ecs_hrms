@@ -3,82 +3,51 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../../config/URL";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object().shape({});
 
 function RolesAdd() {
   const [role, setRole] = useState("1");
   const [loading, setLoadIndicator] = useState(false);
+  const cmpId = sessionStorage.getItem("cmpId");
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
-      courseIndex: true,
-      courseRead: true,
-      courseCreate: true,
-      courseUpdate: true,
-      courseDelete: true,
-      classIndex: true,
-      classRead: true,
-      classCreate: true,
-      classUpdate: true,
-      classDelete: true,
-      levelIndex: true,
-      levelRead: true,
-      levelCreate: true,
-      levelUpdate: true,
-      levelDelete: true,
-      subjectIndex: true,
-      subjectRead: true,
-      subjectCreate: true,
-      subjectUpdate: true,
-      subjectDelete: true,
-      curriculumIndex: true,
-      curriculumRead: true,
-      curriculumCreate: true,
-      curriculumUpdate: true,
-      curriculumDelete: true,
-      courseFeesIndex: true,
-      courseFeesRead: true,
-      courseFeesCreate: true,
-      courseFeesUpdate: true,
-      courseFeesDelete: true,
-      courseDepositFeesIndex: true,
-      courseDepositFeesRead: true,
-      courseDepositFeesCreate: true,
-      courseDepositFeesUpdate: true,
-      courseDepositFeesDelete: true,
-      curriculumOutlineIndex: true,
-      curriculumOutlineRead: true,
-      curriculumOutlineCreate: true,
-      curriculumOutlineUpdate: true,
-      curriculumOutlineDelete: true,
-      
+      name: "",
+      companyId: cmpId,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log("Api Data:", values);
+      const payload = {
+        name : values.name,
+        companyId : values.companyId
+      };
       try {
-        const response = await api.put(`/updateRoleInfo/${role}`, values, {
+        const response = await api.post(`/createRolesByCompanyId`, payload, {
           headers: {
             "Content-Type": "application/json",
           },
         });
-        if (response.status === 200) {
-          toast.success(response.data.message);
+        if (response.status === 201 || response.status === 200) {
+          toast.success(response.data);
+          // console.log("Response message:",response);
+          
+          navigate("/roles");
         } else {
           toast.error(response.data.message);
         }
       } catch (error) {
-        toast.error(error);
+        const errorMessage =
+          error.response?.data?.message ||
+          error.message ||
+          "An unexpected error occurred";
+        toast.error(errorMessage);
       }
     },
   });
-
-  useEffect(() => {
-    getRoleData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [role]);
 
   const handleCheckboxChange = (fieldName) => {
     return (event) => {
@@ -92,9 +61,19 @@ function RolesAdd() {
       formik.setValues(response.data);
       // console.log(response.data, "getroleData");
     } catch (error) {
-      console.error("Error fetching role data:", error);
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to fetch role data";
+      console.error("Error fetching role data:", errorMessage);
+      toast.error(errorMessage);
     }
   };
+
+  useEffect(() => {
+    // getRoleData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [role]);
 
   return (
     <div className="container-fluid">
@@ -151,17 +130,17 @@ function RolesAdd() {
               </label>
               <input
                 type="text"
-                name="roleStatus"
+                name="name"
                 className={`form-control form-control-sm ${
-                  formik.touched.roleStatus && formik.errors.roleStatus
+                  formik.touched.name && formik.errors.name
                     ? "is-invalid"
                     : ""
                 }`}
-                {...formik.getFieldProps("roleStatus")}
+                {...formik.getFieldProps("name")}
               />
-              {formik.touched.roleStatus && formik.errors.roleStatus && (
+              {formik.touched.name && formik.errors.name && (
                 <div className="invalid-feedback">
-                  {formik.errors.roleStatus}
+                  {formik.errors.name}
                 </div>
               )}
             </div>

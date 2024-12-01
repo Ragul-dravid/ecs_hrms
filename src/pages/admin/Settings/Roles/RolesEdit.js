@@ -3,63 +3,29 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../../config/URL";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const validationSchema = Yup.object().shape({});
 
 function RolesEdit() {
-  const [role, setRole] = useState("1");
+  const {id} = useParams();
   const [loading, setLoadIndicator] = useState(false);
+  const cmpId = sessionStorage.getItem("cmpId");
 
   const formik = useFormik({
     initialValues: {
-      courseIndex: true,
-      courseRead: true,
-      courseCreate: true,
-      courseUpdate: true,
-      courseDelete: true,
-      classIndex: true,
-      classRead: true,
-      classCreate: true,
-      classUpdate: true,
-      classDelete: true,
-      levelIndex: true,
-      levelRead: true,
-      levelCreate: true,
-      levelUpdate: true,
-      levelDelete: true,
-      subjectIndex: true,
-      subjectRead: true,
-      subjectCreate: true,
-      subjectUpdate: true,
-      subjectDelete: true,
-      curriculumIndex: true,
-      curriculumRead: true,
-      curriculumCreate: true,
-      curriculumUpdate: true,
-      curriculumDelete: true,
-      courseFeesIndex: true,
-      courseFeesRead: true,
-      courseFeesCreate: true,
-      courseFeesUpdate: true,
-      courseFeesDelete: true,
-      courseDepositFeesIndex: true,
-      courseDepositFeesRead: true,
-      courseDepositFeesCreate: true,
-      courseDepositFeesUpdate: true,
-      courseDepositFeesDelete: true,
-      curriculumOutlineIndex: true,
-      curriculumOutlineRead: true,
-      curriculumOutlineCreate: true,
-      curriculumOutlineUpdate: true,
-      curriculumOutlineDelete: true,
-      
+      name:"",
+      cmpId:cmpId,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log("Api Data:", values);
+      const payload = {
+        name : values.name,
+        cmpId : values.cmpId
+      };
       try {
-        const response = await api.put(`/updateRoleInfo/${role}`, values, {
+        const response = await api.put(`/roleUpdateRestriction/${id}`, payload, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -70,7 +36,11 @@ function RolesEdit() {
           toast.error(response.data.message);
         }
       } catch (error) {
-        toast.error(error);
+        const errorMessage =
+          error.response?.data?.message ||
+          error.message ||
+          "An unexpected error occurred";
+        toast.error(errorMessage);
       }
     },
   });
@@ -78,7 +48,7 @@ function RolesEdit() {
   useEffect(() => {
     getRoleData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [role]);
+  }, [id]);
 
   const handleCheckboxChange = (fieldName) => {
     return (event) => {
@@ -88,13 +58,29 @@ function RolesEdit() {
 
   const getRoleData = async () => {
     try {
-      const response = await api.get(`/getAllRoleInfoById/${role}`);
+      const response = await api.get(`/getAllRoleInfoById/${id}`);
       formik.setValues(response.data);
       // console.log(response.data, "getroleData");
     } catch (error) {
       console.error("Error fetching role data:", error);
     }
   };
+  
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`/emp-desig-details/${id}`);
+        formik.setValues(response.data);
+      } catch (error) {
+        const errorMessage =
+          error.response?.data?.message ||
+          error.message ||
+          "An unexpected error occurred";
+        toast.error(errorMessage);
+      }
+    };
+    getData();
+  }, [id]);
 
   return (
     <div className="container-fluid">

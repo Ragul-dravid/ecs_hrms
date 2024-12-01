@@ -20,7 +20,7 @@ const Roles = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get("/role");
+        const response = await api.get(`/getRegisteredRolesByCompanyId/${cmpId}`);
         setDatas(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -62,7 +62,7 @@ const Roles = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get("/role");
+      const response = await api.get(`/getRegisteredRolesByCompanyId/${cmpId}`);
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -149,7 +149,7 @@ const Roles = () => {
                   {datas.map((data, index) => (
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
-                      <td className="text-center">{data.roleName}</td>
+                      <td className="text-center">{data.name}</td>
                       <td className="text-center">
                         {data.roleStatus === "Approve" ? (
                           <span className="badge-approved">Approved</span>
@@ -176,7 +176,7 @@ const Roles = () => {
                           </Link>
                           <DeleteModel
                             onSuccess={refreshData}
-                            path={`/role/${data.id}`}
+                            path={`/roleDeleteRestriction/${data.id}`}
                           />
                         </div>
                       </td>
