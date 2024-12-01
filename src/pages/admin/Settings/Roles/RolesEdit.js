@@ -48,7 +48,7 @@ function RolesEdit() {
   useEffect(() => {
     getRoleData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [role]);
+  }, [id]);
 
   const handleCheckboxChange = (fieldName) => {
     return (event) => {
@@ -58,13 +58,14 @@ function RolesEdit() {
 
   const getRoleData = async () => {
     try {
-      const response = await api.get(`/getAllRoleInfoById/${role}`);
+      const response = await api.get(`/getAllRoleInfoById/${id}`);
       formik.setValues(response.data);
       // console.log(response.data, "getroleData");
     } catch (error) {
       console.error("Error fetching role data:", error);
     }
   };
+  
   useEffect(() => {
     const getData = async () => {
       try {
