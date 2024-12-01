@@ -156,7 +156,10 @@ function Admin({ handleLogout }) {
                   {/* {/ Employee /} */}
                   <Route path="/employee" element={<Employee />} />
                   <Route path="/employee/add" element={<EmployeeAdminAdd />} />
-                  <Route path="/employee/edit/:empId" element={<EmployeeEdit />} />
+                  <Route
+                    path="/employee/edit/:empId"
+                    element={<EmployeeEdit />}
+                  />
                   <Route path="/employee/view/:id" element={<EmployeeView />} />
 
                   {/* Holiday */}
@@ -234,9 +237,15 @@ function Admin({ handleLogout }) {
                   {/* Designation  */}
                   <Route path="/designation" element={<Designation />} />
                   <Route path="/designation/add" element={<DesignationAdd />} />
-                  <Route path="/designation/edit/:id" element={<DesignationEdit />} />
-                  <Route path="/designation/view/:id" element={<DesignationView />} />
-                
+                  <Route
+                    path="/designation/edit/:id"
+                    element={<DesignationEdit />}
+                  />
+                  <Route
+                    path="/designation/view/:id"
+                    element={<DesignationView />}
+                  />
+
                   <Route
                     path="/registrationcompany/edit/:id"
                     element={<RegistrationCompany />}

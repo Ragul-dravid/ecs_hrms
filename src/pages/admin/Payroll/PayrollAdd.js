@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 // import fetchAllCentersWithIds from "../../List/CenterList";
 import { toast } from "react-toastify";
 import api from "../../../config/URL";
+import UseScrollError from "../../UseScrollError";
 // import fetchAllEmployeeListByCenter from "../../List/EmployeeList";
 
 function PayrollAdd() {
@@ -334,9 +335,9 @@ function PayrollAdd() {
     formik.values.payrollType,
     formik.values.userId,
   ]);
+  UseScrollError(formik);
 
   return (
-    
     <div className="container-fluid px-2 minHeight m-0">
       <form onSubmit={formik.handleSubmit}>
         <div
@@ -389,8 +390,7 @@ function PayrollAdd() {
                 </label>
                 <select
                   className={`form-select form-select-sm ${
-                    formik.touched.payrollEmpId &&
-                    formik.errors.payrollEmpId
+                    formik.touched.payrollEmpId && formik.errors.payrollEmpId
                       ? "is-invalid"
                       : ""
                   }`}
@@ -647,9 +647,7 @@ function PayrollAdd() {
                   {...formik.getFieldProps("netPay")}
                 />
                 {formik.touched.netPay && formik.errors.netPay && (
-                  <div className="invalid-feedback">
-                    {formik.errors.netPay}
-                  </div>
+                  <div className="invalid-feedback">{formik.errors.netPay}</div>
                 )}
               </div>
               <div className="col-md-6 col-12 mb-3">

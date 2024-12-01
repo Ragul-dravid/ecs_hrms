@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../config/URL";
 import toast from "react-hot-toast";
+import UseScrollError from "../../UseScrollError";
 
 const PayrollEdit = () => {
   const { id } = useParams();
@@ -69,6 +70,7 @@ const PayrollEdit = () => {
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+  UseScrollError(formik);
 
   return (
     <div className="container-fluid px-2 minHeight m-0">

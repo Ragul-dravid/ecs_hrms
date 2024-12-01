@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import api from "../../../config/URL";
 import toast from "react-hot-toast";
 import employeeListByCompId from "../List_Apis/EmployeeListByCmpId";
+import UseScrollError from "../../UseScrollError";
 
 const DeductionAdd = () => {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ const DeductionAdd = () => {
     try {
       const employee = await api.get(`getEmpolyeeWithRole/${cmpId}`);
       setEmpData(employee.data);
-      console.log("Employee:",employee.data);
+      console.log("Employee:", employee.data);
       return employee.data;
     } catch (error) {
       console.error(error);
@@ -62,8 +63,9 @@ const DeductionAdd = () => {
   };
 
   useEffect(() => {
-   fetchEmployeeList();
+    fetchEmployeeList();
   }, []);
+  UseScrollError(formik);
 
   return (
     <div className="container-fluid px-2 minHeight m-0">
