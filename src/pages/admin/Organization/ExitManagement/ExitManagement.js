@@ -20,7 +20,7 @@ const ExitManagement = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/exitManagement-companyId/${cmpId}`);
+        const response = await api.get(`/exit-management-by-cmpId/${cmpId}`);
 
         setDatas(response.data);
       } catch (error) {
@@ -63,7 +63,7 @@ const ExitManagement = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get(`/exitManagement-companyId/${cmpId}`);
+      const response = await api.get(`/exit-management-by-cmpId/${cmpId}`);
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -145,7 +145,7 @@ const ExitManagement = () => {
                       Employee Name
                     </th>
                     <th scope="col" className="text-center">
-                      Reason For Reliving
+                      Department
                     </th>
                     <th scope="col" className="text-center">
                       Approval Status
@@ -159,9 +159,9 @@ const ExitManagement = () => {
                   {datas.map((data, index) => (
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
-                      <td className="text-center">{data.exitMgmtEmpId}</td>
-                      <td className="text-center">{data.exitMgmtEmpName}</td>
-                      <td className="text-center">{data.reasonForRelieving}</td>
+                      <td className="text-center">{data.empName}</td>
+                      <td className="text-center">{data.employeeId}</td>
+                      <td className="text-center">{data.deptName}</td>
                       <td className="text-center">
                         {data.cmpStatus === "Approve" ? (
                           <span className="badge-approved">Approved</span>

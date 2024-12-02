@@ -20,7 +20,7 @@ const Deduction = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`deduction-by-cmpId/${cmpId}`);
+        const response = await api.get(`deduction-by-companyId/${cmpId}`);
         setDatas(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -62,7 +62,7 @@ const Deduction = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get(`deduction-by-cmpId/${cmpId}`);
+      const response = await api.get(`deduction-by-companyId/${cmpId}`);
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {

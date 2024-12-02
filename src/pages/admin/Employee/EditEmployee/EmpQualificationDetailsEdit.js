@@ -179,7 +179,7 @@ const EmpQualificationDetailsEdit = forwardRef(
       const getData = async () => {
         try {
           const response = await api.get(`emp-reg-details/${formData.empId}`);
-          setPerDetailsId(response.data)
+          setPerDetailsId(response.data);
           console.log(response.data);
         } catch (error) {
           toast.error("Error Fetching Data: " + error.message);
@@ -416,71 +416,6 @@ const EmpQualificationDetailsEdit = forwardRef(
                       </div>
                     )}
                 </div>
-
-                {entity.studying === "No" && (
-                  <>
-                    <div className="col-md-6 mb-3">
-                      <label>Percentage(%) </label>
-                      <input
-                        type="text"
-                        className="form-control form-control-sm"
-                        name={`empQualificationEntities[${entityIndex}].percentage`}
-                        value={entity.percentage}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                      />
-                      {formik.touched.empQualificationEntities?.[entityIndex]
-                        ?.percentage &&
-                        formik.errors.empQualificationEntities?.[entityIndex]
-                          ?.percentage && (
-                          <div
-                            className="text-danger"
-                            style={{ fontSize: ".875em" }}
-                          >
-                            {
-                              formik.errors.empQualificationEntities[
-                                entityIndex
-                              ].percentage
-                            }
-                          </div>
-                        )}
-                    </div>
-                    <div className="col-md-6 mb-3">
-                      <label>
-                        Course complition Year{" "}
-                        <span
-                          className="text-danger"
-                          style={{ fontSize: ".875em" }}
-                        >
-                          *
-                        </span>
-                      </label>
-                      <input
-                        type="month"
-                        className="form-control form-control-sm"
-                        name={`empQualificationEntities[${entityIndex}].qualificationDate`}
-                        value={entity.qualificationDate}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                      />
-                      {formik.touched.empQualificationEntities?.[entityIndex]
-                        ?.qualificationDate &&
-                        formik.errors.empQualificationEntities?.[entityIndex]
-                          ?.qualificationDate && (
-                          <div
-                            className="text-danger"
-                            style={{ fontSize: ".875em" }}
-                          >
-                            {
-                              formik.errors.empQualificationEntities[
-                                entityIndex
-                              ].qualificationDate
-                            }
-                          </div>
-                        )}
-                    </div>
-                  </>
-                )}
                 <div className="col-md-6 mb-3">
                   <label>
                     Certificate{" "}
@@ -520,6 +455,70 @@ const EmpQualificationDetailsEdit = forwardRef(
                     )}
                 </div>
 
+                {entity.studying === "No" && (
+                  <>
+                    <div className="col-md-6 mb-3">
+                      <label>
+                        Course complition Year{" "}
+                        <span
+                          className="text-danger"
+                          style={{ fontSize: ".875em" }}
+                        >
+                          *
+                        </span>
+                      </label>
+                      <input
+                        type="month"
+                        className="form-control form-control-sm"
+                        name={`empQualificationEntities[${entityIndex}].qualificationDate`}
+                        value={entity.qualificationDate}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />
+                      {formik.touched.empQualificationEntities?.[entityIndex]
+                        ?.qualificationDate &&
+                        formik.errors.empQualificationEntities?.[entityIndex]
+                          ?.qualificationDate && (
+                          <div
+                            className="text-danger"
+                            style={{ fontSize: ".875em" }}
+                          >
+                            {
+                              formik.errors.empQualificationEntities[
+                                entityIndex
+                              ].qualificationDate
+                            }
+                          </div>
+                        )}
+                    </div>
+                    <div className="col-md-6 mb-3">
+                      <label>Percentage(%) </label>
+                      <input
+                        type="text"
+                        className="form-control form-control-sm"
+                        name={`empQualificationEntities[${entityIndex}].percentage`}
+                        value={entity.percentage}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />
+                      {formik.touched.empQualificationEntities?.[entityIndex]
+                        ?.percentage &&
+                        formik.errors.empQualificationEntities?.[entityIndex]
+                          ?.percentage && (
+                          <div
+                            className="text-danger"
+                            style={{ fontSize: ".875em" }}
+                          >
+                            {
+                              formik.errors.empQualificationEntities[
+                                entityIndex
+                              ].percentage
+                            }
+                          </div>
+                        )}
+                    </div>
+                  </>
+                )}
                 <div className="d-flex justify-content-between align-items-center my-4">
                   <p className="headColor mt-3">Skill</p>
                   <button
