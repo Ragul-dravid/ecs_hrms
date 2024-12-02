@@ -68,7 +68,7 @@ const EmpBankAccountEdit = forwardRef(
       const getData = async () => {
         try {
           const response = await api.get(`emp-reg-details/${formData.empId}`);
-          formik.setValues(response.data.empBankAccDetailsEntities[0]);
+          formik.setValues(response?.data?.empBankAccDetailsEntities[0] || []);
           setPerDetailsId(
             response.data.empBankAccDetailsEntities[0].bankAccDetailsId
           );

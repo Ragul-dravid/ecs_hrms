@@ -5,13 +5,13 @@ import { useFormik } from "formik";
 // import fetchAllCentersWithIds from "../../List/CenterList";
 import { toast } from "react-toastify";
 import api from "../../../config/URL";
-import UseScrollError from "../../UseScrollError";
 // import fetchAllEmployeeListByCenter from "../../List/EmployeeList";
 
 function PayrollAdd() {
-  const [centerData, setCenterData] = useState(null);
+  const [empData, setEmpData] = useState(null);
   const [userNamesData, setUserNameData] = useState(null);
   const [empRole, setEmpRole] = useState(null);
+  console.log("empRole", empRole);
   const [userSalaryInfo, setUserSalaryInfo] = useState(null);
   const [loadIndicator, setLoadIndicator] = useState(false);
   const [bonus, setBonus] = useState(0);
@@ -19,8 +19,7 @@ function PayrollAdd() {
   const cmpId = sessionStorage.getItem("cmpId");
 
   const validationSchema = Yup.object().shape({
-    centerId: Yup.string().required("*Centre name is required"),
-    userId: Yup.string().required("*Employee name is required"),
+    payrollEmpId: Yup.string().required("*Employee name is required"),
     payrollMonth: Yup.string().test(
       "Payroll Month-required",
       "*Payroll Month is required",
@@ -73,7 +72,7 @@ function PayrollAdd() {
     netPay: Yup.number()
       .required("*Net pay is required")
       .typeError("Net pay must be a number"),
-    status: Yup.string().required("*Status is required"),
+    payrollWorkingStatus: Yup.string().required("*Status is required"),
   });
 
   const formik = useFormik({
@@ -99,40 +98,31 @@ function PayrollAdd() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
-      let selectedCenterName = "";
       let selectedEmployeeName = "";
 
-      centerData.forEach((center) => {
-        if (parseInt(values.centerId) === center.id) {
-          selectedCenterName = center.centerNames || "--";
-        }
-      });
-
       userNamesData.forEach((employee) => {
-        if (parseInt(values.userId) === employee.id) {
-          selectedEmployeeName = employee.userNames || "--";
+        if (parseInt(values.payrollEmpId) === employee.id) {
+          selectedEmployeeName = employee.empName || "--";
         }
       });
 
       let payload = {
-        centerName: selectedCenterName,
-        centerId: values.centerId,
-        userId: values.userId,
+        payrollEmpId: values.payrollEmpId,
         employeeName: selectedEmployeeName,
         grossPay: values.grossPay,
         netPay: values.netPay,
-        status: values.status,
+        status: values.payrollWorkingStatus,
+        cmpId: cmpId,
       };
 
       if (empRole !== "freelancer") {
         payload = {
-          centerName: selectedCenterName,
-          centerId: values.centerId,
-          userId: values.userId,
+          cmpId: cmpId,
+          payrollEmpId: values.payrollEmpId,
           employeeName: selectedEmployeeName,
           grossPay: values.grossPay,
           netPay: values.netPay,
-          status: values.status,
+          status: values.payrollWorkingStatus,
           payrollMonth: values.payrollMonth,
           bonus: values.bonus,
           deductionAmount: values.deductionAmount,
@@ -141,12 +131,12 @@ function PayrollAdd() {
         };
       } else if (empRole === "freelancer") {
         payload = {
-          centerId: values.centerId,
-          userId: values.userId,
+          cmpId: cmpId,
+          payrollEmpId: values.payrollEmpId,
           userRole: empRole,
           payrollMonth: values.payrollMonth,
           netPay: values.netPay,
-          status: values.status,
+          status: values.payrollWorkingStatus,
           payrollType: values.payrollType,
           freelancerCount: Number(values.freelanceCount),
         };
@@ -168,7 +158,7 @@ function PayrollAdd() {
             toast.error(response.data.message);
           }
         } else {
-          const response = await api.post("/createUserPayroll", payload, {
+          const response = await api.post("/payroll", payload, {
             headers: {
               "Content-Type": "application/json",
             },
@@ -176,7 +166,7 @@ function PayrollAdd() {
 
           if (response.status === 201 || response.status === 201) {
             toast.success(response.data.message);
-            navigate("/payrolladmin");
+            navigate("/payroll");
           } else {
             toast.error(response.data.message);
           }
@@ -192,46 +182,25 @@ function PayrollAdd() {
       }
     },
   });
-
-  const handleCenterChange = async (event) => {
-    setUserNameData(null);
-    const centerId = event.target.value;
-    formik.setFieldValue("centerId", centerId);
-    formik.setFieldValue("deductionAmount", "");
-    formik.setFieldValue("grossPay", "");
-    // try {
-    //   await fetchUserName(centerId);
-    // } catch (error) {
-    //   toast.error(error);
-    // }
+  const fetchEmployeeList = async () => {
+    try {
+      const employee = await api.get(`getEmpolyeeWithRole/${cmpId}`);
+      setEmpData(employee.data);
+      setUserNameData(employee.data);
+      console.log("Employee:", employee.data);
+      return employee.data;
+    } catch (error) {
+      console.error(error);
+    }
   };
+  useEffect(() => {
+    fetchEmployeeList();
+  }, []);
 
-  // const fetchData = async () => {
-  //   try {
-  //     const centers = await fetchAllCentersWithIds();
-  //     setCenterData(centers);
-  //   } catch (error) {
-  //     toast.error(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
-  // const fetchUserName = async (centerId) => {
-  //   try {
-  //     const userNames = await fetchAllEmployeeListByCenter(centerId);
-  //     setUserNameData(userNames);
-  //   } catch (error) {
-  //     toast.error(error);
-  //   }
-  // };
-
-  const fetchUserSalaryInfo = async (userId, payrollMonth) => {
-    // alert(userId, payrollMonth);
+  const fetchUserSalaryInfo = async (payrollEmpId, payrollMonth) => {
+    // alert(payrollEmpId, payrollMonth);
     const queryParams = new URLSearchParams({
-      userId: userId,
+      empId: payrollEmpId,
       deductionMonth: payrollMonth,
     });
 
@@ -260,22 +229,23 @@ function PayrollAdd() {
   // }, []);
 
   const handleUserChange = async (event) => {
-    const userId = event.target.value;
-    formik.setFieldValue("payrollEmpId", userId);
+    const payrollEmpId = event.target.value;
+    console.log("payrollEmpId", payrollEmpId);
+    formik.setFieldValue("payrollEmpId", payrollEmpId);
     formik.setFieldValue("grossPay", "");
     formik.setFieldValue("netPay", 0);
     const { payrollMonth } = formik.values;
-    await fetchUserSalaryInfo(userId, payrollMonth);
+    await fetchUserSalaryInfo(payrollEmpId, payrollMonth);
   };
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const { userId, payrollMonth } = formik.values;
-      await fetchUserSalaryInfo(userId, payrollMonth);
+      const { payrollEmpId, payrollMonth } = formik.values;
+      await fetchUserSalaryInfo(payrollEmpId, payrollMonth);
     };
 
     fetchUserData();
-  }, [formik.values.userId, formik.values.payrollMonth]);
+  }, [formik.values.payrollEmpId, formik.values.payrollMonth]);
 
   useEffect(() => {
     const calculateNetPay = () => {
@@ -286,7 +256,7 @@ function PayrollAdd() {
         const cpf = parseFloat(formik.values.cpfContribution) || 0;
         const shg = parseFloat(formik.values.shgContribution) || 0;
         const netPay = grossPay + bonus - deductionAmount - cpf - shg;
-        formik.setFieldValue("netPay", isNaN(netPay) ? 0 : netPay.toFixed(2));
+        formik.setFieldValue("netPay", netPay);
       }
     };
     calculateNetPay();
@@ -298,12 +268,12 @@ function PayrollAdd() {
 
   useEffect(() => {
     userNamesData?.forEach((employee) => {
-      if (parseInt(formik.values.userId) === employee.id) {
-        const selectedEmployeeRole = employee.role;
+      if (parseInt(formik.values.payrollEmpId) === employee.id) {
+        const selectedEmployeeRole = employee.roleName;
         setEmpRole(selectedEmployeeRole);
       }
     });
-  }, [formik.values.userId]);
+  }, [formik.values.payrollEmpId]);
 
   const fetchUserPaymentInfo = async (freelanceCount, payrollType) => {
     const queryParams = new URLSearchParams({
@@ -333,9 +303,8 @@ function PayrollAdd() {
   }, [
     formik.values.freelanceCount,
     formik.values.payrollType,
-    formik.values.userId,
+    formik.values.payrollEmpId,
   ]);
-  UseScrollError(formik);
 
   return (
     <div className="container-fluid px-2 minHeight m-0">
@@ -394,12 +363,16 @@ function PayrollAdd() {
                       ? "is-invalid"
                       : ""
                   }`}
-                  {...formik.getFieldProps("payrollEmpId")}
-                  onChange={handleUserChange}
+                  value={formik.values.payrollEmpId} // Ensure proper controlled value
+                  onChange={handleUserChange} // Custom change handler
                 >
-                  <option value="" />
-                  <option value="freelancer" label="Freelancer" />
-                  <option value="Employee" label="Employee" />
+                  <option value="" selected></option>
+                  {Array.isArray(empData) &&
+                    empData.map((employee) => (
+                      <option key={employee.id} value={employee.id}>
+                        {employee.empName}
+                      </option>
+                    ))}
                 </select>
                 {formik.touched.payrollEmpId && formik.errors.payrollEmpId && (
                   <div className="invalid-feedback">
@@ -407,6 +380,7 @@ function PayrollAdd() {
                   </div>
                 )}
               </div>
+
               {empRole !== "freelancer" && (
                 <>
                   <div className="col-md-6 col-12 mb-3">
