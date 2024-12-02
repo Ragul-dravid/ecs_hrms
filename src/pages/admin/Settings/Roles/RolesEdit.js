@@ -3,7 +3,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../../config/URL";
 import toast from "react-hot-toast";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { FiAlertTriangle } from "react-icons/fi";
 
 const validationSchema = Yup.object().shape({});
 
@@ -11,44 +12,114 @@ function RolesEdit() {
   const {id} = useParams();
   const [loading, setLoadIndicator] = useState(false);
   const cmpId = sessionStorage.getItem("cmpId");
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
-      name:"",
-      cmpId:cmpId,
+      name: "",
+      companyId: cmpId,
+
+      companyIndex: false,
+      companyRead: false,
+      companyCreate: false,
+      companyUpdate: false,
+      companyDelete: false,
+
+      departmentIndex: false,
+      departmentRead: false,
+      departmentCreate: false,
+      departmentUpdate: false,
+      departmentDelete: false,
+
+      designationIndex: false,
+      designationRead: false,
+      designationCreate: false,
+      designationUpdate: false,
+      designationDelete: false,
+
+      hrPolicyIndex: false,
+      hrPolicyRead: false,
+      hrPolicyCreate: false,
+      hrPolicyUpdate: false,
+      hrPolicyDelete: false,
+
+      exitManagementIndex: false,
+      exitManagementRead: false,
+      exitManagementCreate: false,
+      exitManagementUpdate: false,
+      exitManagementDelete: false,
+
+      employeeIndex: false,
+      employeeRead: false,
+      employeeCreate: false,
+      employeeUpdate: false,
+      employeeDelete: false,
+
+      holidayIndex: false,
+      holidayRead: false,
+      holidayCreate: false,
+      holidayUpdate: false,
+      holidayDelete: false,
+
+      attendanceIndex: false,
+      attendanceRead: false,
+      attendanceCreate: false,
+      attendanceUpdate: false,
+      attendanceDelete: false,
+
+      deductionIndex: false,
+      deductionRead: false,
+      deductionCreate: false,
+      deductionUpdate: false,
+      deductionDelete: false,
+
+      leaveRequestIndex: false,
+      leaveRequestRead: false,
+      leaveRequestCreate: false,
+      leaveRequestUpdate: false,
+      leaveRequestDelete: false,
+
+      payrollIndex: false,
+      payrollRead: false,
+      payrollCreate: false,
+      payrollUpdate: false,
+      payrollDelete: false,
+
+      payslipIndex: false,
+      payslipRead: false,
+
+      rolesMatrixIndex: false,
+      rolesMatrixRead: false,
+      rolesMatrixCreate: false,
+      rolesMatrixUpdate: false,
+      rolesMatrixDelete: false,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log("Api Data:", values);
-      const payload = {
-        name : values.name,
-        cmpId : values.cmpId
-      };
       try {
-        const response = await api.put(`/roleUpdateRestriction/${id}`, payload, {
+        const response = await api.post(`/createRolesByCompanyId`, values, {
           headers: {
             "Content-Type": "application/json",
           },
         });
-        if (response.status === 200) {
-          toast.success(response.data.message);
+        if (response.status === 201 || response.status === 200) {
+          toast.success(response.data);
+          navigate("/roles");
         } else {
           toast.error(response.data.message);
         }
-      } catch (error) {
-        const errorMessage =
-          error.response?.data?.message ||
-          error.message ||
-          "An unexpected error occurred";
-        toast.error(errorMessage);
+      } catch (e) {
+        if (e.response.status === 409) {      
+          toast("Role already exists for this company", {
+            icon: <FiAlertTriangle className="text-warning" />,
+          });
+        } else {
+          toast.error(e?.response?.data?.message);
+        }
       }
     },
   });
-
-  useEffect(() => {
-    getRoleData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
 
   const handleCheckboxChange = (fieldName) => {
     return (event) => {
@@ -56,29 +127,20 @@ function RolesEdit() {
     };
   };
 
-  const getRoleData = async () => {
+  const getData = async () => {
     try {
-      const response = await api.get(`/getAllRoleInfoById/${id}`);
+      const response = await api.get(`/getUserRoleById/${id}`);
       formik.setValues(response.data);
-      // console.log(response.data, "getroleData");
     } catch (error) {
-      console.error("Error fetching role data:", error);
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "An unexpected error occurred";
+      toast.error(errorMessage);
     }
   };
-  
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await api.get(`/emp-desig-details/${id}`);
-        formik.setValues(response.data);
-      } catch (error) {
-        const errorMessage =
-          error.response?.data?.message ||
-          error.message ||
-          "An unexpected error occurred";
-        toast.error(errorMessage);
-      }
-    };
+
+  useEffect(() => {  
     getData();
   }, [id]);
 
@@ -118,7 +180,7 @@ function RolesEdit() {
                     {loading ? (
                       <span
                         className="spinner-border spinner-border-sm"
-                        aria-hidden="true"
+                        aria-hidden="false"
                       ></span>
                     ) : (
                       <span>Update</span>
@@ -137,22 +199,18 @@ function RolesEdit() {
               </label>
               <input
                 type="text"
-                name="roleStatus"
+                name="name"
                 className={`form-control form-control-sm ${
-                  formik.touched.roleStatus && formik.errors.roleStatus
-                    ? "is-invalid"
-                    : ""
+                  formik.touched.name && formik.errors.name ? "is-invalid" : ""
                 }`}
-                {...formik.getFieldProps("roleStatus")}
+                {...formik.getFieldProps("name")}
               />
-              {formik.touched.roleStatus && formik.errors.roleStatus && (
-                <div className="invalid-feedback">
-                  {formik.errors.roleStatus}
-                </div>
+              {formik.touched.name && formik.errors.name && (
+                <div className="invalid-feedback">{formik.errors.name}</div>
               )}
             </div>
             <div className="col-md-6 col-12 mb-3">
-              <label className="form-label">
+              {/* <label className="form-label">
                 Status <span className="text-danger">*</span>
               </label>
               <select
@@ -171,7 +229,7 @@ function RolesEdit() {
                 <div className="invalid-feedback">
                   {formik.errors.roleStatus}
                 </div>
-              )}
+              )} */}
             </div>
           </div>
           <div className="row">
@@ -199,45 +257,45 @@ function RolesEdit() {
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="courseIndex"
-                          checked={formik.values.courseIndex}
-                          onChange={handleCheckboxChange(`courseIndex`)}
+                          name="companyIndex"
+                          checked={formik.values.companyIndex}
+                          onChange={handleCheckboxChange(`companyIndex`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="courseRead"
-                          checked={formik.values.courseRead}
-                          onChange={handleCheckboxChange(`courseRead`)}
+                          name="companyRead"
+                          checked={formik.values.companyRead}
+                          onChange={handleCheckboxChange(`companyRead`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="courseCreate"
-                          checked={formik.values.courseCreate}
-                          onChange={handleCheckboxChange(`courseCreate`)}
+                          name="companyCreate"
+                          checked={formik.values.companyCreate}
+                          onChange={handleCheckboxChange(`companyCreate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="courseUpdate"
-                          checked={formik.values.courseUpdate}
-                          onChange={handleCheckboxChange(`courseUpdate`)}
+                          name="companyUpdate"
+                          checked={formik.values.companyUpdate}
+                          onChange={handleCheckboxChange(`companyUpdate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="courseDelete"
-                          checked={formik.values.courseDelete}
-                          onChange={handleCheckboxChange(`courseDelete`)}
+                          name="companyDelete"
+                          checked={formik.values.companyDelete}
+                          onChange={handleCheckboxChange(`companyDelete`)}
                         />
                       </td>
                     </tr>
@@ -251,45 +309,45 @@ function RolesEdit() {
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="classIndex"
-                          checked={formik.values.classIndex}
-                          onChange={handleCheckboxChange(`classIndex`)}
+                          name="departmentIndex"
+                          checked={formik.values.departmentIndex}
+                          onChange={handleCheckboxChange(`departmentIndex`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="classRead"
-                          checked={formik.values.classRead}
-                          onChange={handleCheckboxChange(`classRead`)}
+                          name="departmentRead"
+                          checked={formik.values.departmentRead}
+                          onChange={handleCheckboxChange(`departmentRead`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="classCreate"
-                          checked={formik.values.classCreate}
-                          onChange={handleCheckboxChange(`classCreate`)}
+                          name="departmentCreate"
+                          checked={formik.values.departmentCreate}
+                          onChange={handleCheckboxChange(`departmentCreate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="classUpdate"
-                          checked={formik.values.classUpdate}
-                          onChange={handleCheckboxChange(`classUpdate`)}
+                          name="departmentUpdate"
+                          checked={formik.values.departmentUpdate}
+                          onChange={handleCheckboxChange(`departmentUpdate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="classDelete"
-                          checked={formik.values.classDelete}
-                          onChange={handleCheckboxChange(`classDelete`)}
+                          name="departmentDelete"
+                          checked={formik.values.departmentDelete}
+                          onChange={handleCheckboxChange(`departmentDelete`)}
                         />
                       </td>
                     </tr>
@@ -303,45 +361,45 @@ function RolesEdit() {
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="levelIndex"
-                          checked={formik.values.levelIndex}
-                          onChange={handleCheckboxChange(`levelIndex`)}
+                          name="designationIndex"
+                          checked={formik.values.designationIndex}
+                          onChange={handleCheckboxChange(`designationIndex`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="levelRead"
-                          checked={formik.values.levelRead}
-                          onChange={handleCheckboxChange(`levelRead`)}
+                          name="designationRead"
+                          checked={formik.values.designationRead}
+                          onChange={handleCheckboxChange(`designationRead`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="levelCreate"
-                          checked={formik.values.levelCreate}
-                          onChange={handleCheckboxChange(`levelCreate`)}
+                          name="designationCreate"
+                          checked={formik.values.designationCreate}
+                          onChange={handleCheckboxChange(`designationCreate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="levelUpdate"
-                          checked={formik.values.levelUpdate}
-                          onChange={handleCheckboxChange(`levelUpdate`)}
+                          name="designationUpdate"
+                          checked={formik.values.designationUpdate}
+                          onChange={handleCheckboxChange(`designationUpdate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="levelDelete"
-                          checked={formik.values.levelDelete}
-                          onChange={handleCheckboxChange(`levelDelete`)}
+                          name="designationDelete"
+                          checked={formik.values.designationDelete}
+                          onChange={handleCheckboxChange(`designationDelete`)}
                         />
                       </td>
                     </tr>
@@ -355,45 +413,45 @@ function RolesEdit() {
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="curriculumIndex"
-                          checked={formik.values.curriculumIndex}
-                          onChange={handleCheckboxChange(`curriculumIndex`)}
+                          name="hrPolicyIndex"
+                          checked={formik.values.hrPolicyIndex}
+                          onChange={handleCheckboxChange(`hrPolicyIndex`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="curriculumRead"
-                          checked={formik.values.curriculumRead}
-                          onChange={handleCheckboxChange(`curriculumRead`)}
+                          name="hrPolicyRead"
+                          checked={formik.values.hrPolicyRead}
+                          onChange={handleCheckboxChange(`hrPolicyRead`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="curriculumCreate"
-                          checked={formik.values.curriculumCreate}
-                          onChange={handleCheckboxChange(`curriculumCreate`)}
+                          name="hrPolicyCreate"
+                          checked={formik.values.hrPolicyCreate}
+                          onChange={handleCheckboxChange(`hrPolicyCreate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="curriculumUpdate"
-                          checked={formik.values.curriculumUpdate}
-                          onChange={handleCheckboxChange(`curriculumUpdate`)}
+                          name="hrPolicyUpdate"
+                          checked={formik.values.hrPolicyUpdate}
+                          onChange={handleCheckboxChange(`hrPolicyUpdate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="curriculumDelete"
-                          checked={formik.values.curriculumDelete}
-                          onChange={handleCheckboxChange(`curriculumDelete`)}
+                          name="hrPolicyDelete"
+                          checked={formik.values.hrPolicyDelete}
+                          onChange={handleCheckboxChange(`hrPolicyDelete`)}
                         />
                       </td>
                     </tr>
@@ -407,49 +465,55 @@ function RolesEdit() {
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectIndex"
-                          checked={formik.values.subjectIndex}
-                          onChange={handleCheckboxChange(`subjectIndex`)}
+                          name="exitManagementIndex"
+                          checked={formik.values.exitManagementIndex}
+                          onChange={handleCheckboxChange(`exitManagementIndex`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectRead"
-                          checked={formik.values.subjectRead}
-                          onChange={handleCheckboxChange(`subjectRead`)}
+                          name="exitManagementRead"
+                          checked={formik.values.exitManagementRead}
+                          onChange={handleCheckboxChange(`exitManagementRead`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectCreate"
-                          checked={formik.values.subjectCreate}
-                          onChange={handleCheckboxChange(`subjectCreate`)}
+                          name="exitManagementCreate"
+                          checked={formik.values.exitManagementCreate}
+                          onChange={handleCheckboxChange(
+                            `exitManagementCreate`
+                          )}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectUpdate"
-                          checked={formik.values.subjectUpdate}
-                          onChange={handleCheckboxChange(`subjectUpdate`)}
+                          name="exitManagementUpdate"
+                          checked={formik.values.exitManagementUpdate}
+                          onChange={handleCheckboxChange(
+                            `exitManagementUpdate`
+                          )}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectDelete"
-                          checked={formik.values.subjectDelete}
-                          onChange={handleCheckboxChange(`subjectDelete`)}
+                          name="exitManagementDelete"
+                          checked={formik.values.exitManagementDelete}
+                          onChange={handleCheckboxChange(
+                            `exitManagementDelete`
+                          )}
                         />
                       </td>
                     </tr>
-                    <tr  className="bg-fc">
+                    <tr className="bg-fc">
                       <td>
                         <p style={{ marginLeft: "30px", marginBottom: "0px" }}>
                           Employee Info
@@ -459,45 +523,45 @@ function RolesEdit() {
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectIndex"
-                          checked={formik.values.subjectIndex}
-                          onChange={handleCheckboxChange(`subjectIndex`)}
+                          name="employeeIndex"
+                          checked={formik.values.employeeIndex}
+                          onChange={handleCheckboxChange(`employeeIndex`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectRead"
-                          checked={formik.values.subjectRead}
-                          onChange={handleCheckboxChange(`subjectRead`)}
+                          name="employeeRead"
+                          checked={formik.values.employeeRead}
+                          onChange={handleCheckboxChange(`employeeRead`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectCreate"
-                          checked={formik.values.subjectCreate}
-                          onChange={handleCheckboxChange(`subjectCreate`)}
+                          name="employeeCreate"
+                          checked={formik.values.employeeCreate}
+                          onChange={handleCheckboxChange(`employeeCreate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectUpdate"
-                          checked={formik.values.subjectUpdate}
-                          onChange={handleCheckboxChange(`subjectUpdate`)}
+                          name="employeeUpdate"
+                          checked={formik.values.employeeUpdate}
+                          onChange={handleCheckboxChange(`employeeUpdate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectDelete"
-                          checked={formik.values.subjectDelete}
-                          onChange={handleCheckboxChange(`subjectDelete`)}
+                          name="employeeDelete"
+                          checked={formik.values.employeeDelete}
+                          onChange={handleCheckboxChange(`employeeDelete`)}
                         />
                       </td>
                     </tr>
@@ -511,45 +575,45 @@ function RolesEdit() {
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectIndex"
-                          checked={formik.values.subjectIndex}
-                          onChange={handleCheckboxChange(`subjectIndex`)}
+                          name="holidayIndex"
+                          checked={formik.values.holidayIndex}
+                          onChange={handleCheckboxChange(`holidayIndex`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectRead"
-                          checked={formik.values.subjectRead}
-                          onChange={handleCheckboxChange(`subjectRead`)}
+                          name="holidayRead"
+                          checked={formik.values.holidayRead}
+                          onChange={handleCheckboxChange(`holidayRead`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectCreate"
-                          checked={formik.values.subjectCreate}
-                          onChange={handleCheckboxChange(`subjectCreate`)}
+                          name="holidayCreate"
+                          checked={formik.values.holidayCreate}
+                          onChange={handleCheckboxChange(`holidayCreate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectUpdate"
-                          checked={formik.values.subjectUpdate}
-                          onChange={handleCheckboxChange(`subjectUpdate`)}
+                          name="holidayUpdate"
+                          checked={formik.values.holidayUpdate}
+                          onChange={handleCheckboxChange(`holidayUpdate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectDelete"
-                          checked={formik.values.subjectDelete}
-                          onChange={handleCheckboxChange(`subjectDelete`)}
+                          name="holidayDelete"
+                          checked={formik.values.holidayDelete}
+                          onChange={handleCheckboxChange(`holidayDelete`)}
                         />
                       </td>
                     </tr>
@@ -563,45 +627,45 @@ function RolesEdit() {
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectIndex"
-                          checked={formik.values.subjectIndex}
-                          onChange={handleCheckboxChange(`subjectIndex`)}
+                          name="leaveRequestIndex"
+                          checked={formik.values.leaveRequestIndex}
+                          onChange={handleCheckboxChange(`leaveRequestIndex`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectRead"
-                          checked={formik.values.subjectRead}
-                          onChange={handleCheckboxChange(`subjectRead`)}
+                          name="leaveRequestRead"
+                          checked={formik.values.leaveRequestRead}
+                          onChange={handleCheckboxChange(`leaveRequestRead`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectCreate"
-                          checked={formik.values.subjectCreate}
-                          onChange={handleCheckboxChange(`subjectCreate`)}
+                          name="leaveRequestCreate"
+                          checked={formik.values.leaveRequestCreate}
+                          onChange={handleCheckboxChange(`leaveRequestCreate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectUpdate"
-                          checked={formik.values.subjectUpdate}
-                          onChange={handleCheckboxChange(`subjectUpdate`)}
+                          name="leaveRequestUpdate"
+                          checked={formik.values.leaveRequestUpdate}
+                          onChange={handleCheckboxChange(`leaveRequestUpdate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectDelete"
-                          checked={formik.values.subjectDelete}
-                          onChange={handleCheckboxChange(`subjectDelete`)}
+                          name="leaveRequestDelete"
+                          checked={formik.values.leaveRequestDelete}
+                          onChange={handleCheckboxChange(`leaveRequestDelete`)}
                         />
                       </td>
                     </tr>
@@ -615,45 +679,45 @@ function RolesEdit() {
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectIndex"
-                          checked={formik.values.subjectIndex}
-                          onChange={handleCheckboxChange(`subjectIndex`)}
+                          name="attendanceIndex"
+                          checked={formik.values.attendanceIndex}
+                          onChange={handleCheckboxChange(`attendanceIndex`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectRead"
-                          checked={formik.values.subjectRead}
-                          onChange={handleCheckboxChange(`subjectRead`)}
+                          name="attendanceRead"
+                          checked={formik.values.attendanceRead}
+                          onChange={handleCheckboxChange(`attendanceRead`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectCreate"
-                          checked={formik.values.subjectCreate}
-                          onChange={handleCheckboxChange(`subjectCreate`)}
+                          name="attendanceCreate"
+                          checked={formik.values.attendanceCreate}
+                          onChange={handleCheckboxChange(`attendanceCreate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectUpdate"
-                          checked={formik.values.subjectUpdate}
-                          onChange={handleCheckboxChange(`subjectUpdate`)}
+                          name="attendanceUpdate"
+                          checked={formik.values.attendanceUpdate}
+                          onChange={handleCheckboxChange(`attendanceUpdate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectDelete"
-                          checked={formik.values.subjectDelete}
-                          onChange={handleCheckboxChange(`subjectDelete`)}
+                          name="attendanceDelete"
+                          checked={formik.values.attendanceDelete}
+                          onChange={handleCheckboxChange(`attendanceDelete`)}
                         />
                       </td>
                     </tr>
@@ -667,45 +731,45 @@ function RolesEdit() {
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectIndex"
-                          checked={formik.values.subjectIndex}
-                          onChange={handleCheckboxChange(`subjectIndex`)}
+                          name="deductionIndex"
+                          checked={formik.values.deductionIndex}
+                          onChange={handleCheckboxChange(`deductionIndex`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectRead"
-                          checked={formik.values.subjectRead}
-                          onChange={handleCheckboxChange(`subjectRead`)}
+                          name="deductionRead"
+                          checked={formik.values.deductionRead}
+                          onChange={handleCheckboxChange(`deductionRead`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectCreate"
-                          checked={formik.values.subjectCreate}
-                          onChange={handleCheckboxChange(`subjectCreate`)}
+                          name="deductionCreate"
+                          checked={formik.values.deductionCreate}
+                          onChange={handleCheckboxChange(`deductionCreate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectUpdate"
-                          checked={formik.values.subjectUpdate}
-                          onChange={handleCheckboxChange(`subjectUpdate`)}
+                          name="deductionUpdate"
+                          checked={formik.values.deductionUpdate}
+                          onChange={handleCheckboxChange(`deductionUpdate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectDelete"
-                          checked={formik.values.subjectDelete}
-                          onChange={handleCheckboxChange(`subjectDelete`)}
+                          name="deductionDelete"
+                          checked={formik.values.deductionDelete}
+                          onChange={handleCheckboxChange(`deductionDelete`)}
                         />
                       </td>
                     </tr>
@@ -719,45 +783,45 @@ function RolesEdit() {
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectIndex"
-                          checked={formik.values.subjectIndex}
-                          onChange={handleCheckboxChange(`subjectIndex`)}
+                          name="payrollIndex"
+                          checked={formik.values.payrollIndex}
+                          onChange={handleCheckboxChange(`payrollIndex`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectRead"
-                          checked={formik.values.subjectRead}
-                          onChange={handleCheckboxChange(`subjectRead`)}
+                          name="payrollRead"
+                          checked={formik.values.payrollRead}
+                          onChange={handleCheckboxChange(`payrollRead`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectCreate"
-                          checked={formik.values.subjectCreate}
-                          onChange={handleCheckboxChange(`subjectCreate`)}
+                          name="payrollCreate"
+                          checked={formik.values.payrollCreate}
+                          onChange={handleCheckboxChange(`payrollCreate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectUpdate"
-                          checked={formik.values.subjectUpdate}
-                          onChange={handleCheckboxChange(`subjectUpdate`)}
+                          name="payrollUpdate"
+                          checked={formik.values.payrollUpdate}
+                          onChange={handleCheckboxChange(`payrollUpdate`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectDelete"
-                          checked={formik.values.subjectDelete}
-                          onChange={handleCheckboxChange(`subjectDelete`)}
+                          name="payrollDelete"
+                          checked={formik.values.payrollDelete}
+                          onChange={handleCheckboxChange(`payrollDelete`)}
                         />
                       </td>
                     </tr>
@@ -771,47 +835,23 @@ function RolesEdit() {
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectIndex"
-                          checked={formik.values.subjectIndex}
-                          onChange={handleCheckboxChange(`subjectIndex`)}
+                          name="payslipIndex"
+                          checked={formik.values.payslipIndex}
+                          onChange={handleCheckboxChange(`payslipIndex`)}
                         />
                       </td>
                       <td>
                         <input
                           class="form-check-input"
                           type="checkbox"
-                          name="subjectRead"
-                          checked={formik.values.subjectRead}
-                          onChange={handleCheckboxChange(`subjectRead`)}
+                          name="payslipRead"
+                          checked={formik.values.payslipRead}
+                          onChange={handleCheckboxChange(`payslipRead`)}
                         />
                       </td>
-                      <td>
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          name="subjectCreate"
-                          checked={formik.values.subjectCreate}
-                          onChange={handleCheckboxChange(`subjectCreate`)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          name="subjectUpdate"
-                          checked={formik.values.subjectUpdate}
-                          onChange={handleCheckboxChange(`subjectUpdate`)}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          class="form-check-input"
-                          type="checkbox"
-                          name="subjectDelete"
-                          checked={formik.values.subjectDelete}
-                          onChange={handleCheckboxChange(`subjectDelete`)}
-                        />
-                      </td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
                     </tr>
                   </tbody>
                 </table>

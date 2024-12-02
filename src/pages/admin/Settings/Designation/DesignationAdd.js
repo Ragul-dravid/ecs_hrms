@@ -34,7 +34,6 @@ const DesignationAdd = () => {
       .integer("*Other Leave must be an integer."),
   });
   
-
   const formik = useFormik({
     initialValues: {
       desigCmpId: cmpId,
