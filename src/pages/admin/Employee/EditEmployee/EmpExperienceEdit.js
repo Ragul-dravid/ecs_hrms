@@ -13,7 +13,6 @@ import { CiCirclePlus } from "react-icons/ci";
 
 const EmpExperienceEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
-    const [rows, setRows] = useState([{}]);
     const [isFresher, setIsFresher] = useState(false);
     const [perDetailsId, setPerDetailsId] = useState([]);
     console.log("perDetailsId", perDetailsId);
@@ -77,8 +76,7 @@ const EmpExperienceEdit = forwardRef(
         try {
           const response =
             perDetailsId !== null
-              // ? await api.put(`/emp-experience/${perDetailsId}`, payload)
-              ? await api.post("/emp-experience", payload)
+              ? await api.put(`/emp-experience/${perDetailsId}`, payload)
               : await api.post("/emp-experience", payload);
           if (response.status === 201) {
             toast.success(response.data.message);
@@ -129,21 +127,34 @@ const EmpExperienceEdit = forwardRef(
       const getData = async () => {
         try {
           const response = await api.get(`/emp-reg-details/${formData.empId}`);
-
-          const experiences = response.data.empExperienceEntities.map(
-            (exp) => ({
-              prevCmpName: exp.prevCmpName || "",
-              prevCmpAddr: exp.prevCmpAddr || "",
-              designation: exp.designation || "",
-              experienceDesc: exp.experienceDesc || "",
-              experienceStartDate: exp.experienceStartDate?.slice(0, 10) || "",
-              experienceEndDate: exp.experienceEndDate?.slice(0, 10) || "",
-              prevCompReferralName: exp.prevCompReferralName || "",
-              prevCompReferralContactNum: exp.prevCompReferralContactNum || "",
-              experienceId: exp.experienceId || null,
-            })
-          );
-
+          const experiences =
+            response.data.empExperienceEntities?.length > 0
+              ? response.data.empExperienceEntities.map((exp) => ({
+                  prevCmpName: exp.prevCmpName || "",
+                  prevCmpAddr: exp.prevCmpAddr || "",
+                  designation: exp.designation || "",
+                  experienceDesc: exp.experienceDesc || "",
+                  experienceStartDate:
+                    exp.experienceStartDate?.slice(0, 10) || "",
+                  experienceEndDate: exp.experienceEndDate?.slice(0, 10) || "",
+                  prevCompReferralName: exp.prevCompReferralName || "",
+                  prevCompReferralContactNum:
+                    exp.prevCompReferralContactNum || "",
+                  experienceId: exp.experienceId || null,
+                }))
+              : [
+                  {
+                    prevCmpName: "",
+                    prevCmpAddr: "",
+                    designation: "",
+                    experienceDesc: "",
+                    experienceStartDate: "",
+                    experienceEndDate: "",
+                    prevCompReferralName: "",
+                    prevCompReferralContactNum: "",
+                    experienceId: null,
+                  },
+                ];
           formik.setValues({ empExperience: experiences });
           const experienceIds = experiences.map(
             (experience) => experience.experienceId
@@ -171,31 +182,31 @@ const EmpExperienceEdit = forwardRef(
     return (
       <form onSubmit={formik.handleSubmit}>
         <div className="container p-0">
-          {formik.values.empExperience.map((row, index) => (
+          <div className="d-flex align-items-center mt-3">
+            <div className="me-3 d-flex align-items-center">
+              <p className="headColor me-2 mb-0">Experience</p>
+              <input
+                type="radio"
+                name="experience"
+                className="form-check-input mt-0"
+                onChange={handleRadioChange}
+                checked={!isFresher}
+              />
+            </div>
+            <div className="d-flex align-items-center">
+              <p className="fw-bold me-2 mb-0">/</p>
+              <p className="headColor me-2 mb-0">Fresher</p>
+              <input
+                type="radio"
+                name="fresher"
+                className="form-check-input mt-0"
+                onChange={handleRadioChange}
+                checked={isFresher}
+              />
+            </div>
+          </div>
+          {formik.values.empExperience?.map((row, index) => (
             <div key={index}>
-              <div className="d-flex align-items-center mt-3">
-                <div className="me-3 d-flex align-items-center">
-                  <p className="headColor me-2 mb-0">Experience</p>
-                  <input
-                    type="radio"
-                    name="experience"
-                    className="form-check-input mt-0"
-                    onChange={handleRadioChange}
-                    checked={!isFresher}
-                  />
-                </div>
-                <div className="d-flex align-items-center">
-                  <p className="fw-bold me-2 mb-0">/</p>
-                  <p className="headColor me-2 mb-0">Fresher</p>
-                  <input
-                    type="radio"
-                    name="fresher"
-                    className="form-check-input mt-0"
-                    onChange={handleRadioChange}
-                    checked={isFresher}
-                  />
-                </div>
-              </div>
               <div className="row mt-3">
                 <div className=" col-md-6 col-12 text-start my-3">
                   <lable className="form-label">

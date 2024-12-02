@@ -16,6 +16,7 @@ import departmentListByCompId from "../../List_Apis/DepartmentListByCmpId";
 const EmpPersonalInfoEdit = forwardRef(
   ({ formData, setLoadIndicators, setFormData, handleNext }, ref) => {
     const cmpId = sessionStorage.getItem("cmpId");
+    const [designationData, setDesignationData] = useState([]);
     const [departmentData, setDepartmentData] = useState(null);
     console.log("FormData:", formData);
     const [selectedIdType, setSelectedIdType] = useState("");
@@ -135,6 +136,27 @@ const EmpPersonalInfoEdit = forwardRef(
         setDepartmentData(departmentData);
       } catch (error) {
         toast.error(error);
+      }
+    };
+
+    const fetchDesignationData = async (desigCmpId, deptId) => {
+      try {
+        const response = await api.get(
+          `getAllDesignationIdsWithNames?desigCmpId=${desigCmpId}&deptId=${deptId}`
+        );
+        setDesignationData(response.data);
+      } catch (error) {
+        console.error("Error fetching designation data:", error);
+        toast.error(error.message);
+      }
+    };
+
+    const handleDepartmentChange = (event) => {
+      const selectedDeptId = event.target.value;
+      formik.setFieldValue("empRegDeptId", selectedDeptId);
+
+      if (selectedDeptId) {
+        fetchDesignationData(cmpId, selectedDeptId);
       }
     };
 
@@ -325,6 +347,7 @@ const EmpPersonalInfoEdit = forwardRef(
                       ? "is-invalid"
                       : ""
                   }`}
+                  onChange={handleDepartmentChange}
                 >
                   <option selected></option>
                   {departmentData &&
@@ -357,10 +380,12 @@ const EmpPersonalInfoEdit = forwardRef(
                   }`}
                   {...formik.getFieldProps("empDesignation")}
                 >
-                  <option selected />
-                  <option value="admin">Admin</option>
-                  <option value="employee">Employee</option>
-                  <option value="owner">Owner</option>
+                  <option selected></option>
+                  {designationData.map((designation) => (
+                    <option key={designation.id} value={designation.desigId}>
+                      {designation.desigName}
+                    </option>
+                  ))}
                 </select>
 
                 {formik.touched.empDesignation &&
