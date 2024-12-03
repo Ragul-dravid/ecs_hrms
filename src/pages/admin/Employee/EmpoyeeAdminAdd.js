@@ -465,17 +465,19 @@ function EmployeeAdminAdd() {
                   value={formik.values.nationality}
                   onChange={(e) => {
                     formik.handleChange(e);
-                    if (e.target.value === "INDIAN") {
+                    if (e.target.value === "indian") {
                       setSelectedIdType("AADHAR");
-                    } else if (e.target.value === "SINGAPORE") {
+                    } else if (e.target.value === "singaporean") {
                       setSelectedIdType("NRIC");
                     }
                   }}
                 >
                   <option selected />
-                  <option value="INDIAN">INDIAN</option>
-                  {/* <option value="MUSLIM">MUSLIM</option> */}
-                  <option value="SINGAPORE">SINGAPORE</option>
+                  <option value="singaporean">Singaporean</option>
+                  <option value="indian">Indian</option>
+                  <option value="muslim">Muslim</option>
+                  <option value="eurasian">Eurasian</option>
+                  <option value="chinese">Chinese</option>
                 </select>
                 {formik.touched.nationality && formik.errors.nationality && (
                   <div className="invalid-feedback">
@@ -497,8 +499,9 @@ function EmployeeAdminAdd() {
                   {...formik.getFieldProps("citizenship")}
                 >
                   <option selected></option>
-                  <option value="INDIAN">1 Year Pr</option>
-                  <option value="SINGAPORE">2 Year Pr</option>
+                  <option value="1st Year PR">1st Year PR</option>
+                  <option value="2nd Year PR">2nd Year PR</option>
+                  <option value="3rd Year PR">3rd Year PR</option>
                 </select>
                 {formik.touched.citizenship && formik.errors.citizenship && (
                   <div className="invalid-feedback">
@@ -654,7 +657,6 @@ function EmployeeAdminAdd() {
                   )}
                 </div>
               </div>
-
               <div className="col-md-6 col-12 mb-2">
                 <label className="form-label">
                   Employee Type <span className="text-danger">*</span>

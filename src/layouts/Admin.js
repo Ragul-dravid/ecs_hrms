@@ -68,6 +68,7 @@ import DesignationEdit from "../pages/admin/Settings/Designation/DesignationEdit
 import DesignationView from "../pages/admin/Settings/Designation/DesignationView.js";
 import DesignationAdd from "../pages/admin/Settings/Designation/DesignationAdd.js";
 import RegistrationCompany from "../pages/admin/RegistrationCompany.js";
+import LeaveRequestEmp from "../pages/admin/LeaveRequest/LeaveRequestEmp.js";
 
 function Admin({ handleLogout }) {
   return (
@@ -182,6 +183,7 @@ function Admin({ handleLogout }) {
 
                   {/* LeaveRequest */}
                   <Route path="/leaverequest" element={<LeaveRequest />} />
+                  <Route path="/leaveRequestEmp" element={<LeaveRequestEmp />} />
                   <Route
                     path="/leaverequest/add"
                     element={<LeaveRequestAdd />}

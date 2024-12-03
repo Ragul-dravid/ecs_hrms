@@ -211,6 +211,13 @@ function AdminSidebar({ handleLogout }) {
               </li>
 
               <li className="nav-item">
+                <NavLink className="nav-link" to="/leaveRequestEmp">
+                  <LuFileEdit className="me-2" />
+                  Leave Request
+                </NavLink>
+              </li>
+
+              <li className="nav-item">
                 <NavLink className="nav-link" to="/attendance">
                   <RiContactsBook3Line className="me-2" />
                   Attendance

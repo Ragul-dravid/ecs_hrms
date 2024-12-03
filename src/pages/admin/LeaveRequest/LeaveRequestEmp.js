@@ -10,7 +10,7 @@ import DeleteModel from "../../../components/admin/DeleteModel";
 import { BiEditAlt } from "react-icons/bi";
 import { HiOutlineEye } from "react-icons/hi2";
 
-const LeaveRequest = () => {
+const LeaveRequestEmp = () => {
   const tableRef = useRef(null);
   // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
@@ -18,14 +18,14 @@ const LeaveRequest = () => {
 
   const [loading, setLoading] = useState(true);
   const cmpId = sessionStorage.getItem("cmpId");
-  const roles = sessionStorage.getItem("role");
+  // const roles = sessionStorage.getItem("role");
   const empId = sessionStorage.getItem("userId");
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/leave-request-by-companyId/${cmpId}`);
-        setDatas(response.data);
+        const response = await api.get(`/leave-request-empId/${172}`);
+        setDatas(response.data.employeeData);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -66,8 +66,8 @@ const LeaveRequest = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get(`/leave-request-by-companyId/${cmpId}`);
-      setDatas(response.data);
+      const response = await api.get(`/leave-request-empId/${172}`);
+      setDatas(response.data.employeeData);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
       console.error("Error refreshing data:", error);
@@ -140,41 +140,41 @@ const LeaveRequest = () => {
                       S.NO
                     </th>
                     <th scope="col" className="text-center">
-                      Employee ID
+                      From Date
                     </th>
                     <th scope="col" className="text-center">
-                      Employee Name
+                      To Date
                     </th>
                     <th scope="col" className="text-center">
-                      No.Of.Leave
+                      Leave Type
                     </th>
                     <th scope="col" className="text-center">
                       Leave Status
                     </th>
+
                     <th scope="col" className="text-center">
                       ACTION
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {Array.isArray(datas) &&
-                    datas.employeeData?.map((data, index) => (
+                  {Array.isArray(datas) ||
+                    datas.map((data, index) => (
                       <tr key={index}>
                         <td className="text-center">{index + 1}</td>
-                        <td className="text-center">{data.empUniqueId}</td>
-                        <td className="text-center">{data.empName}</td>
                         <td className="text-center">
-                          {data.totalLeaveReqDays}
+                          {" "}
+                          {new Date(
+                            data.leaveReqStartDate
+                          ).toLocaleDateString()}
                         </td>
                         <td className="text-center">
-                          {data.leaveStatus === "Approve" ? (
-                            <span className="badge-approved">Approved</span>
-                          ) : data.leaveStatus === "Rejected" ? (
-                            <span className="badge-rejected">Rejected</span>
-                          ) : (
-                            <span className="badge-pending">Pending</span>
-                          )}
+                          {" "}
+                          {new Date(data.leaveReqEndDate).toLocaleDateString()}
                         </td>
+                        <td className="text-center">{data.leaveReqType}</td>
+                        <td className="text-center">{data.leaveReqStatus}</td>
+
                         <td className="text-center">
                           <div className="gap-2">
                             <Link to={`/leaverequest/view/${data.leaveReqId}`}>
@@ -209,4 +209,4 @@ const LeaveRequest = () => {
   );
 };
 
-export default LeaveRequest;
+export default LeaveRequestEmp;
