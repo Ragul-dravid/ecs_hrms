@@ -108,7 +108,7 @@ const EmpPersonalInfoEdit = forwardRef(
           formDatas.append("noticePeriod", values.noticePeriod);
           formDatas.append("citizenship", values.citizenship);
           formDatas.append("nationality", values.nationality);
-          formDatas.append("roleName", "employee");
+          formDatas.append("roleName", "EMPLOYEE");
           formDatas.append("pan", values.pan);
 
           const response = await api.put(
@@ -334,7 +334,7 @@ const EmpPersonalInfoEdit = forwardRef(
             </div>
             <div className="col-md-6 col-12 mb-2">
               <div className="d-flex justify-content-between align-items-center">
-                <label className="form-label mb-0">
+                <label className="form-label">
                   Department Name <span className="text-danger">*</span>
                 </label>
                 {/* <DepartmentAdd addDepartment={addDepartment} /> */}
@@ -444,8 +444,9 @@ const EmpPersonalInfoEdit = forwardRef(
                 {...formik.getFieldProps("citizenship")}
               >
                 <option selected></option>
-                <option value="INDIAN">1 Year Pr</option>
-                <option value="SINGAPORE">2 Year Pr</option>
+                <option value="1st Year PR">1st Year PR</option>
+                <option value="2nd Year PR">2nd Year PR</option>
+                <option value="3rd Year PR">3rd Year PR</option>
               </select>
               {formik.touched.citizenship && formik.errors.citizenship && (
                 <div className="invalid-feedback">

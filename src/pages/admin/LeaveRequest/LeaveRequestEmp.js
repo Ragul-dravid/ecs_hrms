@@ -14,7 +14,7 @@ const LeaveRequestEmp = () => {
   const tableRef = useRef(null);
   // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
-  console.log("Leave Data:", datas);
+  console.log("Emp Leave Data:", datas);
 
   const [loading, setLoading] = useState(true);
   const cmpId = sessionStorage.getItem("cmpId");
@@ -24,8 +24,8 @@ const LeaveRequestEmp = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/leave-request-empId/${172}`);
-        setDatas(response.data.employeeData);
+        const response = await api.get(`/leave-request-empId/${185}`);
+        setDatas(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -66,8 +66,8 @@ const LeaveRequestEmp = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get(`/leave-request-empId/${172}`);
-      setDatas(response.data.employeeData);
+      const response = await api.get(`/leave-request-empId/${185}`);
+      setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
       console.error("Error refreshing data:", error);
@@ -108,7 +108,9 @@ const LeaveRequestEmp = () => {
               <div className="row align-items-center justify-content-between ">
                 <div className="col">
                   <div className="d-flex align-items-center gap-4">
-                    <h1 className="h4 ls-tight headingColor ">Leave Request</h1>
+                    <h1 className="h4 ls-tight headingColor ">
+                      Employee Leave Request
+                    </h1>
                   </div>
                 </div>
                 <div className="col-auto">
@@ -132,6 +134,14 @@ const LeaveRequestEmp = () => {
             className="card shadow border-0 my-2"
             style={{ borderRadius: "0" }}
           >
+            <div className="row p-5 my-2">
+              <div className="col-md-6 col-12">
+                <span>Employee Name : {datas.employeeName}</span>
+              </div>
+              <div className="col-md-6 col-12">
+                <span>Leave Limit : {datas.leaveLimit}</span>
+              </div>
+            </div>
             <div className="table-responsive p-2 minHeight">
               <table ref={tableRef} className="display table ">
                 <thead className="thead-light">
@@ -149,6 +159,9 @@ const LeaveRequestEmp = () => {
                       Leave Type
                     </th>
                     <th scope="col" className="text-center">
+                      NO.Of.Days
+                    </th>
+                    <th scope="col" className="text-center">
                       Leave Status
                     </th>
 
@@ -158,46 +171,52 @@ const LeaveRequestEmp = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {Array.isArray(datas) ||
-                    datas.map((data, index) => (
-                      <tr key={index}>
-                        <td className="text-center">{index + 1}</td>
-                        <td className="text-center">
-                          {" "}
-                          {new Date(
-                            data.leaveReqStartDate
-                          ).toLocaleDateString()}
-                        </td>
-                        <td className="text-center">
-                          {" "}
-                          {new Date(data.leaveReqEndDate).toLocaleDateString()}
-                        </td>
-                        <td className="text-center">{data.leaveReqType}</td>
-                        <td className="text-center">{data.leaveReqStatus}</td>
+                  {datas?.employeeData?.map((data, index) => (
+                    <tr key={index}>
+                      <td className="text-center">{index + 1}</td>
+                      <td className="text-center">
+                        {" "}
+                        {new Date(data.leaveReqStartDate).toLocaleDateString()}
+                      </td>
+                      <td className="text-center">
+                        {" "}
+                        {new Date(data.leaveReqEndDate).toLocaleDateString()}
+                      </td>
+                      <td className="text-center">{data.leaveReqType}</td>
+                      <td className="text-center">{data.totalLeaveReqDays}</td>
+                      <td className="text-center">
+                        {data.leaveReqStatus === "Approve" ? (
+                          <span className="badge-approved">Approved</span>
+                        ) : data.leaveReqStatus === "Rejected" ? (
+                          <span className="badge-rejected">Rejected</span>
+                        ) : (
+                          <span className="badge-pending">Pending</span>
+                        )}
+                      </td>
 
-                        <td className="text-center">
-                          <div className="gap-2">
-                            <Link to={`/leaverequest/view/${data.leaveReqId}`}>
-                              <button className="btn p-1  shadow-none border-none">
-                                <HiOutlineEye />
-                              </button>
-                            </Link>
-                            <Link
-                              to={`/leaverequest/edit/${data.leaveReqId}`}
-                              className="px-2"
-                            >
-                              <button className="btn p-1 shadow-none border-none">
-                                <BiEditAlt />
-                              </button>
-                            </Link>
-                            <DeleteModel
-                              onSuccess={refreshData}
-                              path={`/leave-request/${data.leaveReqId}`}
-                            />
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+                      <td className="text-center">
+                        <div className="gap-2">
+                          <Link to={`/leaverequest/view/${data.leaveReqId}`}>
+                            <button className="btn p-1  shadow-none border-none">
+                              <HiOutlineEye />
+                            </button>
+                          </Link>
+                          <Link
+                            to={`/leaverequest/edit/${data.leaveReqId}`}
+                            className="px-2"
+                          >
+                            <button className="btn p-1 shadow-none border-none">
+                              <BiEditAlt />
+                            </button>
+                          </Link>
+                          <DeleteModel
+                            onSuccess={refreshData}
+                            path={`/leave-request/${data.leaveReqId}`}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

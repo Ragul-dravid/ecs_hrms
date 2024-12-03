@@ -129,6 +129,9 @@ const Deduction = () => {
                       S.NO
                     </th>
                     <th scope="col" className="text-center">
+                      Employee Name
+                    </th>
+                    <th scope="col" className="text-center">
                       Deduction Name
                     </th>
                     <th scope="col" className="text-center">
@@ -137,9 +140,6 @@ const Deduction = () => {
                     <th scope="col" className="text-center">
                       Deduction Month
                     </th>
-                    {/* <th scope="col" className="text-center">
-                      Approval Status
-                    </th> */}
                     <th scope="col" className="text-center">
                       ACTION
                     </th>
@@ -149,25 +149,17 @@ const Deduction = () => {
                   {datas.map((data, index) => (
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
+                      <td className="text-center">{data.employeeName}</td>
                       <td className="text-center">{data.deductionName}</td>
                       <td className="text-center">{data.deductionAmt}</td>
                       <td className="text-center">{data.deductionMonth}</td>
-                      {/* <td className="text-center">
-                        {data.cmpStatus === "Approve" ? (
-                          <span className="badge-approved">Approved</span>
-                        ) : data.relievingApproverStatus === "Pending" ? (
-                          <span className="badge-rejected">Rejected</span>
-                        ) : (
-                          <span className="badge-pending">Pending</span>
-                        )}
-                      </td> */}
                       <td className="text-center ">
                         <div className="gap-2 d-flex justify-content-center">
-                          <Link to={`/deduction/view/${data.deductionId}`}>
-                            <button className="btn shadow-none border-none">
+                          {/* <Link to={`/deduction/view/${data.deductionId}`}>
+                            <button className="btn shadow-none border-none p-1">
                               <HiOutlineEye />
                             </button>
-                          </Link>
+                          </Link> */}
                           <DeductionEdit
                             id={data.deductionId}
                             onSuccess={refreshData}

@@ -76,7 +76,7 @@ const DeductionEdit = ({ onSuccess, id }) => {
 
   return (
     <>
-      <button className="btn shadow-none border-none" onClick={handleShow}>
+      <button className="btn shadow-none border-none p-1" onClick={handleShow}>
         <BiEditAlt />
       </button>
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>

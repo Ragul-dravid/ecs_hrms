@@ -166,17 +166,12 @@ const Attendance = () => {
                         {new Date(data.attendanceDate).toLocaleDateString()}
                       </td>
                       <td className="text-center">
-                        <span
-                          className={`badge ${
-                            data.attendanceStatus === "PRESENT"
-                              ? "bg-success"
-                              : "bg-danger"
-                          }`}
-                        >
-                          {data.attendanceStatus}
-                        </span>
+                        {data.attendanceStatus === "PRESENT" ? (
+                          <span className="badge-approved">Present</span>
+                        ) : (
+                          <span className="badge-rejected">Absent</span>
+                        )}
                       </td>
-
                       <td className="text-center">
                         <div className="gap-2">
                           <Link to={`/attendance/view/${data.attendanceId}`}>

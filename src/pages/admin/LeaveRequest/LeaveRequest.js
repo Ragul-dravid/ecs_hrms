@@ -14,7 +14,7 @@ const LeaveRequest = () => {
   const tableRef = useRef(null);
   // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
-  console.log("Leave Data:", datas);
+  console.log("Admin Leave Data:", datas);
 
   const [loading, setLoading] = useState(true);
   const cmpId = sessionStorage.getItem("cmpId");
@@ -113,7 +113,7 @@ const LeaveRequest = () => {
                 </div>
                 <div className="col-auto">
                   <div className="hstack gap-2 justify-content-end">
-                    <Link to="/leaverequest/add">
+                    {/* <Link to="/leaverequest/add">
                       <button
                         type="submit"
                         className="btn btn-sm btn-button btn-primary"
@@ -122,7 +122,7 @@ const LeaveRequest = () => {
                           Add <FaPlus className="pb-1" />
                         </span>
                       </button>
-                    </Link>
+                    </Link> */}
                   </div>
                 </div>
               </div>
@@ -158,7 +158,7 @@ const LeaveRequest = () => {
                 </thead>
                 <tbody>
                   {Array.isArray(datas) &&
-                    datas.employeeData?.map((data, index) => (
+                    datas?.map((data, index) => (
                       <tr key={index}>
                         <td className="text-center">{index + 1}</td>
                         <td className="text-center">{data.empUniqueId}</td>
@@ -177,13 +177,13 @@ const LeaveRequest = () => {
                         </td>
                         <td className="text-center">
                           <div className="gap-2">
-                            <Link to={`/leaverequest/view/${data.leaveReqId}`}>
+                            <Link to={`/leaverequest/view/${data.leaveRequestId}`}>
                               <button className="btn p-1  shadow-none border-none">
                                 <HiOutlineEye />
                               </button>
                             </Link>
                             <Link
-                              to={`/leaverequest/edit/${data.leaveReqId}`}
+                              to={`/leaverequest/edit/${data.leaveRequestId}`}
                               className="px-2"
                             >
                               <button className="btn p-1 shadow-none border-none">
@@ -192,7 +192,7 @@ const LeaveRequest = () => {
                             </Link>
                             <DeleteModel
                               onSuccess={refreshData}
-                              path={`/leave-request/${data.leaveReqId}`}
+                              path={`/leave-request/${data.leaveRequestId}`}
                             />
                           </div>
                         </td>

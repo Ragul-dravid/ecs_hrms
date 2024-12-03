@@ -25,13 +25,8 @@ const LeaveRequestEdit = () => {
       leaveReqEndDate: "",
       leaveReqType: "",
       leaveReqRemarks: "",
-      leaveReqStatus: "",
       totalLeaveReqDays: 0,
-      leaveReqApproverId: "",
-      leaveReqApproverName: "",
-      leaveReqStatus: "",
-      leaveReqApproverId: "",
-      pendingLeaveReqDays: "",
+      leaveStatus: "",
       file: null || "",
     },
     validationSchema: validationSchema,
@@ -40,20 +35,17 @@ const LeaveRequestEdit = () => {
       try {
         const formDatas = new FormData();
         formDatas.append("leaveCmpId", cmpId);
-        formDatas.append("leaveReqEmpId", empId);
+        formDatas.append("leaveReqEmpId", 185);
         formDatas.append("leaveDeptId", data.leaveDeptId);
         formDatas.append("leaveReqStartDate", data.leaveReqStartDate);
         formDatas.append("leaveReqEndDate", data.leaveReqEndDate);
         formDatas.append("totalLeaveReqDays", data.totalLeaveReqDays);
         formDatas.append("leaveReqType", data.leaveReqType);
         formDatas.append("leaveReqRemarks", data.leaveReqRemarks);
-        formDatas.append("leaveReqApproverId", "11");
-        formDatas.append("leaveReqApproverName", "Admin");
-        formDatas.append("leaveReqStatus", "P");
-        formDatas.append("pendingLeaveReqDays", data.pendingLeaveReqDays);
+        formDatas.append("leaveStatus", data.leaveStatus);
         formDatas.append("file", data.file);
 
-        const response = await api.put(`/create-leave-attach/${id}`, formDatas, {
+        const response = await api.put(`/update-leave-attach/${id}`, formDatas, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -121,7 +113,7 @@ const LeaveRequestEdit = () => {
             <div className="row align-items-center">
               <div className="col">
                 <div className="d-flex align-items-center gap-4">
-                  <h1 className="h4 ls-tight headingColor">Add Leave</h1>
+                  <h1 className="h4 ls-tight headingColor">Edit Leave</h1>
                 </div>
               </div>
               <div className="col-auto">
@@ -142,7 +134,7 @@ const LeaveRequestEdit = () => {
                         aria-hidden="true"
                       ></span>
                     ) : (
-                      <span>Save</span>
+                      <span>update</span>
                     )}
                   </button>
                 </div>
@@ -223,6 +215,7 @@ const LeaveRequestEdit = () => {
                       : ""
                   }`}
                   {...formik.getFieldProps("leaveReqStartDate")}
+                  readOnly
                 />
                 {formik.touched.leaveReqStartDate &&
                   formik.errors.leaveReqStartDate && (
@@ -245,6 +238,7 @@ const LeaveRequestEdit = () => {
                       : ""
                   }`}
                   {...formik.getFieldProps("leaveReqEndDate")}
+                  readOnly
                 />
                 {formik.touched.leaveReqEndDate &&
                   formik.errors.leaveReqEndDate && (
@@ -289,6 +283,7 @@ const LeaveRequestEdit = () => {
                       : ""
                   }`}
                   {...formik.getFieldProps("leaveReqType")}
+                  readOnly
                 />
                 {formik.touched.leaveReqType && formik.errors.leaveReqType && (
                   <div className="invalid-feedback">
@@ -317,6 +312,32 @@ const LeaveRequestEdit = () => {
                     {formik.errors.file}
                   </div>
                 )}
+              </div>
+              <div className="col-md-6 col-12 mb-3">
+                <label className="form-label">
+                  Leave Request Status <span className="text-danger">*</span>
+                </label>
+                <div className="input-group mb-3">
+                  <select
+                    {...formik.getFieldProps("leaveStatus")}
+                    className={`form-select form-select-sm  ${
+                      formik.touched.leaveStatus && formik.errors.leaveStatus
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                  >
+                    <option selected></option>
+                    <option value="PENDING">Pending</option>
+                    <option value="APPROVED">Approved</option>
+                    <option value="REJECTED">Rejected</option>
+                  </select>
+                  {formik.touched.leaveStatus &&
+                    formik.errors.leaveStatus && (
+                      <div className="invalid-feedback">
+                        {formik.errors.leaveStatus}
+                      </div>
+                    )}
+                </div>
               </div>
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">

@@ -19,7 +19,7 @@ const LeaveRequestAdd = () => {
     initialValues: {
       cmpId: cmpId,
       leaveDeptId: "",
-      leaveReqEmpId: "Chandru Ecs",
+      leaveReqEmpId: "Manoj ECS",
       leaveReqStartDate: "",
       leaveReqEndDate: "",
       leaveReqType: "",
@@ -41,18 +41,14 @@ const LeaveRequestAdd = () => {
       try {
         const formDatas = new FormData();
         formDatas.append("leaveCmpId", cmpId);
-        formDatas.append("leaveReqEmpId", 171);
+        formDatas.append("leaveReqEmpId", 185);
         formDatas.append("leaveDeptId", data.leaveDeptId);
         formDatas.append("leaveReqStartDate", data.leaveReqStartDate);
         formDatas.append("leaveReqEndDate", data.leaveReqEndDate);
         formDatas.append("totalLeaveReqDays", data.totalLeaveReqDays);
         formDatas.append("leaveReqType", data.leaveReqType);
         formDatas.append("leaveReqRemarks", data.leaveReqRemarks);
-        formDatas.append("leaveReqApproverId", "");
-        formDatas.append("leaveReqApproverName", "");
-        formDatas.append("leaveReqStatus", "PENDING");
         formDatas.append("leaveStatus", "PENDING");
-        formDatas.append("pendingLeaveReqDays", data.pendingLeaveReqDays);
         formDatas.append("file", data.file);
 
         const response = await api.post("/create-leave-attach", formDatas, {
@@ -62,7 +58,7 @@ const LeaveRequestAdd = () => {
         });
         if (response.status === 201 || response.status === 200) {
           toast.success(response.data.message);
-          navigate("/leaverequest");
+          navigate("/leaveRequestEmp");
         } else {
           toast.error(response.data.message);
         }

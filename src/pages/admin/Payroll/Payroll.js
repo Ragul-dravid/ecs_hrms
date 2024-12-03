@@ -166,13 +166,13 @@ const Payroll = () => {
                       </td>
                       <td className="text-center">
                         <div className="gap-2">
-                          <Link to={`/holidays/view/${data.pubHolidayId}`}>
+                          <Link to={`/payroll/view/${data.payrollId}`}>
                             <button className="btn p-1 btn-sm shadow-none border-none">
                             <HiOutlineEye />
                             </button>
                           </Link>
                           <Link
-                            to={`/holidays/edit/${data.pubHolidayId}`}
+                            to={`/payroll/edit/${data.payrollId}`}
                             className="px-2"
                           >
                             <button className="btn p-1 btn-sm shadow-none border-none">
@@ -181,7 +181,7 @@ const Payroll = () => {
                           </Link>
                           <DeleteModel
                             onSuccess={refreshData}
-                            path={`/public-holidays/${data.pubHolidayId}`}
+                            path={`/payroll/${data.payrollId}`}
                           />
                         </div>
                       </td>
