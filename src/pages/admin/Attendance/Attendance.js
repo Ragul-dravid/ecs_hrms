@@ -15,7 +15,7 @@ const Attendance = () => {
   // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const cmpId = sessionStorage.getItem("cmpId")
+  const cmpId = sessionStorage.getItem("cmpId");
 
   useEffect(() => {
     const getData = async () => {
@@ -159,17 +159,24 @@ const Attendance = () => {
                   {datas.map((data, index) => (
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
-                      <td className="text-center">
-                        {data.employeeId}
-                      </td>
+                      <td className="text-center">{data.employeeId}</td>
                       <td className="text-center">{data.empName}</td>
                       <td className="text-center">
                         {" "}
                         {new Date(data.attendanceDate).toLocaleDateString()}
                       </td>
                       <td className="text-center">
-                        {data.attendanceStatus}
+                        <span
+                          className={`badge ${
+                            data.attendanceStatus === "PRESENT"
+                              ? "bg-success"
+                              : "bg-danger"
+                          }`}
+                        >
+                          {data.attendanceStatus}
+                        </span>
                       </td>
+
                       <td className="text-center">
                         <div className="gap-2">
                           <Link to={`/attendance/view/${data.attendanceId}`}>
@@ -187,7 +194,7 @@ const Attendance = () => {
                           </Link>
                           <DeleteModel
                             onSuccess={refreshData}
-                            path={`/deduction/${data.deductionId}`}
+                            path={`/daily-attendance/${data.attendanceId}`}
                           />
                         </div>
                       </td>

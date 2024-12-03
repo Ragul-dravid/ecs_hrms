@@ -10,7 +10,7 @@ const AttendanceEdit = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
   const cmpId = sessionStorage.getItem("cmpId");
-  const [companyData, setCompanyData] = useState(null);
+  const [empData, setEmpData] = useState(null);
 
   const validationSchema = Yup.object({
     attendanceStatus: Yup.string().required("*Attendance Status is required"),
@@ -25,8 +25,8 @@ const AttendanceEdit = () => {
       attendanceDate: "",
       attendanceCheckInTime: "",
       attendanceCheckOutTime: "",
-      checkInMode:null,
-      checkOutMode:"TOP_OUT",
+      checkInMode:"TAP_IN",
+      checkOutMode:"TAP_OUT",
       attendanceStatus: "",
       attendanceRemarks: "",
       attendanceModeOfWorking: "",
@@ -54,12 +54,45 @@ const AttendanceEdit = () => {
     },
   });
 
+  const handleStatuschange = (event) => {
+    const status = event.target.value;
+    formik.setFieldValue("attendanceStatus", status);
+    if (status === "ABSENT") {
+      formik.setFieldValue("attendanceModeOfWorking", "ONSITE");
+      formik.setFieldValue("attendanceCheckInTime", "");
+      formik.setFieldValue("attendanceCheckOutTime", "");
+      formik.setFieldValue("attendanceOtStarttime", "");
+      formik.setFieldValue("attendanceOtEndtime", "");
+    }
+  };
+  const fetchEmployeeList = async () => {
+    try {
+      const employee = await api.get(`getEmpolyeeWithRole/${cmpId}`);
+      setEmpData(employee.data);
+      console.log("Employee:", employee.data);
+      return employee.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchEmployeeList();
+  }, []);
+
   useEffect(() => {
     const getData = async () => {
       try {
         const response = await api.get(`/daily-attendance/${id}`);
-        formik.setValues(response.data);
-        formik.setFieldValue("attendanceDate",response.data?.attendanceDate?.slice(0,10)) // Load the data into the form
+        const data = response.data;
+      formik.setFieldValue('attendanceId', data.attendanceId);
+      formik.setFieldValue('attendanceDate', data.attendanceDate?.slice(0, 10));
+      formik.setFieldValue('attendanceCheckInTime', data.attendanceCheckInTime);
+      formik.setFieldValue('attendanceCheckOutTime', data.attendanceCheckOutTime);
+      formik.setFieldValue('attendanceRemarks', data.attendanceRemarks);
+      formik.setFieldValue('attendanceStatus', data.attendanceStatus);
+      formik.setFieldValue('attendanceModeOfWorking', data.attendanceModeOfWorking);
+      formik.setFieldValue('attendanceOtStarttime', data.attendanceOtStarttime);
+      formik.setFieldValue('attendanceOtEndtime', data.attendanceOtEndtime);
       } catch (e) {
         toast.error("Error fetching data: ", e?.response?.data?.message);
       }
@@ -117,22 +150,30 @@ const AttendanceEdit = () => {
           <div className="container mb-5">
             <div className="row py-4">
               {/* Company Name */}
+
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Employee Name
                   <span className="text-danger">*</span>
                 </label>
-                <input
-                  type="text"
+                <select
                   name="dailyAttendanceEmpId"
-                  className={`form-control form-control-sm ${
+                  className={`form-select form-select-sm ${
                     formik.touched.dailyAttendanceEmpId &&
                     formik.errors.dailyAttendanceEmpId
                       ? "is-invalid"
                       : ""
                   }`}
                   {...formik.getFieldProps("dailyAttendanceEmpId")}
-                />
+                >
+                  <option selected></option>
+                  {Array.isArray(empData) &&
+                    empData.map((exitMgmtEmpId) => (
+                      <option key={exitMgmtEmpId.id} value={exitMgmtEmpId.id}>
+                        {exitMgmtEmpId.empName}
+                      </option>
+                    ))}
+                </select>
                 {formik.touched.dailyAttendanceEmpId &&
                   formik.errors.dailyAttendanceEmpId && (
                     <div className="invalid-feedback">
@@ -140,6 +181,7 @@ const AttendanceEdit = () => {
                     </div>
                   )}
               </div>
+
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Attendance Date <span className="text-danger">*</span>
@@ -174,10 +216,11 @@ const AttendanceEdit = () => {
                       : ""
                   }`}
                   {...formik.getFieldProps("attendanceStatus")}
+                  onChange={handleStatuschange}
                 >
                   <option value="" />
-                  <option value="Present" label="Present" />
-                  <option value="Absent" label="Absent" />
+                  <option value="PRESENT" label="Present" />
+                  <option value="ABSENT" label="Absent" />
                 </select>
                 {formik.touched.attendanceStatus &&
                   formik.errors.attendanceStatus && (
@@ -187,7 +230,7 @@ const AttendanceEdit = () => {
                   )}
               </div>
 
-              {formik.values.attendanceStatus === "Present" && (
+              {formik.values.attendanceStatus === "PRESENT" && (
                 <>
                   <div className="col-md-6 col-12 mb-3">
                     <label>Mode Of Working</label>
