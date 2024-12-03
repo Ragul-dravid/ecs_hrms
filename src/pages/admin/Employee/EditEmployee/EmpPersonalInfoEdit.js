@@ -409,22 +409,19 @@ const EmpPersonalInfoEdit = forwardRef(
                 }`}
                 value={formik.values.nationality}
                 onChange={(e) => {
-                  const selectedValue = e.target.value;
-                  formik.setFieldValue("nationality", selectedValue);
-                  if (selectedValue === "INDIAN") {
+                  formik.handleChange(e);
+                  if (e.target.value === "indian") {
                     setSelectedIdType("AADHAR");
-                    formik.setFieldValue("NRICFin", "");
-                    formik.setFieldValue("NRICType", "");
-                  } else if (selectedValue === "SINGAPORE") {
+                  } else if (e.target.value === "singaporean") {
                     setSelectedIdType("NRIC");
-                    formik.setFieldValue("aadharNumber", "");
-                    formik.setFieldValue("pan", "");
                   }
                 }}
               >
-                <option value="">Select Nationality</option>
-                <option value="INDIAN">INDIAN</option>
-                <option value="SINGAPORE">SINGAPORE</option>
+                <option value="singaporean">Singaporean</option>
+                <option value="indian">Indian</option>
+                <option value="muslim">Muslim</option>
+                <option value="eurasian">Eurasian</option>
+                <option value="chinese">Chinese</option>
               </select>
               {formik.touched.nationality && formik.errors.nationality && (
                 <div className="invalid-feedback">
@@ -457,7 +454,7 @@ const EmpPersonalInfoEdit = forwardRef(
               )}
             </div>
             <div>
-              {(selectedIdType === "SINGAPORE" ||
+              {(selectedIdType === "singaporean" ||
                 selectedIdType === "NRIC") && (
                 <div className="row">
                   <div className="col-md-6 col-12 mb-3 ">
@@ -523,7 +520,7 @@ const EmpPersonalInfoEdit = forwardRef(
                   </div>
                 </div>
               )}
-              {(selectedIdType === "INDIAN" || selectedIdType === "AADHAR") && (
+              {(selectedIdType === "indian" || selectedIdType === "AADHAR") && (
                 <div className="row">
                   <div className="col-md-6 col-12 mb-3 ">
                     <div className="mb-2">
