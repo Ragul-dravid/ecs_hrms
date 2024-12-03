@@ -8,7 +8,7 @@ const departmentListByCompId = async () => {
     console.log("department-by-companyId",response.data);
     return response.data;    
   } catch (error) {
-    toast.error("Error fetching Course data:", error.message);
+    toast.error( error.message);
     throw error.message;
   }
 };

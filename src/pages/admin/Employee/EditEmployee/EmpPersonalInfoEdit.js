@@ -132,7 +132,7 @@ const EmpPersonalInfoEdit = forwardRef(
 
     const fetchData = async () => {
       try {
-        const departmentData = await departmentListByCompId(cmpId);
+        const departmentData = await departmentListByCompId();
         setDepartmentData(departmentData);
       } catch (error) {
         toast.error(error);

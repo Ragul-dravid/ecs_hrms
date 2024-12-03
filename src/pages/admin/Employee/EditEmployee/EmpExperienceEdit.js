@@ -63,7 +63,8 @@ const EmpExperienceEdit = forwardRef(
         setLoadIndicators(true);
         values.experienceEmpId = formData.empId;
 
-        const payload = values.empExperience.map((experience) => ({
+        const payload = values.empExperience.map((experience, index) => ({
+          experienceId: perDetailsId[index] || "",
           prevCmpName: experience.prevCmpName,
           prevCmpAddr: experience.prevCmpAddr,
           designation: experience.designation,
@@ -74,17 +75,30 @@ const EmpExperienceEdit = forwardRef(
         }));
 
         try {
-          const response =
-            perDetailsId !== null
-              ? await api.put(`/emp-experience/${perDetailsId}`, payload)
-              : await api.post("/emp-experience", payload);
-          if (response.status === 201) {
-            toast.success(response.data.message);
-            setFormData((prv) => ({ ...prv, ...values }));
-            handleNext();
-          } else {
-            toast.error(response.data.message);
+          for (let i = 0; i < payload.length; i++) {
+            const experience = payload[i];
+            if (experience.experienceId) {
+              const response = await api.put(
+                `/emp-experience/${experience.experienceId}`,
+                experience
+              );
+              if (response.status === 200) {
+                toast.success(response.data.message);
+              } else {
+                toast.error(response.data.message);
+              }
+            } else {
+              // const { experienceId, ...postPayload } = payload;
+              const response = await api.post(`/emp-experience`, payload);
+              if (response.status === 201) {
+                toast.success(response.data.message);
+              } else {
+                toast.error(response.data.message);
+              }
+            }
           }
+          setFormData((prev) => ({ ...prev, ...values }));
+          handleNext();
         } catch (error) {
           toast.error(error);
         } finally {
@@ -108,7 +122,31 @@ const EmpExperienceEdit = forwardRef(
       ];
       formik.setFieldValue("empExperience", updatedEntities);
     };
-    const removeExp = (index) => {
+    const removeExp = async (index) => {
+      const experienceToDelete = formik.values.empExperience[index];
+
+      if (experienceToDelete.experienceId) {
+        try {
+          const response = await api.delete(
+            `/emp-experience/${experienceToDelete.experienceId}`
+          );
+          if (response.status === 201) {
+            getData();
+            toast.success(
+              response.data.message || "Experience deleted successfully"
+            );
+          } else {
+            toast.error(
+              `Failed to delete experience with ID: ${experienceToDelete.experienceId}`
+            );
+            return;
+          }
+        } catch (error) {
+          console.error("Error deleting experience:", error.message);
+          toast.error("Error Deleting Experience");
+          return;
+        }
+      }
       const updatedEntities = [...formik.values.empExperience];
       updatedEntities.splice(index, 1);
       formik.setFieldValue("empExperience", updatedEntities);
@@ -123,49 +161,48 @@ const EmpExperienceEdit = forwardRef(
         setIsFresher(false);
       }
     };
+    const getData = async () => {
+      try {
+        const response = await api.get(`/emp-reg-details/${formData.empId}`);
+        const experiences =
+          response.data.empExperienceEntities?.length > 0
+            ? response.data.empExperienceEntities.map((exp) => ({
+                prevCmpName: exp.prevCmpName || "",
+                prevCmpAddr: exp.prevCmpAddr || "",
+                designation: exp.designation || "",
+                experienceDesc: exp.experienceDesc || "",
+                experienceStartDate:
+                  exp.experienceStartDate?.slice(0, 10) || "",
+                experienceEndDate: exp.experienceEndDate?.slice(0, 10) || "",
+                prevCompReferralName: exp.prevCompReferralName || "",
+                prevCompReferralContactNum:
+                  exp.prevCompReferralContactNum || "",
+                experienceId: exp.experienceId,
+              }))
+            : [
+                {
+                  prevCmpName: "",
+                  prevCmpAddr: "",
+                  designation: "",
+                  experienceDesc: "",
+                  experienceStartDate: "",
+                  experienceEndDate: "",
+                  prevCompReferralName: "",
+                  prevCompReferralContactNum: "",
+                  experienceId: null,
+                },
+              ];
+        formik.setValues({ empExperience: experiences });
+        const experienceIds = experiences.map(
+          (experience) => experience.experienceId
+        );
+        setPerDetailsId(experienceIds);
+      } catch (error) {
+        console.error("Error fetching experience data:", error.message);
+        toast.error("Error Fetching Data");
+      }
+    };
     useEffect(() => {
-      const getData = async () => {
-        try {
-          const response = await api.get(`/emp-reg-details/${formData.empId}`);
-          const experiences =
-            response.data.empExperienceEntities?.length > 0
-              ? response.data.empExperienceEntities.map((exp) => ({
-                  prevCmpName: exp.prevCmpName || "",
-                  prevCmpAddr: exp.prevCmpAddr || "",
-                  designation: exp.designation || "",
-                  experienceDesc: exp.experienceDesc || "",
-                  experienceStartDate:
-                    exp.experienceStartDate?.slice(0, 10) || "",
-                  experienceEndDate: exp.experienceEndDate?.slice(0, 10) || "",
-                  prevCompReferralName: exp.prevCompReferralName || "",
-                  prevCompReferralContactNum:
-                    exp.prevCompReferralContactNum || "",
-                  experienceId: exp.experienceId || null,
-                }))
-              : [
-                  {
-                    prevCmpName: "",
-                    prevCmpAddr: "",
-                    designation: "",
-                    experienceDesc: "",
-                    experienceStartDate: "",
-                    experienceEndDate: "",
-                    prevCompReferralName: "",
-                    prevCompReferralContactNum: "",
-                    experienceId: null,
-                  },
-                ];
-          formik.setValues({ empExperience: experiences });
-          const experienceIds = experiences.map(
-            (experience) => experience.experienceId
-          );
-          setPerDetailsId(experienceIds);
-        } catch (error) {
-          console.error("Error fetching experience data:", error.message);
-          toast.error("Error Fetching Data");
-        }
-      };
-
       getData();
     }, []);
 
@@ -491,29 +528,29 @@ const EmpExperienceEdit = forwardRef(
                     )}
                 </div>
               </div>
+              <div className="row">
+                <div className="col-12 mb-4">
+                  <button
+                    type="button"
+                    onClick={addExp}
+                    className="btn btn-sm border-none shadow-none"
+                  >
+                    <CiCirclePlus size={40} />
+                  </button>
+                  &nbsp;&nbsp;
+                  {formik.values.empExperience.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeExp(index)} // Corrected: wrapped in an arrow function
+                      className="btn btn-sm text-danger border-none shadow-none"
+                    >
+                      <FaRegTrashAlt />
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           ))}
-          <div className="row">
-            <div className="col-12 mb-4">
-              <button
-                type="button"
-                onClick={addExp}
-                className="btn btn-sm border-none shadow-none"
-              >
-                <CiCirclePlus size={40} />
-              </button>{" "}
-              &nbsp;&nbsp;
-              {formik.values.empExperience.length > 1 && (
-                <button
-                  type="button"
-                  onClick={removeExp}
-                  className="btn btn-sm text-danger border-none shadow-none"
-                >
-                  <FaRegTrashAlt />
-                </button>
-              )}
-            </div>
-          </div>
         </div>
       </form>
     );
