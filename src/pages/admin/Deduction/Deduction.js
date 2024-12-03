@@ -5,17 +5,19 @@ import $ from "jquery";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import api from "../../../config/URL";
-import { PropagateLoader } from 'react-spinners';
+import { PropagateLoader } from "react-spinners";
 import DeleteModel from "../../../components/admin/DeleteModel";
 import { HiOutlineEye } from "react-icons/hi2";
 import { BiEditAlt } from "react-icons/bi";
+import DeductionAdd from "./DeductionAdd";
+import DeductionEdit from "./DeductionEdit";
 
 const Deduction = () => {
   const tableRef = useRef(null);
   // const storedScreens = JSON.parse(sessionStorage.getItem("screens") || "{}");
   const [datas, setDatas] = useState([]);
   const [loading, setLoading] = useState(true);
-  const cmpId = sessionStorage.getItem("cmpId")
+  const cmpId = sessionStorage.getItem("cmpId");
 
   useEffect(() => {
     const getData = async () => {
@@ -109,16 +111,7 @@ const Deduction = () => {
                 </div>
                 <div className="col-auto">
                   <div className="hstack gap-2 justify-content-end">
-                    <Link to="/deduction/add">
-                      <button
-                        type="submit"
-                        className="btn btn-sm btn-button btn-primary"
-                      >
-                        <span cla>
-                          Add <FaPlus className="pb-1" />
-                        </span>
-                      </button>
-                    </Link>
+                    <DeductionAdd onSuccess={refreshData} />
                   </div>
                 </div>
               </div>
@@ -168,21 +161,17 @@ const Deduction = () => {
                           <span className="badge-pending">Pending</span>
                         )}
                       </td> */}
-                      <td className="text-center">
-                        <div className="gap-2">
+                      <td className="text-center ">
+                        <div className="gap-2 d-flex justify-content-center">
                           <Link to={`/deduction/view/${data.deductionId}`}>
-                          <button className="btn p-1  shadow-none border-none">
-                            <HiOutlineEye />
+                            <button className="btn shadow-none border-none">
+                              <HiOutlineEye />
                             </button>
                           </Link>
-                          <Link
-                            to={`/deduction/edit/${data.deductionId}`}
-                            className="px-2"
-                          >
-                             <button className="btn p-1 shadow-none border-none">
-                            <BiEditAlt />
-                            </button>
-                          </Link>
+                          <DeductionEdit
+                            id={data.deductionId}
+                            onSuccess={refreshData}
+                          />
                           <DeleteModel
                             onSuccess={refreshData}
                             path={`/deduction/${data.deductionId}`}
