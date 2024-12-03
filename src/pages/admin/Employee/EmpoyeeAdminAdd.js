@@ -101,7 +101,7 @@ function EmployeeAdminAdd() {
         formData.append("noticePeriod", values.noticePeriod);
         formData.append("citizenship", values.citizenship);
         formData.append("nationality", values.nationality);
-        formData.append("roleName", "employee");
+        formData.append("roleName", "EMPLOYEE");
         formData.append("pan", values.pan);
 
         const response = await api.post("/emp-reg-details", formData);

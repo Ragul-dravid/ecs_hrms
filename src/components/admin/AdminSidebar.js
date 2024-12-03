@@ -6,7 +6,6 @@ import { HiOutlineUserGroup } from "react-icons/hi2";
 import { FiSettings } from "react-icons/fi";
 import { RiFileList3Line } from "react-icons/ri";
 import { MdDashboard } from "react-icons/md";
-import { BiCheckCircle } from "react-icons/bi";
 import { BsBullseye } from "react-icons/bs";
 import { RiOrganizationChart } from "react-icons/ri";
 import { RiContactsBook3Line } from "react-icons/ri";
@@ -16,6 +15,7 @@ import { LuFileEdit } from "react-icons/lu";
 import { MdOutlineHolidayVillage } from "react-icons/md";
 import api from "../../config/URL";
 import toast from "react-hot-toast";
+import { TbDoorExit } from "react-icons/tb";
 
 function AdminSidebar({ handleLogout }) {
   const navigate = useNavigate();
@@ -152,7 +152,7 @@ function AdminSidebar({ handleLogout }) {
                         </span>
                       </NavLink>
                     </li> */}
-                      <li>
+                    <li>
                       <NavLink className="nav-link" to="/departments">
                         <span style={{ display: "flex", alignItems: "center" }}>
                           <BsBullseye
@@ -168,7 +168,7 @@ function AdminSidebar({ handleLogout }) {
                           <BsBullseye
                             style={{ fontSize: "xx-small", marginRight: "8px" }}
                           />
-                         Designation
+                          Designation
                         </span>
                       </NavLink>
                     </li>
@@ -183,12 +183,12 @@ function AdminSidebar({ handleLogout }) {
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink className="nav-link" to="/exitmangement">
+                      <NavLink className="nav-link" to="/holidays">
                         <span style={{ display: "flex", alignItems: "center" }}>
                           <BsBullseye
                             style={{ fontSize: "xx-small", marginRight: "8px" }}
                           />
-                          Exit Management
+                          Holidays
                         </span>
                       </NavLink>
                     </li>
@@ -204,13 +204,6 @@ function AdminSidebar({ handleLogout }) {
               </li>
 
               <li className="nav-item">
-                <NavLink className="nav-link" to="/holidays">
-                  <MdOutlineHolidayVillage className="me-2" />
-                  Holidays
-                </NavLink>
-              </li>
-
-              <li className="nav-item">
                 <NavLink className="nav-link" to="/leaveRequest">
                   <LuFileEdit className="me-2" />
                   Leave
@@ -221,6 +214,13 @@ function AdminSidebar({ handleLogout }) {
                 <NavLink className="nav-link" to="/attendance">
                   <RiContactsBook3Line className="me-2" />
                   Attendance
+                </NavLink>
+              </li>
+
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/exitmangement">
+                    <TbDoorExit className="me-2"/>
+                    Exit Management
                 </NavLink>
               </li>
 
@@ -276,19 +276,16 @@ function AdminSidebar({ handleLogout }) {
                 </div>
                 {activeSubmenu === "Settings" && (
                   <ul className="list-unstyled p-0">
-                    
                     <li>
                       <NavLink className="nav-link" to="/roles">
                         <span style={{ display: "flex", alignItems: "center" }}>
                           <BsBullseye
                             style={{ fontSize: "xx-small", marginRight: "8px" }}
                           />
-                         Roles & Matrix
+                          Roles & Matrix
                         </span>
                       </NavLink>
                     </li>
-                  
-                    
                   </ul>
                 )}
               </li>

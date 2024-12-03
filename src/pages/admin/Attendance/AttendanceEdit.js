@@ -25,6 +25,8 @@ const AttendanceEdit = () => {
       attendanceDate: "",
       attendanceCheckInTime: "",
       attendanceCheckOutTime: "",
+      checkInMode:null,
+      checkOutMode:"TOP_OUT",
       attendanceStatus: "",
       attendanceRemarks: "",
       attendanceModeOfWorking: "",

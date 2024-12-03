@@ -19,7 +19,7 @@ const LeaveRequestAdd = () => {
     initialValues: {
       cmpId: cmpId,
       leaveDeptId: "",
-      leaveReqEmpId: empName,
+      leaveReqEmpId: "Chandru Ecs",
       leaveReqStartDate: "",
       leaveReqEndDate: "",
       leaveReqType: "",
@@ -32,6 +32,8 @@ const LeaveRequestAdd = () => {
       leaveReqApproverId: "",
       pendingLeaveReqDays: "",
       file: null || "",
+      leaveStatus:"",
+
     },
     validationSchema: validationSchema,
     onSubmit: async (data) => {
@@ -39,16 +41,17 @@ const LeaveRequestAdd = () => {
       try {
         const formDatas = new FormData();
         formDatas.append("leaveCmpId", cmpId);
-        formDatas.append("leaveReqEmpId", empId);
+        formDatas.append("leaveReqEmpId", 171);
         formDatas.append("leaveDeptId", data.leaveDeptId);
         formDatas.append("leaveReqStartDate", data.leaveReqStartDate);
         formDatas.append("leaveReqEndDate", data.leaveReqEndDate);
         formDatas.append("totalLeaveReqDays", data.totalLeaveReqDays);
         formDatas.append("leaveReqType", data.leaveReqType);
         formDatas.append("leaveReqRemarks", data.leaveReqRemarks);
-        formDatas.append("leaveReqApproverId", "11");
-        formDatas.append("leaveReqApproverName", "Admin");
-        formDatas.append("leaveReqStatus", "P");
+        formDatas.append("leaveReqApproverId", "");
+        formDatas.append("leaveReqApproverName", "");
+        formDatas.append("leaveReqStatus", "PENDING");
+        formDatas.append("leaveStatus", "PENDING");
         formDatas.append("pendingLeaveReqDays", data.pendingLeaveReqDays);
         formDatas.append("file", data.file);
 

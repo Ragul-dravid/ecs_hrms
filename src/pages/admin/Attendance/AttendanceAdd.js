@@ -4,13 +4,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import api from "../../../config/URL";
 import toast from "react-hot-toast";
-import Attendance from "./Attendance";
 
 const AttendanceAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
   const cmpId = sessionStorage.getItem("cmpId");
-  const [companyData, setCompanyData] = useState(null);
   const [empData, setEmpData] = useState(null);
 
   const validationSchema = Yup.object({
@@ -21,14 +19,16 @@ const AttendanceAdd = () => {
       "*Mode of working is required",
       function (value) {
         const { attendanceStatus } = this.parent;
-        return attendanceStatus === "Present" ? !!value : true;
+        return attendanceStatus === "PRESENT" ? !!value : true;
       }
     ),
   });
 
   const formik = useFormik({
     initialValues: {
-      cmpId: cmpId,
+      cmpId: 1,
+      attendanceCheckOutMode:"",
+      attendanceCheckInMode:"",
       dailyAttendanceEmpId: "",
       attendanceDate: "",
       attendanceCheckInTime: "",
@@ -36,8 +36,8 @@ const AttendanceAdd = () => {
       attendanceStatus: "",
       attendanceRemarks: "",
       attendanceModeOfWorking: "",
-      attendanceCheckInMode: "",
-      attendanceCheckOutMode: "",
+      checkInMode: "TAP_IN",
+      checkOutMode: null,
       attendanceOtStarttime: "",
       attendanceOtEndtime: "",
       attendanceShiftMode: "",
@@ -46,11 +46,11 @@ const AttendanceAdd = () => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log("object", values);
-      
+
       setLoadIndicator(true);
       try {
         const response = await api.post(`/daily-attendance`, values);
-        if (response.status === 201) {
+        if (response.status === 201 || response.status === 200) {
           toast.success(response.data.message);
           navigate("/attendance");
         } else {
@@ -68,7 +68,7 @@ const AttendanceAdd = () => {
     try {
       const employee = await api.get(`getEmpolyeeWithRole/${cmpId}`);
       setEmpData(employee.data);
-      console.log("Employee:",employee.data);
+      console.log("Employee:", employee.data);
       return employee.data;
     } catch (error) {
       console.error(error);
@@ -81,7 +81,7 @@ const AttendanceAdd = () => {
   const handleStatuschange = (event) => {
     const status = event.target.value;
     formik.setFieldValue("attendanceStatus", status);
-    if (status === "Absent") {
+    if (status === "ABSENT") {
       formik.setFieldValue("attendanceModeOfWorking", "");
       formik.setFieldValue("attendanceCheckInTime", "");
       formik.setFieldValue("attendanceCheckOutTime", "");
@@ -155,7 +155,7 @@ const AttendanceAdd = () => {
                   {...formik.getFieldProps("dailyAttendanceEmpId")}
                 >
                   <option selected></option>
-                   {Array.isArray(empData) &&
+                  {Array.isArray(empData) &&
                     empData.map((exitMgmtEmpId) => (
                       <option key={exitMgmtEmpId.id} value={exitMgmtEmpId.id}>
                         {exitMgmtEmpId.empName}
@@ -207,8 +207,8 @@ const AttendanceAdd = () => {
                   onChange={handleStatuschange}
                 >
                   <option value="" />
-                  <option value="Present" label="Present" />
-                  <option value="Absent" label="Absent" />
+                  <option value="PRESENT" label="Present" />
+                  <option value="ABSENT" label="Absent" />
                 </select>
                 {formik.touched.attendanceStatus &&
                   formik.errors.attendanceStatus && (
@@ -218,7 +218,7 @@ const AttendanceAdd = () => {
                   )}
               </div>
 
-              {formik.values.attendanceStatus === "Present" && (
+              {formik.values.attendanceStatus === "PRESENT" && (
                 <>
                   <div className="col-md-6 col-12 mb-3">
                     <label>Mode Of Working</label>
