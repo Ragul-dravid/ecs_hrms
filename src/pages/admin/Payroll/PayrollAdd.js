@@ -215,7 +215,7 @@ function PayrollAdd() {
       );
       setUserSalaryInfo(response.data);
       formik.setFieldValue("deductionAmount", response.data.deductionAmount);
-      formik.setFieldValue("grossPay", response.data.basicPay);
+      formik.setFieldValue("basicSalary", response.data.basicPay);
       formik.setFieldValue("cpfContribution", response.data.cpfContribution);
       formik.setFieldValue("shgContribution", response.data.shgContribution);
     } catch (error) {
@@ -418,6 +418,7 @@ function PayrollAdd() {
                           : ""
                       }`}
                       {...formik.getFieldProps("basicSalary")}
+                      readOnly
                     />
                     {formik.touched.basicSalary &&
                       formik.errors.basicSalary && (
@@ -460,6 +461,7 @@ function PayrollAdd() {
                           : ""
                       }`}
                       {...formik.getFieldProps("deductionAmount")}
+                      readOnly
                     />
                     {formik.touched.deductionAmount &&
                       formik.errors.deductionAmount && (
@@ -482,6 +484,7 @@ function PayrollAdd() {
                           : ""
                       }`}
                       {...formik.getFieldProps("shgContribution")}
+                      readOnly
                     />
                     {formik.touched.shgContribution &&
                       formik.errors.shgContribution && (
@@ -504,6 +507,7 @@ function PayrollAdd() {
                           : ""
                       }`}
                       {...formik.getFieldProps("cpfContribution")}
+                      readOnly
                     />
                     {formik.touched.cpfContribution &&
                       formik.errors.cpfContribution && (
@@ -619,6 +623,7 @@ function PayrollAdd() {
                       : ""
                   }`}
                   {...formik.getFieldProps("netPay")}
+                  readOnly
                 />
                 {formik.touched.netPay && formik.errors.netPay && (
                   <div className="invalid-feedback">{formik.errors.netPay}</div>

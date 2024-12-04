@@ -80,19 +80,20 @@ const DeductionAdd = ({ onSuccess }) => {
         </span>
       </button>
 
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+      <Modal show={showModal} onHide={() => setShowModal(false)}  size="lg" centered>
         <Modal.Header closeButton>
           <Modal.Title>Add Deduction</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={formik.handleSubmit}>
-            <div className="mb-3">
+            <div className="row">
+            <div className="col-md-6 col-12 mb-3">
               <label className="form-label">
                 Deduction Name <span className="text-danger">*</span>
               </label>
               <select
                 name="deductionName"
-                className={`form-select ${
+                className={`form-select form-select-sm ${
                   formik.touched.deductionName && formik.errors.deductionName
                     ? "is-invalid"
                     : ""
@@ -111,13 +112,13 @@ const DeductionAdd = ({ onSuccess }) => {
               )}
             </div>
 
-            <div className="mb-3">
+            <div className="col-md-6 col-12 mb-3">
               <label className="form-label">
                 Employee <span className="text-danger">*</span>
               </label>
               <select
                 name="deductionEmpId"
-                className={`form-select ${
+                className={`form-select form-select-sm ${
                   formik.touched.deductionEmpId && formik.errors.deductionEmpId
                     ? "is-invalid"
                     : ""
@@ -139,14 +140,14 @@ const DeductionAdd = ({ onSuccess }) => {
                 )}
             </div>
 
-            <div className="mb-3">
+            <div className="col-md-6 col-12 mb-3">
               <label className="form-label">
                 Deduction Amount <span className="text-danger">*</span>
               </label>
               <input
                 type="text"
                 name="deductionAmt"
-                className={`form-control ${
+                className={`form-control form-control-sm ${
                   formik.touched.deductionAmt && formik.errors.deductionAmt
                     ? "is-invalid"
                     : ""
@@ -160,14 +161,14 @@ const DeductionAdd = ({ onSuccess }) => {
               )}
             </div>
 
-            <div className="mb-3">
+            <div className="col-md-6 col-12 mb-3">
               <label className="form-label">
                 Deduction Month <span className="text-danger">*</span>
               </label>
               <input
                 type="month"
                 name="deductionMonth"
-                className={`form-control ${
+                className={`form-control form-control-sm ${
                   formik.touched.deductionMonth && formik.errors.deductionMonth
                     ? "is-invalid"
                     : ""
@@ -181,7 +182,7 @@ const DeductionAdd = ({ onSuccess }) => {
                   </div>
                 )}
             </div>
-
+            </div>
             <div className="d-flex justify-content-end gap-3">
               <Button
                 onClick={handleClose}

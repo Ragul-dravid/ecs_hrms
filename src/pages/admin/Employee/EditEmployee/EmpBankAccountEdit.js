@@ -64,20 +64,20 @@ const EmpBankAccountEdit = forwardRef(
       },
     });
 
-    useEffect(() => {
-      const getData = async () => {
-        try {
-          const response = await api.get(`emp-reg-details/${formData.empId}`);
-          formik.setValues(response?.data?.empBankAccDetailsEntities[0] || []);
-          setPerDetailsId(
-            response.data.empBankAccDetailsEntities[0].bankAccDetailsId
-          );
-        } catch (error) {
-          toast.error("Error Fetching Data ", error.message);
-        }
-      };
-      getData();
-    }, []);
+    // useEffect(() => {
+    //   const getData = async () => {
+    //     try {
+    //       const response = await api.get(`emp-reg-details/${formData.empId}`);
+    //       formik.setValues(response?.data?.empBankAccDetailsEntities);
+    //       setPerDetailsId(
+    //         response.data.empBankAccDetailsEntities[0].bankAccDetailsId
+    //       );
+    //     } catch (error) {
+    //       toast.error("Error Fetching Data ", error.message);
+    //     }
+    //   };
+    //   getData();
+    // }, []);
 
     useImperativeHandle(ref, () => ({
       bankAccountAdd: formik.handleSubmit,

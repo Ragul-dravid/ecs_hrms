@@ -52,15 +52,15 @@ const EmpQualificationDetailsEdit = forwardRef(
             qualModeOfStudy: "",
             qualInstitution: "",
             qualificationDate: "",
-            certificate: "",
+            certificate: null,
             percentage: "",
             studying: "",
-            empQualificationSkils: [
-              {
-                employeeSkill: "",
-                skillDescription: "",
-              },
-            ],
+          },
+        ],
+        empQualificationSkils: [
+          {
+            employeeSkill: "",
+            skillDescription: "",
           },
         ],
       },
@@ -84,26 +84,39 @@ const EmpQualificationDetailsEdit = forwardRef(
               study: qualification.fieldOfStudy,
               percentage: qualification.percentage,
               courseComplitionYear: qualification.qualificationDate,
-              certificate: "Degree",
-              qualEmpId: formData.empId,
-              cmpId: cmpId,
-              skills: qualification.empQualificationSkils.map((skill) => ({
-                employeeSkill: skill.employeeSkill,
-                skillDescription: skill.skillDescription,
-              })),
+              // certificate: "Degree",
+              // qualEmpId: formData.empId,
+              // cmpId: cmpId,
             })
           );
-
+          const formattedSkills = values.empQualificationSkils.map((skill) => ({
+            employeeSkill: skill.employeeSkill,
+            skillDescription: skill.skillDescription,
+          }));
+          formDatas.append("skills", JSON.stringify(formattedSkills));
           formDatas.append(
             "qualifications",
             JSON.stringify(formattedQualifications)
           );
           values.empQualificationEntities.forEach((qualification, index) => {
             if (qualification.certificate) {
-              formDatas.append(`attachments`, qualification.certificate);
+              formDatas.append(
+                `certificates[${index}]`,
+                qualification.certificate
+              );
             }
           });
+          // values.empQualificationEntities.forEach((qualification, index) => {
+          //   if (qualification.certificate && Array.isArray(qualification.certificate)) {
+          //     qualification.certificate.forEach((file, fileIndex) => {
+          //       const key = `certificates[${index}${fileIndex + 1}]`;
+          //       formDatas.append(key, file);
+          //     });
+          //   }
+          // });
 
+          formDatas.append(`empRegId`, formData.empId);
+          formDatas.append(`cmpId`, cmpId);
           const response =
             perDetailsId !== null
               ? await api.post(`/createQualificationAndSkills`, formDatas, {
@@ -117,7 +130,7 @@ const EmpQualificationDetailsEdit = forwardRef(
                   },
                 });
 
-          if (response.status === 200) {
+          if (response.status === 201) {
             setFormData((prev) => ({ ...prev, ...values }));
             toast.success(response.data.message);
             handleNext();
@@ -132,13 +145,15 @@ const EmpQualificationDetailsEdit = forwardRef(
       },
     });
 
-    const addSkill = (entityIndex) => {
-      const updatedEntities = [...formik.values.empQualificationEntities];
-      updatedEntities[entityIndex].empQualificationSkils.push({
-        employeeSkill: "",
-        skillDescription: "",
-      });
-      formik.setFieldValue("empQualificationEntities", updatedEntities);
+    const addSkill = () => {
+      const updatedEntities = [
+        ...formik.values.empQualificationSkils,
+        {
+          employeeSkill: "",
+          skillDescription: "",
+        },
+      ];
+      formik.setFieldValue("empQualificationSkils", updatedEntities);
     };
 
     const addQualification = () => {
@@ -152,12 +167,12 @@ const EmpQualificationDetailsEdit = forwardRef(
           qualificationDate: "",
           certificate: "",
           percentage: "",
-          empQualificationSkils: [
-            {
-              employeeSkill: "",
-              skillDescription: "",
-            },
-          ],
+          // empQualificationSkils: [
+          //   {
+          //     employeeSkill: "",
+          //     skillDescription: "",
+          //   },
+          // ],
         },
       ];
       formik.setFieldValue("empQualificationEntities", updatedEntities);
@@ -169,10 +184,10 @@ const EmpQualificationDetailsEdit = forwardRef(
       formik.setFieldValue("empQualificationEntities", updatedEntities);
     };
 
-    const removeSkill = (entityIndex, skillIndex) => {
-      const updatedEntities = [...formik.values.empQualificationEntities];
-      updatedEntities[entityIndex].empQualificationSkils.splice(skillIndex, 1);
-      formik.setFieldValue("empQualificationEntities", updatedEntities);
+    const removeSkill = (skillIndex) => {
+      const updatedEntities = [...formik.values.empQualificationSkils];
+      updatedEntities.splice(skillIndex, 1);
+      formik.setFieldValue("empQualificationSkils", updatedEntities);
     };
 
     useEffect(() => {
@@ -519,99 +534,6 @@ const EmpQualificationDetailsEdit = forwardRef(
                     </div>
                   </>
                 )}
-                <div className="d-flex justify-content-between align-items-center my-4">
-                  <p className="headColor mt-3">Skill</p>
-                  <button
-                    type="button"
-                    onClick={() => addSkill(entityIndex)}
-                    className="btn btn-sm text-primary shadow-none pt-3 border-none pe-5"
-                  >
-                    <CiCirclePlus size={30} />
-                  </button>
-                </div>
-                {entity.empQualificationSkils.map((skill, skillIndex) => (
-                  <div className="row my-5 " key={skillIndex}>
-                    <div className="col-md-11 col-12">
-                      <div className="row">
-                        <div className="col-md-6 col-12">
-                          <input
-                            type="text"
-                            className="form-control form-control-sm custom-input"
-                            placeholder="Employee Skill"
-                            name={`empQualificationEntities[${entityIndex}].empQualificationSkils[${skillIndex}].employeeSkill`}
-                            value={skill.employeeSkill}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                          />
-                          {formik.touched.empQualificationEntities?.[
-                            entityIndex
-                          ]?.empQualificationSkils?.[skillIndex]
-                            ?.employeeSkill &&
-                            formik.errors.empQualificationEntities?.[
-                              entityIndex
-                            ]?.empQualificationSkils?.[skillIndex]
-                              ?.employeeSkill && (
-                              <div
-                                className="text-danger"
-                                style={{ fontSize: ".875em" }}
-                              >
-                                {
-                                  formik.errors.empQualificationEntities[
-                                    entityIndex
-                                  ].empQualificationSkils[skillIndex]
-                                    .employeeSkill
-                                }
-                              </div>
-                            )}
-                        </div>
-
-                        <div className="col-md-6 col-12">
-                          <input
-                            type="text"
-                            className="form-control form-control-sm custom-input"
-                            placeholder="Skill Description"
-                            name={`empQualificationEntities[${entityIndex}].empQualificationSkils[${skillIndex}].skillDescription`}
-                            value={skill.skillDescription}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                          />
-                          {formik.touched.empQualificationEntities?.[
-                            entityIndex
-                          ]?.empQualificationSkils?.[skillIndex]
-                            ?.skillDescription &&
-                            formik.errors.empQualificationEntities?.[
-                              entityIndex
-                            ]?.empQualificationSkils?.[skillIndex]
-                              ?.skillDescription && (
-                              <div
-                                className="text-danger"
-                                style={{ fontSize: ".875em" }}
-                              >
-                                {
-                                  formik.errors.empQualificationEntities[
-                                    entityIndex
-                                  ].empQualificationSkils[skillIndex]
-                                    .skillDescription
-                                }
-                              </div>
-                            )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-1 col-12 d-flex">
-                      <button
-                        type="button"
-                        className="btn btn-sm text-danger border-none shadow-none ps-5"
-                        onClick={() => removeSkill(entityIndex, skillIndex)}
-                        style={{
-                          display: skillIndex === 0 ? "none" : "inline-block",
-                        }}
-                      >
-                        <FaRegTrashAlt style={{ cursor: "pointer" }} />
-                      </button>
-                    </div>
-                  </div>
-                ))}
 
                 <div className="col-md-12 text-right mt-3 d-flex">
                   <button
@@ -631,6 +553,87 @@ const EmpQualificationDetailsEdit = forwardRef(
                     </button>
                   )}
                 </div>
+              </div>
+            </div>
+          ))}
+          <div className="d-flex justify-content-between align-items-center my-4">
+            <p className="headColor mt-3">Skill</p>
+            <button
+              type="button"
+              onClick={() => addSkill()}
+              className="btn btn-sm text-primary shadow-none pt-3 border-none pe-5"
+            >
+              <CiCirclePlus size={30} />
+            </button>
+          </div>
+          {formik.values.empQualificationSkils.map((skill, skillIndex) => (
+            <div className="row my-5 " key={skillIndex}>
+              <div className="col-md-11 col-12">
+                <div className="row">
+                  <div className="col-md-6 col-12">
+                    <input
+                      type="text"
+                      className="form-control form-control-sm custom-input"
+                      placeholder="Employee Skill"
+                      name={`empQualificationSkils[${skillIndex}].employeeSkill`}
+                      value={skill.employeeSkill}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.empQualificationSkils?.[skillIndex]
+                      ?.employeeSkill &&
+                      formik.errors.empQualificationSkils?.[skillIndex]
+                        ?.employeeSkill && (
+                        <div
+                          className="text-danger"
+                          style={{ fontSize: ".875em" }}
+                        >
+                          {
+                            formik.errors.empQualificationSkils[skillIndex]
+                              .employeeSkill
+                          }
+                        </div>
+                      )}
+                  </div>
+
+                  <div className="col-md-6 col-12">
+                    <input
+                      type="text"
+                      className="form-control form-control-sm custom-input"
+                      placeholder="Skill Description"
+                      name={`empQualificationSkils[${skillIndex}].skillDescription`}
+                      value={skill.skillDescription}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.empQualificationSkils?.[skillIndex]
+                      ?.skillDescription &&
+                      formik.errors.empQualificationSkils?.[skillIndex]
+                        ?.skillDescription && (
+                        <div
+                          className="text-danger"
+                          style={{ fontSize: ".875em" }}
+                        >
+                          {
+                            formik.errors.empQualificationSkils[skillIndex]
+                              .skillDescription
+                          }
+                        </div>
+                      )}
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-1 col-12 d-flex">
+                <button
+                  type="button"
+                  className="btn btn-sm text-danger border-none shadow-none ps-5"
+                  onClick={() => removeSkill(skillIndex)}
+                  style={{
+                    display: skillIndex === 0 ? "none" : "inline-block",
+                  }}
+                >
+                  <FaRegTrashAlt style={{ cursor: "pointer" }} />
+                </button>
               </div>
             </div>
           ))}
