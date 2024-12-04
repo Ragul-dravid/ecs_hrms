@@ -465,19 +465,19 @@ function EmployeeAdminAdd() {
                   value={formik.values.nationality}
                   onChange={(e) => {
                     formik.handleChange(e);
-                    if (e.target.value === "indian") {
+                    if (e.target.value === "INDIAN") {
                       setSelectedIdType("AADHAR");
-                    } else if (e.target.value === "singaporean") {
+                    } else if (e.target.value === "SINGAPOREAN" ||"CHINESE") {
                       setSelectedIdType("NRIC");
                     }
                   }}
                 >
                   <option selected />
-                  <option value="singaporean">Singaporean</option>
-                  <option value="indian">Indian</option>
-                  <option value="muslim">Muslim</option>
-                  <option value="eurasian">Eurasian</option>
-                  <option value="chinese">Chinese</option>
+                  <option value="SINGAPOREAN">Singaporean</option>
+                  <option value="INDIAN">Indian</option>
+                  {/* <option value="muslim">Muslim</option> */}
+                  {/* <option value="eurasian">Eurasian</option> */}
+                  <option value="CHINESE">Chinese</option>
                 </select>
                 {formik.touched.nationality && formik.errors.nationality && (
                   <div className="invalid-feedback">

@@ -101,7 +101,7 @@ const EmpPersonalInfoEdit = forwardRef(
           formDatas.append("aadharNumber", values.aadharNumber);
           formDatas.append("empRegDeptId", values.empRegDeptId);
           // formDatas.append("file", values.file || "");
-          formDatas.append("proof", selectedIdType);
+          // formDatas.append("proof", selectedIdType);
           formDatas.append("empDesignation", values.empDesignation);
           formDatas.append("empDateOfJoin", values.empDateOfJoin);
           formDatas.append("empType", values.empType);
@@ -174,13 +174,14 @@ const EmpPersonalInfoEdit = forwardRef(
         try {
           const response = await api.get(`emp-reg-details/${formData.empId}`);
           // formik.setValues(response.data);
-          setSelectedIdType(response.data.nationality);
+          setSelectedIdType(response.data.proof);
+          fetchDesignationData(
+            response.data.empRegCmpId,
+            response.data.empRegDeptId
+          );
           formik.setValues({
             ...response.data,
-            proof: response.data.proof === "AADHAR" || "NRIC",
           });
-          console.log("123", response.data.empPersonalDetailsEntities);
-          console.log("Employee response", response.data);
         } catch (error) {
           // console.log(error.message);
           toast.error("Error Fetching Data ", error.message);
@@ -410,18 +411,18 @@ const EmpPersonalInfoEdit = forwardRef(
                 value={formik.values.nationality}
                 onChange={(e) => {
                   formik.handleChange(e);
-                  if (e.target.value === "indian") {
+                  if (e.target.value === "INDIAN") {
                     setSelectedIdType("AADHAR");
-                  } else if (e.target.value === "singaporean") {
+                  } else if (e.target.value === "SINGAPOREAN" || "CHINESE") {
                     setSelectedIdType("NRIC");
                   }
                 }}
               >
-                <option value="singaporean">Singaporean</option>
-                <option value="indian">Indian</option>
-                <option value="muslim">Muslim</option>
-                <option value="eurasian">Eurasian</option>
-                <option value="chinese">Chinese</option>
+                <option value="SINGAPOREAN">Singaporean</option>
+                <option value="INDIAN">Indian</option>
+                {/* <option value="muslim">Muslim</option> */}
+                {/* <option value="eurasian">Eurasian</option> */}
+                <option value="CHINESE">Chinese</option>
               </select>
               {formik.touched.nationality && formik.errors.nationality && (
                 <div className="invalid-feedback">
@@ -455,7 +456,7 @@ const EmpPersonalInfoEdit = forwardRef(
               )}
             </div>
             <div>
-              {(selectedIdType === "singaporean" ||
+              {(selectedIdType === "SINGAPOREAN" ||
                 selectedIdType === "NRIC") && (
                 <div className="row">
                   <div className="col-md-6 col-12 mb-3 ">
@@ -521,7 +522,7 @@ const EmpPersonalInfoEdit = forwardRef(
                   </div>
                 </div>
               )}
-              {(selectedIdType === "indian" || selectedIdType === "AADHAR") && (
+              {(selectedIdType === "INDIAN" || selectedIdType === "AADHAR") && (
                 <div className="row">
                   <div className="col-md-6 col-12 mb-3 ">
                     <div className="mb-2">
