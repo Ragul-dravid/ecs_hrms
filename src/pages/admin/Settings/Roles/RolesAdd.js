@@ -112,7 +112,7 @@ function RolesAdd() {
         }
       } catch (e) {
         if (e.response.status === 409) {      
-          toast("Role 'NEW' already exists for this Company", {
+          toast("Role already exists for this Company", {
             icon: <FiAlertTriangle className="text-warning" />,
           });
         } else {

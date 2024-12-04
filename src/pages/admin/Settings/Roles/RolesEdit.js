@@ -98,7 +98,7 @@ function RolesEdit() {
     onSubmit: async (values) => {
       console.log("Api Data:", values);
       try {
-        const response = await api.post(`/createRolesByCompanyId`, values, {
+        const response = await api.put(`/roleUpdateRestriction/${id}`, values, {
           headers: {
             "Content-Type": "application/json",
           },

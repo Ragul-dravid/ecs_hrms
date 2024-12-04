@@ -237,12 +237,16 @@ function AdminSidebar({ handleLogout }) {
                 </NavLink>
               </li>
 
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/payslip">
-                  <RiFileList3Line className="me-2" />
-                  Payslip
-                </NavLink>
-              </li>
+              {role === "EMPLOYEE" ? (
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/payslip">
+                    <RiFileList3Line className="me-2" />
+                    Payslip
+                  </NavLink>
+                </li>
+              ) : (
+                <></>
+              )}
 
               {/* <li className="nav-item">
                 <NavLink className="nav-link" to="/expense">

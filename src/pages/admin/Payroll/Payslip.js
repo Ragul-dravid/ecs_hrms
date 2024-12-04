@@ -42,8 +42,8 @@ function Payslip() {
 
   return (
     <div className="p-2">
-      <div className="offset-md-1 col-md-5 col-12">
-            <lable className="form-lable fw-medium">PAYSLIP MONTH</lable>
+      <div className="row p-5 w-50">
+            <lable className="form-lable fw-medium p-0">PAYSLIP MONTH</lable>
             <input
               type="month"
               className="form-control form-control-sm w-50"
@@ -53,15 +53,6 @@ function Payslip() {
           </div>
       {data && Object.keys(data).length > 0 ? (
         <>
-          {/* <div className="offset-md-1 col-md-5 col-12">
-            <lable className="form-lable fw-medium">PAYSLIP MONTH</lable>
-            <input
-              type="month"
-              className="form-control form-control-sm w-50"
-              value={selectedMonth}
-              onChange={handleMonthChange}
-            />
-          </div> */}
           <div
             className="container border p-4 mt-3 mb-5"
             style={{ maxWidth: "900px", backgroundColor: "#fff" }}
@@ -174,16 +165,15 @@ function Payslip() {
         </>
       ) : (
         <>
-          <div className="card m-auto p-3">
+          <div className="card m-auto p-3 d-flex justify-content-center align-items-center">
             <img
               className="img-fluid mb-3"
               src={noPayslip}
               alt="user"
               style={{
-                borderRadius: "100%", // Makes the image circular
-                objectFit: "cover", // Ensures the image fills the container without distortion
-                // width: "100px", // Equal width and height for a perfect circle
-                // height: "100px",
+                borderRadius: "70%", 
+                objectFit: "cover", 
+                width: "60%",
               }}
             />
           </div>

@@ -73,7 +73,9 @@ const EmployeeDetails = () => {
                       </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {employee?.firstName || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {employee?.firstName || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -85,7 +87,9 @@ const EmployeeDetails = () => {
                       </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {employee?.lastName || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {employee?.lastName || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -97,7 +101,9 @@ const EmployeeDetails = () => {
                       </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {employee?.email || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {employee?.email || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -109,7 +115,9 @@ const EmployeeDetails = () => {
                       </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {employee?.empPriPhNumber || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {employee?.empPriPhNumber || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -121,7 +129,9 @@ const EmployeeDetails = () => {
                       </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {employee?.empRegDeptId || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {employee?.empRegDeptId || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -133,7 +143,9 @@ const EmployeeDetails = () => {
                       </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {employee?.empDesignation || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {employee?.empDesignation || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -145,7 +157,9 @@ const EmployeeDetails = () => {
                       </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {employee?.nationality || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {employee?.nationality || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -157,10 +171,82 @@ const EmployeeDetails = () => {
                       </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {employee?.citizenship || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {employee?.citizenship || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
+                {employee?.nationality === "INDIAN" ? (
+                  <>
+                    <div className="col-md-6 col-12">
+                      <div className="row mb-3">
+                        <div className="col-6 d-flex justify-content-start align-items-center">
+                          <p className="text-sm">
+                            <b>Aadhar Number</b>
+                          </p>
+                        </div>
+                        <div className="col-6">
+                          <p className="text-muted text-sm">
+                            : {employee?.aadharNumber || ""}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6 col-12">
+                      <div className="row mb-3">
+                        <div className="col-6 d-flex justify-content-start align-items-center">
+                          <p className="text-sm">
+                            <b>PAN</b>
+                          </p>
+                        </div>
+                        <div className="col-6">
+                          <p className="text-muted text-sm">
+                            : {employee?.pan || ""}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
+
+                {employee?.nationality === "CHinese" ? (
+                  <>
+                    <div className="col-md-6 col-12">
+                      <div className="row mb-3">
+                        <div className="col-6 d-flex justify-content-start align-items-center">
+                          <p className="text-sm">
+                            <b>NRIC Type</b>
+                          </p>
+                        </div>
+                        <div className="col-6">
+                          <p className="text-muted text-sm">
+                            : {employee?.nrictype || ""}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6 col-12">
+                      <div className="row mb-3">
+                        <div className="col-6 d-flex justify-content-start align-items-center">
+                          <p className="text-sm">
+                            <b>NRIC Fin</b>
+                          </p>
+                        </div>
+                        <div className="col-6">
+                          <p className="text-muted text-sm">
+                            : {employee?.nricfin || ""}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
+
                 <div className="col-md-6 col-12">
                   <div className="row mb-3">
                     <div className="col-6 d-flex justify-content-start align-items-center">
@@ -169,7 +255,9 @@ const EmployeeDetails = () => {
                       </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {employee?.basicSalary || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {employee?.basicSalary || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -181,7 +269,9 @@ const EmployeeDetails = () => {
                       </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {employee?.empDateOfJoin || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {employee?.empDateOfJoin || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -193,7 +283,9 @@ const EmployeeDetails = () => {
                       </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {employee?.empType || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {employee?.empType || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -205,12 +297,15 @@ const EmployeeDetails = () => {
                       </p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {employee?.noticePeriod || ""}</p>
+                      <p className="text-muted text-sm">
+                        : {employee?.noticePeriod || ""}
+                      </p>
                     </div>
                   </div>
                 </div>
-                </div>
-              <h3>Personal Information</h3>
+              </div>
+
+              {/* <h3>Personal Information</h3>
               {employee?.empPersonalDetailsEntities?.length > 0 ? (
                 employee.empPersonalDetailsEntities.map((personal, index) => (
                   <div key={index} className="mb-3">
@@ -240,8 +335,8 @@ const EmployeeDetails = () => {
 
                 ))
               ) : (
-                <p>No experience details available.</p>
-              )}
+                <p>Personal Information Not Available.</p>
+              )} */}
             </div>
           </div>
         </div>
