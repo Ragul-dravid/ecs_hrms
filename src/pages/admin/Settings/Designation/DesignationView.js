@@ -84,7 +84,7 @@ const DesignationView = () => {
                       <p className="text-sm"><b>Department Name</b></p>
                     </div>
                     <div className="col-6">
-                      <p className="text-muted text-sm">: {data.deptId || ""}</p>
+                      <p className="text-muted text-sm">: {data.deptName || ""}</p>
                     </div>
                   </div>
                 </div>

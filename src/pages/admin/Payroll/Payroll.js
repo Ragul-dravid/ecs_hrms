@@ -153,7 +153,7 @@ const Payroll = () => {
                   {datas.map((data, index) => (
                     <tr key={index}>
                       <td className="text-center">{index + 1}</td>
-                      <td className="text-center">{data.payrollEmpId}</td>
+                      <td className="text-center">{data.empName}</td>
                       <td className="text-center">{data.netPay}</td>
                       <td className="text-center">
                         {data.payrollWorkingStatus === "Approve" ? (

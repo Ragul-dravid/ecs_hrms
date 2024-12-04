@@ -15,7 +15,7 @@ const EmployeeDetails = () => {
     const fetchEmployeeData = async () => {
       setLoading(true);
       try {
-        const response = await api.get(`emp-reg-details-by-companyId/${id}`);
+        const response = await api.get(`emp-reg-details/${id}`);
         setEmployee(response.data);
       } catch (error) {
         toast.error("Error fetching employee details");
