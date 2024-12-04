@@ -84,6 +84,7 @@ const AttendanceEdit = () => {
       try {
         const response = await api.get(`/daily-attendance/${id}`);
         const data = response.data;
+      formik.setFieldValue('dailyAttendanceEmpId', data.dailyAttendanceEmpId);
       formik.setFieldValue('attendanceId', data.attendanceId);
       formik.setFieldValue('attendanceDate', data.attendanceDate?.slice(0, 10));
       formik.setFieldValue('attendanceCheckInTime', data.attendanceCheckInTime);

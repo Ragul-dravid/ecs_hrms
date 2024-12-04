@@ -19,12 +19,12 @@ const LeaveRequestEmp = () => {
   const [loading, setLoading] = useState(true);
   const cmpId = sessionStorage.getItem("cmpId");
   // const roles = sessionStorage.getItem("role");
-  const empId = sessionStorage.getItem("userId");
+  const empId = sessionStorage.getItem("empId");
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await api.get(`/leave-request-empId/${185}`);
+        const response = await api.get(`/leave-request-empId/${empId}`);
         setDatas(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -66,7 +66,7 @@ const LeaveRequestEmp = () => {
     destroyDataTable();
     setLoading(true);
     try {
-      const response = await api.get(`/leave-request-empId/${185}`);
+      const response = await api.get(`/leave-request-empId/${empId}`);
       setDatas(response.data);
       initializeDataTable(); // Reinitialize DataTable after successful data update
     } catch (error) {
@@ -134,15 +134,16 @@ const LeaveRequestEmp = () => {
             className="card shadow border-0 my-2"
             style={{ borderRadius: "0" }}
           >
-            <div className="row p-5 my-2">
-              <div className="col-md-6 col-12">
+            
+            <div className="table-responsive p-2 minHeight">
+            <div className="row py-4 px-4 my-2">
+              <div className="col-md-6 col-12 p-0">
                 <span>Employee Name : {datas.employeeName}</span>
               </div>
-              <div className="col-md-6 col-12">
+              <div className="col-md-6 col-12 p-0">
                 <span>Leave Limit : {datas.leaveLimit}</span>
               </div>
             </div>
-            <div className="table-responsive p-2 minHeight">
               <table ref={tableRef} className="display table ">
                 <thead className="thead-light">
                   <tr>
@@ -185,9 +186,9 @@ const LeaveRequestEmp = () => {
                       <td className="text-center">{data.leaveReqType}</td>
                       <td className="text-center">{data.totalLeaveReqDays}</td>
                       <td className="text-center">
-                        {data.leaveReqStatus === "Approve" ? (
+                        {data.leaveStatus === "APPROVED" ? (
                           <span className="badge-approved">Approved</span>
-                        ) : data.leaveReqStatus === "Rejected" ? (
+                        ) : data.leaveStatus === "REJECTED" ? (
                           <span className="badge-rejected">Rejected</span>
                         ) : (
                           <span className="badge-pending">Pending</span>

@@ -142,16 +142,6 @@ function AdminSidebar({ handleLogout }) {
                         <></>
                       )}
                     </li>
-                    {/* <li>
-                      <NavLink className="nav-link" to="/companyCompliance">
-                        <span style={{ display: "flex", alignItems: "center" }}>
-                          <BsBullseye
-                            style={{ fontSize: "xx-small", marginRight: "8px" }}
-                          />
-                          Company Compliance
-                        </span>
-                      </NavLink>
-                    </li> */}
                     <li>
                       <NavLink className="nav-link" to="/departments">
                         <span style={{ display: "flex", alignItems: "center" }}>
@@ -202,21 +192,23 @@ function AdminSidebar({ handleLogout }) {
                   Employee Info
                 </NavLink>
               </li>
-
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/leaveRequest">
-                  <LuFileEdit className="me-2" />
-                  Leave
-                </NavLink>
-              </li>
-
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/leaveRequestEmp">
-                  <LuFileEdit className="me-2" />
-                  Leave Request
-                </NavLink>
-              </li>
-
+              <>
+                {role === "EMPLOYEE" ? (
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/leaveRequestEmp">
+                      <LuFileEdit className="me-2" />
+                      Leave Request
+                    </NavLink>
+                  </li>
+                ) : (
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/leaveRequest">
+                      <LuFileEdit className="me-2" />
+                      Leave
+                    </NavLink>
+                  </li>
+                )}
+              </>
               <li className="nav-item">
                 <NavLink className="nav-link" to="/attendance">
                   <RiContactsBook3Line className="me-2" />
@@ -226,8 +218,8 @@ function AdminSidebar({ handleLogout }) {
 
               <li className="nav-item">
                 <NavLink className="nav-link" to="/exitmangement">
-                    <TbDoorExit className="me-2"/>
-                    Exit Management
+                  <TbDoorExit className="me-2" />
+                  Exit Management
                 </NavLink>
               </li>
 

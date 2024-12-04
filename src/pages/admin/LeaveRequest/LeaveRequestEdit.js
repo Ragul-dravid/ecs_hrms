@@ -11,16 +11,20 @@ const LeaveRequestEdit = () => {
   const { id } = useParams();
   const [loading, setLoadIndicator] = useState(false);
   const cmpId = sessionStorage.getItem("cmpId");
+  const role = sessionStorage.getItem("role");
   const empName = sessionStorage.getItem("userName");
   const empId = sessionStorage.getItem("userId");
   const [departmentData, setDepartmentData] = useState(null);
+  const [datas, setDatas] = useState(null);
+  console.log("Datas:", datas);
+
   const validationSchema = Yup.object({});
 
   const formik = useFormik({
     initialValues: {
       cmpId: cmpId,
       leaveDeptId: "",
-      leaveReqEmpId: empName,
+      leaveReqEmpId: datas?.empName,
       leaveReqStartDate: "",
       leaveReqEndDate: "",
       leaveReqType: "",
@@ -35,7 +39,7 @@ const LeaveRequestEdit = () => {
       try {
         const formDatas = new FormData();
         formDatas.append("leaveCmpId", cmpId);
-        formDatas.append("leaveReqEmpId", 185);
+        formDatas.append("leaveReqEmpId", datas?.leaveReqEmpId);
         formDatas.append("leaveDeptId", data.leaveDeptId);
         formDatas.append("leaveReqStartDate", data.leaveReqStartDate);
         formDatas.append("leaveReqEndDate", data.leaveReqEndDate);
@@ -45,14 +49,23 @@ const LeaveRequestEdit = () => {
         formDatas.append("leaveStatus", data.leaveStatus);
         formDatas.append("file", data.file);
 
-        const response = await api.put(`/update-leave-attach/${id}`, formDatas, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const response = await api.put(
+          `/update-leave-attach/${id}`,
+          formDatas,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
         if (response.status === 201 || response.status === 200) {
           toast.success(response.data.message);
-          navigate("/leaverequest");
+
+          if (role === "EMPLOYEE") {
+            navigate("/leaveRequestEmp");
+          } else {
+            navigate("/leaverequest");
+          }
         } else {
           toast.error(response.data.message);
         }
@@ -92,6 +105,7 @@ const LeaveRequestEdit = () => {
       try {
         const response = await api.get(`/leave-request/${id}`);
         formik.setValues(response.data); // Load the data into the form
+        setDatas(response.data); // Load the data into the form
       } catch (e) {
         toast.error("Error fetching data: ", e?.response?.data?.message);
       }
@@ -118,11 +132,24 @@ const LeaveRequestEdit = () => {
               </div>
               <div className="col-auto">
                 <div className="hstack gap-2 justify-content-end">
-                  <Link to="/leaverequest">
-                    <button type="button" className="btn btn-sm btn-light">
-                      <span>Back</span>
-                    </button>
-                  </Link>
+                  {role === "EMPLOYEE" ? (
+                    <>
+                      <Link to="/leaveRequestEmp">
+                        <button type="button" className="btn btn-sm btn-light">
+                          <span>Back</span>
+                        </button>
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link to="/leaverequest">
+                        <button type="button" className="btn btn-sm btn-light">
+                          <span>Back</span>
+                        </button>
+                      </Link>
+                    </>
+                  )}
+
                   <button
                     type="submit"
                     className="btn btn-sm btn-primary"
@@ -157,7 +184,8 @@ const LeaveRequestEdit = () => {
                 <input
                   type="text"
                   name="leaveReqEmpId"
-                  {...formik.getFieldProps("leaveReqEmpId")}
+                  value={datas?.empName}
+                  // {...formik.getFieldProps("leaveReqEmpId")}
                   className={`form-control form-control-sm ${
                     formik.touched.leaveReqEmpId && formik.errors.leaveReqEmpId
                       ? "is-invalid"
@@ -193,12 +221,11 @@ const LeaveRequestEdit = () => {
                         </option>
                       ))}
                   </select>
-                  {formik.touched.leaveDeptId &&
-                    formik.errors.leaveDeptId && (
-                      <div className="invalid-feedback">
-                        {formik.errors.leaveDeptId}
-                      </div>
-                    )}
+                  {formik.touched.leaveDeptId && formik.errors.leaveDeptId && (
+                    <div className="invalid-feedback">
+                      {formik.errors.leaveDeptId}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="col-md-6 col-12 mb-3">
@@ -308,37 +335,44 @@ const LeaveRequestEdit = () => {
                   }}
                 />
                 {formik.touched.file && formik.errors.file && (
-                  <div className="invalid-feedback">
-                    {formik.errors.file}
-                  </div>
+                  <div className="invalid-feedback">{formik.errors.file}</div>
                 )}
               </div>
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Leave Request Status <span className="text-danger">*</span>
-                </label>
-                <div className="input-group mb-3">
-                  <select
-                    {...formik.getFieldProps("leaveStatus")}
-                    className={`form-select form-select-sm  ${
-                      formik.touched.leaveStatus && formik.errors.leaveStatus
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                  >
-                    <option selected></option>
-                    <option value="PENDING">Pending</option>
-                    <option value="APPROVED">Approved</option>
-                    <option value="REJECTED">Rejected</option>
-                  </select>
-                  {formik.touched.leaveStatus &&
-                    formik.errors.leaveStatus && (
-                      <div className="invalid-feedback">
-                        {formik.errors.leaveStatus}
-                      </div>
-                    )}
-                </div>
-              </div>
+              {role !== "EMPLOYEE" ? (
+                <>
+                  <div className="col-md-6 col-12 mb-3">
+                    <label className="form-label">
+                      Leave Request Status{" "}
+                      <span className="text-danger">*</span>
+                    </label>
+                    <div className="input-group mb-3">
+                      <select
+                        {...formik.getFieldProps("leaveStatus")}
+                        className={`form-select form-select-sm  ${
+                          formik.touched.leaveStatus &&
+                          formik.errors.leaveStatus
+                            ? "is-invalid"
+                            : ""
+                        }`}
+                      >
+                        <option selected></option>
+                        <option value="PENDING">Pending</option>
+                        <option value="APPROVED">Approved</option>
+                        <option value="REJECTED">Rejected</option>
+                      </select>
+                      {formik.touched.leaveStatus &&
+                        formik.errors.leaveStatus && (
+                          <div className="invalid-feedback">
+                            {formik.errors.leaveStatus}
+                          </div>
+                        )}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+
               <div className="col-md-6 col-12 mb-3">
                 <label className="form-label">
                   Leave Reason<span className="text-danger">*</span>

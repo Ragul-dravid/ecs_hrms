@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import user from "../../assets/user.webp";
 import { Offcanvas } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { IoPersonAdd } from "react-icons/io5";
 import { MdOutlineLogout } from "react-icons/md";
 import api from "../../config/URL";
 import toast from "react-hot-toast";
@@ -128,14 +127,20 @@ function AdminHeader({ handleLogout }) {
               />
               <p className="mt-2">{userName}</p>
               <p className="mt-2">{email}</p>
-              <Link
-                to={`/registrationcompany/edit/${cpmId}`}
-                onClick={handleLinkClick}
-              >
-                <p className="my-2">
-                  <PiBuildingsThin /> &nbsp; {cmpName}
-                </p>
-              </Link>
+              {role !== "EMPLOYEE" ? (
+                <>
+                  <Link
+                    to={`/registrationcompany/edit/${cpmId}`}
+                    onClick={handleLinkClick}
+                  >
+                    <p className="my-2">
+                      <PiBuildingsThin /> &nbsp; {cmpName}
+                    </p>
+                  </Link>
+                </>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
           <div className="row">

@@ -10,16 +10,17 @@ const LeaveRequestAdd = () => {
   const navigate = useNavigate();
   const [loading, setLoadIndicator] = useState(false);
   const cmpId = sessionStorage.getItem("cmpId");
-  const empName = sessionStorage.getItem("userName");
-  const empId = sessionStorage.getItem("userId");
+  const empName = sessionStorage.getItem("empName");
+  const empId = sessionStorage.getItem("empId");
   const [departmentData, setDepartmentData] = useState(null);
   const validationSchema = Yup.object({});
+  const role = sessionStorage.getItem("role");
 
   const formik = useFormik({
     initialValues: {
       cmpId: cmpId,
       leaveDeptId: "",
-      leaveReqEmpId: "Manoj ECS",
+      leaveReqEmpId: empName,
       leaveReqStartDate: "",
       leaveReqEndDate: "",
       leaveReqType: "",
@@ -41,7 +42,7 @@ const LeaveRequestAdd = () => {
       try {
         const formDatas = new FormData();
         formDatas.append("leaveCmpId", cmpId);
-        formDatas.append("leaveReqEmpId", 185);
+        formDatas.append("leaveReqEmpId", empId);
         formDatas.append("leaveDeptId", data.leaveDeptId);
         formDatas.append("leaveReqStartDate", data.leaveReqStartDate);
         formDatas.append("leaveReqEndDate", data.leaveReqEndDate);
@@ -113,11 +114,23 @@ const LeaveRequestAdd = () => {
               </div>
               <div className="col-auto">
                 <div className="hstack gap-2 justify-content-end">
-                  <Link to="/leaverequest">
-                    <button type="button" className="btn btn-sm btn-light">
-                      <span>Back</span>
-                    </button>
-                  </Link>
+                  {role === "EMPLOYEE" ? (
+                    <>
+                      <Link to="/leaveRequestEmp">
+                        <button type="button" className="btn btn-sm btn-light">
+                          <span>Back</span>
+                        </button>
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link to="/leaverequest">
+                        <button type="button" className="btn btn-sm btn-light">
+                          <span>Back</span>
+                        </button>
+                      </Link>
+                    </>
+                  )}
                   <button
                     type="submit"
                     className="btn btn-sm btn-primary"

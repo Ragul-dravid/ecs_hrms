@@ -167,9 +167,9 @@ const LeaveRequest = () => {
                           {data.totalLeaveReqDays}
                         </td>
                         <td className="text-center">
-                          {data.leaveStatus === "Approve" ? (
+                          {data.leaveStatus === "APPROVED" ? (
                             <span className="badge-approved">Approved</span>
-                          ) : data.leaveStatus === "Rejected" ? (
+                          ) : data.leaveStatus === "REJECTED" ? (
                             <span className="badge-rejected">Rejected</span>
                           ) : (
                             <span className="badge-pending">Pending</span>

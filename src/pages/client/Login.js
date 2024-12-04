@@ -41,6 +41,8 @@ function Login({ handleLogin }) {
           sessionStorage.setItem("roleId", response.data.roleId);
           sessionStorage.setItem("userId", response.data.userId);
           sessionStorage.setItem("userName", response.data.userName);
+          sessionStorage.setItem("empId", response.data.employeeInfo[0]?.employeeId);
+          sessionStorage.setItem("empName", response.data.employeeInfo[0]?.employeeName);
           handleLogin();
           navigate("/dashboard");
 
