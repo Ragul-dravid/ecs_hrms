@@ -44,8 +44,8 @@ const EmployeeDetails = () => {
                   className="profile-picture"
                 />
                 <div className="d-flex flex-column justify-content-center align-items-center">
-                  <h2 className="ms-2">{employee?.name || "Billie Sharp"}</h2>
-                  <p className="ms-2">{employee?.role || "Branch Manager"}</p>
+                  <h2 className="ms-2">{employee?.firstName+" "+employee?.lastName || "--"}</h2>
+                  <p className="ms-2">{employee?.roleName || "--"}</p>
                   {/* <p className="ms-2">{employee?.email || "--"}</p> */}
                 </div>
               </div>
