@@ -156,17 +156,26 @@ const EmpContactDetailsEdit = forwardRef(
       const getData = async () => {
         try {
           const response = await api.get(`emp-reg-details/${formData.empId}`);
-
+    
           if (response?.data?.empPersonalDetailsEntities?.length > 0) {
             const personalDetails = response.data.empPersonalDetailsEntities[0];
             setPerDetailsId(personalDetails.perDetailsId);
+    
+            // Map emergency contacts or use a default empty array
             const emergencyContacts =
-              personalDetails.empEmergencyContactEntities.map((contact) => ({
+              personalDetails?.empEmergencyContactEntities?.map((contact) => ({
                 emergencyContactName: contact.emergencyContactName || "",
                 emergencyContactNo: contact.emergencyContactNo || "",
                 emergencyContactAddress: contact.emergencyContactAddress || "",
-              }));
-
+              })) || [
+                {
+                  emergencyContactName: "",
+                  emergencyContactNo: "",
+                  emergencyContactAddress: "",
+                },
+              ];
+    
+            // Set the default form values including the fallback for emergency contacts
             formik.setValues({
               dob: personalDetails?.dob?.slice(0, 10) || "",
               age: personalDetails.age || "",
@@ -179,16 +188,37 @@ const EmpContactDetailsEdit = forwardRef(
               pincode: personalDetails.pincode || "",
               empSecPhNumber: personalDetails.empSecPhNumber || "",
               file: personalDetails.fileAttachment || null,
-              empEmergencyContact: emergencyContacts,
+              empEmergencyContact: emergencyContacts.length
+                ? emergencyContacts
+                : [
+                    {
+                      emergencyContactName: "",
+                      emergencyContactNo: "",
+                      emergencyContactAddress: "",
+                    },
+                  ], // Ensure at least one default entry
             });
+          } else {
+            // Handle case when there are no personal details at all
+            formik.setValues((prev) => ({
+              ...prev,
+              empEmergencyContact: [
+                {
+                  emergencyContactName: "",
+                  emergencyContactNo: "",
+                  emergencyContactAddress: "",
+                },
+              ],
+            }));
           }
         } catch (error) {
           toast.error("Error Fetching Data: " + error.message);
         }
       };
-
+    
       getData();
     }, []);
+    
 
     useImperativeHandle(ref, () => ({
       contactDetails: formik.handleSubmit,
