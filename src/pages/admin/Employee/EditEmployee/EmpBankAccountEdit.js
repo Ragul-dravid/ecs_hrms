@@ -64,20 +64,45 @@ const EmpBankAccountEdit = forwardRef(
       },
     });
 
-    // useEffect(() => {
-    //   const getData = async () => {
-    //     try {
-    //       const response = await api.get(`emp-reg-details/${formData.empId}`);
-    //       formik.setValues(response?.data?.empBankAccDetailsEntities);
-    //       setPerDetailsId(
-    //         response.data.empBankAccDetailsEntities[0].bankAccDetailsId
-    //       );
-    //     } catch (error) {
-    //       toast.error("Error Fetching Data ", error.message);
-    //     }
-    //   };
-    //   getData();
-    // }, []);
+    useEffect(() => {
+      const getData = async () => {
+        try {
+          const response = await api.get(`emp-reg-details/${formData.empId}`);
+    
+          if (response?.data?.empBankAccDetailsEntities?.length > 0) {
+            const bankDetails = response.data.empBankAccDetailsEntities[0];
+            formik.setValues({
+              accHoldName: bankDetails.accHoldName || "",
+              accNumber: bankDetails.accNumber || "",
+              accType: bankDetails.accType || "",
+              bankName: bankDetails.bankName || "",
+              brName: bankDetails.brName || "",
+              ifsccode: bankDetails.ifsccode || "",
+              empDateOfJoin: bankDetails.empDateOfJoin || "",
+              empDesignation: bankDetails.empDesignation || "",
+            });
+            setPerDetailsId(bankDetails.bankAccDetailsId);
+          } else {
+            // If no bank account details are found, set default empty values
+            formik.setValues({
+              accHoldName: "",
+              accNumber: "",
+              accType: "",
+              bankName: "",
+              brName: "",
+              ifsccode: "",
+              empDateOfJoin: "",
+              empDesignation: "",
+            });
+          }
+        } catch (error) {
+          toast.error("Error Fetching Data: " + error.message);
+        }
+      };
+    
+      getData();
+    }, []); // Ensure the effect runs when empId changes
+    
 
     useImperativeHandle(ref, () => ({
       bankAccountAdd: formik.handleSubmit,

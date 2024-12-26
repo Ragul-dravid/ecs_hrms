@@ -119,7 +119,7 @@ const EmpQualificationDetailsEdit = forwardRef(
           formDatas.append(`cmpId`, cmpId);
           const response =
             perDetailsId !== null
-              ? await api.post(`/createQualificationAndSkills`, formDatas, {
+              ? await api.put(`/updateQualificationAndSkills/${formData.empId}`, formDatas, {
                   headers: {
                     "Content-Type": "multipart/form-data",
                   },
@@ -194,8 +194,35 @@ const EmpQualificationDetailsEdit = forwardRef(
       const getData = async () => {
         try {
           const response = await api.get(`emp-reg-details/${formData.empId}`);
-          setPerDetailsId(response.data);
-          console.log(response.data);
+          setPerDetailsId(response.data.empQualificationEntities[0].qualId);
+          const data = response.data;
+          const mappedQualifications = data.empQualificationEntities.map(
+            (qual) => ({
+              qualName: qual.qualName || "",
+              fieldOfStudy: qual.fieldOfStudy || "",
+              qualModeOfStudy: qual.modeOfStudy || "",
+              qualInstitution: qual.qualInstitution || "",
+              qualificationDate: qual.courseCompletionYear || "",
+              certificate: qual.certificates || null,
+              percentage: qual.percentage || "",
+              studying: qual.studying || "",
+            })
+          );
+
+          const mappedSkills = data.empQualificationSkils?.map((skill) => ({
+            employeeSkill: skill.employeeSkill || "",
+            skillDescription: skill.skillDescription || "",
+          })) || [
+            {
+              employeeSkill: "",
+              skillDescription: "",
+            },
+          ];
+
+          formik.setValues({
+            empQualificationEntities: mappedQualifications,
+            empQualificationSkils: mappedSkills,
+          });
         } catch (error) {
           toast.error("Error Fetching Data: " + error.message);
         }
