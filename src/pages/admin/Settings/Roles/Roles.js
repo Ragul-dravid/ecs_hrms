@@ -161,11 +161,11 @@ const Roles = () => {
                       </td>
                       <td className="text-center">
                         <div className="gap-2">
-                          {/* <Link to={`/roles/view/${data.id}`}>
+                          <Link to={`/roles/view/${data.id}`}>
                             <button className="btn btn-sm p-1 shadow-none border-none">
                               <HiOutlineEye />
                             </button>
-                          </Link> */}
+                          </Link>
                           <Link
                             to={`/roles/edit/${data.id}`}
                             className="px-2"
