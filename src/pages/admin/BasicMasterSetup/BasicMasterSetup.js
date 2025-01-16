@@ -15,8 +15,14 @@ import DeleteModel from "../../../components/admin/DeleteModel";
 import { MdEdit } from "react-icons/md";
 import { BiEditAlt } from "react-icons/bi";
 import GlobalDelete from "../../../components/admin/GlobalDelete";
+import BasicDepartment from "../Department/BasicDepartment";
+import BasicDesigination from "../Desigination/BasicDesigination";
+import Section from "../Section/Section";
+import BasicCategory from "../Category/BasicCategory";
+import DesiginationGroup from "../DesiginationGroup/DesiginationGroup";
+import Bank from "../Bank/Bank";
 
-const EmployeeBasic = ({ handleCenterChanged }) => {
+const BasicMasterSetup = ({ handleCenterChanged }) => {
   const [filters, setFilters] = useState({
     centerName: "",
     centerCode: "",
@@ -29,6 +35,10 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
   const [selectedId, setSelectedId] = useState(null);
   const [datas, setDatas] = useState([]);
   const cmpId = sessionStorage.getItem("cmpId");
+  const [activeTab, setActiveTab] = useState("tab1");
+  const [subActiveTab, setSubActiveTab] = useState("tabA");
+  //   const { id } = useParams();
+  const [data, setData] = useState({});
 
   const columns = useMemo(
     () => [
@@ -129,19 +139,42 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
     []
   );
 
-  const getData = async () => {
-    try {
-      const response = await api.get(`emp-reg-details-by-companyId/${cmpId}`);
-      setDatas(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const queryParams = new URLSearchParams(filters).toString();
+  //     const response = await api.get(`/getCenterWithCustomInfo?${queryParams}`);
+  //     setData(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await api.get(`emp-reg-details-by-companyId/${cmpId}`);
+        setDatas(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
     getData();
   }, []);
+
+  const handleMainTabClick = (tab) => {
+    setActiveTab(tab);
+
+    if (tab === "tab1") {
+      setSubActiveTab("tabA");
+    } else if (tab === "tab2") {
+      setSubActiveTab("tabB");
+    }
+  };
 
   const theme = createTheme({
     components: {
@@ -204,7 +237,7 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
   const handleMenuClose = () => setMenuAnchor(null);
 
   return (
-    <div className="container-fluid px-2 my-4 center">
+    <div className="container-fluid px-1 my-4 center">
       <ol
         className="breadcrumb my-3"
         style={{ listStyle: "none", padding: 0, margin: 0 }}
@@ -220,7 +253,7 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
           <span className="breadcrumb-separator"> &gt; </span>
         </li>
         <li className="breadcrumb-item active" aria-current="page">
-          &nbsp;Employee Basic Details
+          &nbsp;Basic Master Setup
         </li>
       </ol>
       <div className="card">
@@ -229,7 +262,7 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
           style={{ background: "#f5f7f9" }}
         >
           <span className="text-muted">
-            <strong className="table-headings">Staff Details</strong>
+            <strong className="table-headings">Basic Master Setup</strong>
           </span>
         </div>
         <div className="mb-3 d-flex justify-content-between">
@@ -270,7 +303,7 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
                 autoComplete="off"
               />
             </div> */}
-            <div className="form-group mb-0 ms-2 mb-1">
+            {/* <div className="form-group mb-0 ms-2 mb-1">
               <select
                 name="centerManagerId"
                 value={filters.centerManagerId}
@@ -283,7 +316,7 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
                 <option value="resigned">Resigned Employee</option>
                 <option value="all">All Employee</option>
               </select>
-            </div>
+            </div> */}
 
             {/* <div className="form-group mb-2 ms-2">
               <button
@@ -295,7 +328,7 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
               </button>
             </div> */}
           </div>
-          <Link to="/employeeBasicDetails/add">
+          {/* <Link to="/employeeBasicDetails/add">
             <button
               type="button"
               className="btn btn-sm btn-button btn-primary me-2"
@@ -303,7 +336,7 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
             >
               &nbsp; Add &nbsp;&nbsp; <i className="bx bx-plus"></i>
             </button>
-          </Link>
+          </Link> */}
         </div>
         {loading ? (
           <div className="loader-container">
@@ -317,38 +350,113 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
           </div>
         ) : (
           <>
-            <ThemeProvider theme={theme}>
-              <MaterialReactTable
-                columns={columns}
-                data={datas}
-                enableColumnActions={false}
-                enableColumnFilters={false}
-                enableDensityToggle={false}
-                enableFullScreenToggle={false}
-                initialState={{
-                  columnVisibility: {
-                    gst: false,
-                    address: false,
-                    bankAccountName: false,
-                    bankAccountNumber: false,
-                    bankBranch: false,
-                    bankName: false,
-                    createdBy: false,
-                    createdAt: false,
-                    updatedBy: false,
-                    updatedAt: false,
-                    invoiceNotes: false,
-                    openingDate: false,
-                    taxRegistrationNumber: false,
-                    zipCode: false,
-                  },
-                }}
-                muiTableBodyRowProps={({ row }) => ({
-                  onClick: () => navigate(`/center/view/${row.original.id}`),
-                  style: { cursor: "pointer" },
-                })}
-              />
-            </ThemeProvider>
+            <div className="container-fluid">
+              <div
+                className="card shadow border-0 mb-2 top-header"
+                style={{ borderRadius: "0" }}
+              >
+                <ul className="nav nav-tabs">
+                  <li className="nav-item">
+                    <button
+                      className={`mx-3 nav-link ${
+                        activeTab === "tab1" ? "active" : ""
+                      }`}
+                      onClick={() => setActiveTab("tab1")}
+                      style={{
+                        borderBottom:
+                          activeTab === "tab1" ? "3px solid #a070ff" : "none",
+                        borderRadius: "0px",
+                      }}
+                    >
+                      DEPARTMENT
+                    </button>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      className={`nav-link ${
+                        activeTab === "tab2" ? "active" : ""
+                      }`}
+                      onClick={() => setActiveTab("tab2")}
+                      style={{
+                        borderBottom:
+                          activeTab === "tab2" ? "3px solid #a070ff" : "none",
+                        borderRadius: "0px",
+                      }}
+                    >
+                      DESIGINATION
+                    </button>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      className={`nav-link ${
+                        activeTab === "tab3" ? "active" : ""
+                      }`}
+                      onClick={() => setActiveTab("tab3")}
+                      style={{
+                        borderBottom:
+                          activeTab === "tab3" ? "3px solid #a070ff" : "none",
+                        borderRadius: "0px",
+                      }}
+                    >
+                      SECTION
+                    </button>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      className={`nav-link ${
+                        activeTab === "tab4" ? "active" : ""
+                      }`}
+                      onClick={() => setActiveTab("tab4")}
+                      style={{
+                        borderBottom:
+                          activeTab === "tab4" ? "3px solid #a070ff" : "none",
+                        borderRadius: "0px",
+                      }}
+                    >
+                      CATEGORY
+                    </button>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      className={`nav-link ${
+                        activeTab === "tab5" ? "active" : ""
+                      }`}
+                      onClick={() => setActiveTab("tab5")}
+                      style={{
+                        borderBottom:
+                          activeTab === "tab5" ? "3px solid #a070ff" : "none",
+                        borderRadius: "0px",
+                      }}
+                    >
+                      DESIGINATION GROUP
+                    </button>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      className={`nav-link ${
+                        activeTab === "tab6" ? "active" : ""
+                      }`}
+                      onClick={() => setActiveTab("tab6")}
+                      style={{
+                        borderBottom:
+                          activeTab === "tab6" ? "3px solid #a070ff" : "none",
+                        borderRadius: "0px",
+                      }}
+                    >
+                      BANK
+                    </button>
+                  </li>
+                </ul>
+                <div className="tab-content container-fluid my-3">
+                  {activeTab === "tab1" && <BasicDepartment />}
+                  {activeTab === "tab2" && <BasicDesigination />}
+                  {activeTab === "tab3" && <Section />}
+                  {activeTab === "tab4" && <BasicCategory />}
+                  {activeTab === "tab5" && <DesiginationGroup />}
+                  {activeTab === "tab6" && <Bank />}
+                </div>
+              </div>
+            </div>
 
             <Menu
               id="action-menu"
@@ -367,7 +475,7 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
               <MenuItem>
                 <GlobalDelete
                   path={`/emp-reg-details/${selectedId}`}
-                  onDeleteSuccess={getData}
+                  // onDeleteSuccess={fetchData}
                   onOpen={handleMenuClose}
                   // deleteCenterData={true}
                   handleCenterChanged={handleCenterChanged}
@@ -381,4 +489,4 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
   );
 };
 
-export default EmployeeBasic;
+export default BasicMasterSetup;
