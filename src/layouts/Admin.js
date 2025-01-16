@@ -69,6 +69,8 @@ import DesignationView from "../pages/admin/Settings/Designation/DesignationView
 import DesignationAdd from "../pages/admin/Settings/Designation/DesignationAdd.js";
 import RegistrationCompany from "../pages/admin/RegistrationCompany.js";
 import LeaveRequestEmp from "../pages/admin/LeaveRequest/LeaveRequestEmp.js";
+import EmployeeBasic from "../pages/admin/Master/EmployeeBasic.js";
+import EmployeeBasicAdd from "../pages/admin/Master/EmployeeBasicAdd.js";
 
 function Admin({ handleLogout }) {
   return (
@@ -84,7 +86,14 @@ function Admin({ handleLogout }) {
                 <Routes>
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="*" element={<Dashboard />} />
-
+                  <Route
+                    path="/employeeBasicDetails"
+                    element={<EmployeeBasic />}
+                  />
+                  <Route
+                    path="/employeeBasicDetails/add"
+                    element={<EmployeeBasicAdd />}
+                  />
                   {/* Company Registration */}
                   <Route
                     path="/companyRegistration"
@@ -183,7 +192,10 @@ function Admin({ handleLogout }) {
 
                   {/* LeaveRequest */}
                   <Route path="/leaverequest" element={<LeaveRequest />} />
-                  <Route path="/leaveRequestEmp" element={<LeaveRequestEmp />} />
+                  <Route
+                    path="/leaveRequestEmp"
+                    element={<LeaveRequestEmp />}
+                  />
                   <Route
                     path="/leaverequest/add"
                     element={<LeaveRequestAdd />}

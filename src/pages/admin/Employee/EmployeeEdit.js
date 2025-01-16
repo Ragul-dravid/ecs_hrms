@@ -8,7 +8,7 @@ import EmpContactDetailsEdit from "./EditEmployee/EmpContactDetailsEdit";
 import EmpQualificationDetailsEdit from "./EditEmployee/EmpQualificationDetailsEdit";
 import EmpExperienceEdit from "./EditEmployee/EmpExperienceEdit";
 import EmpBankAccountEdit from "./EditEmployee/EmpBankAccountEdit";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 const steps = [
   { tooltip: "Primary Information" },
@@ -81,6 +81,30 @@ function EmployeeEdit() {
 
   return (
     <div class="container-fluid minHeight ">
+      <ol
+        className="breadcrumb my-3 px-2"
+        style={{ listStyle: "none", padding: 0, margin: 0 }}
+      >
+        <li>
+          <Link to="/" className="custom-breadcrumb">
+            Home
+          </Link>
+          <span className="breadcrumb-separator"> &gt; </span>
+        </li>
+        <li>
+          &nbsp;Master
+          <span className="breadcrumb-separator"> &gt; </span>
+        </li>
+        <li>
+          <Link to="/employeeBasicDetails" className="custom-breadcrumb">
+            &nbsp;Employee Basic Details
+          </Link>
+          <span className="breadcrumb-separator"> &gt; </span>
+        </li>
+        <li className="breadcrumb-item active" aria-current="page">
+          &nbsp;Employee Basic Details Edit
+        </li>
+      </ol>
       <Stepper className="card my-5 mx-4 p-5" activeStep={activeStep}>
         {steps.map((step, i) => (
           <Step

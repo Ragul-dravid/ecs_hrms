@@ -109,23 +109,26 @@ function AdminSidebar({ handleLogout }) {
               <li className="nav-item">
                 <div
                   className="nav-link d-flex justify-content-between align-items-center"
-                  onClick={() => toggleSubmenu("Organization")}
+                  onClick={() => toggleSubmenu("Master")}
                 >
                   <span>
                     <RiOrganizationChart className="me-2" />
-                    Organization
+                    Master
                   </span>
-                  {activeSubmenu === "Organization" ? (
+                  {activeSubmenu === "Master" ? (
                     <FaChevronDown />
                   ) : (
                     <FaChevronRight />
                   )}
                 </div>
-                {activeSubmenu === "Organization" && (
+                {activeSubmenu === "Master" && (
                   <ul className="list-unstyled p-0">
                     <li>
                       {role === "HR_SUPER_ADMIN" ? (
-                        <NavLink className="nav-link" to="/companyRegistration">
+                        <NavLink
+                          className="nav-link"
+                          to="/employeeBasicDetails"
+                        >
                           <span
                             style={{ display: "flex", alignItems: "center" }}
                           >
@@ -135,7 +138,7 @@ function AdminSidebar({ handleLogout }) {
                                 marginRight: "8px",
                               }}
                             />
-                            Company Registration
+                            Employee Basic Details
                           </span>
                         </NavLink>
                       ) : (
@@ -143,42 +146,55 @@ function AdminSidebar({ handleLogout }) {
                       )}
                     </li>
                     <li>
-                      <NavLink className="nav-link" to="/departments">
+                      <NavLink className="nav-link" to="/basicMasterSetup">
                         <span style={{ display: "flex", alignItems: "center" }}>
                           <BsBullseye
                             style={{ fontSize: "xx-small", marginRight: "8px" }}
                           />
-                          Departments
+                          Basic Master Setup
                         </span>
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink className="nav-link" to="/designation">
+                      <NavLink className="nav-link" to="/importStaffProfile">
                         <span style={{ display: "flex", alignItems: "center" }}>
                           <BsBullseye
                             style={{ fontSize: "xx-small", marginRight: "8px" }}
                           />
-                          Designation
+                          Import Staff Profile
                         </span>
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink className="nav-link" to="/hrPolicy">
+                      <NavLink className="nav-link" to="/additionalMasterSetup">
                         <span style={{ display: "flex", alignItems: "center" }}>
                           <BsBullseye
                             style={{ fontSize: "xx-small", marginRight: "8px" }}
                           />
-                          HR Policy
+                          Additional Master Setup{" "}
                         </span>
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink className="nav-link" to="/holidays">
+                      <NavLink
+                        className="nav-link"
+                        to="/allowancesDeductionSetup"
+                      >
                         <span style={{ display: "flex", alignItems: "center" }}>
                           <BsBullseye
                             style={{ fontSize: "xx-small", marginRight: "8px" }}
                           />
-                          Holidays
+                          Allowances Deduction Setup
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/staffBulkUpdate">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Staff Bulk Update
                         </span>
                       </NavLink>
                     </li>
@@ -187,57 +203,1041 @@ function AdminSidebar({ handleLogout }) {
               </li>
 
               <li className="nav-item">
-                <NavLink className="nav-link" to="/employee">
-                  <HiOutlineUserGroup className="me-2" />
-                  Employee Info
-                </NavLink>
-              </li>
-              <>
-                {role === "EMPLOYEE" ? (
-                  <li className="nav-item">
-                    <NavLink className="nav-link" to="/leaveRequestEmp">
-                      <LuFileEdit className="me-2" />
-                      Leave Request
-                    </NavLink>
-                  </li>
-                ) : (
-                  <li className="nav-item">
-                    <NavLink className="nav-link" to="/leaveRequest">
-                      <LuFileEdit className="me-2" />
-                      Leave
-                    </NavLink>
-                  </li>
+                <div
+                  className="nav-link d-flex justify-content-between align-items-center"
+                  onClick={() => toggleSubmenu("CostCenter")}
+                >
+                  <span>
+                    <RiOrganizationChart className="me-2" />
+                    Cost Center
+                  </span>
+                  {activeSubmenu === "CostCenter" ? (
+                    <FaChevronDown />
+                  ) : (
+                    <FaChevronRight />
+                  )}
+                </div>
+                {activeSubmenu === "CostCenter" && (
+                  <ul className="list-unstyled p-0">
+                    {/* <li>
+                      {role === "HR_SUPER_ADMIN" ? (
+                        <NavLink
+                          className="nav-link"
+                          to="/employeeBasicDetails"
+                        >
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <BsBullseye
+                              style={{
+                                fontSize: "xx-small",
+                                marginRight: "8px",
+                              }}
+                            />
+                            Employee Basic Details
+                          </span>
+                        </NavLink>
+                      ) : (
+                        <></>
+                      )}
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/basicMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Basic Master Setup
+                        </span>
+                      </NavLink>
+                    </li> */}
+                    <li>
+                      <NavLink className="nav-link" to="/importStaffProfile">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Import Staff Profile
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/additionalMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Additional Master Setup{" "}
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        className="nav-link"
+                        to="/allowancesDeductionSetup"
+                      >
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Allowances Deduction Setup
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/staffBulkUpdate">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Staff Bulk Update
+                        </span>
+                      </NavLink>
+                    </li>
+                  </ul>
                 )}
-              </>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/attendance">
-                  <RiContactsBook3Line className="me-2" />
-                  Attendance
-                </NavLink>
               </li>
 
               <li className="nav-item">
-                <NavLink className="nav-link" to="/exitmangement">
-                  <TbDoorExit className="me-2" />
-                  Exit Management
-                </NavLink>
+                <div
+                  className="nav-link d-flex justify-content-between align-items-center"
+                  onClick={() => toggleSubmenu("LeaveManagement")}
+                >
+                  <span>
+                    <RiOrganizationChart className="me-2" />
+                    Leave Management
+                  </span>
+                  {activeSubmenu === "LeaveManagement" ? (
+                    <FaChevronDown />
+                  ) : (
+                    <FaChevronRight />
+                  )}
+                </div>
+                {activeSubmenu === "LeaveManagement" && (
+                  <ul className="list-unstyled p-0">
+                    {/* <li>
+                      {role === "HR_SUPER_ADMIN" ? (
+                        <NavLink
+                          className="nav-link"
+                          to="/employeeBasicDetails"
+                        >
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <BsBullseye
+                              style={{
+                                fontSize: "xx-small",
+                                marginRight: "8px",
+                              }}
+                            />
+                            Employee Basic Details
+                          </span>
+                        </NavLink>
+                      ) : (
+                        <></>
+                      )}
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/basicMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Basic Master Setup
+                        </span>
+                      </NavLink>
+                    </li> */}
+                    <li>
+                      <NavLink className="nav-link" to="/importStaffProfile">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Import Staff Profile
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/additionalMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Additional Master Setup{" "}
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        className="nav-link"
+                        to="/allowancesDeductionSetup"
+                      >
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Allowances Deduction Setup
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/staffBulkUpdate">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Staff Bulk Update
+                        </span>
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
               </li>
-
               <li className="nav-item">
-                <NavLink className="nav-link" to="/deduction">
-                  <MdOutlineLibraryBooks className="me-2" />
-                  Deduction
-                </NavLink>
+                <div
+                  className="nav-link d-flex justify-content-between align-items-center"
+                  onClick={() => toggleSubmenu("MonthlyActivity")}
+                >
+                  <span>
+                    <RiOrganizationChart className="me-2" />
+                    Monthly Activity{" "}
+                  </span>
+                  {activeSubmenu === "MonthlyActivity" ? (
+                    <FaChevronDown />
+                  ) : (
+                    <FaChevronRight />
+                  )}
+                </div>
+                {activeSubmenu === "MonthlyActivity" && (
+                  <ul className="list-unstyled p-0">
+                    {/* <li>
+                      {role === "HR_SUPER_ADMIN" ? (
+                        <NavLink
+                          className="nav-link"
+                          to="/employeeBasicDetails"
+                        >
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <BsBullseye
+                              style={{
+                                fontSize: "xx-small",
+                                marginRight: "8px",
+                              }}
+                            />
+                            Employee Basic Details
+                          </span>
+                        </NavLink>
+                      ) : (
+                        <></>
+                      )}
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/basicMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Basic Master Setup
+                        </span>
+                      </NavLink>
+                    </li> */}
+                    <li>
+                      <NavLink className="nav-link" to="/importStaffProfile">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Import Staff Profile
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/additionalMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Additional Master Setup{" "}
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        className="nav-link"
+                        to="/allowancesDeductionSetup"
+                      >
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Allowances Deduction Setup
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/staffBulkUpdate">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Staff Bulk Update
+                        </span>
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
               </li>
-
               <li className="nav-item">
-                <NavLink className="nav-link" to="/payroll">
-                  <BiRightIndent className="me-2" />
-                  Payroll
-                </NavLink>
+                <div
+                  className="nav-link d-flex justify-content-between align-items-center"
+                  onClick={() => toggleSubmenu("IncomeTax")}
+                >
+                  <span>
+                    <RiOrganizationChart className="me-2" />
+                    Income Tax
+                  </span>
+                  {activeSubmenu === "IncomeTax" ? (
+                    <FaChevronDown />
+                  ) : (
+                    <FaChevronRight />
+                  )}
+                </div>
+                {activeSubmenu === "IncomeTax" && (
+                  <ul className="list-unstyled p-0">
+                    {/* <li>
+                      {role === "HR_SUPER_ADMIN" ? (
+                        <NavLink
+                          className="nav-link"
+                          to="/employeeBasicDetails"
+                        >
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <BsBullseye
+                              style={{
+                                fontSize: "xx-small",
+                                marginRight: "8px",
+                              }}
+                            />
+                            Employee Basic Details
+                          </span>
+                        </NavLink>
+                      ) : (
+                        <></>
+                      )}
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/basicMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Basic Master Setup
+                        </span>
+                      </NavLink>
+                    </li> */}
+                    <li>
+                      <NavLink className="nav-link" to="/importStaffProfile">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Import Staff Profile
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/additionalMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Additional Master Setup{" "}
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        className="nav-link"
+                        to="/allowancesDeductionSetup"
+                      >
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Allowances Deduction Setup
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/staffBulkUpdate">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Staff Bulk Update
+                        </span>
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
+              </li>
+              <li className="nav-item">
+                <div
+                  className="nav-link d-flex justify-content-between align-items-center"
+                  onClick={() => toggleSubmenu("Human")}
+                >
+                  <span>
+                    <RiOrganizationChart className="me-2" />
+                    Human Resources
+                  </span>
+                  {activeSubmenu === "Human" ? (
+                    <FaChevronDown />
+                  ) : (
+                    <FaChevronRight />
+                  )}
+                </div>
+                {activeSubmenu === "Human" && (
+                  <ul className="list-unstyled p-0">
+                    {/* <li>
+                      {role === "HR_SUPER_ADMIN" ? (
+                        <NavLink
+                          className="nav-link"
+                          to="/employeeBasicDetails"
+                        >
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <BsBullseye
+                              style={{
+                                fontSize: "xx-small",
+                                marginRight: "8px",
+                              }}
+                            />
+                            Employee Basic Details
+                          </span>
+                        </NavLink>
+                      ) : (
+                        <></>
+                      )}
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/basicMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Basic Master Setup
+                        </span>
+                      </NavLink>
+                    </li> */}
+                    <li>
+                      <NavLink className="nav-link" to="/importStaffProfile">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Import Staff Profile
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/additionalMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Additional Master Setup{" "}
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        className="nav-link"
+                        to="/allowancesDeductionSetup"
+                      >
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Allowances Deduction Setup
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/staffBulkUpdate">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Staff Bulk Update
+                        </span>
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
+              </li>
+              <li className="nav-item">
+                <div
+                  className="nav-link d-flex justify-content-between align-items-center"
+                  onClick={() => toggleSubmenu("AdminSetting")}
+                >
+                  <span>
+                    <RiOrganizationChart className="me-2" />
+                    Admin Setting
+                  </span>
+                  {activeSubmenu === "AdminSetting" ? (
+                    <FaChevronDown />
+                  ) : (
+                    <FaChevronRight />
+                  )}
+                </div>
+                {activeSubmenu === "AdminSetting" && (
+                  <ul className="list-unstyled p-0">
+                    {/* <li>
+                      {role === "HR_SUPER_ADMIN" ? (
+                        <NavLink
+                          className="nav-link"
+                          to="/employeeBasicDetails"
+                        >
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <BsBullseye
+                              style={{
+                                fontSize: "xx-small",
+                                marginRight: "8px",
+                              }}
+                            />
+                            Employee Basic Details
+                          </span>
+                        </NavLink>
+                      ) : (
+                        <></>
+                      )}
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/basicMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Basic Master Setup
+                        </span>
+                      </NavLink>
+                    </li> */}
+                    <li>
+                      <NavLink className="nav-link" to="/importStaffProfile">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Import Staff Profile
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/additionalMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Additional Master Setup{" "}
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        className="nav-link"
+                        to="/allowancesDeductionSetup"
+                      >
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Allowances Deduction Setup
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/staffBulkUpdate">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Staff Bulk Update
+                        </span>
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
+              </li>
+              <li className="nav-item">
+                <div
+                  className="nav-link d-flex justify-content-between align-items-center"
+                  onClick={() => toggleSubmenu("Reports")}
+                >
+                  <span>
+                    <RiOrganizationChart className="me-2" />
+                    Reports
+                  </span>
+                  {activeSubmenu === "Reports" ? (
+                    <FaChevronDown />
+                  ) : (
+                    <FaChevronRight />
+                  )}
+                </div>
+                {activeSubmenu === "Reports" && (
+                  <ul className="list-unstyled p-0">
+                    {/* <li>
+                      {role === "HR_SUPER_ADMIN" ? (
+                        <NavLink
+                          className="nav-link"
+                          to="/employeeBasicDetails"
+                        >
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <BsBullseye
+                              style={{
+                                fontSize: "xx-small",
+                                marginRight: "8px",
+                              }}
+                            />
+                            Employee Basic Details
+                          </span>
+                        </NavLink>
+                      ) : (
+                        <></>
+                      )}
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/basicMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Basic Master Setup
+                        </span>
+                      </NavLink>
+                    </li> */}
+                    <li>
+                      <NavLink className="nav-link" to="/importStaffProfile">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Import Staff Profile
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/additionalMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Additional Master Setup{" "}
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        className="nav-link"
+                        to="/allowancesDeductionSetup"
+                      >
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Allowances Deduction Setup
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/staffBulkUpdate">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Staff Bulk Update
+                        </span>
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
+              </li>
+              <li className="nav-item">
+                <div
+                  className="nav-link d-flex justify-content-between align-items-center"
+                  onClick={() => toggleSubmenu("Administration")}
+                >
+                  <span>
+                    <RiOrganizationChart className="me-2" />
+                    Administration
+                  </span>
+                  {activeSubmenu === "Administration" ? (
+                    <FaChevronDown />
+                  ) : (
+                    <FaChevronRight />
+                  )}
+                </div>
+                {activeSubmenu === "Administration" && (
+                  <ul className="list-unstyled p-0">
+                    {/* <li>
+                      {role === "HR_SUPER_ADMIN" ? (
+                        <NavLink
+                          className="nav-link"
+                          to="/employeeBasicDetails"
+                        >
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <BsBullseye
+                              style={{
+                                fontSize: "xx-small",
+                                marginRight: "8px",
+                              }}
+                            />
+                            Employee Basic Details
+                          </span>
+                        </NavLink>
+                      ) : (
+                        <></>
+                      )}
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/basicMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Basic Master Setup
+                        </span>
+                      </NavLink>
+                    </li> */}
+                    <li>
+                      <NavLink className="nav-link" to="/importStaffProfile">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Import Staff Profile
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/additionalMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Additional Master Setup{" "}
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        className="nav-link"
+                        to="/allowancesDeductionSetup"
+                      >
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Allowances Deduction Setup
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/staffBulkUpdate">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Staff Bulk Update
+                        </span>
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
+              </li>
+              <li className="nav-item">
+                <div
+                  className="nav-link d-flex justify-content-between align-items-center"
+                  onClick={() => toggleSubmenu("Help")}
+                >
+                  <span>
+                    <RiOrganizationChart className="me-2" />
+                    Help
+                  </span>
+                  {activeSubmenu === "Help" ? (
+                    <FaChevronDown />
+                  ) : (
+                    <FaChevronRight />
+                  )}
+                </div>
+                {activeSubmenu === "Help" && (
+                  <ul className="list-unstyled p-0">
+                    {/* <li>
+                      {role === "HR_SUPER_ADMIN" ? (
+                        <NavLink
+                          className="nav-link"
+                          to="/employeeBasicDetails"
+                        >
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <BsBullseye
+                              style={{
+                                fontSize: "xx-small",
+                                marginRight: "8px",
+                              }}
+                            />
+                            Employee Basic Details
+                          </span>
+                        </NavLink>
+                      ) : (
+                        <></>
+                      )}
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/basicMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Basic Master Setup
+                        </span>
+                      </NavLink>
+                    </li> */}
+                    <li>
+                      <NavLink className="nav-link" to="/importStaffProfile">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Import Staff Profile
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/additionalMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Additional Master Setup{" "}
+                        </span>
+                      </NavLink>
+                    </li>
+
+                    <li>
+                      <NavLink className="nav-link" to="/staffBulkUpdate">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Staff Bulk Update
+                        </span>
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
+              </li>
+              <li className="nav-item">
+                <div
+                  className="nav-link d-flex justify-content-between align-items-center"
+                  onClick={() => toggleSubmenu("Billing")}
+                >
+                  <span>
+                    <RiOrganizationChart className="me-2" />
+                    Billing
+                  </span>
+                  {activeSubmenu === "Billing" ? (
+                    <FaChevronDown />
+                  ) : (
+                    <FaChevronRight />
+                  )}
+                </div>
+                {activeSubmenu === "Billing" && (
+                  <ul className="list-unstyled p-0">
+                    {/* <li>
+                      {role === "HR_SUPER_ADMIN" ? (
+                        <NavLink
+                          className="nav-link"
+                          to="/employeeBasicDetails"
+                        >
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <BsBullseye
+                              style={{
+                                fontSize: "xx-small",
+                                marginRight: "8px",
+                              }}
+                            />
+                            Employee Basic Details
+                          </span>
+                        </NavLink>
+                      ) : (
+                        <></>
+                      )}
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/basicMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Basic Master Setup
+                        </span>
+                      </NavLink>
+                    </li> */}
+                    <li>
+                      <NavLink className="nav-link" to="/importStaffProfile">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Import Staff Profile
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/additionalMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Additional Master Setup{" "}
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        className="nav-link"
+                        to="/allowancesDeductionSetup"
+                      >
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Allowances Deduction Setup
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/staffBulkUpdate">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Staff Bulk Update
+                        </span>
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
+              </li>
+              <li className="nav-item">
+                <div
+                  className="nav-link d-flex justify-content-between align-items-center"
+                  onClick={() => toggleSubmenu("CompanyPolicies")}
+                >
+                  <span>
+                    <RiOrganizationChart className="me-2" />
+                    Company Policies
+                  </span>
+                  {activeSubmenu === "CompanyPolicies" ? (
+                    <FaChevronDown />
+                  ) : (
+                    <FaChevronRight />
+                  )}
+                </div>
+                {activeSubmenu === "CompanyPolicies" && (
+                  <ul className="list-unstyled p-0">
+                    {/* <li>
+                      {role === "HR_SUPER_ADMIN" ? (
+                        <NavLink
+                          className="nav-link"
+                          to="/employeeBasicDetails"
+                        >
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <BsBullseye
+                              style={{
+                                fontSize: "xx-small",
+                                marginRight: "8px",
+                              }}
+                            />
+                            Employee Basic Details
+                          </span>
+                        </NavLink>
+                      ) : (
+                        <></>
+                      )}
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/basicMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Basic Master Setup
+                        </span>
+                      </NavLink>
+                    </li> */}
+                    <li>
+                      <NavLink className="nav-link" to="/importStaffProfile">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Import Staff Profile
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/additionalMasterSetup">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Additional Master Setup{" "}
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        className="nav-link"
+                        to="/allowancesDeductionSetup"
+                      >
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Allowances Deduction Setup
+                        </span>
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="nav-link" to="/staffBulkUpdate">
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          <BsBullseye
+                            style={{ fontSize: "xx-small", marginRight: "8px" }}
+                          />
+                          Staff Bulk Update
+                        </span>
+                      </NavLink>
+                    </li>
+                  </ul>
+                )}
               </li>
 
-              {role === "EMPLOYEE" ? (
+              {/* {role === "EMPLOYEE" ? (
                 <li className="nav-item">
                   <NavLink className="nav-link" to="/payslip">
                     <RiFileList3Line className="me-2" />
@@ -246,7 +1246,7 @@ function AdminSidebar({ handleLogout }) {
                 </li>
               ) : (
                 <></>
-              )}
+              )} */}
 
               {/* <li className="nav-item">
                 <NavLink className="nav-link" to="/expense">
@@ -262,7 +1262,7 @@ function AdminSidebar({ handleLogout }) {
                 </NavLink>
               </li> */}
 
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <div
                   className="nav-link d-flex justify-content-between align-items-center"
                   onClick={() => toggleSubmenu("Settings")}
@@ -291,7 +1291,7 @@ function AdminSidebar({ handleLogout }) {
                     </li>
                   </ul>
                 )}
-              </li>
+              </li> */}
             </ul>
             {/* <div className="mt-auto w-100 mb-4 nav-logo">
             <button

@@ -9,7 +9,7 @@ import departmentListByCompId from "../List_Apis/DepartmentListByCmpId";
 import { FiAlertTriangle } from "react-icons/fi";
 import toast from "react-hot-toast";
 
-function EmployeeAdminAdd() {
+function EmployeeBasicAdd() {
   const cmpId = sessionStorage.getItem("cmpId");
   const [departmentData, setDepartmentData] = useState(null);
   // console.log("departmentData:", departmentData);
@@ -209,7 +209,7 @@ function EmployeeAdminAdd() {
               <div className="col">
                 <div className="d-flex align-items-center gap-4">
                   <h1 className="h4 ls-tight headingColor">
-                    Add Employee Register
+                    Add Employee Basic Details
                   </h1>
                 </div>
               </div>
@@ -250,7 +250,7 @@ function EmployeeAdminAdd() {
           </div>
           <div className="container mb-5">
             <div className="row py-4">
-              <div className="col-md-6 col-12 mb-3">
+              <div className="col-md-4 col-12 mb-3">
                 <div className="mb-2">
                   <label className="form-label">
                     First Name <span className="text-danger">*</span>
@@ -272,7 +272,7 @@ function EmployeeAdminAdd() {
                   )}
                 </div>
               </div>
-              <div className="col-md-6 col-12 mb-3 ">
+              <div className="col-md-4 col-12 mb-3 ">
                 <div className="mb-2">
                   <label className="form-label">
                     Last Name <span className="text-danger">*</span>
@@ -294,7 +294,7 @@ function EmployeeAdminAdd() {
                   )}
                 </div>
               </div>
-              <div className="col-md-6 col-12 mb-3 ">
+              <div className="col-md-4 col-12 mb-3 ">
                 <div className="mb-2">
                   <label className="form-label">
                     Primary Email ID <span className="text-danger">*</span>
@@ -316,7 +316,7 @@ function EmployeeAdminAdd() {
                   )}
                 </div>
               </div>
-              <div className="col-md-6 col-12 mb-3">
+              <div className="col-md-4 col-12 mb-3">
                 <div className="mb-2">
                   <label className="form-label">
                     Primary Email Password{" "}
@@ -360,7 +360,7 @@ function EmployeeAdminAdd() {
                   )}
                 </div>
               </div>
-              <div className="col-md-6 col-12 mb-3 ">
+              <div className="col-md-4 col-12 mb-3 ">
                 <div className="mb-2">
                   <label className="form-label">
                     Primary Phone Number <span className="text-danger">*</span>
@@ -384,7 +384,7 @@ function EmployeeAdminAdd() {
                     )}
                 </div>
               </div>
-              <div className="col-md-6 col-12 mb-2">
+              <div className="col-md-4 col-12 mb-2">
                 <div className="d-flex justify-content-between align-items-center">
                   <label className="form-label">
                     Department Name <span className="text-danger">*</span>
@@ -417,7 +417,7 @@ function EmployeeAdminAdd() {
                     )}
                 </div>
               </div>
-              <div className="col-md-6 col-12 mb-3 ">
+              <div className="col-md-4 col-12 mb-3 ">
                 <div className="mb-2">
                   <label className="form-label">
                     Employee Designation <span className="text-danger">*</span>
@@ -449,7 +449,7 @@ function EmployeeAdminAdd() {
                     )}
                 </div>
               </div>
-              <div className="col-md-6 col-12 mb-3 ">
+              <div className="col-md-4 col-12 mb-3 ">
                 <div className="mb-2">
                   <label for="exampleFormControlInput1" className="form-label">
                     Employee Date of Joining
@@ -474,7 +474,7 @@ function EmployeeAdminAdd() {
                     )}
                 </div>
               </div>
-              <div className="col-md-6 col-12 mb-3">
+              <div className="col-md-4 col-12 mb-3">
                 <label className="form-label">
                   Nationality <span className="text-danger">*</span>
                 </label>
@@ -509,34 +509,11 @@ function EmployeeAdminAdd() {
                   </div>
                 )}
               </div>
-              <div className="col-md-6 col-12 mb-3">
-                <label className="form-label">
-                  Citizenship <span className="text-danger">*</span>
-                </label>
-                <select
-                  name="citizenship"
-                  className={`form-select form-select-sm ${
-                    formik.touched.citizenship && formik.errors.citizenship
-                      ? "is-invalid"
-                      : ""
-                  }`}
-                  {...formik.getFieldProps("citizenship")}
-                >
-                  <option selected></option>
-                  <option value="1st Year PR">1st Year PR</option>
-                  <option value="2nd Year PR">2nd Year PR</option>
-                  <option value="3rd Year PR">3rd Year PR</option>
-                </select>
-                {formik.touched.citizenship && formik.errors.citizenship && (
-                  <div className="invalid-feedback">
-                    {formik.errors.citizenship}
-                  </div>
-                )}
-              </div>
+
               <div>
                 {selectedIdType === "NRIC" && (
                   <div className="row">
-                    <div className="col-md-6 col-12 mb-3 ">
+                    <div className="col-md-4 col-12 mb-3 ">
                       <div className="mb-2">
                         <label
                           for="exampleFormControlInput1"
@@ -563,7 +540,7 @@ function EmployeeAdminAdd() {
                         )}
                       </div>
                     </div>
-                    <div className="col-md-6 col-12 mb-3 ">
+                    <div className="col-md-4 col-12 mb-3 ">
                       <div className="mb-2">
                         <label
                           for="exampleFormControlInput1"
@@ -603,7 +580,7 @@ function EmployeeAdminAdd() {
                 )}
                 {selectedIdType === "AADHAR" && (
                   <div className="row">
-                    <div className="col-md-6 col-12 mb-3 ">
+                    <div className="col-md-4 col-12 mb-3 ">
                       <div className="mb-2">
                         <label
                           for="exampleFormControlInput1"
@@ -630,7 +607,7 @@ function EmployeeAdminAdd() {
                           )}
                       </div>
                     </div>
-                    <div className="col-md-6 col-12 mb-3 ">
+                    <div className="col-md-4 col-12 mb-3 ">
                       <div className="mb-2">
                         <label
                           for="exampleFormControlInput1"
@@ -658,7 +635,7 @@ function EmployeeAdminAdd() {
                   </div>
                 )}
               </div>
-              <div className="col-md-6 col-12 mb-3 ">
+              <div className="col-md-4 col-12 mb-3 ">
                 <div className="mb-2">
                   <label for="exampleFormControlInput1" className="form-label">
                     Basic Salary
@@ -681,7 +658,7 @@ function EmployeeAdminAdd() {
                   )}
                 </div>
               </div>
-              <div className="col-md-6 col-12 mb-2">
+              <div className="col-md-4 col-12 mb-2">
                 <label className="form-label">
                   Employee Type <span className="text-danger">*</span>
                 </label>
@@ -707,7 +684,7 @@ function EmployeeAdminAdd() {
                 </div>
               </div>
               {formik.values.empType === "freelancer" && (
-                <div className="col-md-6 col-12 mb-2">
+                <div className="col-md-4 col-12 mb-2">
                   <label className="form-label">
                     Working Type <span className="text-danger">*</span>
                   </label>
@@ -734,7 +711,7 @@ function EmployeeAdminAdd() {
                   </div>
                 </div>
               )}
-              <div className="col-md-6 col-12 mb-3 ">
+              <div className="col-md-4 col-12 mb-3 ">
                 <div className="mb-2">
                   <label for="exampleFormControlInput1" className="form-label">
                     Notice Period<span className="text-danger">*</span>
@@ -763,6 +740,30 @@ function EmployeeAdminAdd() {
                     )}
                 </div>
               </div>
+              <div className="col-md-4 col-12 mb-3">
+                <label className="form-label">
+                  Citizenship <span className="text-danger">*</span>
+                </label>
+                <select
+                  name="citizenship"
+                  className={`form-select form-select-sm ${
+                    formik.touched.citizenship && formik.errors.citizenship
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  {...formik.getFieldProps("citizenship")}
+                >
+                  <option selected></option>
+                  <option value="1st Year PR">1st Year PR</option>
+                  <option value="2nd Year PR">2nd Year PR</option>
+                  <option value="3rd Year PR">3rd Year PR</option>
+                </select>
+                {formik.touched.citizenship && formik.errors.citizenship && (
+                  <div className="invalid-feedback">
+                    {formik.errors.citizenship}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -771,4 +772,4 @@ function EmployeeAdminAdd() {
   );
 }
 
-export default EmployeeAdminAdd;
+export default EmployeeBasicAdd;

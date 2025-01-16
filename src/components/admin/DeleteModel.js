@@ -60,14 +60,17 @@ function DeleteModel({ onSuccess, path }) {
         className="btn btn-sm p-1 shadow-none border-none"
         onClick={handleShow}
       >
-        <LiaTrashSolid />
+        <LiaTrashSolid style={{ marginRight: "8px" }} />
+        Delete
       </button>
 
       <Modal show={show} onHide={handleClose} size="sm" centered>
         <Modal.Header closeButton className="p-3">
           <Modal.Title>Delete</Modal.Title>
         </Modal.Header>
-        <Modal.Body className="p-2">Are you sure you want to delete this item?</Modal.Body>
+        <Modal.Body className="p-2">
+          Are you sure you want to delete this item?
+        </Modal.Body>
         <Modal.Footer className="p-2">
           <Button variant="secondary" className="p-2" onClick={handleClose}>
             Close
