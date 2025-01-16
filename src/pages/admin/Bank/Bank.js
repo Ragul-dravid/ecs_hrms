@@ -15,8 +15,10 @@ import DeleteModel from "../../../components/admin/DeleteModel";
 import { MdEdit } from "react-icons/md";
 import { BiEditAlt } from "react-icons/bi";
 import GlobalDelete from "../../../components/admin/GlobalDelete";
+import BankAdd from "./BankAdd";
+import BankEdit from "./BankEdit";
 
-const EmployeeBasic = ({ handleCenterChanged }) => {
+const Bank = ({ handleCenterChanged }) => {
   const [filters, setFilters] = useState({
     centerName: "",
     centerCode: "",
@@ -60,45 +62,51 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
           </IconButton>
         ),
       },
-      { accessorKey: "employeeId", enableHiding: false, header: "EMPLOYEE ID" },
       {
-        accessorKey: "firstName",
+        accessorKey: "bankCode",
         enableHiding: false,
-        header: "EMPLOYEE NAME",
+        header: "BANK CODE",
       },
+
       {
-        accessorKey: "email",
-        header: "EMPLOYEE EMAIL",
+        accessorKey: "bankCode",
         enableHiding: false,
-        size: 40,
+        header: "BANK NAME",
       },
-      {
-        accessorKey: "empDateOfJoin",
-        header: "JOINING DATE",
-        enableHiding: false,
-        size: 50,
-      },
-      {
-        accessorKey: "section",
-        header: "SECTION",
-        enableHiding: false,
-        size: 50,
-      },
-      {
-        accessorKey: "empDesignation",
-        enableHiding: false,
-        header: "DESIGINATION",
-      },
-      {
-        accessorKey: "gender",
-        enableHiding: false,
-        header: "GENDER",
-      },
-      {
-        accessorKey: "resignDate",
-        enableHiding: false,
-        header: "RESIGN DATE",
-      },
+
+      // {
+      //   accessorKey: "email",
+      //   header: "EMPLOYEE EMAIL",
+      //   enableHiding: false,
+      //   size: 40,
+      // },
+      // {
+      //   accessorKey: "empDateOfJoin",
+      //   header: "JOINING DATE",
+      //   enableHiding: false,
+      //   size: 50,
+      // },
+      // {
+      //   accessorKey: "section",
+      //   header: "SECTION",
+      //   enableHiding: false,
+      //   size: 50,
+      // },
+      // {
+      //   accessorKey: "empDesignation",
+      //   enableHiding: false,
+      //   header: "DESIGINATION",
+      // },
+      // {
+      //   accessorKey: "gender",
+      //   enableHiding: false,
+      //   header: "GENDER",
+      // },
+      // {
+      //   accessorKey: "resignDate",
+      //   enableHiding: false,
+      //   header: "RESIGN DATE",
+      // },
       // { accessorKey: "address", header: "Address" },
       // { accessorKey: "invoiceNotes", header: "Invoice Notes" },
       // { accessorKey: "openingDate", header: "Opening Date" },
@@ -109,26 +117,38 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
       // { accessorKey: "gst", header: "GST" },
       // { accessorKey: "taxRegistrationNumber", header: "Tax Reg Number" },
       // { accessorKey: "zipCode", header: "Zip Code" },
-      { accessorKey: "createdBy", header: "Created By" },
+      { accessorKey: "createdBy", header: "CREATED BY" },
       {
         accessorKey: "createdDate",
-        header: "Created At",
+        header: "CREATED AT",
         Cell: ({ cell }) => cell.getValue()?.substring(0, 10),
       },
       {
         accessorKey: "updatedAt",
-        header: "Updated At",
+        header: "UPDATED AT",
         Cell: ({ cell }) => cell.getValue()?.substring(0, 10) || "",
       },
       {
         accessorKey: "updatedBy",
-        header: "Updated By",
+        header: "UPDATED BY",
         Cell: ({ cell }) => cell.getValue() || "",
       },
     ],
     []
   );
 
+  // const fetchData = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const queryParams = new URLSearchParams(filters).toString();
+  //     const response = await api.get(`/getCenterWithCustomInfo?${queryParams}`);
+  //     setData(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const getData = async () => {
     try {
       const response = await api.get(`emp-reg-details-by-companyId/${cmpId}`);
@@ -204,8 +224,8 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
   const handleMenuClose = () => setMenuAnchor(null);
 
   return (
-    <div className="container-fluid px-2 my-4 center">
-      <ol
+    <div className="container-fluid p-0 my-4 center">
+      {/* <ol
         className="breadcrumb my-3"
         style={{ listStyle: "none", padding: 0, margin: 0 }}
       >
@@ -222,16 +242,16 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
         <li className="breadcrumb-item active" aria-current="page">
           &nbsp;Employee Basic Details
         </li>
-      </ol>
+      </ol> */}
       <div className="card">
-        <div
+        {/* <div
           className="mb-3 d-flex justify-content-between align-items-center p-1"
           style={{ background: "#f5f7f9" }}
         >
           <span className="text-muted">
             <strong className="table-headings">Staff Details</strong>
           </span>
-        </div>
+        </div> */}
         <div className="mb-3 d-flex justify-content-between">
           <div className="individual_fliters d-lg-flex ">
             {/* <div className="form-group mb-0 ms-2 mb-1">
@@ -270,7 +290,7 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
                 autoComplete="off"
               />
             </div> */}
-            <div className="form-group mb-0 ms-2 mb-1">
+            {/* <div className="form-group mb-0 ms-2 mb-1">
               <select
                 name="centerManagerId"
                 value={filters.centerManagerId}
@@ -283,7 +303,7 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
                 <option value="resigned">Resigned Employee</option>
                 <option value="all">All Employee</option>
               </select>
-            </div>
+            </div> */}
 
             {/* <div className="form-group mb-2 ms-2">
               <button
@@ -295,15 +315,9 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
               </button>
             </div> */}
           </div>
-          <Link to="/employeeBasicDetails/add">
-            <button
-              type="button"
-              className="btn btn-sm btn-button btn-primary me-2"
-              style={{ fontWeight: "600px !important" }}
-            >
-              &nbsp; Add &nbsp;&nbsp; <i className="bx bx-plus"></i>
-            </button>
-          </Link>
+          <span>
+            <BankAdd />
+          </span>
         </div>
         {loading ? (
           <div className="loader-container">
@@ -357,17 +371,17 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
               onClose={handleMenuClose}
               disableScrollLock
             >
-              <MenuItem
-                onClick={() => navigate(`/employee/edit/${selectedId}`)}
-                className="text-start mb-0 menuitem-style"
-              >
-                <BiEditAlt style={{ marginRight: "8px" }} />
-                Edit
+              <MenuItem>
+                <BankEdit
+                  onSuccess={getData}
+                  id={selectedId}
+                  handleMenuClose={handleMenuClose}
+                />
               </MenuItem>
               <MenuItem>
                 <GlobalDelete
                   path={`/emp-reg-details/${selectedId}`}
-                  onDeleteSuccess={getData}
+                  // onDeleteSuccess={fetchData}
                   onOpen={handleMenuClose}
                   // deleteCenterData={true}
                   handleCenterChanged={handleCenterChanged}
@@ -381,4 +395,4 @@ const EmployeeBasic = ({ handleCenterChanged }) => {
   );
 };
 
-export default EmployeeBasic;
+export default Bank;

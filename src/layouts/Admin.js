@@ -29,7 +29,7 @@ import DepartmentEdit from "../pages/admin/Settings/Department/DepartmentEdit";
 import DepartmentView from "../pages/admin/Settings/Department/DepartmentView";
 import Employee from "../pages/admin/Employee/Employee";
 import EmployeeAdminAdd from "../pages/admin/Employee/EmpoyeeAdminAdd.js";
-import EmployeeEdit from "../pages/admin/Employee/EmployeeEdit.js";
+// import EmployeeEdit from "../pages/admin/Employee/EmployeeEdit.js";
 import EmployeeView from "../pages/admin/Employee/EmployeeView";
 import Deduction from "../pages/admin/Deduction/Deduction.js";
 import DeductionAdd from "../pages/admin/Deduction/DeductionAdd.js";
@@ -71,7 +71,29 @@ import RegistrationCompany from "../pages/admin/RegistrationCompany.js";
 import LeaveRequestEmp from "../pages/admin/LeaveRequest/LeaveRequestEmp.js";
 import EmployeeBasic from "../pages/admin/Master/EmployeeBasic.js";
 import EmployeeBasicAdd from "../pages/admin/Master/EmployeeBasicAdd.js";
-
+import BasicMasterSetup from "../pages/admin/BasicMasterSetup/BasicMasterSetup.js";
+import BasicDepartment from "../pages/admin/Department/BasicDepartment.js";
+import BasicDepartmentAdd from "../pages/admin/Department/BasicDeparmentAdd.js";
+import BasicDepartmentEdit from "../pages/admin/Department/BasicDeparmentEdit.js";
+import BasicDesigination from "../pages/admin/Desigination/BasicDesigination.js";
+import BasicDesiginationAdd from "../pages/admin/Desigination/BasicDesiginationAdd.js";
+import BasicDesiginationEdit from "../pages/admin/Desigination/BasicDesiginationEdit.js";
+import Section from "../pages/admin/Section/Section.js";
+import SectionAdd from "../pages/admin/Section/SectionAdd.js";
+import SectionEdit from "../pages/admin/Section/SectionEdit.js";
+import BasicCategory from "../pages/admin/Category/BasicCategory.js";
+import BasicCategoryAdd from "../pages/admin/Category/BasicCategoryAdd.js";
+import BasicCategoryEdit from "../pages/admin/Category/BasicCategoryEdit.js";
+import DesiginationGroup from "../pages/admin/DesiginationGroup/DesiginationGroup.js";
+import DesiginationGroupAdd from "../pages/admin/DesiginationGroup/DesiginationGroupAdd.js";
+import DesiginationGroupEdit from "../pages/admin/DesiginationGroup/DesiginationGroupEdit.js";
+import Bank from "../pages/admin/Bank/Bank.js";
+import BankAdd from "../pages/admin/Bank/BankAdd.js";
+import BankEdit from "../pages/admin/Bank/BankEdit.js";
+import Component from "../pages/admin/Component/Component.js";
+import ComponentAdd from "../pages/admin/Component/ComponentAdd.js";
+import ComponentEdit from "../pages/admin/Component/ComponentEdit.js";
+import EmployeeEditTab from "../pages/admin/Employee/Employeetab/EmployeeEditTab.js";
 function Admin({ handleLogout }) {
   return (
     <div>
@@ -94,6 +116,77 @@ function Admin({ handleLogout }) {
                     path="/employeeBasicDetails/add"
                     element={<EmployeeBasicAdd />}
                   />
+
+                  <Route
+                    path="/basicMasterSetup"
+                    element={<BasicMasterSetup />}
+                  />
+
+                  <Route
+                    path="/basicDepartment"
+                    element={<BasicDepartment />}
+                  />
+                  <Route
+                    path="/basicDepartment/add"
+                    element={<BasicDepartmentAdd />}
+                  />
+                  <Route
+                    path="/basicDepartment/edit/:id"
+                    element={<BasicDepartmentEdit />}
+                  />
+
+                  <Route
+                    path="/basicDesigination"
+                    element={<BasicDesigination />}
+                  />
+
+                  <Route
+                    path="/basicDesigination/add"
+                    element={<BasicDesiginationAdd />}
+                  />
+                  <Route
+                    path="/basicDesigination/edit/:id"
+                    element={<BasicDesiginationEdit />}
+                  />
+
+                  <Route path="/section" element={<Section />} />
+                  <Route path="/section/add" element={<SectionAdd />} />
+                  <Route path="/section/edit/:id" element={<SectionEdit />} />
+
+                  <Route path="/basicCategory" element={<BasicCategory />} />
+                  <Route
+                    path="/basicCategory/add"
+                    element={<BasicCategoryAdd />}
+                  />
+                  <Route
+                    path="/basicCategory/edit/:id"
+                    element={<BasicCategoryEdit />}
+                  />
+
+                  <Route
+                    path="/desiginationGroup"
+                    element={<DesiginationGroup />}
+                  />
+                  <Route
+                    path="/desiginationGroup/add"
+                    element={<DesiginationGroupAdd />}
+                  />
+                  <Route
+                    path="/desiginationGroup/edit/:id"
+                    element={<DesiginationGroupEdit />}
+                  />
+
+                  <Route path="/bank" element={<Bank />} />
+                  <Route path="/bank/add" element={<BankAdd />} />
+                  <Route path="/bank/edit/:id" element={<BankEdit />} />
+
+                  <Route path="/component" element={<Component />} />
+                  <Route path="/component/add" element={<ComponentAdd />} />
+                  <Route
+                    path="/component/edit/:id"
+                    element={<ComponentEdit />}
+                  />
+
                   {/* Company Registration */}
                   <Route
                     path="/companyRegistration"
@@ -168,7 +261,7 @@ function Admin({ handleLogout }) {
                   <Route path="/employee/add" element={<EmployeeAdminAdd />} />
                   <Route
                     path="/employee/edit/:empId"
-                    element={<EmployeeEdit />}
+                    element={<EmployeeEditTab />}
                   />
                   <Route path="/employee/view/:id" element={<EmployeeView />} />
 
