@@ -11768,7 +11768,7 @@ fieldset:disabled .btn {
 .nav-link {
   display: block;
   padding: 0.5rem 1rem;
-  font-size: 0.875rem;
+  font-size: 0.700rem;
   font-weight: 500;
   color: #525f7f;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
@@ -11992,7 +11992,7 @@ fieldset:disabled .btn {
 
 .nav-tabs .nav-item {
   margin-left: 1.25rem;
-  margin-right: 1.25rem;
+  /* margin-right: 1.25rem; */
 }
 
 .nav-tabs .nav-item:first-child {
@@ -13541,7 +13541,7 @@ fieldset:disabled .btn {
 }
 
 .table> :not(:last-child)> :last-child>* {
-  border-bottom-color: #e7eaf0;
+  /* border-bottom-color: #e7eaf0; */
 }
 
 .caption-top {

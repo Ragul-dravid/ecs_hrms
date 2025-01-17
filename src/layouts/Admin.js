@@ -94,6 +94,19 @@ import Component from "../pages/admin/Component/Component.js";
 import ComponentAdd from "../pages/admin/Component/ComponentAdd.js";
 import ComponentEdit from "../pages/admin/Component/ComponentEdit.js";
 import EmployeeEditTab from "../pages/admin/Employee/Employeetab/EmployeeEditTab.js";
+import CarrerSetting from "../pages/admin/CarrerSetting/CarrerSetting.js";
+import CarrerSettingAdd from "../pages/admin/CarrerSetting/CarrerSettingAdd.js";
+import CarrerSettingEdit from "../pages/admin/CarrerSetting/CarrerSettingEdit.js";
+import Currency from "../pages/admin/Currency/Currency.js";
+import CurrencyAdd from "../pages/admin/Currency/CurrencyAdd.js";
+import CurrencyEdit from "../pages/admin/Currency/CurrencyEdit.js";
+import HolidaysTab from "../pages/admin/Holidays/HolidaysTab/HolidaysTab.js";
+import HolidaysTabAdd from "../pages/admin/Holidays/HolidaysTab/HolidaysTabAdd.js";
+import HolidaysTabEdit from "../pages/admin/Holidays/HolidaysTab/HolidaysTabEdit.js";
+import HolidayGroupAdd from "../pages/admin/Holidays/HolidayGroup/HolidayGroupAdd.js";
+import HolidayGroup from "../pages/admin/Holidays/HolidayGroup/HolidayGroup.js";
+import HolidayGroupEdit from "../pages/admin/Holidays/HolidayGroup/HolidayGroupEdit.js";
+import AssignHoliday from "../pages/admin/Holidays/AssignHoliday/AssignHoliday.js";
 function Admin({ handleLogout }) {
   return (
     <div>
@@ -186,6 +199,39 @@ function Admin({ handleLogout }) {
                     path="/component/edit/:id"
                     element={<ComponentEdit />}
                   />
+
+                  <Route path="/carrerSetting" element={<CarrerSetting />} />
+                  <Route
+                    path="/carrerSetting/add"
+                    element={<CarrerSettingAdd />}
+                  />
+                  <Route
+                    path="/carrerSetting/edit/:id"
+                    element={<CarrerSettingEdit />}
+                  />
+
+                  <Route path="/currency" element={<Currency />} />
+                  <Route path="/currency/add" element={<CurrencyAdd />} />
+                  <Route path="/currency/edit/:id" element={<CurrencyEdit />} />
+
+                  <Route path="/holidaysTab" element={<HolidaysTab />} />
+                  <Route path="/holidaysTab/add" element={<HolidaysTabAdd />} />
+                  <Route
+                    path="/holidaysTab/edit/:id"
+                    element={<HolidaysTabEdit />}
+                  />
+
+                  <Route path="/holidayGroup" element={<HolidayGroup />} />
+                  <Route
+                    path="/holidayGroup/add"
+                    element={<HolidayGroupAdd />}
+                  />
+                  <Route
+                    path="/holidayGroup/edit/:id"
+                    element={<HolidayGroupEdit />}
+                  />
+
+                  <Route path="/assignHoliday" element={<AssignHoliday />} />
 
                   {/* Company Registration */}
                   <Route

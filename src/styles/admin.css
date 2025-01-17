@@ -39,3 +39,39 @@
 .table-headings {
   color: #a070ff !important;
 }
+
+
+.assign-holiday {
+  border: 1px solid #ccc;
+  padding: 16px;
+  background-color: #f9f9f9;
+}
+
+.assign-header {
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #d3d3d3;
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.holiday-group-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.holiday-group-table th,
+.holiday-group-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.holiday-group-table th {
+  background-color: #eaeaea;
+  font-weight: bold;
+}
+
+.holiday-group-table td:last-child {
+  text-align: center;
+}

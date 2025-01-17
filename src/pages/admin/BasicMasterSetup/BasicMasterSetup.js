@@ -21,6 +21,12 @@ import Section from "../Section/Section";
 import BasicCategory from "../Category/BasicCategory";
 import DesiginationGroup from "../DesiginationGroup/DesiginationGroup";
 import Bank from "../Bank/Bank";
+import Component from "../Component/Component";
+import CarrerSetting from "../CarrerSetting/CarrerSetting";
+import Currency from "../Currency/Currency";
+import HolidaysTab from "../Holidays/HolidaysTab/HolidaysTab";
+import HolidayGroup from "../Holidays/HolidayGroup/HolidayGroup";
+import AssignHoliday from "../Holidays/AssignHoliday/AssignHoliday";
 
 const BasicMasterSetup = ({ handleCenterChanged }) => {
   const [filters, setFilters] = useState({
@@ -36,7 +42,8 @@ const BasicMasterSetup = ({ handleCenterChanged }) => {
   const [datas, setDatas] = useState([]);
   const cmpId = sessionStorage.getItem("cmpId");
   const [activeTab, setActiveTab] = useState("tab1");
-  const [subActiveTab, setSubActiveTab] = useState("tabA");
+  const [activeSubTab, setActiveSubTab] = useState("subTab1");
+
   //   const { id } = useParams();
   const [data, setData] = useState({});
 
@@ -166,15 +173,15 @@ const BasicMasterSetup = ({ handleCenterChanged }) => {
     getData();
   }, []);
 
-  const handleMainTabClick = (tab) => {
-    setActiveTab(tab);
+  // const handleMainTabClick = (tab) => {
+  //   setActiveTab(tab);
 
-    if (tab === "tab1") {
-      setSubActiveTab("tabA");
-    } else if (tab === "tab2") {
-      setSubActiveTab("tabB");
-    }
-  };
+  //   if (tab === "tab1") {
+  //     setSubActiveTab("tabA");
+  //   } else if (tab === "tab2") {
+  //     setSubActiveTab("tabB");
+  //   }
+  // };
 
   const theme = createTheme({
     components: {
@@ -350,7 +357,7 @@ const BasicMasterSetup = ({ handleCenterChanged }) => {
           </div>
         ) : (
           <>
-            <div className="container-fluid">
+            <div className="container-fluid p-0">
               <div
                 className="card shadow border-0 mb-2 top-header"
                 style={{ borderRadius: "0" }}
@@ -446,17 +453,156 @@ const BasicMasterSetup = ({ handleCenterChanged }) => {
                       BANK
                     </button>
                   </li>
+                  <li className="nav-item">
+                    <button
+                      className={`nav-link ${
+                        activeTab === "tab7" ? "active" : ""
+                      }`}
+                      onClick={() => setActiveTab("tab7")}
+                      style={{
+                        borderBottom:
+                          activeTab === "tab7" ? "3px solid #a070ff" : "none",
+                        borderRadius: "0px",
+                      }}
+                    >
+                      COMPONENT
+                    </button>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      className={`nav-link ${
+                        activeTab === "tab8" ? "active" : ""
+                      }`}
+                      onClick={() => setActiveTab("tab8")}
+                      style={{
+                        borderBottom:
+                          activeTab === "tab8" ? "3px solid #a070ff" : "none",
+                        borderRadius: "0px",
+                      }}
+                    >
+                      CARRER SETTING
+                    </button>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      className={`nav-link ${
+                        activeTab === "tab9" ? "active" : ""
+                      }`}
+                      onClick={() => setActiveTab("tab9")}
+                      style={{
+                        borderBottom:
+                          activeTab === "tab9" ? "3px solid #a070ff" : "none",
+                        borderRadius: "0px",
+                      }}
+                    >
+                      CURRENCY
+                    </button>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      className={`nav-link ${
+                        activeTab === "tab10" ? "active" : ""
+                      }`}
+                      onClick={() => setActiveTab("tab10")}
+                      style={{
+                        borderBottom:
+                          activeTab === "tab10" ? "3px solid #a070ff" : "none",
+                        borderRadius: "0px",
+                      }}
+                    >
+                      HOLIDAY
+                    </button>
+                  </li>
                 </ul>
-                <div className="tab-content container-fluid my-3">
-                  {activeTab === "tab1" && <BasicDepartment />}
-                  {activeTab === "tab2" && <BasicDesigination />}
-                  {activeTab === "tab3" && <Section />}
-                  {activeTab === "tab4" && <BasicCategory />}
-                  {activeTab === "tab5" && <DesiginationGroup />}
-                  {activeTab === "tab6" && <Bank />}
-                </div>
+                {activeTab === "tab10" && (
+                  <div>
+                    <ul className="nav">
+                      <li className="nav-item">
+                        <button
+                          className={`nav-link ${
+                            activeSubTab === "subTab1" ? "active" : ""
+                          }`}
+                          onClick={() => setActiveSubTab("subTab1")}
+                          style={{
+                            borderBottom:
+                              activeSubTab === "subTab1"
+                                ? "3px solid #a070ff"
+                                : "none",
+                            borderRadius: "0px",
+                          }}
+                        >
+                          Holiday
+                        </button>
+                      </li>
+                      <li className="nav-item">
+                        <button
+                          className={`nav-link ${
+                            activeSubTab === "subTab2" ? "active" : ""
+                          }`}
+                          onClick={() => setActiveSubTab("subTab2")}
+                          style={{
+                            borderBottom:
+                              activeSubTab === "subTab2"
+                                ? "3px solid #a070ff"
+                                : "none",
+                            borderRadius: "0px",
+                          }}
+                        >
+                          Holiday Group
+                        </button>
+                      </li>
+                      <li className="nav-item">
+                        <button
+                          className={`nav-link ${
+                            activeSubTab === "subTab3" ? "active" : ""
+                          }`}
+                          onClick={() => setActiveSubTab("subTab3")}
+                          style={{
+                            borderBottom:
+                              activeSubTab === "subTab3"
+                                ? "3px solid #a070ff"
+                                : "none",
+                            borderRadius: "0px",
+                          }}
+                        >
+                          Assign Holiday
+                        </button>
+                      </li>
+                    </ul>
+
+                    <div className="tab-content">
+                      {activeSubTab === "subTab1" && (
+                        <div>
+                          <HolidaysTab />
+                        </div>
+                      )}
+                      {activeSubTab === "subTab2" && (
+                        <div>
+                          <HolidayGroup />
+                        </div>
+                      )}
+                      {activeSubTab === "subTab3" && (
+                        <div>
+                          <AssignHoliday />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div className="tab-content container-fluid my-3">
+                {activeTab === "tab1" && <BasicDepartment />}
+                {activeTab === "tab2" && <BasicDesigination />}
+                {activeTab === "tab3" && <Section />}
+                {activeTab === "tab4" && <BasicCategory />}
+                {activeTab === "tab5" && <DesiginationGroup />}
+                {activeTab === "tab6" && <Bank />}
+                {activeTab === "tab7" && <Component />}
+                {activeTab === "tab8" && <CarrerSetting />}
+                {activeTab === "tab9" && <Currency />}
               </div>
             </div>
+            {/* </div> */}
 
             <Menu
               id="action-menu"
