@@ -1,22 +1,14 @@
 import React, { useState } from "react";
-import EmpPersonalInfoEdit from "../EditEmployee/EmpPersonalInfoEdit";
-import EmpContactDetailsEdit from "../EditEmployee/EmpContactDetailsEdit";
-import EmpQualificationDetailsEdit from "../EditEmployee/EmpQualificationDetailsEdit";
-import EmpExperienceEdit from "../EditEmployee/EmpExperienceEdit";
-import EmpBankAccountEdit from "../EditEmployee/EmpBankAccountEdit";
+import EmpQualificationDetailsEdit from "./EditEmployee/EmpQualificationDetailsEdit";
+import EmpExperienceEdit from "./EditEmployee/EmpExperienceEdit";
+import EmpBankAccountEdit from "./EditEmployee/EmpBankAccountEdit";
 import { useParams, Link } from "react-router-dom";
-import BasicDetailsEdit from "../Employeetab/BasicDetailsEdit";
+import GeneralDetailsEdit from "./EditEmployeeTab/GeneralDetailsEdit";
+import EtmsEdit from "./EditEmployeeTab/EtmsEdit";
 
 function EmployeeEdit() {
     const [activeTab, setActiveTab] = useState("tab1");
-    const { empId } = useParams();
-    const [formData, setFormData] = useState({ empId });
     const [loadIndicator, setLoadIndicator] = useState(false);
-
-    const handleButtonClick = () => {
-        // Handle Save or Submit logic
-        console.log("Save:", activeTab);
-    };
 
     return (
         <div className="container-fluid px-2  minHeight m-0">
@@ -111,37 +103,27 @@ function EmployeeEdit() {
                 </ul>
                 <div className="tab-content container-fluid my-3">
                     {activeTab === "tab1" && (
-                        <BasicDetailsEdit
-                            formData={formData}
-                            setFormData={setFormData}
+                        <GeneralDetailsEdit
                             setLoadIndicators={setLoadIndicator}
                         />
                     )}
                     {activeTab === "tab2" && (
-                        <EmpContactDetailsEdit
-                            formData={formData}
-                            setFormData={setFormData}
+                        <EtmsEdit
                             setLoadIndicators={setLoadIndicator}
                         />
                     )}
                     {activeTab === "tab3" && (
                         <EmpQualificationDetailsEdit
-                            formData={formData}
-                            setFormData={setFormData}
                             setLoadIndicators={setLoadIndicator}
                         />
                     )}
                     {activeTab === "tab4" && (
                         <EmpExperienceEdit
-                            formData={formData}
-                            setFormData={setFormData}
                             setLoadIndicators={setLoadIndicator}
                         />
                     )}
                     {activeTab === "tab5" && (
                         <EmpBankAccountEdit
-                            formData={formData}
-                            setFormData={setFormData}
                             setLoadIndicators={setLoadIndicator}
                         />
                     )}

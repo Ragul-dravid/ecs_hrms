@@ -93,7 +93,7 @@ import BankEdit from "../pages/admin/Bank/BankEdit.js";
 import Component from "../pages/admin/Component/Component.js";
 import ComponentAdd from "../pages/admin/Component/ComponentAdd.js";
 import ComponentEdit from "../pages/admin/Component/ComponentEdit.js";
-import EmployeeEditTab from "../pages/admin/Employee/Employeetab/EmployeeEditTab.js";
+import EmployeeEditTab from "../pages/admin/Employee/EmployeeEditTab.js";
 import CarrerSetting from "../pages/admin/CarrerSetting/CarrerSetting.js";
 import CarrerSettingAdd from "../pages/admin/CarrerSetting/CarrerSettingAdd.js";
 import CarrerSettingEdit from "../pages/admin/CarrerSetting/CarrerSettingEdit.js";
