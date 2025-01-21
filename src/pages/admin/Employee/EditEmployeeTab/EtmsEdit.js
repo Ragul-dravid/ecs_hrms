@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
-import { ImCancelCircle } from "react-icons/im";
 
 function EtmsEdit() {
 
-    const [rows, setRows] = useState([{}]);
+    const [isCheckboxChecked1, setIsCheckboxChecked1] = useState(false);
+    const [isCheckboxChecked2, setIsCheckboxChecked2] = useState(false);
+    const [isCheckboxChecked3, setIsCheckboxChecked3] = useState(false);
+    const [commonError, setCommonError] = useState("");
 
     const validationSchema = Yup.object({
         otType: Yup.string().required("OT Type is required"),
         workingHour: Yup.string().required("Working Hours is required"),
-        schedule: Yup.string().required("The 3 settings here optional. You can only choose 1out of the 3 setting if it is afflicatable to the staff."),
     });
 
     const formik = useFormik({
@@ -30,6 +31,23 @@ function EtmsEdit() {
             console.log("Form Values:", values);
         },
     });
+
+    const handleCheckboxChange = (checkboxIndex) => {
+        const isSelected = [isCheckboxChecked1, isCheckboxChecked2, isCheckboxChecked3];
+        isSelected[checkboxIndex] = !isSelected[checkboxIndex];
+
+        const selectedCount = isSelected.filter((isChecked) => isChecked).length;
+
+        if (selectedCount > 1) {
+            setCommonError("The 3 settings here optional. You can only choose 1 out of the 3 setting if it is afflicatable to the staff.");
+        } else {
+            setCommonError("");
+        }
+
+        setIsCheckboxChecked1(isSelected[0]);
+        setIsCheckboxChecked2(isSelected[1]);
+        setIsCheckboxChecked3(isSelected[2]);
+    };
 
     return (
         <div className="container-fluid p-0">
@@ -143,7 +161,7 @@ function EtmsEdit() {
                             </div>
                             <div className="col-md-4 col-12 mb-3">
                                 <label className="form-label">
-                                    Rest Day <span className="text-danger">*</span>
+                                    Rest Day
                                 </label>
                                 <div className="input-group mb-3">
                                     <select
@@ -168,86 +186,96 @@ function EtmsEdit() {
                             <div className="col-md-4 col-12 mb-3 ">
                             </div>
                             <div className="col-md-4 col-12 mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="1">
-                                    </input>
-                                    <label class="form-check-label">
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        id="dutyRosterGroupCheckbox"
+                                        checked={isCheckboxChecked1}
+                                        onChange={() => handleCheckboxChange(0)}
+                                    />
+                                    <label className="form-check-label" htmlFor="dutyRosterGroupCheckbox">
                                         Duty Roster/Group
                                     </label>
                                 </div>
                                 <div className="input-group mb-3">
                                     <select
                                         {...formik.getFieldProps("dutyRoster")}
-                                        className={`form-select form-select-sm  ${formik.touched.dutyRoster && formik.errors.dutyRoster
+                                        className={`form-select form-select-sm ${formik.touched.dutyRoster && formik.errors.dutyRoster
                                             ? "is-invalid"
                                             : ""
                                             }`}
+                                        disabled={!isCheckboxChecked1}
                                     >
-                                        <option selected></option>
+                                        <option value="" selected disabled>
+                                            Select
+                                        </option>
                                         <option value="None">None</option>
                                         <option value="One">One</option>
                                     </select>
-                                    {formik.touched.dutyRoster && formik.errors.dutyRoster && (
-                                        <div className="invalid-feedback">
-                                            {formik.errors.dutyRoster}
-                                        </div>
-                                    )}
                                 </div>
                             </div>
                             <div className="col-md-4 col-12 mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="2">
-                                    </input>
-                                    <label class="form-check-label">
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        id="scheduleGroupCheckbox"
+                                        checked={isCheckboxChecked2}
+                                        onChange={() => handleCheckboxChange(1)}
+                                    />
+                                    <label className="form-check-label" htmlFor="scheduleGroupCheckbox">
                                         Schedule
                                     </label>
                                 </div>
                                 <div className="input-group mb-3">
                                     <select
                                         {...formik.getFieldProps("schedule")}
-                                        className={`form-select form-select-sm  ${formik.touched.schedule && formik.errors.schedule
+                                        className={`form-select form-select-sm ${formik.touched.schedule && formik.errors.schedule
                                             ? "is-invalid"
                                             : ""
                                             }`}
+                                        disabled={!isCheckboxChecked2}
                                     >
-                                        <option selected></option>
+                                        <option value="" selected disabled>
+                                            Select
+                                        </option>
                                         <option value="None">None</option>
                                         <option value="One">One</option>
                                     </select>
-                                    {formik.touched.schedule && formik.errors.schedule && (
-                                        <div className="invalid-feedback">
-                                            {formik.errors.schedule}
-                                        </div>
-                                    )}
                                 </div>
                             </div>
                             <div className="col-md-4 col-12 mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="3">
-                                    </input>
-                                    <label class="form-check-label">
+                                <div className="form-check">
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        id="autoShiftGroupCheckbox"
+                                        checked={isCheckboxChecked3}
+                                        onChange={() => handleCheckboxChange(2)}
+                                    />
+                                    <label className="form-check-label" htmlFor="autoShiftGroupCheckbox">
                                         Auto Shift
                                     </label>
                                 </div>
                                 <div className="input-group mb-3">
                                     <select
                                         {...formik.getFieldProps("autoShift")}
-                                        className={`form-select form-select-sm  ${formik.touched.autoShift && formik.errors.autoShift
+                                        className={`form-select form-select-sm ${formik.touched.autoShift && formik.errors.autoShift
                                             ? "is-invalid"
                                             : ""
                                             }`}
+                                        disabled={!isCheckboxChecked3}
                                     >
-                                        <option selected></option>
+                                        <option value="" selected disabled>
+                                            Select
+                                        </option>
                                         <option value="None">None</option>
                                         <option value="One">One</option>
                                     </select>
-                                    {formik.touched.autoShift && formik.errors.autoShift && (
-                                        <div className="invalid-feedback">
-                                            {formik.errors.autoShift}
-                                        </div>
-                                    )}
                                 </div>
                             </div>
+                            {commonError && <div className="text-danger">{commonError}</div>}
                         </div>
                     </div>
                 </div>

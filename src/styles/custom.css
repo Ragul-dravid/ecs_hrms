@@ -370,31 +370,39 @@ svg polygon {
 
 .admin-main-content {
   display: flex;
-  flex: 1; /* Make it take up the full height */
+  flex: 1;
+  /* Make it take up the full height */
 }
 
 .admin-header {
-  flex-shrink: 0; /* Keep the header size fixed */
+  flex-shrink: 0;
+  /* Keep the header size fixed */
 }
 
 .admin-sidebar {
-  width: 250px; /* Fixed width for sidebar */
+  width: 250px;
+  /* Fixed width for sidebar */
   flex-shrink: 0;
-  background-color: #f8f9fa; /* Optional: Sidebar background color */
+  background-color: #f8f9fa;
+  /* Optional: Sidebar background color */
 }
 
 .admin-main-routes {
-  flex-grow: 1; /* This takes up the remaining space */
+  flex-grow: 1;
+  /* This takes up the remaining space */
   padding: 20px;
-  background-color: #ffffff; /* Optional: Main content background */
+  background-color: #ffffff;
+  /* Optional: Main content background */
   overflow-y: hidden;
 }
 
 /* Optional: Styling for sidebar */
 .admin-sidebar {
-  position: fixed; /* Make sidebar fixed */
+  position: fixed;
+  /* Make sidebar fixed */
   left: 0;
-  top: 80px; /* Adjust according to the height of your header */
+  top: 80px;
+  /* Adjust according to the height of your header */
   bottom: 0;
   overflow-y: auto;
 }
@@ -402,9 +410,12 @@ svg polygon {
 /* Optional: Styling for header */
 .admin-header {
   width: 100%;
-  height: 80px; /* Fixed height for header */
-  background-color: #343a40; /* Adjust the background color as needed */
-  color: white; /* Adjust text color */
+  height: 80px;
+  /* Fixed height for header */
+  background-color: #343a40;
+  /* Adjust the background color as needed */
+  color: white;
+  /* Adjust text color */
 }
 
 /* Badges Custom Colors */
@@ -445,12 +456,14 @@ svg polygon {
   margin-top: 5px;
   border: none;
   border-radius: 4px;
-  transition: background 0.3s ease; /* Smooth transition */
+  transition: background 0.3s ease;
+  /* Smooth transition */
 }
 
 .btn-dashbord:hover {
-  background: linear-gradient(135deg, #8c54e8, #a070ff); /* Slightly darker gradient on hover */
-  color: white; 
+  background: linear-gradient(135deg, #8c54e8, #a070ff);
+  /* Slightly darker gradient on hover */
+  color: white;
 }
 
 .btn-dashbord.active {
@@ -471,15 +484,17 @@ svg polygon {
     margin-top: 5px;
     border: none;
     border-radius: 4px;
-    transition: background 0.3s ease; /* Smooth transition */
+    transition: background 0.3s ease;
+    /* Smooth transition */
     margin-left: 30px;
   }
 
   .btn-dashbord:hover {
-    background: linear-gradient(135deg, #8c54e8, #a070ff); /* Slightly darker gradient on hover */
-    color: white; 
+    background: linear-gradient(135deg, #8c54e8, #a070ff);
+    /* Slightly darker gradient on hover */
+    color: white;
   }
-  
+
   .btn-dashbord.active {
     background: linear-gradient(135deg, #a070ff, #b987ff);
     color: white;
@@ -530,6 +545,7 @@ svg polygon {
 .custom-input:focus {
   border-bottom: 2px solid #007bff;
 }
+
 .step-container {
   position: relative;
 }
@@ -547,7 +563,8 @@ svg polygon {
   border-radius: 4px;
   padding: 5px;
   position: absolute;
-  bottom: 150%; /* Adjust tooltip position */
+  bottom: 150%;
+  /* Adjust tooltip position */
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
@@ -562,15 +579,21 @@ svg polygon {
 }
 
 .custom-close-btn {
-  color: #007bff; /* Set your desired color */
-  font-size: 0.8rem; /* Set small size */
-  box-shadow: none !important; /* Remove shadow */
-  background-color: transparent; /* Ensure background is transparent */
-  border: none; /* Remove any border */
+  color: #007bff;
+  /* Set your desired color */
+  font-size: 0.8rem;
+  /* Set small size */
+  box-shadow: none !important;
+  /* Remove shadow */
+  background-color: transparent;
+  /* Ensure background is transparent */
+  border: none;
+  /* Remove any border */
 }
 
 .custom-close-btn:hover {
-  color: #0056b3; /* Optional hover effect */
+  color: #0056b3;
+  /* Optional hover effect */
 }
 
 .bg-fc td {
@@ -580,6 +603,7 @@ svg polygon {
 .bg-fc td:hover {
   background-color: whitesmoke !important;
 }
+
 .file-link {
   color: black;
   font-size: 12px;
@@ -591,20 +615,52 @@ svg polygon {
 }
 
 .file-icon:hover {
-  color: #007bff; 
+  color: #007bff;
 }
 
 .table-bordered {
   width: 100%;
-  text-align: center; /* Center align all text by default */
-  border-collapse: collapse; /* Ensure borders collapse for cleaner lines */
+  text-align: center;
+  /* Center align all text by default */
+  border-collapse: collapse;
+  /* Ensure borders collapse for cleaner lines */
 }
 
-.table-bordered th, 
+.table-bordered th,
 .table-bordered td {
-  text-align: center; /* Center-align content */
-  vertical-align: middle; /* Vertically align text in the middle */
-  border: 1px solid #a9a9a9; /* Add border styling */
-  padding: 10px; /* Add padding for better spacing */
+  text-align: center;
+  /* Center-align content */
+  vertical-align: middle;
+  /* Vertically align text in the middle */
+  border: 1px solid #a9a9a9;
+  /* Add border styling */
+  padding: 10px;
+  /* Add padding for better spacing */
   background: none;
+}
+
+/* Material React Table */
+.css-11yrv3u-MuiTableRow-root td {
+  font-size: 12px !important;
+  padding: 15px 20px !important;
+}
+
+/* table */
+
+.MuiTableBody-root tr td {
+  padding: 7px 20px !important;
+  font-family: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji" !important;
+}
+
+.MuiTableBody-root tr:hover td::after {
+  background-color: #f7f7f7 !important;
+}
+
+.MuiTableHead-root tr th {
+  background-color: #ffffff !important;
+  font-family: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji" !important;
+  border-top: 1px solid#b5b5b5 !important;
+  border-bottom: 1px solid#b5b5b5 !important;
 }

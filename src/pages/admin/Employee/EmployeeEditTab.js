@@ -1,13 +1,19 @@
 import React, { useState } from "react";
-import EmpQualificationDetailsEdit from "./EditEmployee/EmpQualificationDetailsEdit";
-import EmpExperienceEdit from "./EditEmployee/EmpExperienceEdit";
-import EmpBankAccountEdit from "./EditEmployee/EmpBankAccountEdit";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import GeneralDetailsEdit from "./EditEmployeeTab/GeneralDetailsEdit";
 import EtmsEdit from "./EditEmployeeTab/EtmsEdit";
+import EleaveEdit from "./EditEmployeeTab/EleaveEdit";
+import EclaimEdit from "./EditEmployeeTab/EclaimEdit";
+import Basic from "./EditEmployeeTab/Epayroll/Basic";
+import Additional from "./EditEmployeeTab/Epayroll/Additional";
+import Personal from "./EditEmployeeTab/Epayroll/Personal";
+import EmploymentHistory from "./EditEmployeeTab/Epayroll/EmploymentHistory";
+import EmployementEducation from "./EditEmployeeTab/Epayroll/EmployementEducation";
+import CustomFields from "./EditEmployeeTab/Epayroll/CustomFields";
 
 function EmployeeEdit() {
     const [activeTab, setActiveTab] = useState("tab1");
+    const [activeSubTab, setActiveSubTab] = useState("subTab1");
     const [loadIndicator, setLoadIndicator] = useState(false);
 
     return (
@@ -101,6 +107,141 @@ function EmployeeEdit() {
                         </button>
                     </li>
                 </ul>
+                {activeTab === "tab4" && (
+                    <div>
+                        <ul className="nav">
+                            <li className="nav-item">
+                                <button
+                                    className={`nav-link ${activeSubTab === "subTab1" ? "active" : ""
+                                        }`}
+                                    onClick={() => setActiveSubTab("subTab1")}
+                                    style={{
+                                        borderBottom:
+                                            activeSubTab === "subTab1"
+                                                ? "3px solid #a070ff"
+                                                : "none",
+                                        borderRadius: "0px",
+                                    }}
+                                >
+                                    BASIC
+                                </button>
+                            </li>
+                            <li className="nav-item">
+                                <button
+                                    className={`nav-link ${activeSubTab === "subTab2" ? "active" : ""
+                                        }`}
+                                    onClick={() => setActiveSubTab("subTab2")}
+                                    style={{
+                                        borderBottom:
+                                            activeSubTab === "subTab2"
+                                                ? "3px solid #a070ff"
+                                                : "none",
+                                        borderRadius: "0px",
+                                    }}
+                                >
+                                    ADDITIONAL
+                                </button>
+                            </li>
+                            <li className="nav-item">
+                                <button
+                                    className={`nav-link ${activeSubTab === "subTab3" ? "active" : ""
+                                        }`}
+                                    onClick={() => setActiveSubTab("subTab3")}
+                                    style={{
+                                        borderBottom:
+                                            activeSubTab === "subTab3"
+                                                ? "3px solid #a070ff"
+                                                : "none",
+                                        borderRadius: "0px",
+                                    }}
+                                >
+                                    PERSONAL
+                                </button>
+                            </li>
+                            <li className="nav-item">
+                                <button
+                                    className={`nav-link ${activeSubTab === "subTab4" ? "active" : ""
+                                        }`}
+                                    onClick={() => setActiveSubTab("subTab4")}
+                                    style={{
+                                        borderBottom:
+                                            activeSubTab === "subTab4"
+                                                ? "3px solid #a070ff"
+                                                : "none",
+                                        borderRadius: "0px",
+                                    }}
+                                >
+                                    EMPLOYEMENT HISTORY
+                                </button>
+                            </li>
+                            <li className="nav-item">
+                                <button
+                                    className={`nav-link ${activeSubTab === "subTab5" ? "active" : ""
+                                        }`}
+                                    onClick={() => setActiveSubTab("subTab5")}
+                                    style={{
+                                        borderBottom:
+                                            activeSubTab === "subTab5"
+                                                ? "3px solid #a070ff"
+                                                : "none",
+                                        borderRadius: "0px",
+                                    }}
+                                >
+                                    EMPLOYEMENT EDUCATION
+                                </button>
+                            </li>
+                            <li className="nav-item">
+                                <button
+                                    className={`nav-link ${activeSubTab === "subTab6" ? "active" : ""
+                                        }`}
+                                    onClick={() => setActiveSubTab("subTab6")}
+                                    style={{
+                                        borderBottom:
+                                            activeSubTab === "subTab6"
+                                                ? "3px solid #a070ff"
+                                                : "none",
+                                        borderRadius: "0px",
+                                    }}
+                                >
+                                    CUSTOM FIELDS
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div className="tab-content">
+                            {activeSubTab === "subTab1" && (
+                                <div>
+                                    <Basic />
+                                </div>
+                            )}
+                            {activeSubTab === "subTab2" && (
+                                <div>
+                                    <Additional />
+                                </div>
+                            )}
+                            {activeSubTab === "subTab3" && (
+                                <div>
+                                    <Personal />
+                                </div>
+                            )}
+                            {activeSubTab === "subTab4" && (
+                                <div>
+                                    <EmploymentHistory />
+                                </div>
+                            )}
+                            {activeSubTab === "subTab5" && (
+                                <div>
+                                    <EmployementEducation />
+                                </div>
+                            )}
+                            {activeSubTab === "subTab6" && (
+                                <div>
+                                    <CustomFields />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
                 <div className="tab-content container-fluid my-3">
                     {activeTab === "tab1" && (
                         <GeneralDetailsEdit
@@ -113,22 +254,17 @@ function EmployeeEdit() {
                         />
                     )}
                     {activeTab === "tab3" && (
-                        <EmpQualificationDetailsEdit
-                            setLoadIndicators={setLoadIndicator}
-                        />
-                    )}
-                    {activeTab === "tab4" && (
-                        <EmpExperienceEdit
+                        <EleaveEdit
                             setLoadIndicators={setLoadIndicator}
                         />
                     )}
                     {activeTab === "tab5" && (
-                        <EmpBankAccountEdit
+                        <EclaimEdit
                             setLoadIndicators={setLoadIndicator}
                         />
                     )}
                 </div>
-                
+
             </div>
         </div>
     );

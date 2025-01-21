@@ -107,6 +107,7 @@ import HolidayGroupAdd from "../pages/admin/Holidays/HolidayGroup/HolidayGroupAd
 import HolidayGroup from "../pages/admin/Holidays/HolidayGroup/HolidayGroup.js";
 import HolidayGroupEdit from "../pages/admin/Holidays/HolidayGroup/HolidayGroupEdit.js";
 import AssignHoliday from "../pages/admin/Holidays/AssignHoliday/AssignHoliday.js";
+import AdditionalMasterSetup from "../pages/admin/AdditionalMaster/AdditionalMasterSetup.js";
 function Admin({ handleLogout }) {
   return (
     <div>
@@ -188,6 +189,10 @@ function Admin({ handleLogout }) {
                     path="/desiginationGroup/edit/:id"
                     element={<DesiginationGroupEdit />}
                   />
+
+                  {/* Additional Master Setup */}
+                  <Route path="/additionalMasterSetup" element={<AdditionalMasterSetup />} />
+
 
                   <Route path="/bank" element={<Bank />} />
                   <Route path="/bank/add" element={<BankAdd />} />
