@@ -1,44 +1,46 @@
-import { useEffect, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
+import { useState, useEffect } from "react";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../../../config/URL";
+import { BiEditAlt } from "react-icons/bi";
 
-function RaceAdd({ onSuccess }) {
+const NonPayableAllowanceEdit = ({ id, onSuccess, handleMenuClose }) => {
   const [show, setShow] = useState(false);
-  const navigate = useNavigate();
   const [loadIndicator, setLoadIndicator] = useState(false);
   const userName = localStorage.getItem("userName");
   const [isModified, setIsModified] = useState(false);
 
   const handleClose = () => {
     setShow(false);
+    handleMenuClose();
     formik.resetForm();
   };
 
   const handleShow = () => {
+    getData();
     setShow(true);
     setIsModified(false);
   };
 
   const validationSchema = yup.object().shape({
-    raceCode: yup.string().required("*Race Code is required"),
-    raceName: yup.string().required("*Race Name is required"),
+    nonPayableCode: yup.string().required("*Non Payable Code is required"),
+    nonPayableName: yup.string().required("*Non Payable Name is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      raceCode: "",
-      raceName: "",
-      createdBy: userName,
+      nonPayableCode: "",
+      nonPayableName: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
-      values.createdBy = userName;
+      values.updatedBy = userName;
       try {
         const response = await api.post("/createCourseSubject", values, {
           headers: {
@@ -71,62 +73,65 @@ function RaceAdd({ onSuccess }) {
     },
   });
 
+  const getData = async () => {
+    try {
+      const response = await api.get(`/getAllCourseSubjectsById/${id}`);
+      formik.setValues(response.data);
+    } catch (error) {
+      console.error("Error fetching data ", error);
+    }
+  };
+
   return (
     <>
-      <div className="d-flex justify-content-end mb-3">
-        <button
-          type="button"
-          className="btn btn-sm btn-button btn-primary mx-2 my-2"
-          onClick={handleShow}
-        >
-          &nbsp; Add &nbsp;&nbsp; <i className="bx bx-plus"></i>
-        </button>
-      </div>
-
-      <Modal
-        show={show}
-        onHide={handleClose}
-        size="lg"
-        aria-labelledby="contained-model-title-vcenter"
-        centered
-        backdrop={isModified ? "static" : true}
-        keyboard={isModified ? false : true}
+      <p
+        className="text-start mb-0 menuitem-style"
+        onClick={handleShow}
+        style={{
+          whiteSpace: "nowrap",
+          width: "100%",
+        }}
       >
+        <BiEditAlt style={{ marginRight: "8px" }} />
+        Edit
+      </p>
+
+      <Dialog open={show} onClose={handleClose} fullWidth maxWidth="md">
         <form
           onSubmit={formik.handleSubmit}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !formik.isSubmitting) {
-              e.preventDefault(); // Prevent default form submission
+              e.preventDefault();
             }
           }}
         >
-          <Modal.Header closeButton>
-            <Modal.Title className="headColor">Add Race</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+          <DialogTitle>Edit Race</DialogTitle>
+          <DialogContent>
             <div className="container">
               <div className="row py-4">
                 <div className="col-md-6 col-12 mb-2">
                   <label className="form-label">
-                    Race Code<span className="text-danger">*</span>
+                    Code<span className="text-danger">*</span>
                   </label>
                   <div className="input-group mb-3">
                     <input
                       type="text"
                       className={`form-control   ${
-                        formik.touched.raceCode && formik.errors.raceCode
+                        formik.touched.nonPayableCode &&
+                        formik.errors.nonPayableCode
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="raceCode"
+                      aria-label="nonPayableCode"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("raceCode")}
+                      {...formik.getFieldProps("nonPayableCode")}
                     />
-                    {formik.touched.raceCode && formik.errors.raceCode && (
-                      <div className="invalid-feedback">
-                        {formik.errors.raceCode}
-                      </div>
-                    )}
+                    {formik.touched.nonPayableCode &&
+                      formik.errors.nonPayableCode && (
+                        <div className="invalid-feedback">
+                          {formik.errors.nonPayableCode}
+                        </div>
+                      )}
                   </div>
                 </div>
                 <div className="col-md-6 col-12 mb-2">
@@ -137,25 +142,27 @@ function RaceAdd({ onSuccess }) {
                     <input
                       type="text"
                       className={`form-control   ${
-                        formik.touched.raceName && formik.errors.raceName
+                        formik.touched.nonPayableName &&
+                        formik.errors.nonPayableName
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="raceName"
+                      aria-label="nonPayableName"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("raceName")}
+                      {...formik.getFieldProps("nonPayableName")}
                     />
-                    {formik.touched.raceName && formik.errors.raceName && (
-                      <div className="invalid-feedback">
-                        {formik.errors.raceName}
-                      </div>
-                    )}
+                    {formik.touched.nonPayableName &&
+                      formik.errors.nonPayableName && (
+                        <div className="invalid-feedback">
+                          {formik.errors.nonPayableName}
+                        </div>
+                      )}
                   </div>
                 </div>
               </div>
             </div>
-          </Modal.Body>
-          <Modal.Footer>
+          </DialogContent>
+          <DialogActions>
             <button
               type="button"
               className="btn btn-sm btn-border bg-light text-dark"
@@ -163,24 +170,24 @@ function RaceAdd({ onSuccess }) {
             >
               Cancel
             </button>
-            <Button
+            <button
               type="submit"
-              className="btn btn-button btn-sm"
+              className="btn btn-sm btn-button btn-primary"
               disabled={loadIndicator}
             >
               {loadIndicator && (
                 <span
-                  className="spinner-border spinner-border-sm me-2"
+                  className="spinner-border spinner-border-sm me-2 "
                   aria-hidden="true"
                 ></span>
               )}
-              Submit
-            </Button>
-          </Modal.Footer>
+              Update
+            </button>
+          </DialogActions>
         </form>
-      </Modal>
+      </Dialog>
     </>
   );
-}
+};
 
-export default RaceAdd;
+export default NonPayableAllowanceEdit;

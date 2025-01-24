@@ -108,6 +108,14 @@ import HolidayGroup from "../pages/admin/Holidays/HolidayGroup/HolidayGroup.js";
 import HolidayGroupEdit from "../pages/admin/Holidays/HolidayGroup/HolidayGroupEdit.js";
 import AssignHoliday from "../pages/admin/Holidays/AssignHoliday/AssignHoliday.js";
 import AdditionalMasterSetup from "../pages/admin/AdditionalMaster/AdditionalMasterSetup.js";
+import AllowanceDeduction from "../pages/admin/AllowanceDeductibleSetups/AllowanceDeduction.js";
+import PayableDeductible from "../pages/admin/AllowanceDeductibleSetups/PayableDeductible/PayableDeductible.js";
+import NonPayableAllowance from "../pages/admin/AllowanceDeductibleSetups/NonPayableAllowance/NonPayableAllowance.js";
+import ActiveAndInActive from "../pages/admin/AllowanceDeductibleSetups/ActiveAndInActiveAllowance/ActiveAndInActive.js";
+import PayableDeductibleAdd from "../pages/admin/AllowanceDeductibleSetups/PayableDeductible/PayableDeductibleAdd.js";
+import PayableDeductibleEdit from "../pages/admin/AllowanceDeductibleSetups/PayableDeductible/PayableDeductibleEdit.js";
+import NonPayableAllowanceAdd from "../pages/admin/AllowanceDeductibleSetups/NonPayableAllowance/NonPayableAllowanceAdd.js";
+import NonPayableAllowanceEdit from "../pages/admin/AllowanceDeductibleSetups/NonPayableAllowance/NonPayableAllowanceEdit.js";
 function Admin({ handleLogout }) {
   return (
     <div>
@@ -192,6 +200,17 @@ function Admin({ handleLogout }) {
 
                   {/* Additional Master Setup */}
                   <Route path="/additionalMasterSetup" element={<AdditionalMasterSetup />} />
+
+                  {/* Allowances Deduction Setup */} 
+                  <Route path="/allowancesDeductionSetup" element={<AllowanceDeduction />} />
+                  <Route path="/payableDeductionAllowances" element={<PayableDeductible />} />
+                  <Route path="/payableDeductionAllowancesAdd" element={<PayableDeductibleAdd />} />
+                  <Route path="/payableDeductionAllowancesEdit" element={<PayableDeductibleEdit />} />
+
+                  <Route path="/nonPayableAllowances" element={<NonPayableAllowance />} />
+                  <Route path="/nonPayableAllowancesAdd" element={<NonPayableAllowanceAdd />} />
+                  <Route path="/nonPayableAllowancesEdit" element={<NonPayableAllowanceEdit />} />
+                  <Route path="/activeAndInAtive" element={<ActiveAndInActive />} />
 
 
                   <Route path="/bank" element={<Bank />} />

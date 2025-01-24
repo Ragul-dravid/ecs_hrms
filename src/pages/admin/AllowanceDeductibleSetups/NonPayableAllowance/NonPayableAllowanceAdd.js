@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../../../config/URL";
 
-function RaceAdd({ onSuccess }) {
+const NonPayableAllowanceAdd = ({onSuccess}) => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const [loadIndicator, setLoadIndicator] = useState(false);
@@ -25,14 +25,14 @@ function RaceAdd({ onSuccess }) {
   };
 
   const validationSchema = yup.object().shape({
-    raceCode: yup.string().required("*Race Code is required"),
-    raceName: yup.string().required("*Race Name is required"),
+    nonPayableCode: yup.string().required("*Non Payable Code is required"),
+    nonPayableName: yup.string().required("*Non Payable Name is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      raceCode: "",
-      raceName: "",
+      nonPayableCode: "",
+      nonPayableName: "",
       createdBy: userName,
     },
     validationSchema: validationSchema,
@@ -108,25 +108,27 @@ function RaceAdd({ onSuccess }) {
               <div className="row py-4">
                 <div className="col-md-6 col-12 mb-2">
                   <label className="form-label">
-                    Race Code<span className="text-danger">*</span>
+                    Code<span className="text-danger">*</span>
                   </label>
                   <div className="input-group mb-3">
                     <input
                       type="text"
                       className={`form-control   ${
-                        formik.touched.raceCode && formik.errors.raceCode
+                        formik.touched.nonPayableCode &&
+                        formik.errors.nonPayableCode
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="raceCode"
+                      aria-label="nonPayableCode"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("raceCode")}
+                      {...formik.getFieldProps("nonPayableCode")}
                     />
-                    {formik.touched.raceCode && formik.errors.raceCode && (
-                      <div className="invalid-feedback">
-                        {formik.errors.raceCode}
-                      </div>
-                    )}
+                    {formik.touched.nonPayableCode &&
+                      formik.errors.nonPayableCode && (
+                        <div className="invalid-feedback">
+                          {formik.errors.nonPayableCode}
+                        </div>
+                      )}
                   </div>
                 </div>
                 <div className="col-md-6 col-12 mb-2">
@@ -137,19 +139,21 @@ function RaceAdd({ onSuccess }) {
                     <input
                       type="text"
                       className={`form-control   ${
-                        formik.touched.raceName && formik.errors.raceName
+                        formik.touched.nonPayableName &&
+                        formik.errors.nonPayableName
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="raceName"
+                      aria-label="nonPayableName"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("raceName")}
+                      {...formik.getFieldProps("nonPayableName")}
                     />
-                    {formik.touched.raceName && formik.errors.raceName && (
-                      <div className="invalid-feedback">
-                        {formik.errors.raceName}
-                      </div>
-                    )}
+                    {formik.touched.nonPayableName &&
+                      formik.errors.nonPayableName && (
+                        <div className="invalid-feedback">
+                          {formik.errors.nonPayableName}
+                        </div>
+                      )}
                   </div>
                 </div>
               </div>
@@ -181,6 +185,6 @@ function RaceAdd({ onSuccess }) {
       </Modal>
     </>
   );
-}
+};
 
-export default RaceAdd;
+export default NonPayableAllowanceAdd;
