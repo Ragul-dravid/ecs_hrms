@@ -10,21 +10,12 @@ import {
   IconButton,
 } from "@mui/material";
 import { MoreVert as MoreVertIcon } from "@mui/icons-material";
-import { toast } from "react-toastify";
-import DeleteModel from "../../../components/admin/DeleteModel";
-import { MdEdit } from "react-icons/md";
-import { BiEditAlt } from "react-icons/bi";
+
 import GlobalDelete from "../../../components/admin/GlobalDelete";
 import DesiginationGroupAdd from "./DesiginationGroupAdd";
 import DesiginationGroupEdit from "./DesiginationGroupEdit";
 
 const DesiginationGroup = ({ handleCenterChanged }) => {
-  const [filters, setFilters] = useState({
-    centerName: "",
-    centerCode: "",
-    email: "",
-    centerManagerId: "",
-  });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [menuAnchor, setMenuAnchor] = useState(null);
@@ -63,58 +54,16 @@ const DesiginationGroup = ({ handleCenterChanged }) => {
         ),
       },
       {
-        accessorKey: "departmentCode",
+        accessorKey: "desiginationCode",
         enableHiding: false,
         header: "EXTRA CLASSIFICATION CODE",
       },
       {
-        accessorKey: "departmentName",
+        accessorKey: "desiginationName",
         enableHiding: false,
         header: "EXTRA CLASSIFICATION NAME",
       },
-      // {
-      //   accessorKey: "email",
-      //   header: "EMPLOYEE EMAIL",
-      //   enableHiding: false,
-      //   size: 40,
-      // },
-      // {
-      //   accessorKey: "empDateOfJoin",
-      //   header: "JOINING DATE",
-      //   enableHiding: false,
-      //   size: 50,
-      // },
-      // {
-      //   accessorKey: "section",
-      //   header: "SECTION",
-      //   enableHiding: false,
-      //   size: 50,
-      // },
-      // {
-      //   accessorKey: "empDesignation",
-      //   enableHiding: false,
-      //   header: "DESIGINATION",
-      // },
-      // {
-      //   accessorKey: "gender",
-      //   enableHiding: false,
-      //   header: "GENDER",
-      // },
-      // {
-      //   accessorKey: "resignDate",
-      //   enableHiding: false,
-      //   header: "RESIGN DATE",
-      // },
-      // { accessorKey: "address", header: "Address" },
-      // { accessorKey: "invoiceNotes", header: "Invoice Notes" },
-      // { accessorKey: "openingDate", header: "Opening Date" },
-      // { accessorKey: "bankAccountName", header: "Bank A/C Name" },
-      // { accessorKey: "bankAccountNumber", header: "Bank A/C Number" },
-      // { accessorKey: "bankBranch", header: "Bank Branch" },
-      // { accessorKey: "bankName", header: "Bank Name" },
-      // { accessorKey: "gst", header: "GST" },
-      // { accessorKey: "taxRegistrationNumber", header: "Tax Reg Number" },
-      // { accessorKey: "zipCode", header: "Zip Code" },
+
       { accessorKey: "createdBy", header: "CREATED BY" },
       {
         accessorKey: "createdDate",
@@ -135,18 +84,6 @@ const DesiginationGroup = ({ handleCenterChanged }) => {
     []
   );
 
-  // const fetchData = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const queryParams = new URLSearchParams(filters).toString();
-  //     const response = await api.get(`/getCenterWithCustomInfo?${queryParams}`);
-  //     setData(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const getData = async () => {
     try {
       const response = await api.get(`emp-reg-details-by-companyId/${cmpId}`);
@@ -205,114 +142,13 @@ const DesiginationGroup = ({ handleCenterChanged }) => {
     },
   });
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
-  };
-
-  const clearFilter = () => {
-    setFilters({
-      centerName: "",
-      centerCode: "",
-      email: "",
-      centerManagerId: "",
-    });
-  };
-
   const handleMenuClose = () => setMenuAnchor(null);
 
   return (
     <div className="container-fluid px-2 my-4 center">
-      {/* <ol
-        className="breadcrumb my-3"
-        style={{ listStyle: "none", padding: 0, margin: 0 }}
-      >
-        <li>
-          <Link to="/" className="custom-breadcrumb">
-            Home
-          </Link>
-          <span className="breadcrumb-separator"> &gt; </span>
-        </li>
-        <li>
-          &nbsp;Master
-          <span className="breadcrumb-separator"> &gt; </span>
-        </li>
-        <li className="breadcrumb-item active" aria-current="page">
-          &nbsp;Employee Basic Details
-        </li>
-      </ol> */}
       <div className="card">
-        {/* <div
-          className="mb-3 d-flex justify-content-between align-items-center p-1"
-          style={{ background: "#f5f7f9" }}
-        >
-          <span className="text-muted">
-            <strong className="table-headings">Staff Details</strong>
-          </span>
-        </div> */}
         <div className="mb-3 d-flex justify-content-between">
-          <div className="individual_fliters d-lg-flex ">
-            {/* <div className="form-group mb-0 ms-2 mb-1">
-              <input
-                type="text"
-                name="centerName"
-                value={filters.centerName}
-                onChange={handleFilterChange}
-                className="form-control form-control-sm center_list"
-                style={{ width: "160px" }}
-                placeholder="Centre Name"
-                autoComplete="off"
-              />
-            </div>
-            <div className="form-group mb-0 ms-2 mb-1">
-              <input
-                type="text"
-                name="centerCode"
-                value={filters.centerCode}
-                onChange={handleFilterChange}
-                className="form-control form-control-sm center_list"
-                style={{ width: "160px" }}
-                placeholder="Code"
-                autoComplete="off"
-              />
-            </div>
-            <div className="form-group mb-0 ms-2 mb-1">
-              <input
-                type="text"
-                name="email"
-                value={filters.email}
-                onChange={handleFilterChange}
-                className="form-control form-control-sm center_list"
-                style={{ width: "160px" }}
-                placeholder="Email"
-                autoComplete="off"
-              />
-            </div> */}
-            {/* <div className="form-group mb-0 ms-2 mb-1">
-              <select
-                name="centerManagerId"
-                value={filters.centerManagerId}
-                onChange={handleFilterChange}
-                className="form-select form-select-sm center_list"
-                style={{ width: "100%" }}
-              >
-                <option value="">Select Employee Type</option>
-                <option value="active">Active Employee</option>
-                <option value="resigned">Resigned Employee</option>
-                <option value="all">All Employee</option>
-              </select>
-            </div> */}
-
-            {/* <div className="form-group mb-2 ms-2">
-              <button
-                type="button"
-                onClick={clearFilter}
-                className="btn btn-sm btn-border"
-              >
-                Clear
-              </button>
-            </div> */}
-          </div>
+          <div className="individual_fliters d-lg-flex "></div>
           <span>
             <DesiginationGroupAdd />
           </span>

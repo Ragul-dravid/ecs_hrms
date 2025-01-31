@@ -11,12 +11,13 @@ import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import api from "../../../config/URL";
 import { BiEditAlt } from "react-icons/bi";
+import { IconButton } from "@mui/material";
+import { Close } from "@mui/icons-material";
 
 function BasicCategoryEdit({ id, onSuccess, handleMenuClose }) {
   const [show, setShow] = useState(false);
   const [loadIndicator, setLoadIndicator] = useState(false);
   const userName = localStorage.getItem("userName");
-  const [isModified, setIsModified] = useState(false);
 
   const handleClose = () => {
     setShow(false);
@@ -25,14 +26,12 @@ function BasicCategoryEdit({ id, onSuccess, handleMenuClose }) {
   };
 
   const handleShow = () => {
-    getData();
     setShow(true);
-    setIsModified(false);
   };
 
   const validationSchema = yup.object().shape({
-    departmentCode: yup.string().required("*Subject is required"),
-    departmentName: yup.string().required("*Code is required"),
+    categoryCode: yup.string().required("*Category Code is required"),
+    categoryName: yup.string().required("*Category Name is required"),
   });
 
   const formik = useFormik({
@@ -44,6 +43,8 @@ function BasicCategoryEdit({ id, onSuccess, handleMenuClose }) {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
+      console.log("Form", values);
+
       values.updatedBy = userName;
       try {
         const response = await api.put(`/updateCourseSubject/${id}`, values, {
@@ -67,27 +68,7 @@ function BasicCategoryEdit({ id, onSuccess, handleMenuClose }) {
     enableReinitialize: true,
     validateOnChange: true,
     validateOnBlur: true,
-    validate: (values) => {
-      if (
-        Object.values(values).some(
-          (value) => typeof value === "string" && value.trim() !== ""
-        )
-      ) {
-        setIsModified(true);
-      } else {
-        setIsModified(false);
-      }
-    },
   });
-
-  const getData = async () => {
-    try {
-      const response = await api.get(`/getAllCourseSubjectsById/${id}`);
-      formik.setValues(response.data);
-    } catch (error) {
-      console.error("Error fetching data ", error);
-    }
-  };
 
   return (
     <>
@@ -112,7 +93,21 @@ function BasicCategoryEdit({ id, onSuccess, handleMenuClose }) {
             }
           }}
         >
-          <DialogTitle>Edit Category</DialogTitle>
+          <DialogTitle
+            className="headColor"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span>
+              Edit Category &nbsp;&nbsp; <i className="bx bx-plus"></i>
+            </span>
+            <IconButton onClick={handleClose} size="small">
+              <Close />
+            </IconButton>
+          </DialogTitle>{" "}
           <DialogContent>
             <div className="container">
               <div className="row py-4">
@@ -124,19 +119,21 @@ function BasicCategoryEdit({ id, onSuccess, handleMenuClose }) {
                     <input
                       onKeyDown={(e) => e.stopPropagation()}
                       type="text"
-                      className={`form-control   ${
-                        formik.touched.subject && formik.errors.subject
+                      className={`form-control form-control-sm   ${
+                        formik.touched.categoryCode &&
+                        formik.errors.categoryCode
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Subject"
-                      {...formik.getFieldProps("subject")}
+                      aria-label="categoryCode"
+                      {...formik.getFieldProps("categoryCode")}
                     />
-                    {formik.touched.subject && formik.errors.subject && (
-                      <div className="invalid-feedback">
-                        {formik.errors.subject}
-                      </div>
-                    )}
+                    {formik.touched.categoryCode &&
+                      formik.errors.categoryCode && (
+                        <div className="invalid-feedback">
+                          {formik.errors.categoryCode}
+                        </div>
+                      )}
                   </div>
                 </div>
                 <div className="col-md-6 col-12 mb-2">
@@ -147,19 +144,21 @@ function BasicCategoryEdit({ id, onSuccess, handleMenuClose }) {
                     <input
                       type="text"
                       onKeyDown={(e) => e.stopPropagation()}
-                      className={`form-control   ${
-                        formik.touched.code && formik.errors.code
+                      className={`form-control form-control-sm  ${
+                        formik.touched.categoryName &&
+                        formik.errors.categoryName
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Code"
-                      {...formik.getFieldProps("code")}
+                      aria-label="categoryName"
+                      {...formik.getFieldProps("categoryName")}
                     />
-                    {formik.touched.code && formik.errors.code && (
-                      <div className="invalid-feedback">
-                        {formik.errors.code}
-                      </div>
-                    )}
+                    {formik.touched.categoryName &&
+                      formik.errors.categoryName && (
+                        <div className="invalid-feedback">
+                          {formik.errors.categoryName}
+                        </div>
+                      )}
                   </div>
                 </div>
               </div>

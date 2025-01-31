@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
-import Button from "react-bootstrap/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { MdOutlineModeEdit } from "react-icons/md";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import api from "../../../../config/URL";
 import { BiEditAlt } from "react-icons/bi";
+import { IconButton } from "@mui/material";
+import { Close } from "@mui/icons-material";
 
 function HolidayGroupEdit({ id, onSuccess, handleMenuClose }) {
   const [show, setShow] = useState(false);
@@ -25,7 +24,6 @@ function HolidayGroupEdit({ id, onSuccess, handleMenuClose }) {
   };
 
   const handleShow = () => {
-    getData();
     setShow(true);
     setIsModified(false);
   };
@@ -44,6 +42,8 @@ function HolidayGroupEdit({ id, onSuccess, handleMenuClose }) {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
+      console.log("Form", values);
+
       values.updatedBy = userName;
       try {
         const response = await api.put(`/updateCourseSubject/${id}`, values, {
@@ -67,27 +67,7 @@ function HolidayGroupEdit({ id, onSuccess, handleMenuClose }) {
     enableReinitialize: true,
     validateOnChange: true,
     validateOnBlur: true,
-    validate: (values) => {
-      if (
-        Object.values(values).some(
-          (value) => typeof value === "string" && value.trim() !== ""
-        )
-      ) {
-        setIsModified(true);
-      } else {
-        setIsModified(false);
-      }
-    },
   });
-
-  const getData = async () => {
-    try {
-      const response = await api.get(`/getAllCourseSubjectsById/${id}`);
-      formik.setValues(response.data);
-    } catch (error) {
-      console.error("Error fetching data ", error);
-    }
-  };
 
   return (
     <>
@@ -112,7 +92,21 @@ function HolidayGroupEdit({ id, onSuccess, handleMenuClose }) {
             }
           }}
         >
-          <DialogTitle>Edit Holiday Group</DialogTitle>
+          <DialogTitle
+            className="headColor"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span>
+              Edit Holiday Group &nbsp;&nbsp; <i className="bx bx-plus"></i>
+            </span>
+            <IconButton onClick={handleClose} size="small">
+              <Close />
+            </IconButton>
+          </DialogTitle>
           <DialogContent>
             <div className="container">
               <div className="row py-4">
@@ -124,19 +118,21 @@ function HolidayGroupEdit({ id, onSuccess, handleMenuClose }) {
                     <input
                       onKeyDown={(e) => e.stopPropagation()}
                       type="text"
-                      className={`form-control   ${
-                        formik.touched.subject && formik.errors.subject
+                      className={`form-control form-control-sm  ${
+                        formik.touched.holidayGroupCode &&
+                        formik.errors.holidayGroupCode
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Subject"
-                      {...formik.getFieldProps("subject")}
+                      aria-label="holidayGroupCode"
+                      {...formik.getFieldProps("holidayGroupCode")}
                     />
-                    {formik.touched.subject && formik.errors.subject && (
-                      <div className="invalid-feedback">
-                        {formik.errors.subject}
-                      </div>
-                    )}
+                    {formik.touched.holidayGroupCode &&
+                      formik.errors.holidayGroupCode && (
+                        <div className="invalid-feedback">
+                          {formik.errors.holidayGroupCode}
+                        </div>
+                      )}
                   </div>
                 </div>
                 <div className="col-md-6 col-12 mb-2">
@@ -147,19 +143,21 @@ function HolidayGroupEdit({ id, onSuccess, handleMenuClose }) {
                     <input
                       type="text"
                       onKeyDown={(e) => e.stopPropagation()}
-                      className={`form-control   ${
-                        formik.touched.code && formik.errors.code
+                      className={`form-control form-control-sm  ${
+                        formik.touched.holidayGroupName &&
+                        formik.errors.holidayGroupName
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Code"
-                      {...formik.getFieldProps("code")}
+                      aria-label="holidayGroupName"
+                      {...formik.getFieldProps("holidayGroupName")}
                     />
-                    {formik.touched.code && formik.errors.code && (
-                      <div className="invalid-feedback">
-                        {formik.errors.code}
-                      </div>
-                    )}
+                    {formik.touched.holidayGroupName &&
+                      formik.errors.holidayGroupName && (
+                        <div className="invalid-feedback">
+                          {formik.errors.holidayGroupName}
+                        </div>
+                      )}
                   </div>
                 </div>
               </div>

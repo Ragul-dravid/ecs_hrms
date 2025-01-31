@@ -4,7 +4,6 @@ import Modal from "react-bootstrap/Modal";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
 import { toast } from "react-toastify";
 import api from "../../../config/URL";
 
@@ -24,18 +23,6 @@ function CarrerSettingAdd({ onSuccess }) {
     setShow(true);
     setIsModified(false);
   };
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
-  // const fetchData = async (levelId) => {
-  //   try {
-  //     const level = await fetchAllLevelsWithIds(levelId);
-  //     setLevelData(level);
-  //   } catch (error) {
-  //     toast.error(error);
-  //   }
-  // };
 
   const validationSchema = yup.object().shape({
     carrerCode: yup.string().required("*Carrer Code is required"),
@@ -44,23 +31,15 @@ function CarrerSettingAdd({ onSuccess }) {
 
   const formik = useFormik({
     initialValues: {
-      departmentCode: "",
-      departmentName: "",
+      carrerCode: "",
+      carrerDescription: "",
       createdBy: userName,
-
-      // levelId: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
-      // let selectedLevelName = "";
-      // console.log(values);
+      console.log("Form", values);
 
-      // levelData.forEach((level) => {
-      //   if (parseInt(values.levelId) === level.id) {
-      //     selectedLevelName = level.levels || "--";
-      //   }
-      // });
       values.createdBy = userName;
       try {
         const response = await api.post("/createCourseSubject", values, {
@@ -94,13 +73,6 @@ function CarrerSettingAdd({ onSuccess }) {
       }
     },
   });
-
-  // const handleLevelChange = (event) => {
-  //   setLevelData(null);
-  //   const levelId = event.target.value;
-  //   formik.setFieldValue("levelId", levelId);
-  //   fetchData(levelId); // Fetch class for the selected center
-  // };
 
   return (
     <>
@@ -144,18 +116,18 @@ function CarrerSettingAdd({ onSuccess }) {
                   <div className="input-group mb-3">
                     <input
                       type="text"
-                      className={`form-control   ${
-                        formik.touched.subject && formik.errors.subject
+                      className={`form-control form-control-sm  ${
+                        formik.touched.carrerCode && formik.errors.carrerCode
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Subject"
+                      aria-label="carrerCode"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("subject")}
+                      {...formik.getFieldProps("carrerCode")}
                     />
-                    {formik.touched.subject && formik.errors.subject && (
+                    {formik.touched.carrerCode && formik.errors.carrerCode && (
                       <div className="invalid-feedback">
-                        {formik.errors.subject}
+                        {formik.errors.carrerCode}
                       </div>
                     )}
                   </div>
@@ -167,50 +139,24 @@ function CarrerSettingAdd({ onSuccess }) {
                   <div className="input-group mb-3">
                     <input
                       type="text"
-                      className={`form-control   ${
-                        formik.touched.code && formik.errors.code
+                      className={`form-control form-control-sm  ${
+                        formik.touched.carrerDescription &&
+                        formik.errors.carrerDescription
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="code"
+                      aria-label="carrerDescription"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("code")}
+                      {...formik.getFieldProps("carrerDescription")}
                     />
-                    {formik.touched.code && formik.errors.code && (
-                      <div className="invalid-feedback">
-                        {formik.errors.code}
-                      </div>
-                    )}
+                    {formik.touched.carrerDescription &&
+                      formik.errors.carrerDescription && (
+                        <div className="invalid-feedback">
+                          {formik.errors.carrerDescription}
+                        </div>
+                      )}
                   </div>
                 </div>
-
-                {/* <div className="col-md-6 col-12 mb-2">
-                  <label className="form-label">
-                    Level<span className="text-danger">*</span>
-                  </label>
-                  <select
-                    {...formik.getFieldProps("levelId")}
-                    class={`form-select  ${
-                      formik.touched.levelId && formik.errors.levelId
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    onChange={handleLevelChange}
-                  >
-                    <option></option>
-                    {levelData &&
-                      levelData.map((level) => (
-                        <option key={level.id} value={level.id}>
-                          {level.levels}
-                        </option>
-                      ))}
-                  </select>
-                  {formik.touched.levelId && formik.errors.levelId && (
-                    <div className="invalid-feedback">
-                      {formik.errors.levelId}
-                    </div>
-                  )}
-                </div> */}
               </div>
             </div>
           </Modal.Body>

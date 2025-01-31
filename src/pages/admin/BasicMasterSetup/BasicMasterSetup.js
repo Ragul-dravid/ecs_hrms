@@ -44,9 +44,6 @@ const BasicMasterSetup = ({ handleCenterChanged }) => {
   const [activeTab, setActiveTab] = useState("tab1");
   const [activeSubTab, setActiveSubTab] = useState("subTab1");
 
-  //   const { id } = useParams();
-  const [data, setData] = useState({});
-
   const columns = useMemo(
     () => [
       {
@@ -116,16 +113,7 @@ const BasicMasterSetup = ({ handleCenterChanged }) => {
         enableHiding: false,
         header: "RESIGN DATE",
       },
-      // { accessorKey: "address", header: "Address" },
-      // { accessorKey: "invoiceNotes", header: "Invoice Notes" },
-      // { accessorKey: "openingDate", header: "Opening Date" },
-      // { accessorKey: "bankAccountName", header: "Bank A/C Name" },
-      // { accessorKey: "bankAccountNumber", header: "Bank A/C Number" },
-      // { accessorKey: "bankBranch", header: "Bank Branch" },
-      // { accessorKey: "bankName", header: "Bank Name" },
-      // { accessorKey: "gst", header: "GST" },
-      // { accessorKey: "taxRegistrationNumber", header: "Tax Reg Number" },
-      // { accessorKey: "zipCode", header: "Zip Code" },
+
       { accessorKey: "createdBy", header: "Created By" },
       {
         accessorKey: "createdDate",
@@ -146,19 +134,6 @@ const BasicMasterSetup = ({ handleCenterChanged }) => {
     []
   );
 
-  // const fetchData = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const queryParams = new URLSearchParams(filters).toString();
-  //     const response = await api.get(`/getCenterWithCustomInfo?${queryParams}`);
-  //     setData(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   useEffect(() => {
     const getData = async () => {
       try {
@@ -172,16 +147,6 @@ const BasicMasterSetup = ({ handleCenterChanged }) => {
     };
     getData();
   }, []);
-
-  // const handleMainTabClick = (tab) => {
-  //   setActiveTab(tab);
-
-  //   if (tab === "tab1") {
-  //     setSubActiveTab("tabA");
-  //   } else if (tab === "tab2") {
-  //     setSubActiveTab("tabB");
-  //   }
-  // };
 
   const theme = createTheme({
     components: {
@@ -227,20 +192,6 @@ const BasicMasterSetup = ({ handleCenterChanged }) => {
     },
   });
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
-  };
-
-  const clearFilter = () => {
-    setFilters({
-      centerName: "",
-      centerCode: "",
-      email: "",
-      centerManagerId: "",
-    });
-  };
-
   const handleMenuClose = () => setMenuAnchor(null);
 
   return (
@@ -273,77 +224,7 @@ const BasicMasterSetup = ({ handleCenterChanged }) => {
           </span>
         </div>
         <div className="mb-3 d-flex justify-content-between">
-          <div className="individual_fliters d-lg-flex ">
-            {/* <div className="form-group mb-0 ms-2 mb-1">
-              <input
-                type="text"
-                name="centerName"
-                value={filters.centerName}
-                onChange={handleFilterChange}
-                className="form-control form-control-sm center_list"
-                style={{ width: "160px" }}
-                placeholder="Centre Name"
-                autoComplete="off"
-              />
-            </div>
-            <div className="form-group mb-0 ms-2 mb-1">
-              <input
-                type="text"
-                name="centerCode"
-                value={filters.centerCode}
-                onChange={handleFilterChange}
-                className="form-control form-control-sm center_list"
-                style={{ width: "160px" }}
-                placeholder="Code"
-                autoComplete="off"
-              />
-            </div>
-            <div className="form-group mb-0 ms-2 mb-1">
-              <input
-                type="text"
-                name="email"
-                value={filters.email}
-                onChange={handleFilterChange}
-                className="form-control form-control-sm center_list"
-                style={{ width: "160px" }}
-                placeholder="Email"
-                autoComplete="off"
-              />
-            </div> */}
-            {/* <div className="form-group mb-0 ms-2 mb-1">
-              <select
-                name="centerManagerId"
-                value={filters.centerManagerId}
-                onChange={handleFilterChange}
-                className="form-select form-select-sm center_list"
-                style={{ width: "100%" }}
-              >
-                <option value="">Select Employee Type</option>
-                <option value="active">Active Employee</option>
-                <option value="resigned">Resigned Employee</option>
-                <option value="all">All Employee</option>
-              </select>
-            </div> */}
-
-            {/* <div className="form-group mb-2 ms-2">
-              <button
-                type="button"
-                onClick={clearFilter}
-                className="btn btn-sm btn-border"
-              >
-                Clear
-              </button>
-            </div> */}
-          </div>
-          {/* <Link to="/employeeBasicDetails/add">
-            <button
-              type="button"
-              className="btn btn-sm btn-button btn-primary me-2"
-              style={{ fontWeight: "600px !important" }}
-            >
-              &nbsp; Add &nbsp;&nbsp; <i className="bx bx-plus"></i>
-            </button>
-          </Link> */}
+          <div className="individual_fliters d-lg-flex "></div>
         </div>
         {loading ? (
           <div className="loader-container">

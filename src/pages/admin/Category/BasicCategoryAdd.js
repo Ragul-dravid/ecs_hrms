@@ -4,7 +4,6 @@ import Modal from "react-bootstrap/Modal";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
 import { toast } from "react-toastify";
 import api from "../../../config/URL";
 
@@ -24,22 +23,10 @@ function BasicCategoryAdd({ onSuccess }) {
     setShow(true);
     setIsModified(false);
   };
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
-  // const fetchData = async (levelId) => {
-  //   try {
-  //     const level = await fetchAllLevelsWithIds(levelId);
-  //     setLevelData(level);
-  //   } catch (error) {
-  //     toast.error(error);
-  //   }
-  // };
 
   const validationSchema = yup.object().shape({
-    categoryCode: yup.string().required("*Subject is required"),
-    categoryName: yup.string().required("*Code is required"),
+    categoryCode: yup.string().required("*Category Code is required"),
+    categoryName: yup.string().required("*Category Name is required"),
   });
 
   const formik = useFormik({
@@ -47,20 +34,12 @@ function BasicCategoryAdd({ onSuccess }) {
       categoryCode: "",
       categoryName: "",
       createdBy: userName,
-
-      // levelId: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
-      // let selectedLevelName = "";
-      // console.log(values);
+      console.log("Form", values);
 
-      // levelData.forEach((level) => {
-      //   if (parseInt(values.levelId) === level.id) {
-      //     selectedLevelName = level.levels || "--";
-      //   }
-      // });
       values.createdBy = userName;
       try {
         const response = await api.post("/createCourseSubject", values, {
@@ -86,21 +65,7 @@ function BasicCategoryAdd({ onSuccess }) {
     enableReinitialize: true,
     validateOnChange: true,
     validateOnBlur: true,
-    validate: (values) => {
-      if (Object.values(values).some((value) => value.trim() !== "")) {
-        setIsModified(true);
-      } else {
-        setIsModified(false);
-      }
-    },
   });
-
-  // const handleLevelChange = (event) => {
-  //   setLevelData(null);
-  //   const levelId = event.target.value;
-  //   formik.setFieldValue("levelId", levelId);
-  //   fetchData(levelId); // Fetch class for the selected center
-  // };
 
   return (
     <>
@@ -144,20 +109,22 @@ function BasicCategoryAdd({ onSuccess }) {
                   <div className="input-group mb-3">
                     <input
                       type="text"
-                      className={`form-control   ${
-                        formik.touched.subject && formik.errors.subject
+                      className={`form-control form-control-sm   ${
+                        formik.touched.categoryCode &&
+                        formik.errors.categoryCode
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Subject"
+                      aria-label="categoryCode"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("subject")}
+                      {...formik.getFieldProps("categoryCode")}
                     />
-                    {formik.touched.subject && formik.errors.subject && (
-                      <div className="invalid-feedback">
-                        {formik.errors.subject}
-                      </div>
-                    )}
+                    {formik.touched.categoryCode &&
+                      formik.errors.categoryCode && (
+                        <div className="invalid-feedback">
+                          {formik.errors.categoryCode}
+                        </div>
+                      )}
                   </div>
                 </div>
                 <div className="col-md-6 col-12 mb-2">
@@ -167,50 +134,24 @@ function BasicCategoryAdd({ onSuccess }) {
                   <div className="input-group mb-3">
                     <input
                       type="text"
-                      className={`form-control   ${
-                        formik.touched.code && formik.errors.code
+                      className={`form-control form-control-sm   ${
+                        formik.touched.categoryName &&
+                        formik.errors.categoryName
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="code"
+                      aria-label="categoryName"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("code")}
+                      {...formik.getFieldProps("categoryName")}
                     />
-                    {formik.touched.code && formik.errors.code && (
-                      <div className="invalid-feedback">
-                        {formik.errors.code}
-                      </div>
-                    )}
+                    {formik.touched.categoryName &&
+                      formik.errors.categoryName && (
+                        <div className="invalid-feedback">
+                          {formik.errors.categoryName}
+                        </div>
+                      )}
                   </div>
                 </div>
-
-                {/* <div className="col-md-6 col-12 mb-2">
-                  <label className="form-label">
-                    Level<span className="text-danger">*</span>
-                  </label>
-                  <select
-                    {...formik.getFieldProps("levelId")}
-                    class={`form-select  ${
-                      formik.touched.levelId && formik.errors.levelId
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    onChange={handleLevelChange}
-                  >
-                    <option></option>
-                    {levelData &&
-                      levelData.map((level) => (
-                        <option key={level.id} value={level.id}>
-                          {level.levels}
-                        </option>
-                      ))}
-                  </select>
-                  {formik.touched.levelId && formik.errors.levelId && (
-                    <div className="invalid-feedback">
-                      {formik.errors.levelId}
-                    </div>
-                  )}
-                </div> */}
               </div>
             </div>
           </Modal.Body>

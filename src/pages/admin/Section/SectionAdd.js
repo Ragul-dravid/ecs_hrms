@@ -4,7 +4,6 @@ import Modal from "react-bootstrap/Modal";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
 import { toast } from "react-toastify";
 import api from "../../../config/URL";
 
@@ -24,22 +23,12 @@ function SectionAdd({ onSuccess }) {
     setShow(true);
     setIsModified(false);
   };
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
-  // const fetchData = async (levelId) => {
-  //   try {
-  //     const level = await fetchAllLevelsWithIds(levelId);
-  //     setLevelData(level);
-  //   } catch (error) {
-  //     toast.error(error);
-  //   }
-  // };
 
   const validationSchema = yup.object().shape({
-    departmentCode: yup.string().required("*Subject is required"),
-    departmentName: yup.string().required("*Code is required"),
+    sectionCode: yup.string().required("*Section Name is required"),
+    sectionName: yup.string().required("*Section Name is required"),
+    departmentCode: yup.string().required("*Department Code is required"),
+    departmentName: yup.string().required("*Department Name is required"),
   });
 
   const formik = useFormik({
@@ -49,20 +38,12 @@ function SectionAdd({ onSuccess }) {
       departmentCode: "",
       departmentName: "",
       createdBy: userName,
-
-      // levelId: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
-      // let selectedLevelName = "";
-      // console.log(values);
+      console.log("Form", values);
 
-      // levelData.forEach((level) => {
-      //   if (parseInt(values.levelId) === level.id) {
-      //     selectedLevelName = level.levels || "--";
-      //   }
-      // });
       values.createdBy = userName;
       try {
         const response = await api.post("/createCourseSubject", values, {
@@ -88,21 +69,7 @@ function SectionAdd({ onSuccess }) {
     enableReinitialize: true,
     validateOnChange: true,
     validateOnBlur: true,
-    validate: (values) => {
-      if (Object.values(values).some((value) => value.trim() !== "")) {
-        setIsModified(true);
-      } else {
-        setIsModified(false);
-      }
-    },
   });
-
-  // const handleLevelChange = (event) => {
-  //   setLevelData(null);
-  //   const levelId = event.target.value;
-  //   formik.setFieldValue("levelId", levelId);
-  //   fetchData(levelId); // Fetch class for the selected center
-  // };
 
   return (
     <>
@@ -146,43 +113,45 @@ function SectionAdd({ onSuccess }) {
                   <div className="input-group mb-3">
                     <input
                       type="text"
-                      className={`form-control   ${
-                        formik.touched.subject && formik.errors.subject
+                      className={`form-control form-control-sm   ${
+                        formik.touched.sectionCode && formik.errors.sectionCode
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Subject"
+                      aria-label="sectionCode"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("subject")}
+                      {...formik.getFieldProps("sectionCode")}
                     />
-                    {formik.touched.subject && formik.errors.subject && (
-                      <div className="invalid-feedback">
-                        {formik.errors.subject}
-                      </div>
-                    )}
+                    {formik.touched.sectionCode &&
+                      formik.errors.sectionCode && (
+                        <div className="invalid-feedback">
+                          {formik.errors.sectionCode}
+                        </div>
+                      )}
                   </div>
                 </div>
                 <div className="col-md-6 col-12 mb-2">
                   <label className="form-label">
-                    Section Code<span className="text-danger">*</span>
+                    Section Name<span className="text-danger">*</span>
                   </label>
                   <div className="input-group mb-3">
                     <input
                       type="text"
-                      className={`form-control   ${
+                      className={`form-control form-control-sm   ${
                         formik.touched.subject && formik.errors.subject
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Subject"
+                      aria-label="sectionName"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("subject")}
+                      {...formik.getFieldProps("sectionName")}
                     />
-                    {formik.touched.subject && formik.errors.subject && (
-                      <div className="invalid-feedback">
-                        {formik.errors.subject}
-                      </div>
-                    )}
+                    {formik.touched.sectionName &&
+                      formik.errors.sectionName && (
+                        <div className="invalid-feedback">
+                          {formik.errors.sectionName}
+                        </div>
+                      )}
                   </div>
                 </div>
                 <div className="col-md-6 col-12 mb-2">
@@ -192,20 +161,22 @@ function SectionAdd({ onSuccess }) {
                   <div className="input-group mb-3">
                     <input
                       type="text"
-                      className={`form-control   ${
-                        formik.touched.subject && formik.errors.subject
+                      className={`form-control form-control-sm   ${
+                        formik.touched.departmentCode &&
+                        formik.errors.departmentCode
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Subject"
+                      aria-label="departmentCode"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("subject")}
+                      {...formik.getFieldProps("departmentCode")}
                     />
-                    {formik.touched.subject && formik.errors.subject && (
-                      <div className="invalid-feedback">
-                        {formik.errors.subject}
-                      </div>
-                    )}
+                    {formik.touched.departmentCode &&
+                      formik.errors.departmentCode && (
+                        <div className="invalid-feedback">
+                          {formik.errors.departmentCode}
+                        </div>
+                      )}
                   </div>
                 </div>
                 <div className="col-md-6 col-12 mb-2">
@@ -215,50 +186,24 @@ function SectionAdd({ onSuccess }) {
                   <div className="input-group mb-3">
                     <input
                       type="text"
-                      className={`form-control   ${
-                        formik.touched.code && formik.errors.code
+                      className={`form-control form-control-sm  ${
+                        formik.touched.departmentName &&
+                        formik.errors.departmentName
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="code"
+                      aria-label="departmentName"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("code")}
+                      {...formik.getFieldProps("departmentName")}
                     />
-                    {formik.touched.code && formik.errors.code && (
-                      <div className="invalid-feedback">
-                        {formik.errors.code}
-                      </div>
-                    )}
+                    {formik.touched.departmentName &&
+                      formik.errors.departmentName && (
+                        <div className="invalid-feedback">
+                          {formik.errors.departmentName}
+                        </div>
+                      )}
                   </div>
                 </div>
-
-                {/* <div className="col-md-6 col-12 mb-2">
-                  <label className="form-label">
-                    Level<span className="text-danger">*</span>
-                  </label>
-                  <select
-                    {...formik.getFieldProps("levelId")}
-                    class={`form-select  ${
-                      formik.touched.levelId && formik.errors.levelId
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    onChange={handleLevelChange}
-                  >
-                    <option></option>
-                    {levelData &&
-                      levelData.map((level) => (
-                        <option key={level.id} value={level.id}>
-                          {level.levels}
-                        </option>
-                      ))}
-                  </select>
-                  {formik.touched.levelId && formik.errors.levelId && (
-                    <div className="invalid-feedback">
-                      {formik.errors.levelId}
-                    </div>
-                  )}
-                </div> */}
               </div>
             </div>
           </Modal.Body>

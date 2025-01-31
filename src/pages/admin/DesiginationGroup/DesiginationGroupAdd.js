@@ -4,7 +4,6 @@ import Modal from "react-bootstrap/Modal";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
 import { toast } from "react-toastify";
 import api from "../../../config/URL";
 
@@ -24,43 +23,27 @@ function DesiginationGroupAdd({ onSuccess }) {
     setShow(true);
     setIsModified(false);
   };
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
-  // const fetchData = async (levelId) => {
-  //   try {
-  //     const level = await fetchAllLevelsWithIds(levelId);
-  //     setLevelData(level);
-  //   } catch (error) {
-  //     toast.error(error);
-  //   }
-  // };
 
   const validationSchema = yup.object().shape({
-    departmentCode: yup.string().required("*Subject is required"),
-    departmentName: yup.string().required("*Code is required"),
+    desiginationCode: yup
+      .string()
+      .required("*Extra Classification Code is required"),
+    desiginationName: yup
+      .string()
+      .required("*Extra Classification Name is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      departmentCode: "",
-      departmentName: "",
+      desiginationCode: "",
+      desiginationName: "",
       createdBy: userName,
-
-      // levelId: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
-      // let selectedLevelName = "";
-      // console.log(values);
+      console.log("Form", values);
 
-      // levelData.forEach((level) => {
-      //   if (parseInt(values.levelId) === level.id) {
-      //     selectedLevelName = level.levels || "--";
-      //   }
-      // });
       values.createdBy = userName;
       try {
         const response = await api.post("/createCourseSubject", values, {
@@ -86,21 +69,7 @@ function DesiginationGroupAdd({ onSuccess }) {
     enableReinitialize: true,
     validateOnChange: true,
     validateOnBlur: true,
-    validate: (values) => {
-      if (Object.values(values).some((value) => value.trim() !== "")) {
-        setIsModified(true);
-      } else {
-        setIsModified(false);
-      }
-    },
   });
-
-  // const handleLevelChange = (event) => {
-  //   setLevelData(null);
-  //   const levelId = event.target.value;
-  //   formik.setFieldValue("levelId", levelId);
-  //   fetchData(levelId); // Fetch class for the selected center
-  // };
 
   return (
     <>
@@ -147,20 +116,22 @@ function DesiginationGroupAdd({ onSuccess }) {
                   <div className="input-group mb-3">
                     <input
                       type="text"
-                      className={`form-control   ${
-                        formik.touched.subject && formik.errors.subject
+                      className={`form-control form-control-sm   ${
+                        formik.touched.desiginationCode &&
+                        formik.errors.desiginationCode
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Subject"
+                      aria-label="desiginationCode"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("subject")}
+                      {...formik.getFieldProps("desiginationCode")}
                     />
-                    {formik.touched.subject && formik.errors.subject && (
-                      <div className="invalid-feedback">
-                        {formik.errors.subject}
-                      </div>
-                    )}
+                    {formik.touched.desiginationCode &&
+                      formik.errors.desiginationCode && (
+                        <div className="invalid-feedback">
+                          {formik.errors.desiginationCode}
+                        </div>
+                      )}
                   </div>
                 </div>
                 <div className="col-md-6 col-12 mb-2">
@@ -171,50 +142,24 @@ function DesiginationGroupAdd({ onSuccess }) {
                   <div className="input-group mb-3">
                     <input
                       type="text"
-                      className={`form-control   ${
-                        formik.touched.code && formik.errors.code
+                      className={`form-control form-control-sm  ${
+                        formik.touched.desiginationName &&
+                        formik.errors.desiginationName
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="code"
+                      aria-label="desiginationName"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("code")}
+                      {...formik.getFieldProps("desiginationName")}
                     />
-                    {formik.touched.code && formik.errors.code && (
-                      <div className="invalid-feedback">
-                        {formik.errors.code}
-                      </div>
-                    )}
+                    {formik.touched.desiginationName &&
+                      formik.errors.desiginationName && (
+                        <div className="invalid-feedback">
+                          {formik.errors.desiginationName}
+                        </div>
+                      )}
                   </div>
                 </div>
-
-                {/* <div className="col-md-6 col-12 mb-2">
-                  <label className="form-label">
-                    Level<span className="text-danger">*</span>
-                  </label>
-                  <select
-                    {...formik.getFieldProps("levelId")}
-                    class={`form-select  ${
-                      formik.touched.levelId && formik.errors.levelId
-                        ? "is-invalid"
-                        : ""
-                    }`}
-                    onChange={handleLevelChange}
-                  >
-                    <option></option>
-                    {levelData &&
-                      levelData.map((level) => (
-                        <option key={level.id} value={level.id}>
-                          {level.levels}
-                        </option>
-                      ))}
-                  </select>
-                  {formik.touched.levelId && formik.errors.levelId && (
-                    <div className="invalid-feedback">
-                      {formik.errors.levelId}
-                    </div>
-                  )}
-                </div> */}
               </div>
             </div>
           </Modal.Body>

@@ -3,14 +3,14 @@ import Button from "react-bootstrap/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { MdOutlineModeEdit } from "react-icons/md";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import api from "../../../config/URL";
 import { BiEditAlt } from "react-icons/bi";
+import { IconButton } from "@mui/material";
+import { Close } from "@mui/icons-material";
 
 function BankEdit({ id, onSuccess, handleMenuClose }) {
   const [show, setShow] = useState(false);
@@ -25,14 +25,13 @@ function BankEdit({ id, onSuccess, handleMenuClose }) {
   };
 
   const handleShow = () => {
-    getData();
     setShow(true);
     setIsModified(false);
   };
 
   const validationSchema = yup.object().shape({
-    bankCode: yup.string().required("*Subject is required"),
-    bankName: yup.string().required("*Code is required"),
+    bankCode: yup.string().required("*Bank Code is required"),
+    bankName: yup.string().required("*Bank Name is required"),
   });
 
   const formik = useFormik({
@@ -44,6 +43,8 @@ function BankEdit({ id, onSuccess, handleMenuClose }) {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
+      console.log("Form", values);
+
       values.updatedBy = userName;
       try {
         const response = await api.put(`/updateCourseSubject/${id}`, values, {
@@ -67,27 +68,7 @@ function BankEdit({ id, onSuccess, handleMenuClose }) {
     enableReinitialize: true,
     validateOnChange: true,
     validateOnBlur: true,
-    validate: (values) => {
-      if (
-        Object.values(values).some(
-          (value) => typeof value === "string" && value.trim() !== ""
-        )
-      ) {
-        setIsModified(true);
-      } else {
-        setIsModified(false);
-      }
-    },
   });
-
-  const getData = async () => {
-    try {
-      const response = await api.get(`/getAllCourseSubjectsById/${id}`);
-      formik.setValues(response.data);
-    } catch (error) {
-      console.error("Error fetching data ", error);
-    }
-  };
 
   return (
     <>
@@ -112,7 +93,21 @@ function BankEdit({ id, onSuccess, handleMenuClose }) {
             }
           }}
         >
-          <DialogTitle>Edit Bank</DialogTitle>
+          <DialogTitle
+            className="headColor"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span>
+              Edit Bank &nbsp;&nbsp; <i className="bx bx-plus"></i>
+            </span>
+            <IconButton onClick={handleClose} size="small">
+              <Close />
+            </IconButton>
+          </DialogTitle>{" "}
           <DialogContent>
             <div className="container">
               <div className="row py-4">
@@ -124,17 +119,17 @@ function BankEdit({ id, onSuccess, handleMenuClose }) {
                     <input
                       onKeyDown={(e) => e.stopPropagation()}
                       type="text"
-                      className={`form-control   ${
-                        formik.touched.subject && formik.errors.subject
+                      className={`form-control form-control-sm   ${
+                        formik.touched.bankCode && formik.errors.bankCode
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Subject"
-                      {...formik.getFieldProps("subject")}
+                      aria-label="bankCode"
+                      {...formik.getFieldProps("bankCode")}
                     />
-                    {formik.touched.subject && formik.errors.subject && (
+                    {formik.touched.bankCode && formik.errors.bankCode && (
                       <div className="invalid-feedback">
-                        {formik.errors.subject}
+                        {formik.errors.bankCode}
                       </div>
                     )}
                   </div>
@@ -147,17 +142,17 @@ function BankEdit({ id, onSuccess, handleMenuClose }) {
                     <input
                       type="text"
                       onKeyDown={(e) => e.stopPropagation()}
-                      className={`form-control   ${
-                        formik.touched.code && formik.errors.code
+                      className={`form-control form-control-sm   ${
+                        formik.touched.bankName && formik.errors.bankName
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Code"
-                      {...formik.getFieldProps("code")}
+                      aria-label="bankName"
+                      {...formik.getFieldProps("bankName")}
                     />
-                    {formik.touched.code && formik.errors.code && (
+                    {formik.touched.bankName && formik.errors.bankName && (
                       <div className="invalid-feedback">
-                        {formik.errors.code}
+                        {formik.errors.bankName}
                       </div>
                     )}
                   </div>

@@ -3,20 +3,19 @@ import Button from "react-bootstrap/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { MdOutlineModeEdit } from "react-icons/md";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import api from "../../../config/URL";
 import { BiEditAlt } from "react-icons/bi";
+import { IconButton } from "@mui/material";
+import { Close } from "@mui/icons-material";
 
 function SectionEdit({ id, onSuccess, handleMenuClose }) {
   const [show, setShow] = useState(false);
   const [loadIndicator, setLoadIndicator] = useState(false);
   const userName = localStorage.getItem("userName");
-  const [isModified, setIsModified] = useState(false);
 
   const handleClose = () => {
     setShow(false);
@@ -25,14 +24,14 @@ function SectionEdit({ id, onSuccess, handleMenuClose }) {
   };
 
   const handleShow = () => {
-    getData();
     setShow(true);
-    setIsModified(false);
   };
 
   const validationSchema = yup.object().shape({
-    departmentCode: yup.string().required("*Subject is required"),
-    departmentName: yup.string().required("*Code is required"),
+    sectionCode: yup.string().required("*Section Name is required"),
+    sectionName: yup.string().required("*Section Name is required"),
+    departmentCode: yup.string().required("*Department Code is required"),
+    departmentName: yup.string().required("*Department Name is required"),
   });
 
   const formik = useFormik({
@@ -46,6 +45,8 @@ function SectionEdit({ id, onSuccess, handleMenuClose }) {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
+      console.log("Form", values);
+
       values.updatedBy = userName;
       try {
         const response = await api.put(`/updateCourseSubject/${id}`, values, {
@@ -69,27 +70,7 @@ function SectionEdit({ id, onSuccess, handleMenuClose }) {
     enableReinitialize: true,
     validateOnChange: true,
     validateOnBlur: true,
-    validate: (values) => {
-      if (
-        Object.values(values).some(
-          (value) => typeof value === "string" && value.trim() !== ""
-        )
-      ) {
-        setIsModified(true);
-      } else {
-        setIsModified(false);
-      }
-    },
   });
-
-  const getData = async () => {
-    try {
-      const response = await api.get(`/getAllCourseSubjectsById/${id}`);
-      formik.setValues(response.data);
-    } catch (error) {
-      console.error("Error fetching data ", error);
-    }
-  };
 
   return (
     <>
@@ -114,7 +95,21 @@ function SectionEdit({ id, onSuccess, handleMenuClose }) {
             }
           }}
         >
-          <DialogTitle>Edit Section</DialogTitle>
+          <DialogTitle
+            className="headColor"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span>
+              Edit Section &nbsp;&nbsp; <i className="bx bx-plus"></i>
+            </span>
+            <IconButton onClick={handleClose} size="small">
+              <Close />
+            </IconButton>
+          </DialogTitle>{" "}
           <DialogContent>
             <div className="container">
               <div className="row py-4">
@@ -126,19 +121,20 @@ function SectionEdit({ id, onSuccess, handleMenuClose }) {
                     <input
                       onKeyDown={(e) => e.stopPropagation()}
                       type="text"
-                      className={`form-control   ${
-                        formik.touched.subject && formik.errors.subject
+                      className={`form-control form-control-sm  ${
+                        formik.touched.sectionCode && formik.errors.sectionCode
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Subject"
-                      {...formik.getFieldProps("subject")}
+                      aria-label="sectionCode"
+                      {...formik.getFieldProps("sectionCode")}
                     />
-                    {formik.touched.subject && formik.errors.subject && (
-                      <div className="invalid-feedback">
-                        {formik.errors.subject}
-                      </div>
-                    )}
+                    {formik.touched.sectionCode &&
+                      formik.errors.sectionCode && (
+                        <div className="invalid-feedback">
+                          {formik.errors.sectionCode}
+                        </div>
+                      )}
                   </div>
                 </div>
                 <div className="col-md-6 col-12 mb-2">
@@ -149,19 +145,20 @@ function SectionEdit({ id, onSuccess, handleMenuClose }) {
                     <input
                       onKeyDown={(e) => e.stopPropagation()}
                       type="text"
-                      className={`form-control   ${
-                        formik.touched.subject && formik.errors.subject
+                      className={`form-control form-control-sm   ${
+                        formik.touched.sectionName && formik.errors.sectionName
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Subject"
-                      {...formik.getFieldProps("subject")}
+                      aria-label="sectionName"
+                      {...formik.getFieldProps("sectionName")}
                     />
-                    {formik.touched.subject && formik.errors.subject && (
-                      <div className="invalid-feedback">
-                        {formik.errors.subject}
-                      </div>
-                    )}
+                    {formik.touched.sectionName &&
+                      formik.errors.sectionName && (
+                        <div className="invalid-feedback">
+                          {formik.errors.sectionName}
+                        </div>
+                      )}
                   </div>
                 </div>
                 <div className="col-md-6 col-12 mb-2">
@@ -172,19 +169,21 @@ function SectionEdit({ id, onSuccess, handleMenuClose }) {
                     <input
                       onKeyDown={(e) => e.stopPropagation()}
                       type="text"
-                      className={`form-control   ${
-                        formik.touched.subject && formik.errors.subject
+                      className={`form-control form-control-sm   ${
+                        formik.touched.departmentCode &&
+                        formik.errors.departmentCode
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Subject"
-                      {...formik.getFieldProps("subject")}
+                      aria-label="departmentCode"
+                      {...formik.getFieldProps("departmentCode")}
                     />
-                    {formik.touched.subject && formik.errors.subject && (
-                      <div className="invalid-feedback">
-                        {formik.errors.subject}
-                      </div>
-                    )}
+                    {formik.touched.departmentCode &&
+                      formik.errors.departmentCode && (
+                        <div className="invalid-feedback">
+                          {formik.errors.departmentCode}
+                        </div>
+                      )}
                   </div>
                 </div>
                 <div className="col-md-6 col-12 mb-2">
@@ -195,19 +194,21 @@ function SectionEdit({ id, onSuccess, handleMenuClose }) {
                     <input
                       type="text"
                       onKeyDown={(e) => e.stopPropagation()}
-                      className={`form-control   ${
-                        formik.touched.code && formik.errors.code
+                      className={`form-control form-control-sm   ${
+                        formik.touched.departmentName &&
+                        formik.errors.departmentName
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="Code"
-                      {...formik.getFieldProps("code")}
+                      aria-label="departmentName"
+                      {...formik.getFieldProps("departmentName")}
                     />
-                    {formik.touched.code && formik.errors.code && (
-                      <div className="invalid-feedback">
-                        {formik.errors.code}
-                      </div>
-                    )}
+                    {formik.touched.departmentName &&
+                      formik.errors.departmentName && (
+                        <div className="invalid-feedback">
+                          {formik.errors.departmentName}
+                        </div>
+                      )}
                   </div>
                 </div>
               </div>
