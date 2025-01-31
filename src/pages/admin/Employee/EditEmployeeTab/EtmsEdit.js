@@ -28,7 +28,7 @@ function EtmsEdit() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log("Form Values:", values);
+            console.log("E-TMS:", values);
         },
     });
 

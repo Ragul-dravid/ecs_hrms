@@ -21,7 +21,7 @@ function EclaimEdit() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log("Form Values:", values);
+            console.log("E-CLAIM:", values);
         },
     });
 

@@ -62,7 +62,7 @@ function GeneralDetailsEdit() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log("Form Values:", values);
+            console.log("Genaral:", values);
         },
     });
 
