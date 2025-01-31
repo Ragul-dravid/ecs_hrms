@@ -24,7 +24,7 @@ function EleaveEdit() {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log("Form Values:", values);
+            console.log("E-LEAVE:", values);
         },
     });
 

@@ -22,34 +22,30 @@ function EmployeeBasicAdd() {
   const validationSchema = Yup.object({
     firstName: Yup.string().required("*First name is required"),
     lastName: Yup.string().required("*Last name is required"),
-    empPriPhNumber: Yup.number()
-      .required("*Primary phone number is required")
-      .typeError("*Must be a number"),
     email: Yup.string()
       .email("*Enter a valid email")
       .required("*Primary email is required"),
     password: Yup.string().required("*Password is required"),
-    NRICFin: Yup.string().nullable(), // Optional field
-    nationality: Yup.string().nullable(), // Optional field
-    citizenship: Yup.string().nullable(), // Optional field
-    NRICType: Yup.string().nullable(), // Optional field
-    aadharNumber: Yup.string()
-      .matches(/^\d{12}$/, "*Aadhar number must be a 12-digit number")
-      .nullable(), // Aadhar-specific validation
+    empPriPhNumber: Yup.number()
+      .required("*Primary phone number is required")
+      .typeError("*Must be a number"),
     empRegDeptId: Yup.string().required("*Department is required"),
-    empDesignation: Yup.string().nullable(), // Optional field
-    // proof: Yup.string().nullable(), // Optional field
+    empDesignation: Yup.string().nullable(),
     empDateOfJoin: Yup.date()
       .required("*Date of joining is required")
       .typeError("*Enter a valid date"),
-    empType: Yup.string().nullable(), // Optional field
-    noticePeriod: Yup.string().nullable(), // Optional field
-    repManagerName: Yup.string().nullable(), // Optional field
-    // file: Yup.mixed().required("*Photo is required"),
-    roleName: Yup.string().nullable(), // Optional field
+    nationality: Yup.string().nullable(),
+    NRICFin: Yup.string().nullable(),
+    NRICType: Yup.string().nullable(),
+    aadharNumber: Yup.string()
+      .matches(/^\d{12}$/, "*Aadhar number must be a 12-digit number")
+      .nullable(),
     pan: Yup.string()
       .matches(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, "*Enter a valid PAN number")
-      .nullable(), // PAN-specific validation
+      .nullable(),
+    empType: Yup.string().nullable(),
+    noticePeriod: Yup.string().nullable(),
+    citizenship: Yup.string().nullable(),
   });
 
   const formik = useFormik({
@@ -57,52 +53,48 @@ function EmployeeBasicAdd() {
       empRegCmpId: cmpId,
       firstName: "",
       lastName: "",
-      empPriPhNumber: "",
       email: "",
       password: "",
-      NRICFin: "",
-      nationality: "",
-      citizenship: "",
-      NRICType: "",
-      aadharNumber: "",
+      empPriPhNumber: "",
       empRegDeptId: "",
       empDesignation: "",
-      proof: "",
       empDateOfJoin: "",
-      empType: "",
-      noticePeriod: "",
-      repManagerName: "",
-      roleName: "",
+      nationality: "",
+      NRICFin: "",
+      NRICType: "",
+      aadharNumber: "",
       pan: "",
       basicSalary: "",
+      empType: "",
       workingType: "",
+      noticePeriod: "",
+      citizenship: "",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+      console.log("Emaployee Add", values)
       setLoadIndicators(true);
       try {
         const formData = new FormData();
         formData.append("empRegCmpId", cmpId);
         formData.append("firstName", values.firstName);
         formData.append("lastName", values.lastName);
-        formData.append("empPriPhNumber", values.empPriPhNumber);
         formData.append("email", values.email);
         formData.append("password", values.password);
+        formData.append("empPriPhNumber", values.empPriPhNumber);
         formData.append("NRICFin", values.NRICFin);
         formData.append("basicSalary", values.basicSalary);
         formData.append("workingType", values.workingType);
         formData.append("NRICType", values.NRICType);
         formData.append("aadharNumber", values.aadharNumber);
+        formData.append("pan", values.pan);
         formData.append("empRegDeptId", values.empRegDeptId);
-        formData.append("proof", selectedIdType);
         formData.append("empDesignation", values.empDesignation);
         formData.append("empDateOfJoin", values.empDateOfJoin);
         formData.append("empType", values.empType);
         formData.append("noticePeriod", values.noticePeriod);
         formData.append("citizenship", values.citizenship);
         formData.append("nationality", values.nationality);
-        formData.append("roleName", "EMPLOYEE");
-        formData.append("pan", values.pan);
 
         const response = await api.post("/emp-reg-details", formData);
         if (response.status === 201) {
@@ -127,12 +119,12 @@ function EmployeeBasicAdd() {
   });
 
   const fetchData = async () => {
-    try {
-      const departmentData = await departmentListByCompId(cmpId);
-      setDepartmentData(departmentData);
-    } catch (error) {
-      toast.error(error.message);
-    }
+    // try {
+    //   const departmentData = await departmentListByCompId(cmpId);
+    //   setDepartmentData(departmentData);
+    // } catch (error) {
+    //   toast.error(error.message);
+    // }
   };
 
   // Callback to add a new department
@@ -163,10 +155,6 @@ function EmployeeBasicAdd() {
     if (selectedDeptId) {
       fetchDesignationData(cmpId, selectedDeptId);
     }
-  };
-
-  const handleIdTypeChange = (event) => {
-    setSelectedIdType(event.target.value);
   };
 
   const togglePasswordVisibility = () => {
@@ -258,11 +246,10 @@ function EmployeeBasicAdd() {
                   <input
                     type="text"
                     name="firstName"
-                    className={`form-control form-control-sm  ${
-                      formik.touched.firstName && formik.errors.firstName
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                    className={`form-control form-control-sm  ${formik.touched.firstName && formik.errors.firstName
+                      ? "is-invalid"
+                      : ""
+                      }`}
                     {...formik.getFieldProps("firstName")}
                   />
                   {formik.touched.firstName && formik.errors.firstName && (
@@ -280,11 +267,10 @@ function EmployeeBasicAdd() {
                   <input
                     type="text"
                     name="lastName"
-                    className={`form-control form-control-sm  ${
-                      formik.touched.lastName && formik.errors.lastName
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                    className={`form-control form-control-sm  ${formik.touched.lastName && formik.errors.lastName
+                      ? "is-invalid"
+                      : ""
+                      }`}
                     {...formik.getFieldProps("lastName")}
                   />
                   {formik.touched.lastName && formik.errors.lastName && (
@@ -302,11 +288,10 @@ function EmployeeBasicAdd() {
                   <input
                     type="email"
                     name="email"
-                    className={`form-control form-control-sm ${
-                      formik.touched.email && formik.errors.email
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                    className={`form-control form-control-sm ${formik.touched.email && formik.errors.email
+                      ? "is-invalid"
+                      : ""
+                      }`}
                     {...formik.getFieldProps("email")}
                   />
                   {formik.touched.email && formik.errors.email && (
@@ -326,11 +311,10 @@ function EmployeeBasicAdd() {
                     <input
                       name="password"
                       type={showPassword ? "text" : "password"}
-                      className={`form-control form-control-sm ${
-                        formik.touched.password && formik.errors.password
-                          ? "is-invalid"
-                          : ""
-                      }`}
+                      className={`form-control form-control-sm ${formik.touched.password && formik.errors.password
+                        ? "is-invalid"
+                        : ""
+                        }`}
                       {...formik.getFieldProps("password")}
                       style={{
                         borderRight: "none",
@@ -368,12 +352,11 @@ function EmployeeBasicAdd() {
                   <input
                     type="text"
                     name="empPriPhNumber"
-                    className={`form-control form-control-sm  ${
-                      formik.touched.empPriPhNumber &&
+                    className={`form-control form-control-sm  ${formik.touched.empPriPhNumber &&
                       formik.errors.empPriPhNumber
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                      }`}
                     {...formik.getFieldProps("empPriPhNumber")}
                   />
                   {formik.touched.empPriPhNumber &&
@@ -394,11 +377,10 @@ function EmployeeBasicAdd() {
                 <div className="input-group mb-3">
                   <select
                     {...formik.getFieldProps("empRegDeptId")}
-                    className={`form-select form-select-sm  ${
-                      formik.touched.empRegDeptId && formik.errors.empRegDeptId
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                    className={`form-select form-select-sm  ${formik.touched.empRegDeptId && formik.errors.empRegDeptId
+                      ? "is-invalid"
+                      : ""
+                      }`}
                     onChange={handleDepartmentChange}
                   >
                     <option selected></option>
@@ -425,12 +407,11 @@ function EmployeeBasicAdd() {
                   <select
                     type="text"
                     name="empDesignation"
-                    className={`form-select form-select-sm  ${
-                      formik.touched.empDesignation &&
+                    className={`form-select form-select-sm  ${formik.touched.empDesignation &&
                       formik.errors.empDesignation
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                      }`}
                     {...formik.getFieldProps("empDesignation")}
                   >
                     <option selected></option>
@@ -458,12 +439,11 @@ function EmployeeBasicAdd() {
                   <input
                     type="date"
                     name="empDateOfJoin"
-                    className={`form-control form-control-sm ${
-                      formik.touched.empDateOfJoin &&
+                    className={`form-control form-control-sm ${formik.touched.empDateOfJoin &&
                       formik.errors.empDateOfJoin
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                      ? "is-invalid"
+                      : ""
+                      }`}
                     {...formik.getFieldProps("empDateOfJoin")}
                   />
                   {formik.touched.empDateOfJoin &&
@@ -481,11 +461,10 @@ function EmployeeBasicAdd() {
                 <select
                   type="text"
                   name="nationality"
-                  className={`form-select form-select-sm  ${
-                    formik.touched.nationality && formik.errors.nationality
-                      ? "is-invalid"
-                      : ""
-                  }`}
+                  className={`form-select form-select-sm  ${formik.touched.nationality && formik.errors.nationality
+                    ? "is-invalid"
+                    : ""
+                    }`}
                   value={formik.values.nationality}
                   onChange={(e) => {
                     formik.handleChange(e);
@@ -524,11 +503,10 @@ function EmployeeBasicAdd() {
                         <input
                           type="text"
                           name="NRICFin"
-                          className={`form-control form-control-sm  ${
-                            formik.touched.NRICFin && formik.errors.NRICFin
-                              ? "is-invalid"
-                              : ""
-                          }`}
+                          className={`form-control form-control-sm  ${formik.touched.NRICFin && formik.errors.NRICFin
+                            ? "is-invalid"
+                            : ""
+                            }`}
                           aria-label="Username"
                           aria-describedby="basic-addon1"
                           {...formik.getFieldProps("NRICFin")}
@@ -550,11 +528,10 @@ function EmployeeBasicAdd() {
                         </label>
                         <select
                           name="NRICType"
-                          className={`form-select form-select-sm ${
-                            formik.touched.NRICType && formik.errors.NRICType
-                              ? "is-invalid"
-                              : ""
-                          }`}
+                          className={`form-select form-select-sm ${formik.touched.NRICType && formik.errors.NRICType
+                            ? "is-invalid"
+                            : ""
+                            }`}
                           {...formik.getFieldProps("NRICType")}
                         >
                           <option selected></option>
@@ -591,12 +568,11 @@ function EmployeeBasicAdd() {
                         <input
                           type="text"
                           name="aadharNumber"
-                          className={`form-control form-control-sm ${
-                            formik.touched.aadharNumber &&
+                          className={`form-control form-control-sm ${formik.touched.aadharNumber &&
                             formik.errors.aadharNumber
-                              ? "is-invalid"
-                              : ""
-                          }`}
+                            ? "is-invalid"
+                            : ""
+                            }`}
                           {...formik.getFieldProps("aadharNumber")}
                         />
                         {formik.touched.aadharNumber &&
@@ -618,11 +594,10 @@ function EmployeeBasicAdd() {
                         <input
                           type="text"
                           name="pan"
-                          className={`form-control form-control-sm ${
-                            formik.touched.pan && formik.errors.pan
-                              ? "is-invalid"
-                              : ""
-                          }`}
+                          className={`form-control form-control-sm ${formik.touched.pan && formik.errors.pan
+                            ? "is-invalid"
+                            : ""
+                            }`}
                           {...formik.getFieldProps("pan")}
                         />
                         {formik.touched.pan && formik.errors.pan && (
@@ -644,11 +619,10 @@ function EmployeeBasicAdd() {
                   <input
                     type="text"
                     name="basicSalary"
-                    className={`form-control form-control-sm ${
-                      formik.touched.basicSalary && formik.errors.basicSalary
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                    className={`form-control form-control-sm ${formik.touched.basicSalary && formik.errors.basicSalary
+                      ? "is-invalid"
+                      : ""
+                      }`}
                     {...formik.getFieldProps("basicSalary")}
                   />
                   {formik.touched.basicSalary && formik.errors.basicSalary && (
@@ -665,11 +639,10 @@ function EmployeeBasicAdd() {
                 <div className="input-group mb-3">
                   <select
                     {...formik.getFieldProps("empType")}
-                    className={`form-select form-select-sm  ${
-                      formik.touched.empType && formik.errors.empType
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                    className={`form-select form-select-sm  ${formik.touched.empType && formik.errors.empType
+                      ? "is-invalid"
+                      : ""
+                      }`}
                   >
                     <option selected></option>
                     <option value="Full Time">Full Time</option>
@@ -691,11 +664,10 @@ function EmployeeBasicAdd() {
                   <div className="input-group mb-3">
                     <select
                       {...formik.getFieldProps("workingType")}
-                      className={`form-select form-select-sm  ${
-                        formik.touched.workingType && formik.errors.workingType
-                          ? "is-invalid"
-                          : ""
-                      }`}
+                      className={`form-select form-select-sm  ${formik.touched.workingType && formik.errors.workingType
+                        ? "is-invalid"
+                        : ""
+                        }`}
                     >
                       <option selected></option>
                       <option value="Hour">Hour</option>
@@ -718,11 +690,10 @@ function EmployeeBasicAdd() {
                   </label>
                   <select
                     type="text"
-                    className={`form-select form-select-sm ${
-                      formik.touched.noticePeriod && formik.errors.noticePeriod
-                        ? "is-invalid"
-                        : ""
-                    }`}
+                    className={`form-select form-select-sm ${formik.touched.noticePeriod && formik.errors.noticePeriod
+                      ? "is-invalid"
+                      : ""
+                      }`}
                     {...formik.getFieldProps("noticePeriod")}
                   >
                     <option selected></option>
@@ -746,11 +717,10 @@ function EmployeeBasicAdd() {
                 </label>
                 <select
                   name="citizenship"
-                  className={`form-select form-select-sm ${
-                    formik.touched.citizenship && formik.errors.citizenship
-                      ? "is-invalid"
-                      : ""
-                  }`}
+                  className={`form-select form-select-sm ${formik.touched.citizenship && formik.errors.citizenship
+                    ? "is-invalid"
+                    : ""
+                    }`}
                   {...formik.getFieldProps("citizenship")}
                 >
                   <option selected></option>
