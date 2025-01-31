@@ -6,7 +6,7 @@ import NonPayableAllowance from "./NonPayableAllowance/NonPayableAllowance";
 import ActiveAndInActive from "./ActiveAndInActiveAllowance/ActiveAndInActive";
 
 const AllowanceDeduction = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("tab1");
 
   return (
