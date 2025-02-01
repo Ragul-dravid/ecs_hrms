@@ -17,12 +17,6 @@ import NationalityAdd from "./EducationAdd";
 import NationalityEdit from "./EducationEdit";
 
 const Education = ({ handleCenterChanged }) => {
-  const [filters, setFilters] = useState({
-    centerName: "",
-    centerCode: "",
-    email: "",
-    centerManagerId: "",
-  });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [menuAnchor, setMenuAnchor] = useState(null);
@@ -90,18 +84,6 @@ const Education = ({ handleCenterChanged }) => {
     []
   );
 
-  // const fetchData = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const queryParams = new URLSearchParams(filters).toString();
-  //     const response = await api.get(`/getCenterWithCustomInfo?${queryParams}`);
-  //     setData(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const getData = async () => {
     try {
       const response = await api.get(`emp-reg-details-by-companyId/${cmpId}`);
@@ -160,28 +142,13 @@ const Education = ({ handleCenterChanged }) => {
     },
   });
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
-  };
-
-  const clearFilter = () => {
-    setFilters({
-      centerName: "",
-      centerCode: "",
-      email: "",
-      centerManagerId: "",
-    });
-  };
-
   const handleMenuClose = () => setMenuAnchor(null);
 
   return (
     <div className="container-fluid px-2 my-4 center">
       <div className="card">
         <div className="mb-3 d-flex justify-content-between">
-          <div className="individual_fliters d-lg-flex ">
-          </div>
+          <div className="individual_fliters d-lg-flex "></div>
           <span>
             <NationalityAdd />
           </span>
@@ -224,10 +191,10 @@ const Education = ({ handleCenterChanged }) => {
                     zipCode: false,
                   },
                 }}
-                muiTableBodyRowProps={({ row }) => ({
-                  onClick: () => navigate(`/center/view/${row.original.id}`),
-                  style: { cursor: "pointer" },
-                })}
+                // muiTableBodyRowProps={({ row }) => ({
+                //   onClick: () => navigate(`/center/view/${row.original.id}`),
+                //   style: { cursor: "pointer" },
+                // })}
               />
             </ThemeProvider>
 

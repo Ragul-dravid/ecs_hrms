@@ -195,10 +195,10 @@ const BasicCategory = ({ handleCenterChanged }) => {
                     zipCode: false,
                   },
                 }}
-                muiTableBodyRowProps={({ row }) => ({
-                  onClick: () => navigate(`/center/view/${row.original.id}`),
-                  style: { cursor: "pointer" },
-                })}
+                // muiTableBodyRowProps={({ row }) => ({
+                //   onClick: () => navigate(`/center/view/${row.original.id}`),
+                //   style: { cursor: "pointer" },
+                // })}
               />
             </ThemeProvider>
 

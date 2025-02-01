@@ -38,6 +38,8 @@ function RaceAdd({ onSuccess }) {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
+      console.log("Form", values);
+
       values.createdBy = userName;
       try {
         const response = await api.post("/createCourseSubject", values, {
@@ -62,13 +64,6 @@ function RaceAdd({ onSuccess }) {
     enableReinitialize: true,
     validateOnChange: true,
     validateOnBlur: true,
-    validate: (values) => {
-      if (Object.values(values).some((value) => value.trim() !== "")) {
-        setIsModified(true);
-      } else {
-        setIsModified(false);
-      }
-    },
   });
 
   return (
@@ -113,7 +108,7 @@ function RaceAdd({ onSuccess }) {
                   <div className="input-group mb-3">
                     <input
                       type="text"
-                      className={`form-control   ${
+                      className={`form-control form-control-sm  ${
                         formik.touched.raceCode && formik.errors.raceCode
                           ? "is-invalid"
                           : ""
@@ -136,7 +131,7 @@ function RaceAdd({ onSuccess }) {
                   <div className="input-group mb-3">
                     <input
                       type="text"
-                      className={`form-control   ${
+                      className={`form-control form-control-sm  ${
                         formik.touched.raceName && formik.errors.raceName
                           ? "is-invalid"
                           : ""
