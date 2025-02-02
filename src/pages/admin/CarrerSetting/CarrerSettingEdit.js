@@ -24,7 +24,13 @@ function CarrerSettingEdit({ id, onSuccess, handleMenuClose }) {
     formik.resetForm();
   };
 
-  const handleShow = () => {
+  const handleShow = async () => {
+    try {
+      const response = await api.get(`/getAllEcsCarrierSettingById/${id}`);
+      formik.setValues(response.data);
+    } catch (error) {
+      console.error("Error fetching data ", error);
+    }
     setShow(true);
     setIsModified(false);
   };
@@ -47,11 +53,15 @@ function CarrerSettingEdit({ id, onSuccess, handleMenuClose }) {
 
       values.updatedBy = userName;
       try {
-        const response = await api.put(`/updateCourseSubject/${id}`, values, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await api.put(
+          `/updateEcsCarrierSetting/${id}`,
+          values,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         if (response.status === 200) {
           toast.success(response.data.message);
           onSuccess();

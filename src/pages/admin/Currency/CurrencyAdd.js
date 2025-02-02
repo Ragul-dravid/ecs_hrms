@@ -42,7 +42,7 @@ function CurrencyAdd({ onSuccess }) {
 
       values.createdBy = userName;
       try {
-        const response = await api.post("/createCourseSubject", values, {
+        const response = await api.post("/ecs-currency", values, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -50,7 +50,7 @@ function CurrencyAdd({ onSuccess }) {
         if (response.status === 201) {
           toast.success(response.data.message);
           setShow(false);
-          navigate("/subject");
+          // navigate("/subject");
           onSuccess();
           handleClose();
         } else {

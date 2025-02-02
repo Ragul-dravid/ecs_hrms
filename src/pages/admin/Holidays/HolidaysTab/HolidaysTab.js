@@ -92,7 +92,7 @@ const HolidaysTab = ({ handleCenterChanged }) => {
 
   const getData = async () => {
     try {
-      const response = await api.get(`emp-reg-details-by-companyId/${cmpId}`);
+      const response = await api.get(`getAllEcsHolidays`);
       setDatas(response.data);
     } catch (error) {
       console.error("Error fetching data:", error.message);
@@ -220,7 +220,7 @@ const HolidaysTab = ({ handleCenterChanged }) => {
               </MenuItem>
               <MenuItem>
                 <GlobalDelete
-                  path={`/emp-reg-details/${selectedId}`}
+                  path={`/deleteEcsHoliday/${selectedId}`}
                   // onDeleteSuccess={fetchData}
                   onOpen={handleMenuClose}
                   // deleteCenterData={true}

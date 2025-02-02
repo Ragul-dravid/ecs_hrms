@@ -24,7 +24,13 @@ function BasicDepartmentEdit({ id, onSuccess, handleMenuClose }) {
     formik.resetForm();
   };
 
-  const handleShow = () => {
+  const handleShow = async () => {
+    try {
+      const response = await api.get(`/ecs-department/${id}`);
+      formik.setValues(response.data);
+    } catch (error) {
+      console.error("Error fetching data ", error);
+    }
     setShow(true);
   };
 
@@ -46,7 +52,7 @@ function BasicDepartmentEdit({ id, onSuccess, handleMenuClose }) {
 
       values.updatedBy = userName;
       try {
-        const response = await api.put(`/updateCourseSubject/${id}`, values, {
+        const response = await api.put(`/ecs-department/${id}`, values, {
           headers: {
             "Content-Type": "application/json",
           },

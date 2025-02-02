@@ -24,7 +24,13 @@ function BasicDesiginationEdit({ id, onSuccess, handleMenuClose }) {
     formik.resetForm();
   };
 
-  const handleShow = () => {
+  const handleShow = async () => {
+    try {
+      const response = await api.get(`/ecs-designation/${id}`);
+      formik.setValues(response.data);
+    } catch (error) {
+      console.error("Error fetching data ", error);
+    }
     setShow(true);
     setIsModified(false);
   };

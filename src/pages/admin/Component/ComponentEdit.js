@@ -24,11 +24,16 @@ function ComponentEdit({ id, onSuccess, handleMenuClose }) {
     formik.resetForm();
   };
 
-  const handleShow = () => {
+  const handleShow = async () => {
+    try {
+      const response = await api.get(`/getEcsComponentById/${id}`);
+      formik.setValues(response.data);
+    } catch (error) {
+      console.error("Error fetching data ", error);
+    }
     setShow(true);
     setIsModified(false);
   };
-
   const validationSchema = yup.object().shape({
     componentCode: yup.string().required("*Component Code is required"),
     componentName: yup.string().required("*component Name is required"),
@@ -47,7 +52,7 @@ function ComponentEdit({ id, onSuccess, handleMenuClose }) {
 
       values.updatedBy = userName;
       try {
-        const response = await api.put(`/updateCourseSubject/${id}`, values, {
+        const response = await api.put(`/updateEcsComponent/${id}`, values, {
           headers: {
             "Content-Type": "application/json",
           },

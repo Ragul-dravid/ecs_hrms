@@ -24,7 +24,13 @@ function BankEdit({ id, onSuccess, handleMenuClose }) {
     formik.resetForm();
   };
 
-  const handleShow = () => {
+  const handleShow = async () => {
+    try {
+      const response = await api.get(`/ecs-bank/${id}`);
+      formik.setValues(response.data);
+    } catch (error) {
+      console.error("Error fetching data ", error);
+    }
     setShow(true);
     setIsModified(false);
   };
@@ -47,7 +53,7 @@ function BankEdit({ id, onSuccess, handleMenuClose }) {
 
       values.updatedBy = userName;
       try {
-        const response = await api.put(`/updateCourseSubject/${id}`, values, {
+        const response = await api.put(`/ecs-bank/${id}`, values, {
           headers: {
             "Content-Type": "application/json",
           },

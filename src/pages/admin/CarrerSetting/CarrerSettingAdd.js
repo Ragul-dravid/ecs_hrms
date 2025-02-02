@@ -42,17 +42,17 @@ function CarrerSettingAdd({ onSuccess }) {
 
       values.createdBy = userName;
       try {
-        const response = await api.post("/createCourseSubject", values, {
+        const response = await api.post("/createEcsCarrierSetting", values, {
           headers: {
             "Content-Type": "application/json",
           },
         });
-        if (response.status === 201) {
+        if (response.status === 200) {
           toast.success(response.data.message);
-          setShow(false);
-          navigate("/subject");
-          onSuccess();
+          // setShow(false);
+          // navigate("/basicMasterSetup");
           handleClose();
+          // onSuccess();
         } else {
           toast.error(response.data.message);
         }

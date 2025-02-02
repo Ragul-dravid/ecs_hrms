@@ -53,12 +53,12 @@ const CarrerSetting = ({ handleCenterChanged }) => {
         ),
       },
       {
-        accessorKey: "carrerCode",
+        accessorKey: "carrierCode",
         enableHiding: false,
         header: "CARRER CODE",
       },
       {
-        accessorKey: "carrerDescription",
+        accessorKey: "carrierDescription",
         enableHiding: false,
         header: "CARRER DESCRIPTION",
       },
@@ -85,7 +85,7 @@ const CarrerSetting = ({ handleCenterChanged }) => {
 
   const getData = async () => {
     try {
-      const response = await api.get(`emp-reg-details-by-companyId/${cmpId}`);
+      const response = await api.get(`getAllEcsCarrierSetting`);
       setDatas(response.data);
     } catch (error) {
       console.error("Error fetching data:", error.message);
@@ -148,7 +148,7 @@ const CarrerSetting = ({ handleCenterChanged }) => {
         <div className="mb-3 d-flex justify-content-between">
           <div className="individual_fliters d-lg-flex "></div>
           <span>
-            <CarrerSettingAdd />
+            <CarrerSettingAdd onSuccess={getData} />
           </span>
         </div>
         {loading ? (

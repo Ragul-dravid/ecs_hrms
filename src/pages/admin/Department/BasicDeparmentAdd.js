@@ -42,7 +42,7 @@ function BasicDepartmentAdd({ onSuccess }) {
 
       values.createdBy = userName;
       try {
-        const response = await api.post("/createCourseSubject", values, {
+        const response = await api.post("/ecs-department", values, {
           headers: {
             "Content-Type": "application/json",
           },
