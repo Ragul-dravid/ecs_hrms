@@ -50,7 +50,7 @@ function BasicDepartmentAdd({ onSuccess }) {
         if (response.status === 201) {
           toast.success(response.data.message);
           setShow(false);
-          navigate("/subject");
+          // navigate("/subject");
           onSuccess();
           handleClose();
         } else {
