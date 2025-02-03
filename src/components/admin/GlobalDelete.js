@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { Dialog, DialogActions, DialogTitle, Slide } from "@mui/material";
-import { toast } from "react-toastify";
 import api from "../../config/URL";
 import { LiaTrashSolid } from "react-icons/lia";
+import toast from "react-hot-toast";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
