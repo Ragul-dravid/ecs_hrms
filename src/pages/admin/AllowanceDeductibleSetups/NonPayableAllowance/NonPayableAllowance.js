@@ -53,14 +53,15 @@ const NonPayableAllowance = () => {
         ),
       },
       {
-        accessorKey: "rceCode",
+        accessorKey: "employeeId",
         enableHiding: false,
-        header: "RACE CODE",
+        header: "EMPLOYEE ID",
       },
       {
-        accessorKey: "raceName",
+        accessorKey: "fullName",
+        header: "NAME",
         enableHiding: false,
-        header: "RACE NAME",
+        Cell: ({ row }) => `${row.original.firstName} ${row.original.lastName}`,
       },
       { accessorKey: "createdBy", header: "CREATED BY" },
       {
@@ -215,7 +216,7 @@ const NonPayableAllowance = () => {
                   path={`/emp-reg-details/${selectedId}`}
                   // onDeleteSuccess={fetchData}
                   onOpen={handleMenuClose}
-                  // deleteCenterData={true}
+                // deleteCenterData={true}
                 />
               </MenuItem>
             </Menu>
