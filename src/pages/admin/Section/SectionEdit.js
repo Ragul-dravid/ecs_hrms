@@ -23,7 +23,13 @@ function SectionEdit({ id, onSuccess, handleMenuClose }) {
     formik.resetForm();
   };
 
-  const handleShow = () => {
+  const handleShow = async () => {
+    try {
+      const response = await api.get(`/getEcsSectionById/${id}`);
+      formik.setValues(response.data);
+    } catch (error) {
+      console.error("Error fetching data ", error);
+    }
     setShow(true);
   };
 
@@ -49,7 +55,7 @@ function SectionEdit({ id, onSuccess, handleMenuClose }) {
 
       values.updatedBy = userName;
       try {
-        const response = await api.put(`/updateCourseSubject/${id}`, values, {
+        const response = await api.put(`/updateEcsSection/${id}`, values, {
           headers: {
             "Content-Type": "application/json",
           },
