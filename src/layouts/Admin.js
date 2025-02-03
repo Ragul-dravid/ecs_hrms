@@ -199,19 +199,45 @@ function Admin({ handleLogout }) {
                   />
 
                   {/* Additional Master Setup */}
-                  <Route path="/additionalMasterSetup" element={<AdditionalMasterSetup />} />
+                  <Route
+                    path="/additionalMasterSetup"
+                    element={<AdditionalMasterSetup />}
+                  />
 
-                  {/* Allowances Deduction Setup */} 
-                  <Route path="/allowancesDeductionSetup" element={<AllowanceDeduction />} />
-                  <Route path="/payableDeductionAllowances" element={<PayableDeductible />} />
-                  <Route path="/payableDeductionAllowancesAdd" element={<PayableDeductibleAdd />} />
-                  <Route path="/payableDeductionAllowancesEdit" element={<PayableDeductibleEdit />} />
+                  {/* Allowances Deduction Setup */}
+                  <Route
+                    path="/allowancesDeductionSetup"
+                    element={<AllowanceDeduction />}
+                  />
+                  <Route
+                    path="/payableDeductionAllowances"
+                    element={<PayableDeductible />}
+                  />
+                  <Route
+                    path="/payableDeductionAllowancesAdd"
+                    element={<PayableDeductibleAdd />}
+                  />
+                  <Route
+                    path="/payableDeductionAllowancesEdit"
+                    element={<PayableDeductibleEdit />}
+                  />
 
-                  <Route path="/nonPayableAllowances" element={<NonPayableAllowance />} />
-                  <Route path="/nonPayableAllowancesAdd" element={<NonPayableAllowanceAdd />} />
-                  <Route path="/nonPayableAllowancesEdit" element={<NonPayableAllowanceEdit />} />
-                  <Route path="/activeAndInAtive" element={<ActiveAndInActive />} />
-
+                  <Route
+                    path="/nonPayableAllowances"
+                    element={<NonPayableAllowance />}
+                  />
+                  <Route
+                    path="/nonPayableAllowancesAdd"
+                    element={<NonPayableAllowanceAdd />}
+                  />
+                  <Route
+                    path="/nonPayableAllowancesEdit"
+                    element={<NonPayableAllowanceEdit />}
+                  />
+                  <Route
+                    path="/activeAndInAtive"
+                    element={<ActiveAndInActive />}
+                  />
 
                   <Route path="/bank" element={<Bank />} />
                   <Route path="/bank/add" element={<BankAdd />} />

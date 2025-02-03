@@ -1,63 +1,72 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../../../config/URL";
+import { BiEditAlt } from "react-icons/bi";
+import { IconButton } from "@mui/material";
+import { Close } from "@mui/icons-material";
 
-function ReligionAdd({ onSuccess }) {
+function CountryEdit({ id, onSuccess, handleMenuClose }) {
   const [show, setShow] = useState(false);
-  const navigate = useNavigate();
   const [loadIndicator, setLoadIndicator] = useState(false);
   const userName = localStorage.getItem("userName");
   const [isModified, setIsModified] = useState(false);
 
   const handleClose = () => {
     setShow(false);
+    handleMenuClose();
     formik.resetForm();
   };
 
-  const handleShow = () => {
+  const handleShow = async () => {
+    try {
+      const response = await api.get(`/getCountryById/${id}`);
+      formik.setValues(response.data);
+    } catch (error) {
+      console.error("Error fetching data ", error);
+    }
     setShow(true);
     setIsModified(false);
   };
 
   const validationSchema = yup.object().shape({
-    religionCode: yup.string().required("*Religion Code is required"),
-    religionName: yup.string().required("*Religion Name is required"),
+    countryCode: yup.string().required("*Country Code is required"),
+    countryName: yup.string().required("*Country Name is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      religionCode: "",
-      religionName: "",
-      createdBy: userName,
+      countryCode: "",
+      countryName: "",
+      updatedBy: userName,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setLoadIndicator(true);
       console.log("Form", values);
 
-      values.createdBy = userName;
+      values.updatedBy = userName;
       try {
-        const response = await api.post("/ecs-religion", values, {
+        const response = await api.put(`/updateCountry/${id}`, values, {
           headers: {
             "Content-Type": "application/json",
           },
         });
-        if (response.status === 201) {
+        if (response.status === 200) {
           toast.success(response.data.message);
-          setShow(false);
-          // navigate("/subject");
           onSuccess();
           handleClose();
         } else {
           toast.error(response.data.message);
         }
       } catch (error) {
-        toast.error(error);
+        toast.error(error.message || "Error occurred");
       } finally {
         setLoadIndicator(false);
       }
@@ -69,93 +78,97 @@ function ReligionAdd({ onSuccess }) {
 
   return (
     <>
-      <div className="d-flex justify-content-end mb-3">
-        <button
-          type="button"
-          className="btn btn-sm btn-button btn-primary mx-2 my-2"
-          onClick={handleShow}
-        >
-          &nbsp; Add &nbsp;&nbsp; <i className="bx bx-plus"></i>
-        </button>
-      </div>
-
-      <Modal
-        show={show}
-        onHide={handleClose}
-        size="lg"
-        aria-labelledby="contained-model-title-vcenter"
-        centered
-        backdrop={isModified ? "static" : true}
-        keyboard={isModified ? false : true}
+      <p
+        className="text-start mb-0 menuitem-style"
+        onClick={handleShow}
+        style={{
+          whiteSpace: "nowrap",
+          width: "100%",
+        }}
       >
+        <BiEditAlt style={{ marginRight: "8px" }} />
+        Edit
+      </p>
+
+      <Dialog open={show} onClose={handleClose} fullWidth maxWidth="md">
         <form
           onSubmit={formik.handleSubmit}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !formik.isSubmitting) {
-              e.preventDefault(); // Prevent default form submission
+              e.preventDefault();
             }
           }}
         >
-          <Modal.Header closeButton>
-            <Modal.Title className="headColor">Add Religion</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+          <DialogTitle
+            className="headColor"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span>
+              Edit Race &nbsp;&nbsp; <i className="bx bx-plus"></i>
+            </span>
+            <IconButton onClick={handleClose} size="small">
+              <Close />
+            </IconButton>
+          </DialogTitle>{" "}
+          <DialogContent>
             <div className="container">
               <div className="row py-4">
                 <div className="col-md-6 col-12 mb-2">
                   <label className="form-label">
-                    Religion Code<span className="text-danger">*</span>
+                    Country Code<span className="text-danger">*</span>
                   </label>
                   <div className="input-group mb-3">
                     <input
                       type="text"
                       className={`form-control form-control-sm  ${
-                        formik.touched.religionCode &&
-                        formik.errors.religionCode
+                        formik.touched.countryCode && formik.errors.countryCode
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="religionCode"
+                      aria-label="countryCode"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("religionCode")}
+                      {...formik.getFieldProps("countryCode")}
                     />
-                    {formik.touched.religionCode &&
-                      formik.errors.religionCode && (
+                    {formik.touched.countryCode &&
+                      formik.errors.countryCode && (
                         <div className="invalid-feedback">
-                          {formik.errors.religionCode}
+                          {formik.errors.countryCode}
                         </div>
                       )}
                   </div>
                 </div>
                 <div className="col-md-6 col-12 mb-2">
                   <label className="form-label">
-                    Religion Name<span className="text-danger">*</span>
+                    Country Name<span className="text-danger">*</span>
                   </label>
                   <div className="input-group mb-3">
                     <input
                       type="text"
                       className={`form-control form-control-sm  ${
-                        formik.touched.religionName &&
-                        formik.errors.religionName
+                        formik.touched.countryName && formik.errors.countryName
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="religionName"
+                      aria-label="countryName"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("religionName")}
+                      {...formik.getFieldProps("countryName")}
                     />
-                    {formik.touched.religionName &&
-                      formik.errors.religionName && (
+                    {formik.touched.countryName &&
+                      formik.errors.countryName && (
                         <div className="invalid-feedback">
-                          {formik.errors.religionName}
+                          {formik.errors.countryName}
                         </div>
                       )}
                   </div>
                 </div>
               </div>
             </div>
-          </Modal.Body>
-          <Modal.Footer>
+          </DialogContent>
+          <DialogActions>
             <button
               type="button"
               className="btn btn-sm btn-border bg-light text-dark"
@@ -163,24 +176,24 @@ function ReligionAdd({ onSuccess }) {
             >
               Cancel
             </button>
-            <Button
+            <button
               type="submit"
-              className="btn btn-button btn-sm"
+              className="btn btn-sm btn-button btn-primary"
               disabled={loadIndicator}
             >
               {loadIndicator && (
                 <span
-                  className="spinner-border spinner-border-sm me-2"
+                  className="spinner-border spinner-border-sm me-2 "
                   aria-hidden="true"
                 ></span>
               )}
-              Submit
-            </Button>
-          </Modal.Footer>
+              Update
+            </button>
+          </DialogActions>
         </form>
-      </Modal>
+      </Dialog>
     </>
   );
 }
 
-export default ReligionAdd;
+export default CountryEdit;

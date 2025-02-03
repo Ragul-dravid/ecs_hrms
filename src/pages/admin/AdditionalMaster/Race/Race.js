@@ -84,7 +84,7 @@ const Race = ({ handleCenterChanged }) => {
 
   const getData = async () => {
     try {
-      const response = await api.get(`emp-reg-details-by-companyId/${cmpId}`);
+      const response = await api.get(`getAllEcsRace`);
       setDatas(response.data);
     } catch (error) {
       console.error("Error fetching data:", error.message);
@@ -212,7 +212,7 @@ const Race = ({ handleCenterChanged }) => {
               </MenuItem>
               <MenuItem>
                 <GlobalDelete
-                  path={`/emp-reg-details/${selectedId}`}
+                  path={`/deleteEcsRace/${selectedId}`}
                   // onDeleteSuccess={fetchData}
                   onOpen={handleMenuClose}
                   // deleteCenterData={true}

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../../../config/URL";
+import api from "../../../../config/URL";
 import { MaterialReactTable } from "material-react-table";
 import {
   ThemeProvider,
@@ -10,13 +10,13 @@ import {
   IconButton,
 } from "@mui/material";
 import { MoreVert as MoreVertIcon } from "@mui/icons-material";
+import GlobalDelete from "../../../../components/admin/GlobalDelete";
+import RaceAdd from "../Race/RaceAdd";
+import RaceEdit from "../Race/RaceEdit";
+import CountryAdd from "./CountryAdd";
+import CountryEdit from "./CountryEdit";
 
-import GlobalDelete from "../../../components/admin/GlobalDelete";
-
-import SectionAdd from "./SectionAdd";
-import SectionEdit from "./SectionEdit";
-
-const Section = ({ handleCenterChanged }) => {
+const Country = ({ handleCenterChanged }) => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [menuAnchor, setMenuAnchor] = useState(null);
@@ -55,26 +55,15 @@ const Section = ({ handleCenterChanged }) => {
         ),
       },
       {
-        accessorKey: "sectionCode",
+        accessorKey: "countryCode",
         enableHiding: false,
-        header: "SECTION CODE",
+        header: "COUNTRY CODE",
       },
       {
-        accessorKey: "sectionName",
+        accessorKey: "countryName",
         enableHiding: false,
-        header: "SECTION NAME",
+        header: "COUNTRY NAME",
       },
-      {
-        accessorKey: "departmentCode",
-        enableHiding: false,
-        header: "DEPARTMENT CODE",
-      },
-      {
-        accessorKey: "departmentName",
-        enableHiding: false,
-        header: "DEPARTMENT NAME",
-      },
-
       { accessorKey: "createdBy", header: "CREATED BY" },
       {
         accessorKey: "createdDate",
@@ -97,7 +86,7 @@ const Section = ({ handleCenterChanged }) => {
 
   const getData = async () => {
     try {
-      const response = await api.get(`getAllEcsSection`);
+      const response = await api.get(`getAllCountries`);
       setDatas(response.data);
     } catch (error) {
       console.error("Error fetching data:", error.message);
@@ -161,7 +150,7 @@ const Section = ({ handleCenterChanged }) => {
         <div className="mb-3 d-flex justify-content-between">
           <div className="individual_fliters d-lg-flex "></div>
           <span>
-            <SectionAdd />
+            <CountryAdd />
           </span>
         </div>
         {loading ? (
@@ -217,7 +206,7 @@ const Section = ({ handleCenterChanged }) => {
               disableScrollLock
             >
               <MenuItem>
-                <SectionEdit
+                <CountryEdit
                   onSuccess={getData}
                   id={selectedId}
                   handleMenuClose={handleMenuClose}
@@ -225,7 +214,7 @@ const Section = ({ handleCenterChanged }) => {
               </MenuItem>
               <MenuItem>
                 <GlobalDelete
-                  path={`/deleteEcsSection/${selectedId}`}
+                  path={`/deleteCountry/${selectedId}`}
                   // onDeleteSuccess={fetchData}
                   onOpen={handleMenuClose}
                   // deleteCenterData={true}
@@ -240,4 +229,4 @@ const Section = ({ handleCenterChanged }) => {
   );
 };
 
-export default Section;
+export default Country;

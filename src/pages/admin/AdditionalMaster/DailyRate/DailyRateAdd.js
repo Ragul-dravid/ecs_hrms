@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../../../config/URL";
 
-function NationalityAdd({ onSuccess }) {
+function DailyRateAdd({ onSuccess }) {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const [loadIndicator, setLoadIndicator] = useState(false);
@@ -25,18 +25,16 @@ function NationalityAdd({ onSuccess }) {
   };
 
   const validationSchema = yup.object().shape({
-    nationalityCode: yup.string().required("*Nationality Code is required"),
-    nationalityName: yup.string().required("*Nationality Name is required"),
-    irbanationalityCode: yup
-      .string()
-      .required("*IRBA Nationality Name is required"),
+    dailyCode: yup.string().required("*Daily Rate Code is required"),
+    dailyRateName: yup.string().required("*Daily Rate Name is required"),
+    rate: yup.string().required("*Rate is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      nationalityCode: "",
-      nationalityName: "",
-      irbanationalityCode: "",
+      dailyCode: "",
+      dailyRateName: "",
+      rate: "",
       createdBy: userName,
     },
     validationSchema: validationSchema,
@@ -46,7 +44,7 @@ function NationalityAdd({ onSuccess }) {
 
       values.createdBy = userName;
       try {
-        const response = await api.post("/createEcsNationality", values, {
+        const response = await api.post("/createDailyRate", values, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -54,7 +52,6 @@ function NationalityAdd({ onSuccess }) {
         if (response.status === 201) {
           toast.success(response.data.message);
           setShow(false);
-          // navigate("/subject");
           onSuccess();
           handleClose();
         } else {
@@ -101,86 +98,80 @@ function NationalityAdd({ onSuccess }) {
           }}
         >
           <Modal.Header closeButton>
-            <Modal.Title className="headColor">Add Nationality</Modal.Title>
+            <Modal.Title className="headColor">Add Daily Rate</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className="container">
               <div className="row py-4">
                 <div className="col-md-6 col-12 mb-2">
                   <label className="form-label">
-                    Nationality Code<span className="text-danger">*</span>
-                  </label>
-                  <div className="input-group mb-3">
-                    <input
-                      type="text"
-                      className={`form-control form-control-sm   ${
-                        formik.touched.nationalityCode &&
-                        formik.errors.nationalityCode
-                          ? "is-invalid"
-                          : ""
-                      }`}
-                      aria-label="nationalityCode"
-                      aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("nationalityCode")}
-                    />
-                    {formik.touched.nationalityCode &&
-                      formik.errors.nationalityCode && (
-                        <div className="invalid-feedback">
-                          {formik.errors.nationalityCode}
-                        </div>
-                      )}
-                  </div>
-                </div>
-                <div className="col-md-6 col-12 mb-2">
-                  <label className="form-label">
-                    Nationality Name<span className="text-danger">*</span>
+                    Daily Rate Code<span className="text-danger">*</span>
                   </label>
                   <div className="input-group mb-3">
                     <input
                       type="text"
                       className={`form-control form-control-sm  ${
-                        formik.touched.nationalityName &&
-                        formik.errors.nationalityName
+                        formik.touched.dailyCode && formik.errors.dailyCode
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="nationalityName"
+                      aria-label="dailyCode"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("nationalityName")}
+                      {...formik.getFieldProps("dailyCode")}
                     />
-                    {formik.touched.nationalityName &&
-                      formik.errors.nationalityName && (
+                    {formik.touched.dailyCode && formik.errors.dailyCode && (
+                      <div className="invalid-feedback">
+                        {formik.errors.dailyCode}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="col-md-6 col-12 mb-2">
+                  <label className="form-label">
+                    Daily Rate Name<span className="text-danger">*</span>
+                  </label>
+                  <div className="input-group mb-3">
+                    <input
+                      type="text"
+                      className={`form-control form-control-sm  ${
+                        formik.touched.dailyRateName &&
+                        formik.errors.dailyRateName
+                          ? "is-invalid"
+                          : ""
+                      }`}
+                      aria-label="dailyRateName"
+                      aria-describedby="basic-addon1"
+                      {...formik.getFieldProps("dailyRateName")}
+                    />
+                    {formik.touched.dailyRateName &&
+                      formik.errors.dailyRateName && (
                         <div className="invalid-feedback">
-                          {formik.errors.nationalityName}
+                          {formik.errors.dailyRateName}
                         </div>
                       )}
                   </div>
                 </div>
                 <div className="col-md-6 col-12 mb-2">
                   <label className="form-label">
-                    IRBA Nationality Code<span className="text-danger">*</span>
+                    Rate<span className="text-danger">*</span>
                   </label>
                   <div className="input-group mb-3">
-                    <select
-                      {...formik.getFieldProps("irbanationalityCode")}
-                      className={`form-select form-select-sm  ${
-                        formik.touched.irbanationalityCode &&
-                        formik.errors.irbanationalityCode
+                    <input
+                      type="text"
+                      className={`form-control form-control-sm  ${
+                        formik.touched.rate && formik.errors.rate
                           ? "is-invalid"
                           : ""
                       }`}
-                    >
-                      <option selected></option>
-                      <option value="None">None</option>
-                      <option value="One">One</option>
-                      <option value="Two">Two</option>
-                    </select>
-                    {formik.touched.irbanationalityCode &&
-                      formik.errors.irbanationalityCode && (
-                        <div className="invalid-feedback">
-                          {formik.errors.irbanationalityCode}
-                        </div>
-                      )}
+                      aria-label="rate"
+                      aria-describedby="basic-addon1"
+                      {...formik.getFieldProps("rate")}
+                    />
+                    {formik.touched.rate && formik.errors.rate && (
+                      <div className="invalid-feedback">
+                        {formik.errors.rate}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -214,4 +205,4 @@ function NationalityAdd({ onSuccess }) {
   );
 }
 
-export default NationalityAdd;
+export default DailyRateAdd;

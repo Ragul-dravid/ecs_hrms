@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../../../config/URL";
 
-function NationalityAdd({ onSuccess }) {
+function CountryAdd({ onSuccess }) {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const [loadIndicator, setLoadIndicator] = useState(false);
@@ -25,18 +25,14 @@ function NationalityAdd({ onSuccess }) {
   };
 
   const validationSchema = yup.object().shape({
-    nationalityCode: yup.string().required("*Nationality Code is required"),
-    nationalityName: yup.string().required("*Nationality Name is required"),
-    irbanationalityCode: yup
-      .string()
-      .required("*IRBA Nationality Name is required"),
+    countryCode: yup.string().required("*Country Code is required"),
+    countryName: yup.string().required("*Country Name is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      nationalityCode: "",
-      nationalityName: "",
-      irbanationalityCode: "",
+      countryCode: "",
+      countryName: "",
       createdBy: userName,
     },
     validationSchema: validationSchema,
@@ -46,7 +42,7 @@ function NationalityAdd({ onSuccess }) {
 
       values.createdBy = userName;
       try {
-        const response = await api.post("/createEcsNationality", values, {
+        const response = await api.post("/createCountry", values, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -54,7 +50,6 @@ function NationalityAdd({ onSuccess }) {
         if (response.status === 201) {
           toast.success(response.data.message);
           setShow(false);
-          // navigate("/subject");
           onSuccess();
           handleClose();
         } else {
@@ -101,84 +96,55 @@ function NationalityAdd({ onSuccess }) {
           }}
         >
           <Modal.Header closeButton>
-            <Modal.Title className="headColor">Add Nationality</Modal.Title>
+            <Modal.Title className="headColor">Add Race</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className="container">
               <div className="row py-4">
                 <div className="col-md-6 col-12 mb-2">
                   <label className="form-label">
-                    Nationality Code<span className="text-danger">*</span>
-                  </label>
-                  <div className="input-group mb-3">
-                    <input
-                      type="text"
-                      className={`form-control form-control-sm   ${
-                        formik.touched.nationalityCode &&
-                        formik.errors.nationalityCode
-                          ? "is-invalid"
-                          : ""
-                      }`}
-                      aria-label="nationalityCode"
-                      aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("nationalityCode")}
-                    />
-                    {formik.touched.nationalityCode &&
-                      formik.errors.nationalityCode && (
-                        <div className="invalid-feedback">
-                          {formik.errors.nationalityCode}
-                        </div>
-                      )}
-                  </div>
-                </div>
-                <div className="col-md-6 col-12 mb-2">
-                  <label className="form-label">
-                    Nationality Name<span className="text-danger">*</span>
+                    Country Code<span className="text-danger">*</span>
                   </label>
                   <div className="input-group mb-3">
                     <input
                       type="text"
                       className={`form-control form-control-sm  ${
-                        formik.touched.nationalityName &&
-                        formik.errors.nationalityName
+                        formik.touched.countryCode && formik.errors.countryCode
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="nationalityName"
+                      aria-label="countryCode"
                       aria-describedby="basic-addon1"
-                      {...formik.getFieldProps("nationalityName")}
+                      {...formik.getFieldProps("countryCode")}
                     />
-                    {formik.touched.nationalityName &&
-                      formik.errors.nationalityName && (
+                    {formik.touched.countryCode &&
+                      formik.errors.countryCode && (
                         <div className="invalid-feedback">
-                          {formik.errors.nationalityName}
+                          {formik.errors.countryCode}
                         </div>
                       )}
                   </div>
                 </div>
                 <div className="col-md-6 col-12 mb-2">
                   <label className="form-label">
-                    IRBA Nationality Code<span className="text-danger">*</span>
+                    Country Name<span className="text-danger">*</span>
                   </label>
                   <div className="input-group mb-3">
-                    <select
-                      {...formik.getFieldProps("irbanationalityCode")}
-                      className={`form-select form-select-sm  ${
-                        formik.touched.irbanationalityCode &&
-                        formik.errors.irbanationalityCode
+                    <input
+                      type="text"
+                      className={`form-control form-control-sm  ${
+                        formik.touched.countryName && formik.errors.countryName
                           ? "is-invalid"
                           : ""
                       }`}
-                    >
-                      <option selected></option>
-                      <option value="None">None</option>
-                      <option value="One">One</option>
-                      <option value="Two">Two</option>
-                    </select>
-                    {formik.touched.irbanationalityCode &&
-                      formik.errors.irbanationalityCode && (
+                      aria-label="countryName"
+                      aria-describedby="basic-addon1"
+                      {...formik.getFieldProps("countryName")}
+                    />
+                    {formik.touched.countryName &&
+                      formik.errors.countryName && (
                         <div className="invalid-feedback">
-                          {formik.errors.irbanationalityCode}
+                          {formik.errors.countryName}
                         </div>
                       )}
                   </div>
@@ -214,4 +180,4 @@ function NationalityAdd({ onSuccess }) {
   );
 }
 
-export default NationalityAdd;
+export default CountryAdd;

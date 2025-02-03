@@ -215,7 +215,7 @@ const Bank = ({ handleCenterChanged }) => {
               </MenuItem>
               <MenuItem>
                 <GlobalDelete
-                  path={`/emp-reg-details/${selectedId}`}
+                  path={`/ecs-bank/${selectedId}`}
                   // onDeleteSuccess={fetchData}
                   onOpen={handleMenuClose}
                   // deleteCenterData={true}

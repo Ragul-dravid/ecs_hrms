@@ -214,7 +214,7 @@ const Desigination = ({ handleCenterChanged }) => {
               </MenuItem>
               <MenuItem>
                 <GlobalDelete
-                  path={`/emp-reg-details/${selectedId}`}
+                  path={`/ecs-designation/${selectedId}`}
                   // onDeleteSuccess={fetchData}
                   onOpen={handleMenuClose}
                   // deleteCenterData={true}

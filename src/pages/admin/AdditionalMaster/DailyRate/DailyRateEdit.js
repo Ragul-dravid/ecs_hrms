@@ -12,7 +12,7 @@ import { BiEditAlt } from "react-icons/bi";
 import { IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
-function RaceEdit({ id, onSuccess, handleMenuClose }) {
+function DailyRateEdit({ id, onSuccess, handleMenuClose }) {
   const [show, setShow] = useState(false);
   const [loadIndicator, setLoadIndicator] = useState(false);
   const userName = localStorage.getItem("userName");
@@ -26,7 +26,7 @@ function RaceEdit({ id, onSuccess, handleMenuClose }) {
 
   const handleShow = async () => {
     try {
-      const response = await api.get(`/getEcsRaceById/${id}`);
+      const response = await api.get(`/getDailyRateById/${id}`);
       formik.setValues(response.data);
     } catch (error) {
       console.error("Error fetching data ", error);
@@ -36,14 +36,16 @@ function RaceEdit({ id, onSuccess, handleMenuClose }) {
   };
 
   const validationSchema = yup.object().shape({
-    raceCode: yup.string().required("*Race Code is required"),
-    raceName: yup.string().required("*Race Name is required"),
+    dailyCode: yup.string().required("*Daily Rate Code is required"),
+    dailyRateName: yup.string().required("*Daily Rate Name is required"),
+    rate: yup.string().required("*Rate is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      raceCode: "",
-      raceName: "",
+      dailyCode: "",
+      dailyRateName: "",
+      rate: "",
       updatedBy: userName,
     },
     validationSchema: validationSchema,
@@ -53,7 +55,7 @@ function RaceEdit({ id, onSuccess, handleMenuClose }) {
 
       values.updatedBy = userName;
       try {
-        const response = await api.put(`/updateEcsRace/${id}`, values, {
+        const response = await api.put(`/updateDailyRate/${id}`, values, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -108,7 +110,7 @@ function RaceEdit({ id, onSuccess, handleMenuClose }) {
             }}
           >
             <span>
-              Edit Race &nbsp;&nbsp; <i className="bx bx-plus"></i>
+              Edit Daily Rate &nbsp;&nbsp; <i className="bx bx-plus"></i>
             </span>
             <IconButton onClick={handleClose} size="small">
               <Close />
@@ -119,46 +121,71 @@ function RaceEdit({ id, onSuccess, handleMenuClose }) {
               <div className="row py-4">
                 <div className="col-md-6 col-12 mb-2">
                   <label className="form-label">
-                    Race Code<span className="text-danger">*</span>
+                    Daily Rate Code<span className="text-danger">*</span>
                   </label>
                   <div className="input-group mb-3">
                     <input
-                      onKeyDown={(e) => e.stopPropagation()}
                       type="text"
                       className={`form-control form-control-sm  ${
-                        formik.touched.raceCode && formik.errors.raceCode
+                        formik.touched.dailyCode && formik.errors.dailyCode
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="raceCode"
-                      {...formik.getFieldProps("raceCode")}
+                      aria-label="dailyCode"
+                      aria-describedby="basic-addon1"
+                      {...formik.getFieldProps("dailyCode")}
                     />
-                    {formik.touched.raceCode && formik.errors.raceCode && (
+                    {formik.touched.dailyCode && formik.errors.dailyCode && (
                       <div className="invalid-feedback">
-                        {formik.errors.raceCode}
+                        {formik.errors.dailyCode}
                       </div>
                     )}
                   </div>
                 </div>
                 <div className="col-md-6 col-12 mb-2">
                   <label className="form-label">
-                    Race Name<span className="text-danger">*</span>
+                    Daily Rate Name<span className="text-danger">*</span>
                   </label>
                   <div className="input-group mb-3">
                     <input
                       type="text"
-                      onKeyDown={(e) => e.stopPropagation()}
                       className={`form-control form-control-sm  ${
-                        formik.touched.raceName && formik.errors.raceName
+                        formik.touched.dailyRateName &&
+                        formik.errors.dailyRateName
                           ? "is-invalid"
                           : ""
                       }`}
-                      aria-label="raceName"
-                      {...formik.getFieldProps("raceName")}
+                      aria-label="dailyRateName"
+                      aria-describedby="basic-addon1"
+                      {...formik.getFieldProps("dailyRateName")}
                     />
-                    {formik.touched.raceName && formik.errors.raceName && (
+                    {formik.touched.dailyRateName &&
+                      formik.errors.dailyRateName && (
+                        <div className="invalid-feedback">
+                          {formik.errors.dailyRateName}
+                        </div>
+                      )}
+                  </div>
+                </div>
+                <div className="col-md-6 col-12 mb-2">
+                  <label className="form-label">
+                    Rate<span className="text-danger">*</span>
+                  </label>
+                  <div className="input-group mb-3">
+                    <input
+                      type="text"
+                      className={`form-control form-control-sm  ${
+                        formik.touched.rate && formik.errors.rate
+                          ? "is-invalid"
+                          : ""
+                      }`}
+                      aria-label="rate"
+                      aria-describedby="basic-addon1"
+                      {...formik.getFieldProps("rate")}
+                    />
+                    {formik.touched.rate && formik.errors.rate && (
                       <div className="invalid-feedback">
-                        {formik.errors.raceName}
+                        {formik.errors.rate}
                       </div>
                     )}
                   </div>
@@ -194,4 +221,4 @@ function RaceEdit({ id, onSuccess, handleMenuClose }) {
   );
 }
 
-export default RaceEdit;
+export default DailyRateEdit;

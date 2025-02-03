@@ -42,7 +42,7 @@ function RaceAdd({ onSuccess }) {
 
       values.createdBy = userName;
       try {
-        const response = await api.post("/createCourseSubject", values, {
+        const response = await api.post("/createEcsRace", values, {
           headers: {
             "Content-Type": "application/json",
           },
